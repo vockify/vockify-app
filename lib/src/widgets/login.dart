@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vockify/src/redux/actions/authorize_action.dart';
+import 'package:vockify/src/redux/state/app_state.dart';
 
 class LoginWidget extends StatelessWidget {
   @override
@@ -8,10 +11,18 @@ class LoginWidget extends StatelessWidget {
         title: Text('Login'),
       ),
       body: Center(
-        child: RaisedButton(
-          child: Text('Login by Google'),
-          onPressed: () {
-            // Navigate to the second screen when tapped.
+        child: StoreConnector<AppState, VoidCallback>(
+          converter: (store) {
+            return () => store.dispatch(AuthorizeAction());
+          },
+          builder: (context, callback) {
+            return RaisedButton(
+              child: Text('Login by Google'),
+              onPressed: () {
+                callback();
+                Navigator.pushNamed(context, '/sets');
+              },
+            );
           },
         ),
       ),
