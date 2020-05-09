@@ -8,11 +8,13 @@ part of 'get_sets_response.dart';
 
 GetSetsResponse _$GetSetsResponseFromJson(Map<String, dynamic> json) {
   return GetSetsResponse(
-    json['page'] as int,
+    (json['data'] as List)
+        .map((e) => SetDto.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
 Map<String, dynamic> _$GetSetsResponseToJson(GetSetsResponse instance) =>
     <String, dynamic>{
-      'page': instance.page,
+      'data': instance.data,
     };

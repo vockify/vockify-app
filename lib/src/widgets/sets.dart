@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vockify/src/redux/actions/load_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class SetsWidget extends StatelessWidget {
@@ -11,6 +12,9 @@ class SetsWidget extends StatelessWidget {
       ),
       body: Center(
         child: StoreConnector<AppState, bool>(
+          onInit: (store) {
+            store.dispatch(LoadSetsAction());
+          },
           converter: (store) => store.state.isAuthorized,
           builder: (context, isAuthorized) {
             return Text(

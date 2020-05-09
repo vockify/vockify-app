@@ -1,47 +1,39 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:redux_epics/redux_epics.dart';
-import 'package:vockify/src/models/model.dart';
-import 'package:vockify/src/redux/actions/authorize_action.dart';
-import 'package:vockify/src/redux/actions/load_data_action.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/redux/actions/load_sets_action.dart';
+import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class AppEffect {
   Epic<AppState> getEffects() {
     return combineEpics([
-      TypedEpic<AppState, AuthorizeAction>(_onAuthorizeAction),
-      TypedEpic<AppState, LoadDataAction>(_onLoadDataAction),
+      TypedEpic<AppState, UnauthorizeAction>(_onUnauthorizeAction),
+      TypedEpic<AppState, LoadSetsAction>(_onLoadSetsAction),
     ]);
   }
 
-  Stream<Object> _onLoadDataAction(
-      Stream<LoadDataAction> actions,
-      EpicStore<AppState> store,
-      ) async* {
-    await for (final action in actions) {
-      final response = await http.get('https://reqres.in/api/users?page=2');
-
-      if (response.statusCode == 200) {
-        final model = Model.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load');
-      }
-    }
-  }
-
-  Stream<Object> _onAuthorizeAction(
-    Stream<AuthorizeAction> actions,
+  Stream<Object> _onUnauthorizeAction(
+    Stream<UnauthorizeAction> actions,
     EpicStore<AppState> store,
   ) async* {
     await for (final action in actions) {
-      final response = await http.get('https://reqres.in/api/users?page=2');
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('token');
+    }
+  }
 
-      if (response.statusCode == 200) {
-        final model = Model.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load');
+  Stream<Object> _onLoadSetsAction(
+    Stream<LoadSetsAction> actions,
+    EpicStore<AppState> store,
+  ) async* {
+    await for (final action in actions) {
+      final sets = await api.getSets();
+
+      if (sets != null) {
+        print(sets);
       }
     }
   }
