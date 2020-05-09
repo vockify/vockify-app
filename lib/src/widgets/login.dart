@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
@@ -18,9 +19,18 @@ class LoginWidget extends StatelessWidget {
           builder: (context, callback) {
             return RaisedButton(
               child: Text('Login by Google'),
-              onPressed: () {
-                callback();
-                Navigator.pushNamed(context, '/sets');
+              onPressed: () async {
+                final result = await FlutterWebAuth.authenticate(
+                  url: "https://vockify.website/api/auth/google",
+                  callbackUrlScheme: "vockify",
+                );
+
+                final token = Uri.parse(result).queryParameters['token'];
+
+                print(token);
+
+//                callback();
+//                Navigator.pushNamed(context, '/sets');
               },
             );
           },
