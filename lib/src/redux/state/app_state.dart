@@ -1,5 +1,6 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/api/dto/sets_response.dart';
+import 'package:vockify/src/redux/state/set_state.dart';
 
 part 'app_state.g.dart';
 
@@ -10,5 +11,5 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isAuthorized;
 
-  SetsResponse get sets;
+  BuiltList<SetState> get sets;
 }

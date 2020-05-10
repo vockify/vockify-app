@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/add_set_action.dart';
-import 'package:vockify/src/redux/actions/load_sets_action.dart';
+import 'package:vockify/src/redux/actions/request_add_set_action.dart';
+import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
@@ -13,29 +13,29 @@ class SetsWidget extends StatelessWidget {
         context: context,
         child:
             StoreConnector<AppState, void Function(String)>(converter: (store) {
-          return (String name) => store.dispatch(new AddSetAction(name));
+          return (String name) => store.dispatch(RequestAddSetAction(name));
         }, builder: (context, addSet) {
-          return new AlertDialog(
+          return AlertDialog(
             contentPadding: const EdgeInsets.all(16.0),
-            content: new Row(
+            content: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new TextField(
+                Expanded(
+                  child: TextField(
                     controller: setNameController,
                     autofocus: true,
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                         labelText: 'Set name', hintText: 'eg. Common words'),
                   ),
                 )
               ],
             ),
             actions: <Widget>[
-              new FlatButton(
+              FlatButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              new FlatButton(
+              FlatButton(
                   child: const Text('ADD'),
                   onPressed: () {
                     addSet(setNameController.text);
@@ -56,7 +56,7 @@ class SetsWidget extends StatelessWidget {
       body: Center(
         child: StoreConnector<AppState, SetsViewModel>(
           onInit: (store) {
-            store.dispatch(LoadSetsAction());
+            store.dispatch(RequestSetsAction());
           },
           converter: (store) {
             return SetsViewModel.fromStore(store);

@@ -32,7 +32,7 @@ class AppApi {
     return SetResponse.fromJson(data);
   }
 
-  Future deleteSet(int id) async {
+  Future<void> deleteSet(int id) async {
     await _delete('/sets/$id');
   }
 
@@ -47,7 +47,6 @@ class AppApi {
 
   Future<Map<String, dynamic>> _post(String url, dynamic body) async {
     final headers = await _getHeaders();
-
     final response = await http.post(
       '$apiUrl$url',
       body: jsonEncode(body),
@@ -81,7 +80,7 @@ class AppApi {
   Map<String, dynamic> _processResponse(http.Response response) {
     if (response.statusCode == HttpCodes.UNAUTHORIZED) {
       store.dispatch(UnauthorizeAction());
-      return null;
+      throw Error();
     }
 
     if (response.statusCode > HttpCodes.BAD_REQUEST) {

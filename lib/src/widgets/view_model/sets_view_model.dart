@@ -1,17 +1,18 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
-import 'package:vockify/src/redux/actions/remove_set_action.dart';
+import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/set_state.dart';
 
 class SetsViewModel {
   final Function(int) removeSet;
-  final List<SetDto> sets;
+  final BuiltList<SetState> sets;
 
   SetsViewModel({this.removeSet, this.sets});
 
   static SetsViewModel fromStore(Store<AppState> store) {
     return SetsViewModel(
-        sets: store.state.sets.data,
-        removeSet: (id) => store.dispatch(new RemoveSetAction(id)));
+        sets: store.state.sets,
+        removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)));
   }
 }

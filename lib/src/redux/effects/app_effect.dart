@@ -5,74 +5,75 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/redux/actions/add_set_action.dart';
-import 'package:vockify/src/redux/actions/load_sets_action.dart';
-import 'package:vockify/src/redux/actions/on_set_added_action.dart';
-import 'package:vockify/src/redux/actions/on_set_removed_action.dart';
-import 'package:vockify/src/redux/actions/on_sets_loaded_action.dart';
 import 'package:vockify/src/redux/actions/remove_set_action.dart';
+import 'package:vockify/src/redux/actions/request_add_set_action.dart';
+import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
+import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class AppEffect {
   Epic<AppState> getEffects() {
     return combineEpics([
-      TypedEpic<AppState, UnauthorizeAction>(_onUnauthorizeAction),
-      TypedEpic<AppState, LoadSetsAction>(_onLoadSetsAction),
-      TypedEpic<AppState, AddSetAction>(_onSetAddAction),
-      TypedEpic<AppState, RemoveSetAction>(_onSetRemoveAction),
+      TypedEpic<AppState, UnauthorizeAction>(_unauthorizeAction),
+      TypedEpic<AppState, RequestSetsAction>(_requestSetsAction),
+      TypedEpic<AppState, RequestAddSetAction>(_addSetAction),
+      TypedEpic<AppState, RequestRemoveSetAction>(_removeSetAction),
     ]);
   }
 
-  Stream<Object> _onUnauthorizeAction(
+  Stream<Object> _unauthorizeAction(
     Stream<UnauthorizeAction> actions,
     EpicStore<AppState> store,
-  ) async* {
-    await for (final action in actions) {
+  ) {
+    return actions.asyncExpand((event) async* {
       final prefs = await SharedPreferences.getInstance();
       prefs.remove('token');
-    }
+    });
   }
 
-  Stream<Object> _onLoadSetsAction(
-    Stream<LoadSetsAction> actions,
+  Stream<Object> _requestSetsAction(
+    Stream<RequestSetsAction> actions,
     EpicStore<AppState> store,
   ) {
-    return actions
-        .where((action) => action is LoadSetsAction)
-        .asyncExpand((event) async* {
-      final sets = await api.getSets();
+    return actions.asyncExpand((event) async* {
+      try {
+        final sets = await api.getSets();
 
-      if (sets != null) {
-        yield new OnSetsLoadedAction(sets);
+        yield SetSetsAction(sets.toState());
+      } catch (e) {
+        print(e);
       }
     });
   }
 
-  Stream<Object> _onSetAddAction(
-    Stream<AddSetAction> actions,
+  Stream<Object> _addSetAction(
+    Stream<RequestAddSetAction> actions,
     EpicStore<AppState> store,
   ) {
-    return actions
-        .where((action) => action is AddSetAction)
-        .asyncExpand((action) async* {
-      final set = await api.addSet(new SetDto(0, action.payload, 'sample'));
-
-      if (set != null) {
-        yield new OnSetAddedAction(set.data);
+    return actions.asyncExpand((action) async* {
+      try {
+        final set = await api.addSet(SetDto(0, action.payload, 'sample'));
+        yield AddSetAction(set.data.toState());
+      } catch (e) {
+        print(e);
       }
     });
   }
 
-  Stream<Object> _onSetRemoveAction(
-    Stream<RemoveSetAction> actions,
+  Stream<Object> _removeSetAction(
+    Stream<RequestRemoveSetAction> actions,
     EpicStore<AppState> store,
   ) {
-    return actions
-        .where((action) => action is RemoveSetAction)
-        .asyncExpand((action) async* {
-      await api.deleteSet(action.payload);
+    return actions.asyncExpand((action) async* {
+      try {
+        await api.deleteSet(action.payload);
 
-      yield new OnSetRemoveAction(action.payload);
+        yield RemoveSetAction(action.payload);
+      } catch (e) {
+        print(e);
+      }
     });
   }
 }

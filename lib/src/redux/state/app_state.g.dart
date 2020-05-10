@@ -10,7 +10,7 @@ class _$AppState extends AppState {
   @override
   final bool isAuthorized;
   @override
-  final SetsResponse sets;
+  final BuiltList<SetState> sets;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -60,16 +60,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
-  SetsResponse _sets;
-  SetsResponse get sets => _$this._sets;
-  set sets(SetsResponse sets) => _$this._sets = sets;
+  ListBuilder<SetState> _sets;
+  ListBuilder<SetState> get sets =>
+      _$this._sets ??= new ListBuilder<SetState>();
+  set sets(ListBuilder<SetState> sets) => _$this._sets = sets;
 
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
-      _sets = _$v.sets;
+      _sets = _$v.sets?.toBuilder();
       _$v = null;
     }
     return this;
@@ -90,8 +91,21 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   @override
   _$AppState build() {
-    final _$result =
-        _$v ?? new _$AppState._(isAuthorized: isAuthorized, sets: sets);
+    _$AppState _$result;
+    try {
+      _$result = _$v ??
+          new _$AppState._(isAuthorized: isAuthorized, sets: sets.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'sets';
+        sets.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'AppState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

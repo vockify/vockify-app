@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:vockify/src/redux/state/set_state.dart';
 
 part 'set_dto.g.dart';
 
@@ -13,4 +14,11 @@ class SetDto {
   factory SetDto.fromJson(Map<String, dynamic> json) => _$SetDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$SetDtoToJson(this);
+
+  SetState toState() => SetState((builder) {
+        builder
+          ..icon = icon
+          ..name = name
+          ..id = id;
+      });
 }
