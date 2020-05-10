@@ -40,40 +40,39 @@ class AppEffect {
     return actions
         .where((action) => action is LoadSetsAction)
         .asyncExpand((event) async* {
+      final sets = await api.getSets();
 
-          final sets = await api.getSets();
-
-          if (sets != null) {
-            yield new OnSetsLoadedAction(sets);
-          }
-        });
+      if (sets != null) {
+        yield new OnSetsLoadedAction(sets);
+      }
+    });
   }
 
   Stream<Object> _onSetAddAction(
-      Stream<AddSetAction> actions,
-      EpicStore<AppState> store,
-      ) {
+    Stream<AddSetAction> actions,
+    EpicStore<AppState> store,
+  ) {
     return actions
         .where((action) => action is AddSetAction)
         .asyncExpand((action) async* {
-          final set = await api.addSet(new SetDto(0, action.payload, 'sample'));
+      final set = await api.addSet(new SetDto(0, action.payload, 'sample'));
 
-          if (set != null) {
-            yield new OnSetAddedAction(set.data);
-          }
-        });
+      if (set != null) {
+        yield new OnSetAddedAction(set.data);
+      }
+    });
   }
 
   Stream<Object> _onSetRemoveAction(
-      Stream<RemoveSetAction> actions,
-      EpicStore<AppState> store,
-      ) {
-        return actions
-            .where((action) => action is RemoveSetAction)
-            .asyncExpand((action) async* {
-              await api.deleteSet(action.payload);
+    Stream<RemoveSetAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions
+        .where((action) => action is RemoveSetAction)
+        .asyncExpand((action) async* {
+      await api.deleteSet(action.payload);
 
-              yield new OnSetRemoveAction(action.payload);
-      });
+      yield new OnSetRemoveAction(action.payload);
+    });
   }
 }

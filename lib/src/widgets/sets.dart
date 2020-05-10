@@ -11,44 +11,40 @@ class SetsWidget extends StatelessWidget {
   Future<void> _openAddModal(BuildContext context) async {
     await showDialog(
         context: context,
-        child: StoreConnector<AppState, void Function(String)>(
-            converter: (store) {
-              return (String name) => store.dispatch(new AddSetAction(name));
-            },
-            builder: (context, addSet) {
-              return new AlertDialog(
-                contentPadding: const EdgeInsets.all(16.0),
-                content: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new TextField(
-                        controller: setNameController,
-                        autofocus: true,
-                        decoration: new InputDecoration(
-                            labelText: 'Set name',
-                            hintText: 'eg. Common words'
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                actions: <Widget>[
-                  new FlatButton(
-                      child: const Text('CANCEL'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  new FlatButton(
-                      child: const Text('ADD'),
-                      onPressed: () {
-                        addSet(setNameController.text);
-                        Navigator.pop(context);
-                        setNameController.clear();
-                      })
-                ],
-              );
-            }
-        ));
+        child:
+            StoreConnector<AppState, void Function(String)>(converter: (store) {
+          return (String name) => store.dispatch(new AddSetAction(name));
+        }, builder: (context, addSet) {
+          return new AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            content: new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new TextField(
+                    controller: setNameController,
+                    autofocus: true,
+                    decoration: new InputDecoration(
+                        labelText: 'Set name', hintText: 'eg. Common words'),
+                  ),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                  child: const Text('CANCEL'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              new FlatButton(
+                  child: const Text('ADD'),
+                  onPressed: () {
+                    addSet(setNameController.text);
+                    Navigator.pop(context);
+                    setNameController.clear();
+                  })
+            ],
+          );
+        }));
   }
 
   @override
@@ -80,8 +76,7 @@ class SetsWidget extends StatelessWidget {
                     background: Container(color: Colors.red),
                     onDismissed: (direction) {
                       vm.removeSet(vm.sets[index].id);
-                    }
-                );
+                    });
               },
             );
           },

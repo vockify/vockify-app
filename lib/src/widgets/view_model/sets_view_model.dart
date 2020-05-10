@@ -7,15 +7,11 @@ class SetsViewModel {
   final Function(int) removeSet;
   final List<SetDto> sets;
 
-  SetsViewModel({
-    this.removeSet,
-    this.sets
-  });
+  SetsViewModel({this.removeSet, this.sets});
 
-  static SetsViewModel fromStore(Store<AppState> store){
+  static SetsViewModel fromStore(Store<AppState> store) {
     return SetsViewModel(
-      sets: store.state.sets.data,
-      removeSet: (id) => store.dispatch(new RemoveSetAction(id))
-    );
+        sets: store.state.sets.data,
+        removeSet: (id) => store.dispatch(new RemoveSetAction(id)));
   }
 }

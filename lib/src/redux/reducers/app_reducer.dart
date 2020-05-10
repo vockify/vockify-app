@@ -34,10 +34,12 @@ class AppReducer {
   }
 
   AppState _onSetAddedReducer(AppState state, OnSetAddedAction action) {
-    return state.rebuild((builder) => builder.sets.data.insert(0, action.payload));
+    return state
+        .rebuild((builder) => builder.sets.data.insert(0, action.payload));
   }
 
   AppState _onSetRemovedReducer(AppState state, OnSetRemoveAction action) {
-    return state.rebuild((builder) => builder.sets.data.removeWhere((element) => element.id == action.payload));
+    return state.rebuild((builder) => builder.sets.data
+        .removeWhere((element) => element.id == action.payload));
   }
 }
