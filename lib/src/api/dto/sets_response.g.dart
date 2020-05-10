@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'get_sets_response.dart';
+part of 'sets_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetSetsResponse _$GetSetsResponseFromJson(Map<String, dynamic> json) {
-  return GetSetsResponse(
+SetsResponse _$SetsResponseFromJson(Map<String, dynamic> json) {
+  return SetsResponse(
     (json['data'] as List)
         .map((e) => SetDto.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$GetSetsResponseToJson(GetSetsResponse instance) =>
+Map<String, dynamic> _$SetsResponseToJson(SetsResponse instance) =>
     <String, dynamic>{
       'data': instance.data,
     };

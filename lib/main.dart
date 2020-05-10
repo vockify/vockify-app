@@ -6,6 +6,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/sets_response.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -27,7 +28,8 @@ void main() async {
     reducer.getState,
     middleware: [epicMiddleware],
     initialState: AppState((builder) {
-      builder.isAuthorized = false;
+      builder.isAuthorized = isAuthorized;
+      builder.sets = new SetsResponse([]);
     }),
   );
 
