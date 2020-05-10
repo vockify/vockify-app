@@ -9,13 +9,18 @@ part of 'app_state.dart';
 class _$AppState extends AppState {
   @override
   final bool isAuthorized;
+  @override
+  final BuiltList<SetState> sets;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.isAuthorized}) : super._() {
+  _$AppState._({this.isAuthorized, this.sets}) : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
+    }
+    if (sets == null) {
+      throw new BuiltValueNullFieldError('AppState', 'sets');
     }
   }
 
@@ -29,18 +34,21 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && isAuthorized == other.isAuthorized;
+    return other is AppState &&
+        isAuthorized == other.isAuthorized &&
+        sets == other.sets;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, isAuthorized.hashCode));
+    return $jf($jc($jc(0, isAuthorized.hashCode), sets.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
-          ..add('isAuthorized', isAuthorized))
+          ..add('isAuthorized', isAuthorized)
+          ..add('sets', sets))
         .toString();
   }
 }
@@ -52,11 +60,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
+  ListBuilder<SetState> _sets;
+  ListBuilder<SetState> get sets =>
+      _$this._sets ??= new ListBuilder<SetState>();
+  set sets(ListBuilder<SetState> sets) => _$this._sets = sets;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
+      _sets = _$v.sets?.toBuilder();
       _$v = null;
     }
     return this;
@@ -77,7 +91,21 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   @override
   _$AppState build() {
-    final _$result = _$v ?? new _$AppState._(isAuthorized: isAuthorized);
+    _$AppState _$result;
+    try {
+      _$result = _$v ??
+          new _$AppState._(isAuthorized: isAuthorized, sets: sets.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'sets';
+        sets.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'AppState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

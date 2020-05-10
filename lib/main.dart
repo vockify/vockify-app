@@ -27,7 +27,8 @@ void main() async {
     reducer.getState,
     middleware: [epicMiddleware],
     initialState: AppState((builder) {
-      builder.isAuthorized = false;
+      builder.isAuthorized = isAuthorized;
+      builder.sets.replace([]);
     }),
   );
 
