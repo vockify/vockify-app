@@ -20,9 +20,9 @@ class LoginWidget extends StatelessWidget {
             return RaisedButton(
               child: Text('Login by Google'),
               onPressed: () async {
-                final success = await Authorization.authorize();
+                final isAuthorized = await Authorization.authorize();
 
-                if (success) {
+                if (isAuthorized) {
                   callback();
                 }
 

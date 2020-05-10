@@ -9,11 +9,13 @@ part of 'app_state.dart';
 class _$AppState extends AppState {
   @override
   final bool isAuthorized;
+  @override
+  final String userAvatar;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.isAuthorized}) : super._() {
+  _$AppState._({this.isAuthorized, this.userAvatar}) : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
     }
@@ -29,18 +31,21 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && isAuthorized == other.isAuthorized;
+    return other is AppState &&
+        isAuthorized == other.isAuthorized &&
+        userAvatar == other.userAvatar;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, isAuthorized.hashCode));
+    return $jf($jc($jc(0, isAuthorized.hashCode), userAvatar.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
-          ..add('isAuthorized', isAuthorized))
+          ..add('isAuthorized', isAuthorized)
+          ..add('userAvatar', userAvatar))
         .toString();
   }
 }
@@ -52,11 +57,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
+  String _userAvatar;
+  String get userAvatar => _$this._userAvatar;
+  set userAvatar(String userAvatar) => _$this._userAvatar = userAvatar;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
+      _userAvatar = _$v.userAvatar;
       _$v = null;
     }
     return this;
@@ -77,7 +87,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   @override
   _$AppState build() {
-    final _$result = _$v ?? new _$AppState._(isAuthorized: isAuthorized);
+    final _$result = _$v ??
+        new _$AppState._(isAuthorized: isAuthorized, userAvatar: userAvatar);
     replace(_$result);
     return _$result;
   }

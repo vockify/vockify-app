@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vockify/src/api/dto/get_sets_response.dart';
+import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 
 AppApi api;
@@ -22,6 +23,11 @@ class AppApi {
   Future<GetSetsResponse> getSets() async {
     final data = await _get('/sets');
     return data == null ? null : GetSetsResponse.fromJson(data);
+  }
+
+  Future<void> authUser() async {
+    final data = await _get('/auth/user');
+    return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
   Future<Map<String, dynamic>> _get(String url) async {

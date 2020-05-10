@@ -5,7 +5,9 @@ part 'set_dto.g.dart';
 @JsonSerializable(nullable: false)
 class SetDto {
   final int id;
+
   final String name;
+
   final String icon;
 
   SetDto(this.id, this.name, this.icon);

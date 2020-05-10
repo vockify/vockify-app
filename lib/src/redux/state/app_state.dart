@@ -8,4 +8,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AppState._();
 
   bool get isAuthorized;
+
+  @nullable
+  String get userAvatar;
 }
