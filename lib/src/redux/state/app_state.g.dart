@@ -10,14 +10,19 @@ class _$AppState extends AppState {
   @override
   final bool isAuthorized;
   @override
+  final BuiltList<SetState> sets;
+  @override
   final String userAvatar;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.isAuthorized, this.userAvatar}) : super._() {
+  _$AppState._({this.isAuthorized, this.sets, this.userAvatar}) : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
+    }
+    if (sets == null) {
+      throw new BuiltValueNullFieldError('AppState', 'sets');
     }
   }
 
@@ -33,18 +38,21 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         isAuthorized == other.isAuthorized &&
+        sets == other.sets &&
         userAvatar == other.userAvatar;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, isAuthorized.hashCode), userAvatar.hashCode));
+    return $jf($jc($jc($jc(0, isAuthorized.hashCode), sets.hashCode),
+        userAvatar.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('isAuthorized', isAuthorized)
+          ..add('sets', sets)
           ..add('userAvatar', userAvatar))
         .toString();
   }
@@ -57,6 +65,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
+  ListBuilder<SetState> _sets;
+  ListBuilder<SetState> get sets =>
+      _$this._sets ??= new ListBuilder<SetState>();
+  set sets(ListBuilder<SetState> sets) => _$this._sets = sets;
+
   String _userAvatar;
   String get userAvatar => _$this._userAvatar;
   set userAvatar(String userAvatar) => _$this._userAvatar = userAvatar;
@@ -66,6 +79,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
+      _sets = _$v.sets?.toBuilder();
       _userAvatar = _$v.userAvatar;
       _$v = null;
     }
@@ -87,8 +101,24 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   @override
   _$AppState build() {
-    final _$result = _$v ??
-        new _$AppState._(isAuthorized: isAuthorized, userAvatar: userAvatar);
+    _$AppState _$result;
+    try {
+      _$result = _$v ??
+          new _$AppState._(
+              isAuthorized: isAuthorized,
+              sets: sets.build(),
+              userAvatar: userAvatar);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'sets';
+        sets.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'AppState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

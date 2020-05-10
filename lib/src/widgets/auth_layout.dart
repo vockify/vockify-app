@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -15,11 +13,6 @@ class AuthLayoutWidget extends StatelessWidget {
       converter: (store) => store.state.isAuthorized,
       builder: (context, isAuthorized) {
         if (!isAuthorized) {
-          // не уверен что это нужно
-          scheduleMicrotask(() {
-            Navigator.of(context).pushReplacementNamed('/');
-          });
-
           return Container();
         }
 

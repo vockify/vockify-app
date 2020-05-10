@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,9 +22,14 @@ void main() async {
 
   final store = Store<AppState>(
     reducer.getState,
-    middleware: [epicMiddleware],
+    middleware: [
+      epicMiddleware,
+      NavigationMiddleware(),
+    ],
     initialState: AppState((builder) {
-      builder.isAuthorized = isAuthorized;
+      builder
+        ..isAuthorized = isAuthorized
+        ..sets.replace([]);
     }),
   );
 
