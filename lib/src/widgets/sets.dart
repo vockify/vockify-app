@@ -7,6 +7,8 @@ import 'package:vockify/src/widgets/view_model/add_set_modal_view_model.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
 class SetsWidget extends StatelessWidget {
+  static const String route = '/sets';
+
   final setNameController = TextEditingController();
 
   Future<void> _openAddSetModal(BuildContext context) async {
@@ -71,10 +73,13 @@ class SetsWidget extends StatelessWidget {
 
                 return Dismissible(
                   key: Key(set.id.toString()),
-                  child: Container(
-                    height: 50,
-                    color: Colors.amber,
-                    child: Center(child: Text(set.name)),
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        viewModel.navigateToTerms(set.id);
+                      },
+                      title: Text(set.name),
+                    ),
                   ),
                   background: Container(color: Colors.red),
                   onDismissed: (direction) {

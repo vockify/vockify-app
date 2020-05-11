@@ -12,8 +12,10 @@ import 'package:vockify/src/redux/actions/request_add_set_action.dart';
 import 'package:vockify/src/redux/actions/request_authorize_action.dart';
 import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
+import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
+import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -29,6 +31,7 @@ class AppEffect {
       TypedEpic<AppState, RequestSetsAction>(_requestSetsAction),
       TypedEpic<AppState, RequestAddSetAction>(_requestAddSetAction),
       TypedEpic<AppState, RequestRemoveSetAction>(_requestRemoveSetAction),
+      TypedEpic<AppState, RequestSetTermsAction>(_requestSetTermsAction),
       TypedEpic<AppState, NavigateToAction>(_navigateToAction),
     ]);
   }
@@ -104,6 +107,20 @@ class AppEffect {
       try {
         final sets = await api.getSets();
         yield SetSetsAction(sets.toState());
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestSetTermsAction(
+    Stream<RequestSetTermsAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final terms = await api.getSetTerms(action.payload);
+        yield SetTermsAction(terms.toState());
       } catch (e) {
         print(e);
       }

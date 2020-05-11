@@ -3,6 +3,7 @@ import 'package:vockify/src/redux/actions/add_set_action.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
 import 'package:vockify/src/redux/actions/remove_set_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
+import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -12,17 +13,24 @@ class AppReducer {
 
   AppReducer() {
     _reducer = combineReducers([
+      // authorization
       TypedReducer(_authorizeReducer),
       TypedReducer(_unauthorizeReducer),
+
+      // sets
       TypedReducer(_setSetsReducer),
       TypedReducer(_setUserReducer),
       TypedReducer(_addSetReducer),
       TypedReducer(_removeSetReducer),
+
+      // terms
+      TypedReducer(_setTermsReducer),
     ]);
   }
 
   AppState getState(AppState state, Object action) => _reducer(state, action);
 
+  // authorization
   AppState _authorizeReducer(AppState state, AuthorizeAction action) {
     return state.rebuild((builder) => builder.isAuthorized = true);
   }
@@ -31,6 +39,7 @@ class AppReducer {
     return state.rebuild((builder) => builder.isAuthorized = false);
   }
 
+  // sets
   AppState _setSetsReducer(AppState state, SetSetsAction action) {
     return state.rebuild((builder) => builder.sets.replace(action.payload));
   }
@@ -40,12 +49,16 @@ class AppReducer {
   }
 
   AppState _addSetReducer(AppState state, AddSetAction action) {
-    return state
-        .rebuild((builder) => builder.sets.insert(0, action.payload));
+    return state.rebuild((builder) => builder.sets.insert(0, action.payload));
   }
 
   AppState _removeSetReducer(AppState state, RemoveSetAction action) {
-    return state.rebuild((builder) => builder.sets
-        .removeWhere((element) => element.id == action.payload));
+    return state.rebuild((builder) =>
+        builder.sets.removeWhere((element) => element.id == action.payload));
+  }
+
+  // terms
+  AppState _setTermsReducer(AppState state, SetTermsAction action) {
+    return state.rebuild((builder) => builder.terms.replace(action.payload));
   }
 }

@@ -7,6 +7,7 @@ import 'package:vockify/src/widgets/app_loader.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
 import 'package:vockify/src/widgets/sets.dart';
+import 'package:vockify/src/widgets/terms.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -31,10 +32,12 @@ class VockifyApp extends StatelessWidget {
 
   Route _getRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/login':
+      case LoginWidget.route:
         return _buildRoute(settings, LoginWidget());
-      case '/sets':
+      case SetsWidget.route:
         return _buildRoute(settings, AuthLayoutWidget(SetsWidget()));
+      case TermsWidget.route:
+        return _buildRoute(settings, AuthLayoutWidget(TermsWidget(0)));
       default:
         return _buildRoute(settings, AppLoaderWidget());
     }

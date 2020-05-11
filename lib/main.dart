@@ -30,6 +30,7 @@ void main() async {
       builder
         ..isAuthorized = isAuthorized
         ..sets.replace([])
+        ..terms.replace([])
         ..user.update((builder) {
           builder
             ..email = ''

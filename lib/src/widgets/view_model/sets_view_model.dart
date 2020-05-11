@@ -1,14 +1,17 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
+import 'package:vockify/src/widgets/terms.dart';
 
 class SetsViewModel {
   final Function(int) removeSet;
+  final Function(int setId) navigateToTerms;
   final BuiltList<SetState> sets;
 
-  SetsViewModel({this.removeSet, this.sets});
+  SetsViewModel({this.removeSet, this.sets, this.navigateToTerms});
 
   @override
   bool operator ==(Object other) {
@@ -18,9 +21,9 @@ class SetsViewModel {
 
   static SetsViewModel fromStore(Store<AppState> store) {
     return SetsViewModel(
-      sets: store.state.sets,
-      removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-    );
+        sets: store.state.sets,
+        removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
+        navigateToTerms: (int setId) => store.dispatch(NavigateToAction.replace(TermsWidget.route, arguments: setId)));
   }
 
   @override
