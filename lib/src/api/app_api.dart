@@ -7,6 +7,7 @@ import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/api/dto/set_response.dart';
 import 'package:vockify/src/api/dto/sets_response.dart';
+import 'package:vockify/src/api/dto/terms_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 
@@ -40,6 +41,11 @@ class AppApi {
   Future<SetsResponse> getSets() async {
     final data = await _get('/sets');
     return SetsResponse.fromJson(data);
+  }
+
+  Future<TermsResponse> getSetTerms(int setId) async {
+    final data = await _get('/sets/$setId/terms');
+    return TermsResponse.fromJson(data);
   }
 
   Future<Map<String, dynamic>> _delete(String url) async {

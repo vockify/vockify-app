@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class AppLayoutWidget extends StatelessWidget {
   final String title;
   final Widget body;
   final Widget floatingActionButton;
+  final String redirectBackRoute;
 
-  const AppLayoutWidget({Key key, this.title, this.body, this.floatingActionButton}) : super(key: key);
+  const AppLayoutWidget({
+    Key key,
+    this.title,
+    this.body,
+    this.floatingActionButton,
+    this.redirectBackRoute,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        leading: _goBackArrow(),
         actions: <Widget>[
           StoreConnector<AppState, String>(
             converter: (store) => store.state.user.avatar,
@@ -25,6 +34,25 @@ class AppLayoutWidget extends StatelessWidget {
       ),
       body: body,
       floatingActionButton: floatingActionButton,
+    );
+  }
+
+  StoreConnector<AppState, Function> _goBackArrow() {
+    if (redirectBackRoute == null) {
+      return null;
+    }
+
+    return StoreConnector<AppState, Function>(
+      converter: (store) => store.dispatch,
+      distinct: true,
+      builder: (context, dispatch) {
+        return new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            dispatch(NavigateToAction.replace(redirectBackRoute));
+          },
+        );
+      },
     );
   }
 
