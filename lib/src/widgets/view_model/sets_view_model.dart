@@ -10,9 +10,19 @@ class SetsViewModel {
 
   SetsViewModel({this.removeSet, this.sets});
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is SetsViewModel && this.sets == other.sets;
+  }
+
   static SetsViewModel fromStore(Store<AppState> store) {
     return SetsViewModel(
-        sets: store.state.sets,
-        removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)));
+      sets: store.state.sets,
+      removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
+    );
   }
+
+  @override
+  int get hashCode => sets.hashCode;
 }

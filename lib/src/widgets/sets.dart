@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/request_add_set_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/widgets/app_layout.dart';
+import 'package:vockify/src/widgets/view_model/add_set_modal_view_model.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
 class SetsWidget extends StatelessWidget {
   final setNameController = TextEditingController();
 
-  Future<void> _openAddModal(BuildContext context) async {
+  Future<void> _openAddSetModal(BuildContext context) async {
     await showDialog(
         context: context,
-        child:
-            StoreConnector<AppState, void Function(String)>(converter: (store) {
-          return (String name) => store.dispatch(RequestAddSetAction(name));
-        }, builder: (context, addSet) {
+        child: StoreConnector<AppState, AddSetModalViewModel>(converter: (store) {
+          return AddSetModalViewModel.fromStore(store);
+        }, builder: (context, viewModel) {
           return AlertDialog(
             contentPadding: const EdgeInsets.all(16.0),
             content: Row(
@@ -23,25 +23,27 @@ class SetsWidget extends StatelessWidget {
                   child: TextField(
                     controller: setNameController,
                     autofocus: true,
-                    decoration: InputDecoration(
-                        labelText: 'Set name', hintText: 'eg. Common words'),
+                    decoration: InputDecoration(labelText: 'Set name', hintText: 'eg. Common words'),
                   ),
                 )
               ],
             ),
             actions: <Widget>[
               FlatButton(
-                  child: const Text('CANCEL'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
+                child: const Text('CANCEL'),
+                onPressed: () {
+                  viewModel.close();
+                },
+              ),
               FlatButton(
-                  child: const Text('ADD'),
-                  onPressed: () {
-                    addSet(setNameController.text);
-                    Navigator.pop(context);
-                    setNameController.clear();
-                  })
+                child: const Text('ADD'),
+                onPressed: () {
+                  viewModel.requestAddSet(setNameController.text);
+                  viewModel.close();
+
+                  setNameController.clear();
+                },
+              ),
             ],
           );
         }));
@@ -49,34 +51,36 @@ class SetsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sets'),
-      ),
+    return AppLayoutWidget(
+      title: 'Sets',
       body: Center(
         child: StoreConnector<AppState, SetsViewModel>(
           onInit: (store) {
             store.dispatch(RequestSetsAction());
           },
+          distinct: true,
           converter: (store) {
             return SetsViewModel.fromStore(store);
           },
-          builder: (context, vm) {
+          builder: (context, viewModel) {
             return ListView.builder(
               padding: const EdgeInsets.all(10),
-              itemCount: vm.sets.length,
+              itemCount: viewModel.sets.length,
               itemBuilder: (BuildContext context, int index) {
+                final set = viewModel.sets[index];
+
                 return Dismissible(
-                    key: UniqueKey(),
-                    child: Container(
-                      height: 50,
-                      color: Colors.amber,
-                      child: Center(child: Text(vm.sets[index].name)),
-                    ),
-                    background: Container(color: Colors.red),
-                    onDismissed: (direction) {
-                      vm.removeSet(vm.sets[index].id);
-                    });
+                  key: Key(set.id.toString()),
+                  child: Container(
+                    height: 50,
+                    color: Colors.amber,
+                    child: Center(child: Text(set.name)),
+                  ),
+                  background: Container(color: Colors.red),
+                  onDismissed: (direction) {
+                    viewModel.removeSet(set.id);
+                  },
+                );
               },
             );
           },
@@ -84,7 +88,7 @@ class SetsWidget extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _openAddModal(context);
+          await _openAddSetModal(context);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,

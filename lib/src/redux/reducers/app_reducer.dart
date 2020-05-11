@@ -3,6 +3,7 @@ import 'package:vockify/src/redux/actions/add_set_action.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
 import 'package:vockify/src/redux/actions/remove_set_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
+import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
@@ -14,6 +15,7 @@ class AppReducer {
       TypedReducer(_authorizeReducer),
       TypedReducer(_unauthorizeReducer),
       TypedReducer(_setSetsReducer),
+      TypedReducer(_setUserReducer),
       TypedReducer(_addSetReducer),
       TypedReducer(_removeSetReducer),
     ]);
@@ -31,6 +33,10 @@ class AppReducer {
 
   AppState _setSetsReducer(AppState state, SetSetsAction action) {
     return state.rebuild((builder) => builder.sets.replace(action.payload));
+  }
+
+  AppState _setUserReducer(AppState state, SetUserAction action) {
+    return state.rebuild((builder) => builder.user.replace(action.payload));
   }
 
   AppState _addSetReducer(AppState state, AddSetAction action) {

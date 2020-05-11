@@ -11,16 +11,21 @@ class _$AppState extends AppState {
   final bool isAuthorized;
   @override
   final BuiltList<SetState> sets;
+  @override
+  final UserState user;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.isAuthorized, this.sets}) : super._() {
+  _$AppState._({this.isAuthorized, this.sets, this.user}) : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
     }
     if (sets == null) {
       throw new BuiltValueNullFieldError('AppState', 'sets');
+    }
+    if (user == null) {
+      throw new BuiltValueNullFieldError('AppState', 'user');
     }
   }
 
@@ -36,19 +41,22 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         isAuthorized == other.isAuthorized &&
-        sets == other.sets;
+        sets == other.sets &&
+        user == other.user;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, isAuthorized.hashCode), sets.hashCode));
+    return $jf(
+        $jc($jc($jc(0, isAuthorized.hashCode), sets.hashCode), user.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('isAuthorized', isAuthorized)
-          ..add('sets', sets))
+          ..add('sets', sets)
+          ..add('user', user))
         .toString();
   }
 }
@@ -65,12 +73,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._sets ??= new ListBuilder<SetState>();
   set sets(ListBuilder<SetState> sets) => _$this._sets = sets;
 
+  UserStateBuilder _user;
+  UserStateBuilder get user => _$this._user ??= new UserStateBuilder();
+  set user(UserStateBuilder user) => _$this._user = user;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
       _sets = _$v.sets?.toBuilder();
+      _user = _$v.user?.toBuilder();
       _$v = null;
     }
     return this;
@@ -94,12 +107,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     _$AppState _$result;
     try {
       _$result = _$v ??
-          new _$AppState._(isAuthorized: isAuthorized, sets: sets.build());
+          new _$AppState._(
+              isAuthorized: isAuthorized,
+              sets: sets.build(),
+              user: user.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'sets';
         sets.build();
+        _$failedField = 'user';
+        user.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

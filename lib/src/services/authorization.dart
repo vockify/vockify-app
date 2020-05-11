@@ -12,9 +12,13 @@ class Authorization {
 
     final token = Uri.parse(result).queryParameters['token'];
 
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
+    if (token != null && token != '') {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
 
-    return true;
+      return true;
+    }
+
+    return false;
   }
 }
