@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/api/dto/set_response.dart';
 import 'package:vockify/src/api/dto/sets_response.dart';
-import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 
@@ -23,18 +23,9 @@ class AppApi {
 
   AppApi(this.store);
 
-  Future<SetsResponse> getSets() async {
-    final data = await _get('/sets');
-    return SetsResponse.fromJson(data);
-  }
-
   Future<SetResponse> addSet(SetDto requestData) async {
     final data = await _post('/sets/', requestData.toJson());
     return SetResponse.fromJson(data);
-  }
-
-  Future<void> deleteSet(int id) async {
-    await _delete('/sets/$id');
   }
 
   Future<AuthUserResponse> authUser() async {
@@ -42,24 +33,13 @@ class AppApi {
     return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
-  Future<Map<String, dynamic>> _get(String url) async {
-    final response = await http.get(
-      '$apiUrl$url',
-      headers: await _getHeaders(),
-    );
-
-    return _processResponse(response);
+  Future<void> deleteSet(int id) async {
+    await _delete('/sets/$id');
   }
 
-  Future<Map<String, dynamic>> _post(String url, dynamic body) async {
-    final headers = await _getHeaders();
-    final response = await http.post(
-      '$apiUrl$url',
-      body: jsonEncode(body),
-      headers: headers,
-    );
-
-    return _processResponse(response);
+  Future<SetsResponse> getSets() async {
+    final data = await _get('/sets');
+    return SetsResponse.fromJson(data);
   }
 
   Future<Map<String, dynamic>> _delete(String url) async {
@@ -73,6 +53,21 @@ class AppApi {
     return _processResponse(response);
   }
 
+  Future<Map<String, dynamic>> _get(String url) async {
+    final headers = await _getHeaders();
+
+    try {
+      final response = await http.get(
+        '$apiUrl$url',
+        headers: headers,
+      );
+      return _processResponse(response);
+    } on http.ClientException catch (e) {
+      store.dispatch(UnauthorizeAction());
+      rethrow;
+    }
+  }
+
   Future<Map<String, String>> _getHeaders() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token') ?? '';
@@ -81,6 +76,17 @@ class AppApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',
     };
+  }
+
+  Future<Map<String, dynamic>> _post(String url, dynamic body) async {
+    final headers = await _getHeaders();
+    final response = await http.post(
+      '$apiUrl$url',
+      body: jsonEncode(body),
+      headers: headers,
+    );
+
+    return _processResponse(response);
   }
 
   Map<String, dynamic> _processResponse(http.Response response) {

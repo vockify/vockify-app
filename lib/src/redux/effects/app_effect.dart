@@ -78,8 +78,6 @@ class AppEffect {
 
         print(e);
       }
-
-
     });
   }
 
@@ -120,11 +118,10 @@ class AppEffect {
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
+        yield NavigateToAction.replace('/sets');
       } catch (e) {
         print(e);
       }
-
-      yield NavigateToAction.replace('/sets');
     });
   }
 
