@@ -6,6 +6,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
+import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/sets.dart';
 import 'package:vockify/src/widgets/terms.dart';
 
@@ -38,6 +39,8 @@ class VockifyApp extends StatelessWidget {
         return _buildRoute(settings, AuthLayoutWidget(SetsWidget()));
       case TermsWidget.route:
         return _buildRoute(settings, AuthLayoutWidget(TermsWidget(settings.arguments)));
+      case QuizWidget.route:
+        return _buildRoute(settings, AuthLayoutWidget(QuizWidget()));
       default:
         return _buildRoute(settings, AppLoaderWidget());
     }

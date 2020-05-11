@@ -3,10 +3,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
+import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
 
 class QuizWidget extends StatefulWidget {
+  static const String route = '/quiz';
+
   @override
   State<StatefulWidget> createState() => _QuizState();
 }
@@ -20,52 +23,73 @@ class _QuizState extends State<QuizWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_step == null) {
+      return Container();
+    }
+
     return AppLayoutWidget(
       title: 'Quiz',
       body: StoreConnector<AppState, QuizStep>(
-          converter: (store) => QuizStep.mock(),
-          builder: (context, viewModel) {
-            return Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    height: 50,
-                    color: Colors.amber,
-                    child: Center(child: Text(_step.term)),
+        converter: (store) => QuizStep.mock(),
+        builder: (context, viewModel) {
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Card(
+                  color: Colors.white70,
+                  child: ListTile(
+                    title: Center(
+                      child: Text(_step.term),
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10),
+              ),
+              ListTile(
+                title: Center(
                   child: Text('Choose definition'),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(10),
-                    itemCount: _step.definitions.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final definition = _step.definitions[index];
+              ),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: _step.definitions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final definition = _step.definitions[index];
 
-                      return RaisedButton(
-                        onPressed: () => _selectDefinition(definition),
-                        color: _getDefinitionColor(definition),
-                        child: Center(child: Text(definition)),
-                      );
-                    },
+                    return Card(
+                      color: _getDefinitionColor(definition),
+                      child: ListTile(
+                        onTap: () {
+                          _selectDefinition(definition);
+                        },
+                        title: Center(child: Text(definition)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  '${_step.termIndex + 1} / ${_step.termsCount}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              LayoutButtonWrapperWidget(
+                child: FlatButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {},
+                  color: Colors.red,
+                  child: Text(
+                    'Stop',
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
-                ButtonBar(
-                  alignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: null,
-                      child: Text('Stop'),
-                    ),
-                  ],
-                )
-              ],
-            );
-          }),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -82,12 +106,12 @@ class _QuizState extends State<QuizWidget> {
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return Colors.green;
+      return Colors.lightGreen;
     } else if (definition == _selectedDefinition) {
-      return Colors.red;
+      return Colors.deepOrange;
     }
 
-    return Colors.grey;
+    return Colors.orangeAccent;
   }
 
   void _selectDefinition(String definition) {
