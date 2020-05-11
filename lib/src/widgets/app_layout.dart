@@ -9,13 +9,13 @@ class AppLayoutWidget extends StatelessWidget {
   final Widget floatingActionButton;
   final String redirectBackRoute;
 
-  const AppLayoutWidget(
-      {Key key,
-      this.title,
-      this.body,
-      this.floatingActionButton,
-      this.redirectBackRoute})
-      : super(key: key);
+  const AppLayoutWidget({
+    Key key,
+    this.title,
+    this.body,
+    this.floatingActionButton,
+    this.redirectBackRoute,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

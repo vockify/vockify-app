@@ -67,14 +67,14 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final user = await api.authUser();
-        yield SetUserAction(UserState.fromDto(user.data));
-
         final isAuthorized = await Authorization.authorize();
 
         if (isAuthorized) {
           yield AuthorizeAction();
           yield NavigateToAction.replace('/sets');
+
+          final user = await api.authUser();
+          yield SetUserAction(UserState.fromDto(user.data));
         }
       } catch (e) {
         yield NavigateToAction.replace('/login');

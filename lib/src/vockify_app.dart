@@ -37,7 +37,7 @@ class VockifyApp extends StatelessWidget {
       case SetsWidget.route:
         return _buildRoute(settings, AuthLayoutWidget(SetsWidget()));
       case TermsWidget.route:
-        return _buildRoute(settings, AuthLayoutWidget(TermsWidget(0)));
+        return _buildRoute(settings, AuthLayoutWidget(TermsWidget(settings.arguments)));
       default:
         return _buildRoute(settings, AppLoaderWidget());
     }
