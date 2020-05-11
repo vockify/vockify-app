@@ -29,7 +29,13 @@ void main() async {
     initialState: AppState((builder) {
       builder
         ..isAuthorized = isAuthorized
-        ..sets.replace([]);
+        ..sets.replace([])
+        ..user.update((builder) {
+          builder
+            ..email = ''
+            ..firstName = ''
+            ..lastName = '';
+        });
     }),
   );
 

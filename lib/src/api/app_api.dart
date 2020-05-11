@@ -37,7 +37,7 @@ class AppApi {
     await _delete('/sets/$id');
   }
 
-  Future<void> authUser() async {
+  Future<AuthUserResponse> authUser() async {
     final data = await _get('/auth/user');
     return data == null ? null : AuthUserResponse.fromJson(data);
   }

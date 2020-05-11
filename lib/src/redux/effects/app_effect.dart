@@ -14,8 +14,10 @@ import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
+import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/user_state.dart';
 import 'package:vockify/src/services/authorization.dart';
 
 class AppEffect {
@@ -61,12 +63,23 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      final isAuthorized = await Authorization.authorize();
+      try {
+        final user = await api.authUser();
+        yield SetUserAction(UserState.fromDto(user.data));
 
-      if (isAuthorized) {
-        yield AuthorizeAction();
-        yield NavigateToAction.replace('/sets');
+        final isAuthorized = await Authorization.authorize();
+
+        if (isAuthorized) {
+          yield AuthorizeAction();
+          yield NavigateToAction.replace('/sets');
+        }
+      } catch (e) {
+        yield NavigateToAction.replace('/login');
+
+        print(e);
       }
+
+
     });
   }
 
@@ -104,6 +117,13 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
+      try {
+        final user = await api.authUser();
+        yield SetUserAction(UserState.fromDto(user.data));
+      } catch (e) {
+        print(e);
+      }
+
       yield NavigateToAction.replace('/sets');
     });
   }

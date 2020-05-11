@@ -18,12 +18,6 @@ class VockifyApp extends StatelessWidget {
     return StoreProvider(
       store: store,
       child: MaterialApp(
-//        initialRoute: '/',
-//        routes: {
-//          '/sets': (context) => AuthLayoutWidget(SetsWidget()),
-//          '/': (context) => AppLoaderWidget(store: store),
-//          '/': (context) => LoginWidget(),
-//        },
         navigatorKey: NavigatorHolder.navigatorKey,
         onGenerateRoute: _getRoute,
         title: 'Vockify',

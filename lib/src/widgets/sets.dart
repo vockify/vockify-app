@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/view_model/add_set_modal_view_model.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
@@ -50,10 +51,8 @@ class SetsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sets'),
-      ),
+    return AppLayoutWidget(
+      title: 'Sets',
       body: Center(
         child: StoreConnector<AppState, SetsViewModel>(
           onInit: (store) {

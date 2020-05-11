@@ -8,6 +8,8 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
   SetState._();
 
   int get id;
+
   String get name;
+
   String get icon;
 }
