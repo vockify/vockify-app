@@ -1,24 +1,33 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_html/html.dart';
+import 'package:vockify/src/services/app_storage.dart';
 
 class Authorization {
+  static const String _url = 'https://vockify.website/api/auth/google';
+
   static Future<bool> authorize() async {
-    final result = await FlutterWebAuth.authenticate(
-      url: "https://vockify.website/api/auth/google",
-      callbackUrlScheme: "vockify",
-    );
+    if (kIsWeb) {
+      window.location.href = _url;
+      return false;
+    } else {
+      final result = await FlutterWebAuth.authenticate(
+        url: "$_url?type=app",
+        callbackUrlScheme: "vockify",
+      );
 
-    final token = Uri.parse(result).queryParameters['token'];
+      final token = Uri.parse(result).queryParameters['token'];
 
-    if (token != null && token != '') {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', token);
+      if (token != null && token != '') {
+        final storage = AppStorage.getInstance();
+        await storage.setValue('token', token);
 
-      return true;
+        return true;
+      }
+
+      return false;
     }
-
-    return false;
   }
 }

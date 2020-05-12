@@ -10,6 +10,7 @@ import 'package:vockify/src/api/dto/sets_response.dart';
 import 'package:vockify/src/api/dto/terms_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
+import 'package:vockify/src/services/app_storage.dart';
 
 AppApi api;
 
@@ -75,8 +76,8 @@ class AppApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+    final storage = AppStorage.getInstance();
+    final token = await storage.getValue('token') ?? '';
 
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

@@ -20,6 +20,7 @@ import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
+import 'package:vockify/src/services/app_storage.dart';
 import 'package:vockify/src/services/authorization.dart';
 
 class AppEffect {
@@ -147,8 +148,8 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((event) async* {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.remove('token');
+      final storage = AppStorage.getInstance();
+      await storage.remove('token');
     });
   }
 }
