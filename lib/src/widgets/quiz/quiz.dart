@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
@@ -6,6 +8,7 @@ import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
+import 'package:vockify/src/widgets/sets.dart';
 
 class QuizWidget extends StatefulWidget {
   static const String route = '/quiz';
@@ -20,11 +23,24 @@ class _QuizState extends State<QuizWidget> {
   QuizStep _step;
   String _correctDefinition;
   String _selectedDefinition;
+  Timer _selectDefinitionTimer;
+
+  @override
+  void didUpdateWidget(QuizWidget oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
     if (_step == null) {
-      return Container();
+      return AppLayoutWidget(
+        title: 'Quiz',
+        body: Center(
+          child: Text('Add a terms before start quiz'),
+        ),
+        redirectBackRoute: SetsWidget.route,
+      );
     }
 
     return AppLayoutWidget(
@@ -78,7 +94,7 @@ class _QuizState extends State<QuizWidget> {
               LayoutButtonWrapperWidget(
                 child: FlatButton(
                   padding: EdgeInsets.all(0),
-                  onPressed: () {},
+                  onPressed: _stop,
                   color: Colors.red,
                   child: Text(
                     'Stop',
@@ -100,7 +116,6 @@ class _QuizState extends State<QuizWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     _controller.start(store.state.terms.toList());
-
     _step = _controller.getStep();
   }
 
@@ -115,6 +130,10 @@ class _QuizState extends State<QuizWidget> {
   }
 
   void _selectDefinition(String definition) {
+    if (_selectDefinitionTimer?.isActive ?? false) {
+      return;
+    }
+
     final correctDefinition = _controller.getCorrectDefinition();
 
     setState(() {
@@ -122,7 +141,8 @@ class _QuizState extends State<QuizWidget> {
       _selectedDefinition = definition;
     });
 
-    Future.delayed(Duration(seconds: 1), () {
+    _selectDefinitionTimer?.cancel();
+    _selectDefinitionTimer = Timer(Duration(seconds: 1), () {
       _controller.next();
       final step = _controller.getStep();
 
@@ -137,5 +157,11 @@ class _QuizState extends State<QuizWidget> {
         store.dispatch(NavigateToAction.replace('/sets'));
       }
     });
+  }
+
+  void _stop() {
+    _selectDefinitionTimer?.cancel();
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(NavigateToAction.replace('/sets'));
   }
 }
