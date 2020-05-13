@@ -11,7 +11,10 @@ class TermDto {
 
   final String definition;
 
-  TermDto(this.id, this.name, this.definition);
+  @JsonKey(name: 'set_id')
+  final int setId;
+
+  TermDto(this.id, this.name, this.definition, this.setId);
 
   factory TermDto.fromJson(Map<String, dynamic> json) => _$TermDtoFromJson(json);
 
@@ -21,6 +24,7 @@ class TermDto {
     builder
       ..definition = definition
       ..name = name
-      ..id = id;
+      ..id = id
+      ..setId = setId;
   });
 }
