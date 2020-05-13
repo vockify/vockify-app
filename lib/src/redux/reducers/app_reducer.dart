@@ -1,7 +1,9 @@
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/add_set_action.dart';
+import 'package:vockify/src/redux/actions/add_term_action.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
 import 'package:vockify/src/redux/actions/remove_set_action.dart';
+import 'package:vockify/src/redux/actions/remove_term_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
@@ -25,6 +27,8 @@ class AppReducer {
 
       // terms
       TypedReducer(_setTermsReducer),
+      TypedReducer(_addTermReducer),
+      TypedReducer(_removeTermReducer),
     ]);
   }
 
@@ -60,5 +64,14 @@ class AppReducer {
   // terms
   AppState _setTermsReducer(AppState state, SetTermsAction action) {
     return state.rebuild((builder) => builder.terms.replace(action.payload));
+  }
+
+  AppState _addTermReducer(AppState state, AddTermAction action) {
+    return state.rebuild((builder) => builder.terms.insert(0, action.payload));
+  }
+
+  AppState _removeTermReducer(AppState state, RemoveTermAction action) {
+    return state.rebuild((builder) =>
+        builder.terms.removeWhere((element) => element.id == action.payload));
   }
 }

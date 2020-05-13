@@ -11,6 +11,7 @@ TermDto _$TermDtoFromJson(Map<String, dynamic> json) {
     json['id'] as int,
     json['name'] as String,
     json['definition'] as String,
+    json['set_id'] as int,
   );
 }
 
@@ -18,4 +19,5 @@ Map<String, dynamic> _$TermDtoToJson(TermDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'definition': instance.definition,
+      'set_id': instance.setId,
     };

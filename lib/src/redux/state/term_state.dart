@@ -12,4 +12,6 @@ abstract class TermState implements Built<TermState, TermStateBuilder> {
   String get name;
 
   String get definition;
+
+  int get setId;
 }

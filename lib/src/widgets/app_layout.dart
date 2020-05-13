@@ -8,6 +8,7 @@ class AppLayoutWidget extends StatelessWidget {
   final Widget body;
   final Widget floatingActionButton;
   final String redirectBackRoute;
+  final Object redirectBackArguments;
 
   const AppLayoutWidget({
     Key key,
@@ -15,6 +16,7 @@ class AppLayoutWidget extends StatelessWidget {
     this.body,
     this.floatingActionButton,
     this.redirectBackRoute,
+    this.redirectBackArguments,
   }) : super(key: key);
 
   @override
@@ -49,7 +51,7 @@ class AppLayoutWidget extends StatelessWidget {
         return new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            dispatch(NavigateToAction.replace(redirectBackRoute));
+            dispatch(NavigateToAction.replace(redirectBackRoute, arguments: redirectBackArguments));
           },
         );
       },

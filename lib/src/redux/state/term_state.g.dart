@@ -13,11 +13,13 @@ class _$TermState extends TermState {
   final String name;
   @override
   final String definition;
+  @override
+  final int setId;
 
   factory _$TermState([void Function(TermStateBuilder) updates]) =>
       (new TermStateBuilder()..update(updates)).build();
 
-  _$TermState._({this.id, this.name, this.definition}) : super._() {
+  _$TermState._({this.id, this.name, this.definition, this.setId}) : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('TermState', 'id');
     }
@@ -26,6 +28,9 @@ class _$TermState extends TermState {
     }
     if (definition == null) {
       throw new BuiltValueNullFieldError('TermState', 'definition');
+    }
+    if (setId == null) {
+      throw new BuiltValueNullFieldError('TermState', 'setId');
     }
   }
 
@@ -42,13 +47,15 @@ class _$TermState extends TermState {
     return other is TermState &&
         id == other.id &&
         name == other.name &&
-        definition == other.definition;
+        definition == other.definition &&
+        setId == other.setId;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, id.hashCode), name.hashCode), definition.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, id.hashCode), name.hashCode), definition.hashCode),
+        setId.hashCode));
   }
 
   @override
@@ -56,7 +63,8 @@ class _$TermState extends TermState {
     return (newBuiltValueToStringHelper('TermState')
           ..add('id', id)
           ..add('name', name)
-          ..add('definition', definition))
+          ..add('definition', definition)
+          ..add('setId', setId))
         .toString();
   }
 }
@@ -76,6 +84,10 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   String get definition => _$this._definition;
   set definition(String definition) => _$this._definition = definition;
 
+  int _setId;
+  int get setId => _$this._setId;
+  set setId(int setId) => _$this._setId = setId;
+
   TermStateBuilder();
 
   TermStateBuilder get _$this {
@@ -83,6 +95,7 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _definition = _$v.definition;
+      _setId = _$v.setId;
       _$v = null;
     }
     return this;
@@ -103,8 +116,9 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
 
   @override
   _$TermState build() {
-    final _$result =
-        _$v ?? new _$TermState._(id: id, name: name, definition: definition);
+    final _$result = _$v ??
+        new _$TermState._(
+            id: id, name: name, definition: definition, setId: setId);
     replace(_$result);
     return _$result;
   }

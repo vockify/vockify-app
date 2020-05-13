@@ -5,7 +5,9 @@ import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
+import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/sets.dart';
+import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/widgets/view_model/terms_view_model.dart';
 
 class TermsWidget extends StatelessWidget {
@@ -39,12 +41,22 @@ class TermsWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     itemCount: viewModel.terms.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final set = viewModel.terms[index];
+                      final term = viewModel.terms[index];
 
-                      return Card(
-                        child: ListTile(
-                          title: Text(set.name),
+                      return Dismissible(
+                        key: Key(term.id.toString()),
+                        child: Card(
+                          child: ListTile(
+                            onTap: () {
+                              viewModel.navigateToTerm(term.setId);
+                            },
+                            title: Text('${term.name} / ${term.definition}'),
+                          ),
                         ),
+                        background: Container(color: Colors.red),
+                        onDismissed: (direction) {
+                          viewModel.removeTerm(term.id);
+                        },
                       );
                     },
                   ),
@@ -52,7 +64,8 @@ class TermsWidget extends StatelessWidget {
                 LayoutButtonWrapperWidget(
                   child: RaisedButton(
                     color: Colors.blueAccent,
-                    onPressed: () => store.dispatch(NavigateToAction.replace('/quiz')),
+                    onPressed: () => store
+                        .dispatch(NavigateToAction.replace(QuizWidget.route)),
                     child: Text('Quiz'),
                   ),
                 )
@@ -60,6 +73,14 @@ class TermsWidget extends StatelessWidget {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          store.dispatch(
+              NavigateToAction.replace(TermWidget.route, arguments: setId));
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
     );
   }
