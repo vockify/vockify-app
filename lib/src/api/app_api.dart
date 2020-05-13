@@ -6,7 +6,11 @@ import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/api/dto/set_response.dart';
 import 'package:vockify/src/api/dto/sets_response.dart';
+import 'package:vockify/src/api/dto/term_dto.dart';
+import 'package:vockify/src/api/dto/term_response.dart';
 import 'package:vockify/src/api/dto/terms_response.dart';
+import 'package:vockify/src/api/dto/translate_request_dto.dart';
+import 'package:vockify/src/api/dto/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/services/app_storage.dart';
@@ -46,6 +50,20 @@ class AppApi {
   Future<TermsResponse> getSetTerms(int setId) async {
     final data = await _get('/sets/$setId/terms');
     return TermsResponse.fromJson(data);
+  }
+
+  Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {
+    final data = await _post('/translate/', requestDto);
+    return TranslateResponse.fromJson(data);
+  }
+
+  Future<TermResponse> addTerm(TermDto requestData) async {
+    final data = await _post('/terms/', requestData.toJson());
+    return TermResponse.fromJson(data);
+  }
+
+  Future<void> deleteTerm(int id) async {
+    await _delete('/terms/$id');
   }
 
   Future<Map<String, dynamic>> _delete(String url) async {
