@@ -37,9 +37,9 @@ class AppLayoutWidget extends StatelessWidget {
     );
   }
 
-  StoreConnector<AppState, Function> _goBackArrow() {
+  Widget _goBackArrow() {
     if (redirectBackRoute == null) {
-      return null;
+      return Container();
     }
 
     return StoreConnector<AppState, Function>(

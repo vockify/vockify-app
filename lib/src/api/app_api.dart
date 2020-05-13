@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/api/dto/set_response.dart';
@@ -31,21 +30,21 @@ class AppApi {
   }
 
   Future<AuthUserResponse> authUser() async {
-    final data = await _get('/auth/user');
+    final data = await _get('/auth/user/');
     return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
   Future<void> deleteSet(int id) async {
-    await _delete('/sets/$id');
+    await _delete('/sets/$id/');
   }
 
   Future<SetsResponse> getSets() async {
-    final data = await _get('/sets');
+    final data = await _get('/sets/');
     return SetsResponse.fromJson(data);
   }
 
   Future<TermsResponse> getSetTerms(int setId) async {
-    final data = await _get('/sets/$setId/terms');
+    final data = await _get('/sets/$setId/terms/');
     return TermsResponse.fromJson(data);
   }
 
