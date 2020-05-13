@@ -30,12 +30,12 @@ class AppApi {
   }
 
   Future<AuthUserResponse> authUser() async {
-    final data = await _get('/auth/user/');
+    final data = await _get('/auth/user');
     return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
   Future<void> deleteSet(int id) async {
-    await _delete('/sets/$id/');
+    await _delete('/sets/$id');
   }
 
   Future<SetsResponse> getSets() async {
@@ -44,7 +44,7 @@ class AppApi {
   }
 
   Future<TermsResponse> getSetTerms(int setId) async {
-    final data = await _get('/sets/$setId/terms/');
+    final data = await _get('/sets/$setId/terms');
     return TermsResponse.fromJson(data);
   }
 
