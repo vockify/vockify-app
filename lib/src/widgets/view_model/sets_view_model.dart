@@ -21,9 +21,10 @@ class SetsViewModel {
 
   static SetsViewModel fromStore(Store<AppState> store) {
     return SetsViewModel(
-        sets: store.state.sets,
-        removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-        navigateToTerms: (int setId) => store.dispatch(NavigateToAction.replace(TermsWidget.route, arguments: setId)));
+      sets: store.state.sets,
+      removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
+      navigateToTerms: (int setId) => store.dispatch(NavigateToAction.push(TermsWidget.route, arguments: setId)),
+    );
   }
 
   @override

@@ -1,7 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vockify/src/services/app_storage/app_storage_interface.dart';
+import 'package:vockify/src/services/app_storage/app_storage.dart';
 
-class AppNativeStorage extends AppStorageInterface {
+AppStorage getAppStorage() => MobileStorage();
+
+class MobileStorage extends AppStorage {
   @override
   Future<bool> containsKey(String key) async {
     final prefs = await SharedPreferences.getInstance();

@@ -21,10 +21,9 @@ class TermsViewModel {
 
   static TermsViewModel fromStore(Store<AppState> store) {
     return TermsViewModel(
-        terms: store.state.terms,
-        removeTerm: (int termId) => store.dispatch(RemoveTermAction(termId)),
-        navigateToTerm: (int setId) => store.dispatch(
-            NavigateToAction.replace(TermWidget.route, arguments: setId))
+      terms: store.state.terms,
+      removeTerm: (int termId) => store.dispatch(RemoveTermAction(termId)),
+      navigateToTerm: (int setId) => store.dispatch(NavigateToAction.push(TermWidget.route, arguments: setId)),
     );
   }
 

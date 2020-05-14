@@ -26,12 +26,6 @@ class _QuizState extends State<QuizWidget> {
   Timer _selectDefinitionTimer;
 
   @override
-  void didUpdateWidget(QuizWidget oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (_step == null) {
       return AppLayoutWidget(
@@ -154,7 +148,7 @@ class _QuizState extends State<QuizWidget> {
         });
       } else {
         final store = StoreProvider.of<AppState>(context);
-        store.dispatch(NavigateToAction.replace('/sets'));
+        store.dispatch(NavigateToAction.pop());
       }
     });
   }
@@ -162,6 +156,6 @@ class _QuizState extends State<QuizWidget> {
   void _stop() {
     _selectDefinitionTimer?.cancel();
     final store = StoreProvider.of<AppState>(context);
-    store.dispatch(NavigateToAction.replace('/sets'));
+    store.dispatch(NavigateToAction.pop());
   }
 }

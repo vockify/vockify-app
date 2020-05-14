@@ -13,7 +13,7 @@ import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/api/dto/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
-import 'package:vockify/src/services/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage.dart';
 
 AppApi api;
 

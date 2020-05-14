@@ -65,7 +65,7 @@ class TermsWidget extends StatelessWidget {
                   child: RaisedButton(
                     color: Colors.blueAccent,
                     onPressed: () => store
-                        .dispatch(NavigateToAction.replace(QuizWidget.route)),
+                        .dispatch(NavigateToAction.push(QuizWidget.route)),
                     child: Text('Quiz'),
                   ),
                 )

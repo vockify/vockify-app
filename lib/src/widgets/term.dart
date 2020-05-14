@@ -8,7 +8,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/terms.dart';
-import 'package:vockify/src/widgets/view_model/term_modal_view_model.dart';
+import 'package:vockify/src/widgets/view_model/term_view_model.dart';
 
 class TermWidget extends StatefulWidget {
   static const String route = '/term';
@@ -95,7 +95,7 @@ class _TermState extends State<TermWidget> {
     );
   }
 
-  Widget _submitButton(TermModalViewModel viewModel) {
+  Widget _submitButton(TermViewModel viewModel) {
     return SizedBox(
       width: double.infinity,
       child: RaisedButton(
@@ -108,7 +108,7 @@ class _TermState extends State<TermWidget> {
               widget._definitionController.text,
               int.parse(selectedSet),
             ));
-            viewModel.close(int.parse(selectedSet));
+            viewModel.navigateBack(int.parse(selectedSet));
           }
         },
         child: Text('SAVE'),
@@ -123,10 +123,10 @@ class _TermState extends State<TermWidget> {
       redirectBackRoute: TermsWidget.route,
       redirectBackArguments: widget.setId,
       body: Center(
-        child: StoreConnector<AppState, TermModalViewModel>(
+        child: StoreConnector<AppState, TermViewModel>(
           distinct: true,
           converter: (store) {
-            return TermModalViewModel.fromStore(store);
+            return TermViewModel.fromStore(store);
           },
           builder: (context, viewModel) {
             return Padding(

@@ -23,8 +23,8 @@ import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
-import 'package:vockify/src/services/app_storage.dart';
-import 'package:vockify/src/services/authorization.dart';
+import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/authorization/authorization.dart';
 
 class AppEffect {
   Epic<AppState> getEffects() {
@@ -48,7 +48,9 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       if (action.name != '/login' && !store.state.isAuthorized) {
-        yield NavigateToAction.push('/login');
+        yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
+      } else if (action.name == '/login' && store.state.isAuthorized) {
+        yield NavigateToAction.pushNamedAndRemoveUntil('/sets', (route) => false);
       }
     });
   }
@@ -73,17 +75,12 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final isAuthorized = await Authorization.authorize();
-
-        if (isAuthorized) {
-          yield AuthorizeAction();
-          yield NavigateToAction.replace('/sets');
-
-          final user = await api.authUser();
-          yield SetUserAction(UserState.fromDto(user.data));
-        }
+        final authorization = Authorization.getInstance();
+        await authorization.authenticate();
+        yield AuthorizeAction();
+        yield RequestDataAction();
       } catch (e) {
-        yield NavigateToAction.replace('/login');
+        yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
 
         print(e);
       }
@@ -170,7 +167,7 @@ class AppEffect {
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
-        yield NavigateToAction.replace('/sets');
+        yield NavigateToAction.pushNamedAndRemoveUntil('/sets', (route) => false);
       } catch (e) {
         print(e);
       }
@@ -184,6 +181,8 @@ class AppEffect {
     return actions.asyncExpand((event) async* {
       final storage = AppStorage.getInstance();
       await storage.remove('token');
+
+      yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
     });
   }
 }

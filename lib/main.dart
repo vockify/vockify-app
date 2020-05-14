@@ -6,7 +6,7 @@ import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/services/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/vockify_app.dart';
 
 void main() async {

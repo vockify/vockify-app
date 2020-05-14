@@ -7,17 +7,17 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/widgets/terms.dart';
 
-class TermModalViewModel {
+class TermViewModel {
   final BuiltList<SetState> sets;
   final Function(TermDto) requestAddTerm;
-  final Function(int) close;
+  final Function(int) navigateBack;
 
-  TermModalViewModel({this.requestAddTerm, this.close, this.sets});
+  TermViewModel({this.requestAddTerm, this.navigateBack, this.sets});
 
-  static TermModalViewModel fromStore(Store<AppState> store) {
-    return TermModalViewModel(
+  static TermViewModel fromStore(Store<AppState> store) {
+    return TermViewModel(
       sets: store.state.sets,
-      close: (int setId) => store.dispatch(NavigateToAction.replace(TermsWidget.route, arguments: setId)),
+      navigateBack: (int setId) => store.dispatch(NavigateToAction.pop()),
       requestAddTerm: (term) => store.dispatch(RequestAddTermAction(term)),
     );
   }
@@ -25,7 +25,7 @@ class TermModalViewModel {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TermModalViewModel && this.sets == other.sets;
+    return other is TermViewModel && this.sets == other.sets;
   }
 
   @override

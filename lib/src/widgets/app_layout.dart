@@ -24,7 +24,8 @@ class AppLayoutWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        leading: _goBackArrow(),
+        leading: _goBackArrow(context),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           StoreConnector<AppState, String>(
             converter: (store) => store.state.user.avatar,
@@ -39,9 +40,9 @@ class AppLayoutWidget extends StatelessWidget {
     );
   }
 
-  Widget _goBackArrow() {
+  Widget _goBackArrow(BuildContext context) {
     if (redirectBackRoute == null) {
-      return Container();
+      return null;
     }
 
     return StoreConnector<AppState, Function>(
@@ -51,7 +52,11 @@ class AppLayoutWidget extends StatelessWidget {
         return new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            dispatch(NavigateToAction.replace(redirectBackRoute, arguments: redirectBackArguments));
+            if (Navigator.of(context).canPop()) {
+              dispatch(NavigateToAction.pop());
+            } else {
+              dispatch(NavigateToAction.replace(redirectBackRoute, arguments: redirectBackArguments));
+            }
           },
         );
       },
