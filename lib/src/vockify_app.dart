@@ -36,7 +36,7 @@ class VockifyApp extends StatelessWidget {
   }
 
   List<Route> _getInitialRoutes(String route) {
-    if (route == '/login') {
+    if (route == '/login' || route == '/') {
       return [_buildRoute(RouteSettings(name: '/'), AppLoaderWidget())];
     }
 
