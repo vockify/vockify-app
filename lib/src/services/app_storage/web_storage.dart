@@ -30,7 +30,7 @@ class WebStorage extends AppStorage {
 
   @override
   Future<void> remove(String key) async {
-    html.window.document.cookie = '$key=';
+//    html.window.document.cookie = '$key=';
   }
 
   @override
