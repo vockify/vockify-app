@@ -4,13 +4,15 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
-import 'package:vockify/src/widgets/sets.dart';
+//import 'package:vockify/src/widgets/sets.dart';
 import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/widgets/terms.dart';
+import 'package:vockify/src/widgets/test/sets.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -27,6 +29,7 @@ class VockifyApp extends StatelessWidget {
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
+          primaryColor: VockifyColors.carrotOrange,
           pageTransitionsTheme: pageTransitionsTheme,
           primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
