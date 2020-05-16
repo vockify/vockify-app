@@ -11,8 +11,9 @@ import 'package:vockify/src/widgets/login.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
 //import 'package:vockify/src/widgets/sets.dart';
 import 'package:vockify/src/widgets/term.dart';
-import 'package:vockify/src/widgets/terms.dart';
+//import 'package:vockify/src/widgets/terms.dart';
 import 'package:vockify/src/widgets/test/sets.dart';
+import 'package:vockify/src/widgets/test/terms.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -29,9 +30,10 @@ class VockifyApp extends StatelessWidget {
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
-          primaryColor: VockifyColors.carrotOrange,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: VockifyColors.primary),
+          primaryColor: VockifyColors.primary,
+          primarySwatch: VockifyColors.primary,
           pageTransitionsTheme: pageTransitionsTheme,
-          primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
       ),

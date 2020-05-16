@@ -40,7 +40,7 @@ class _QuizState extends State<QuizWidget> {
     return AppLayoutWidget(
       title: 'Quiz',
       body: StoreConnector<AppState, QuizStep>(
-        converter: (store) => QuizStep.mock(),
+        converter: (store) => null,
         builder: (context, viewModel) {
           return Column(
             children: <Widget>[

@@ -12,7 +12,22 @@ class SetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'Sets',
+      title: 'VOCKIFY',
+      actions: <Widget>[
+        RawMaterialButton(
+          constraints: BoxConstraints(
+            minWidth: 42,
+            minHeight: 42,
+          ),
+          onPressed: () {},
+          child: Icon(
+            Icons.add,
+            color: VockifyColors.white,
+          ),
+          padding: EdgeInsets.all(0),
+          shape: CircleBorder(),
+        ),
+      ],
       body: Center(
         child: StoreConnector<AppState, SetsViewModel>(
           onInit: (store) {
@@ -24,12 +39,13 @@ class SetsWidget extends StatelessWidget {
           },
           builder: (context, viewModel) {
             return ListView.builder(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               itemCount: viewModel.sets.length,
               itemBuilder: (BuildContext context, int index) {
                 final set = viewModel.sets[index];
 
                 return Card(
+                  margin: EdgeInsets.only(top: 16),
                   child: Column(
                     children: <Widget>[
                       GestureDetector(
@@ -37,7 +53,7 @@ class SetsWidget extends StatelessWidget {
                           viewModel.navigateToTerms(set.id);
                         },
                         child: SizedBox(
-                          height: 120,
+                          height: 80,
                           child: Stack(
                             children: <Widget>[
                               Positioned.fill(
@@ -64,7 +80,7 @@ class SetsWidget extends StatelessWidget {
                                       value: 'delete',
                                       child: Text(
                                         'Delete',
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(color: VockifyColors.flame),
                                       ),
                                     )
                                   ],
@@ -90,45 +106,45 @@ class SetsWidget extends StatelessWidget {
                           buttonAlignedDropdown: true,
                           overflowDirection: VerticalDirection.up,
                           children: <Widget>[
-                            FlatButton(
-                              color: Colors.white,
-                              child: Text('Learn'),
-                              onPressed: () => viewModel.navigateToQuiz(set.id),
-                              textColor: VockifyColors.prussianBlue,
-                            ),
-                            RawMaterialButton(
-                              onPressed: () {
-                                viewModel.navigateToTerm(set.id);
-                              },
-                              fillColor: VockifyColors.prussianBlue,
-                              child: Icon(
-                                Icons.add,
-                                color: VockifyColors.ghostWhite,
-                              ),
-                              padding: EdgeInsets.all(0),
-                              shape: CircleBorder(),
-                            ),
+                            FlatButton(onPressed: () => null, child: Text('START QUIZ'), textColor: VockifyColors.prussianBlue,),
+                            FlatButton(onPressed: () => null, child: Text('ADD TERM'), textColor: VockifyColors.fulvous,),
+//                            RawMaterialButton(
+//                              constraints: BoxConstraints(
+//                                minWidth: 32,
+//                                minHeight: 32,
+//                              ),
+//                              onPressed: () {
+//                                viewModel.navigateToQuiz(set.id);
+//                              },
+//                              child: Icon(
+//                                Icons.play_arrow,
+//                                color: VockifyColors.prussianBlue,
+//                                size: 32,
+//                              ),
+//                              padding: EdgeInsets.all(0),
+//                              shape: CircleBorder(),
+//                            ),
+//                            RawMaterialButton(
+//                              constraints: BoxConstraints(
+//                                minWidth: 32,
+//                                minHeight: 32,
+//                              ),
+//                              onPressed: () {
+//                                viewModel.navigateToTerm(set.id);
+//                              },
+//                              child: Icon(
+//                                Icons.add,
+//                                color: VockifyColors.carrotOrange,
+//                                size: 32,
+//                              ),
+//                              padding: EdgeInsets.all(0),
+//                              shape: CircleBorder(),
+//                            ),
                           ],
                         ),
                       )
                     ],
                   ),
-                );
-
-                return Dismissible(
-                  key: Key(set.id.toString()),
-                  child: Card(
-                    child: ListTile(
-                      onTap: () {
-                        viewModel.navigateToTerms(set.id);
-                      },
-                      title: Text(set.name),
-                    ),
-                  ),
-                  background: Container(color: Colors.red),
-                  onDismissed: (direction) {
-                    viewModel.removeSet(set.id);
-                  },
                 );
               },
             );
