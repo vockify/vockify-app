@@ -29,6 +29,7 @@ void main() async {
     initialState: AppState((builder) {
       builder
         ..isAuthorized = isAuthorized
+        ..isLoading = false
         ..sets.replace([])
         ..terms.replace([])
         ..user.update((builder) {

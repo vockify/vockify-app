@@ -13,6 +13,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isAuthorized;
 
+  bool get isLoading;
+
   BuiltList<SetState> get sets;
 
   BuiltList<TermState> get terms;
