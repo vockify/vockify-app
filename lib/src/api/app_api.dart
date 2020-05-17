@@ -33,6 +33,11 @@ class AppApi {
     return SetResponse.fromJson(data);
   }
 
+  Future<SetResponse> updateSet(int id, SetDto requestData) async {
+    final data = await _put('/sets/$id', requestData.toJson());
+    return SetResponse.fromJson(data);
+  }
+
   Future<AuthUserResponse> authUser() async {
     final data = await _get('/auth/user');
     return data == null ? null : AuthUserResponse.fromJson(data);

@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/remove_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 
 class TermsViewModel {
@@ -33,12 +34,13 @@ class TermsViewModel {
     return TermsViewModel(
       isLoading: store.state.isLoading,
       terms: store.state.terms,
-      navigateToTerm: (String setId, termId) => store.dispatch(
-        NavigateToAction.push(Routes.term, arguments: {
+      navigateToTerm: (String setId, termId) {
+        final url = Router.routeToPath(Routes.term, {
           "setId": setId,
           "termId": termId,
-        }),
-      ),
+        });
+        store.dispatch(NavigateToAction.push(url));
+      },
       removeTerm: (int termId) => store.dispatch(RemoveTermAction(termId)),
     );
   }

@@ -13,11 +13,13 @@ class _$SetState extends SetState {
   final String name;
   @override
   final String icon;
+  @override
+  final int termsCount;
 
   factory _$SetState([void Function(SetStateBuilder) updates]) =>
       (new SetStateBuilder()..update(updates)).build();
 
-  _$SetState._({this.id, this.name, this.icon}) : super._() {
+  _$SetState._({this.id, this.name, this.icon, this.termsCount}) : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('SetState', 'id');
     }
@@ -26,6 +28,9 @@ class _$SetState extends SetState {
     }
     if (icon == null) {
       throw new BuiltValueNullFieldError('SetState', 'icon');
+    }
+    if (termsCount == null) {
+      throw new BuiltValueNullFieldError('SetState', 'termsCount');
     }
   }
 
@@ -42,12 +47,14 @@ class _$SetState extends SetState {
     return other is SetState &&
         id == other.id &&
         name == other.name &&
-        icon == other.icon;
+        icon == other.icon &&
+        termsCount == other.termsCount;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, id.hashCode), name.hashCode), icon.hashCode));
+    return $jf($jc($jc($jc($jc(0, id.hashCode), name.hashCode), icon.hashCode),
+        termsCount.hashCode));
   }
 
   @override
@@ -55,7 +62,8 @@ class _$SetState extends SetState {
     return (newBuiltValueToStringHelper('SetState')
           ..add('id', id)
           ..add('name', name)
-          ..add('icon', icon))
+          ..add('icon', icon)
+          ..add('termsCount', termsCount))
         .toString();
   }
 }
@@ -75,6 +83,10 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   String get icon => _$this._icon;
   set icon(String icon) => _$this._icon = icon;
 
+  int _termsCount;
+  int get termsCount => _$this._termsCount;
+  set termsCount(int termsCount) => _$this._termsCount = termsCount;
+
   SetStateBuilder();
 
   SetStateBuilder get _$this {
@@ -82,6 +94,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _icon = _$v.icon;
+      _termsCount = _$v.termsCount;
       _$v = null;
     }
     return this;
@@ -102,7 +115,9 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
 
   @override
   _$SetState build() {
-    final _$result = _$v ?? new _$SetState._(id: id, name: name, icon: icon);
+    final _$result = _$v ??
+        new _$SetState._(
+            id: id, name: name, icon: icon, termsCount: termsCount);
     replace(_$result);
     return _$result;
   }

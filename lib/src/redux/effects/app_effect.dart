@@ -17,6 +17,7 @@ import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/actions/request_remove_term_action.dart';
 import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/request_update_set_action.dart';
 import 'package:vockify/src/redux/actions/request_update_term_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
@@ -24,6 +25,7 @@ import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
+import 'package:vockify/src/redux/actions/update_set_action.dart';
 import 'package:vockify/src/redux/actions/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
@@ -39,6 +41,7 @@ class AppEffect {
       TypedEpic<AppState, RequestDataAction>(_requestDataAction),
       TypedEpic<AppState, RequestSetsAction>(_requestSetsAction),
       TypedEpic<AppState, RequestAddSetAction>(_requestAddSetAction),
+      TypedEpic<AppState, RequestUpdateSetAction>(_requestUpdateSetAction),
       TypedEpic<AppState, RequestRemoveSetAction>(_requestRemoveSetAction),
       TypedEpic<AppState, RequestSetTermsAction>(_requestSetTermsAction),
       TypedEpic<AppState, RequestAddTermAction>(_requestAddTermAction),
@@ -67,7 +70,7 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final set = await api.addSet(SetDto(0, action.payload, 'sample'));
+        final set = await api.addSet(action.payload);
         yield AddSetAction(set.data.toState());
       } catch (e) {
         print(e);
@@ -84,7 +87,7 @@ class AppEffect {
         final authorization = Authorization.getInstance();
         await authorization.authenticate();
         yield AuthorizeAction();
-        yield RequestDataAction();
+        yield RequestDataAction(route: Routes.sets);
       } catch (e) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
 
@@ -182,6 +185,20 @@ class AppEffect {
     });
   }
 
+  Stream<Object> _requestUpdateSetAction(
+      Stream<RequestUpdateSetAction> actions,
+      EpicStore<AppState> store,
+      ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final set = await api.updateSet(action.payload.id, action.payload);
+        yield UpdateSetAction(set.data.toState());
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
   Stream<Object> _requestDataAction(
     Stream<RequestDataAction> actions,
     EpicStore<AppState> store,
@@ -190,7 +207,9 @@ class AppEffect {
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
+        final sets = await api.getSets();
+        yield SetSetsAction(sets.toState());
+        yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false);
       } catch (e) {
         print(e);
       }

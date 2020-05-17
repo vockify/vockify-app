@@ -2,7 +2,8 @@ class Routes {
   static final String app = "/";
   static final String login = "/login";
   static final String sets = "/sets";
+  static final String set = "/sets/:id";
   static final String quiz = "/quiz";
-  static final String terms = "/terms/:id";
+  static final String terms = "/sets/:id/terms";
   static final String term = "/sets/:setId/terms/:termId";
 }

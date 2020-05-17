@@ -11,7 +11,10 @@ class SetDto {
 
   final String icon;
 
-  SetDto(this.id, this.name, this.icon);
+  @JsonKey(name: 'terms_count', nullable: true, defaultValue: 0)
+  final int termsCount;
+
+  SetDto(this.id, this.name, [this.icon, this.termsCount]);
 
   factory SetDto.fromJson(Map<String, dynamic> json) => _$SetDtoFromJson(json);
 
@@ -21,6 +24,7 @@ class SetDto {
         builder
           ..icon = icon
           ..name = name
-          ..id = id;
+          ..id = id
+          ..termsCount = termsCount;
       });
 }
