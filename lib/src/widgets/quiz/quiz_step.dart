@@ -10,13 +10,4 @@ class QuizStep {
     this.termsCount,
     this.termIndex,
   });
-
-  factory QuizStep.mock() {
-    return QuizStep(
-      term: 'Data',
-      definitions: ['Погода', 'Ветер', 'Ты пидор', 'Данные'],
-      termsCount: 10,
-      termIndex: 3,
-    );
-  }
 }

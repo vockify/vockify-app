@@ -10,9 +10,18 @@ import 'package:vockify/src/router/router.dart';
 class SetsViewModel {
   final Function(int) removeSet;
   final Function(int setId) navigateToTerms;
+  final Function(int setId) navigateToQuiz;
   final BuiltList<SetState> sets;
 
-  SetsViewModel({this.removeSet, this.sets, this.navigateToTerms});
+  SetsViewModel({
+    this.removeSet,
+    this.sets,
+    this.navigateToTerms,
+    this.navigateToQuiz,
+  });
+
+  @override
+  int get hashCode => sets.hashCode;
 
   @override
   bool operator ==(Object other) {
@@ -24,12 +33,20 @@ class SetsViewModel {
     return SetsViewModel(
       sets: store.state.sets,
       removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-      navigateToTerms: (int setId) => store.dispatch(NavigateToAction.push(Router.routeToPath(RouteList.terms, {
-        "id": setId.toString(),
-      }))),
+      navigateToTerms: (int setId) => store.dispatch(
+        NavigateToAction.push(
+          Router.routeToPath(RouteList.terms, {
+            "id": setId.toString(),
+          }),
+        ),
+      ),
+      navigateToQuiz: (int setId) => store.dispatch(
+        NavigateToAction.push(
+          Router.routeToPath(RouteList.quiz, {
+            "id": setId.toString(),
+          }),
+        ),
+      ),
     );
   }
-
-  @override
-  int get hashCode => sets.hashCode;
 }

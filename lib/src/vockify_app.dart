@@ -6,6 +6,7 @@ import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/route_path.dart';
 import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
 
 import 'router/routes.dart';
@@ -25,11 +26,20 @@ class VockifyApp extends StatelessWidget {
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: VockifyColors.primary),
+          primaryColor: VockifyColors.primary,
+          primarySwatch: VockifyColors.primary,
           pageTransitionsTheme: pageTransitionsTheme,
-          primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
       ),
+    );
+  }
+
+  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {
+    return new MaterialPageRoute(
+      settings: settings,
+      builder: (BuildContext context) => builder,
     );
   }
 
@@ -42,7 +52,7 @@ class VockifyApp extends StatelessWidget {
   }
 
   Route _getRoute(RouteSettings settings) {
-    for (RoutePath route in Routes.routes) {
+    for (RoutePath route in Routes.routePaths) {
       final router = Router(route, settings, store);
 
       if (router.matches()) {
@@ -51,12 +61,5 @@ class VockifyApp extends StatelessWidget {
     }
 
     return _buildRoute(settings, AppLoaderWidget());
-  }
-
-  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {
-    return new MaterialPageRoute(
-      settings: settings,
-      builder: (BuildContext context) => builder,
-    );
   }
 }
