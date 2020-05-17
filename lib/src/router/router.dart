@@ -1,21 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
-import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/route_path.dart';
 
 class Router {
   final RoutePath route;
   final RouteSettings settings;
-  final Store<AppState> store;
+
   RegExp _regExp;
 
   List<String> _parameters = <String>[];
 
-  Router._(this.route, this.settings, this.store);
+  factory Router(RoutePath route, RouteSettings settings) {
+    return Router._(route, settings).init();
+  }
 
-  factory Router(RoutePath route, RouteSettings settings, Store<AppState> store) {
-    return Router._(route, settings, store).init();
+  Router._(this.route, this.settings);
+
+  Map<String, String> getArguments() {
+    if (settings.arguments == null) {
+      final match = _regExp.matchAsPrefix(settings.name);
+      return extract(_parameters, match);
+    }
+
+    if (settings.arguments is! Map<String, String>) {
+      throw ArgumentError("arguments cast error");
+    }
+
+    return settings.arguments as Map<String, String>;
   }
 
   Router init() {
@@ -25,28 +36,10 @@ class Router {
   }
 
   bool matches() {
-    return _regExp.hasMatch(settings.name);
-  }
-
-  Map<String, String> _arguments() {
-    final match = _regExp.matchAsPrefix(settings.name);
-
-    return extract(_parameters, match);
-  }
-
-  String getQueryArgument(String key) {
-    final arguments = _arguments();
-
-    if (!arguments.containsKey(key)) {
-      throw new ArgumentError("Route param:'$key' does not present");
+    if (route.pattern == settings.name) {
+      return true;
     }
 
-    return arguments[key];
-  }
-
-  static String routeToPath(String route, Map<String, String> params) {
-    final toPath = pathToFunction(route);
-
-    return toPath(params);
+    return _regExp.hasMatch(settings.name);
   }
 }

@@ -8,17 +8,11 @@ class AppLayoutWidget extends StatelessWidget {
   final String title;
   final Widget body;
   final List<Widget> actions;
-  final Widget floatingActionButton;
-  final String redirectBackRoute;
-  final Object redirectBackArguments;
 
   const AppLayoutWidget({
     Key key,
     this.title,
     this.body,
-    this.floatingActionButton,
-    this.redirectBackRoute,
-    this.redirectBackArguments,
     this.actions = const [],
   }) : super(key: key);
 
@@ -43,12 +37,11 @@ class AppLayoutWidget extends StatelessWidget {
         ],
       ),
       body: body,
-      floatingActionButton: floatingActionButton,
     );
   }
 
   Widget _goBackArrow(BuildContext context) {
-    if (redirectBackRoute == null) {
+    if (!Navigator.of(context).canPop()) {
       return null;
     }
 
@@ -59,11 +52,7 @@ class AppLayoutWidget extends StatelessWidget {
         return new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            if (Navigator.of(context).canPop()) {
-              dispatch(NavigateToAction.pop());
-            } else {
-              dispatch(NavigateToAction.replace(redirectBackRoute, arguments: redirectBackArguments));
-            }
+            dispatch(NavigateToAction.pop());
           },
         );
       },

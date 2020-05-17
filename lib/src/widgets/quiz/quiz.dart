@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/route_list.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
@@ -31,7 +31,6 @@ class _QuizState extends State<QuizWidget> {
         body: Center(
           child: Text('Add a terms before start quiz'),
         ),
-        redirectBackRoute: RouteList.sets,
       );
     }
 

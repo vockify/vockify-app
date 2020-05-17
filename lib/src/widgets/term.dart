@@ -6,7 +6,7 @@ import 'package:vockify/src/api/dto/term_dto.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
-import 'package:vockify/src/router/route_list.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/view_model/term_view_model.dart';
 
@@ -153,7 +153,7 @@ class _TermState extends State<TermWidget> {
                 );
 
                 viewModel.requestSaveTerm(termDto);
-                viewModel.navigateToTerms(selectedSet);
+                viewModel.navigateBack();
               }
             },
           ),
@@ -166,8 +166,6 @@ class _TermState extends State<TermWidget> {
   Widget build(BuildContext context) {
     return AppLayoutWidget(
       title: 'Save Term',
-      redirectBackRoute: RouteList.terms,
-      redirectBackArguments: widget.setId,
       body: Center(
         child: LayoutBuilder(
           builder: (context, constraint) {

@@ -6,10 +6,11 @@ import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/route_path.dart';
 import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
 
-import 'router/routes.dart';
+import 'router/route_paths.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -37,26 +38,26 @@ class VockifyApp extends StatelessWidget {
   }
 
   MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {
-    return new MaterialPageRoute(
+    return MaterialPageRoute(
       settings: settings,
-      builder: (BuildContext context) => builder,
+      builder: (context) => builder,
     );
   }
 
   List<Route> _getInitialRoutes(String route) {
-    if (route == '/login' || route == '/') {
-      return [_buildRoute(RouteSettings(name: '/'), AppLoaderWidget())];
+    if (route == Routes.login || route == Routes.app) {
+      return [_buildRoute(RouteSettings(name: Routes.app), AppLoaderWidget())];
     }
 
     return [_getRoute(RouteSettings(name: route))];
   }
 
   Route _getRoute(RouteSettings settings) {
-    for (RoutePath route in Routes.routePaths) {
-      final router = Router(route, settings, store);
+    for (RoutePath routePath in RoutePaths.routePaths) {
+      final router = Router(routePath, settings);
 
       if (router.matches()) {
-        return _buildRoute(settings, route.builder(router));
+        return _buildRoute(settings, routePath.builder(router.getArguments()));
       }
     }
 

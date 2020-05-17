@@ -27,6 +27,7 @@ import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/authorization/authorization.dart';
 
@@ -53,9 +54,9 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       if (action.name != '/login' && !store.state.isAuthorized) {
-        yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
       } else if (action.name == '/login' && store.state.isAuthorized) {
-        yield NavigateToAction.pushNamedAndRemoveUntil('/sets', (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
       }
     });
   }
@@ -85,7 +86,7 @@ class AppEffect {
         yield AuthorizeAction();
         yield RequestDataAction();
       } catch (e) {
-        yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
 
         print(e);
       }
@@ -189,7 +190,7 @@ class AppEffect {
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
-        yield NavigateToAction.pushNamedAndRemoveUntil('/sets', (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
       } catch (e) {
         print(e);
       }
@@ -204,7 +205,7 @@ class AppEffect {
       final storage = AppStorage.getInstance();
       await storage.remove('token');
 
-      yield NavigateToAction.pushNamedAndRemoveUntil('/login', (route) => false);
+      yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
     });
   }
 }

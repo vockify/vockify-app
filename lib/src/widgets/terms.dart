@@ -5,8 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/router/route_list.dart';
-import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
@@ -35,7 +34,6 @@ class _TermsState extends State<TermsWidget> {
 
     return AppLayoutWidget(
       title: setName,
-      redirectBackRoute: RouteList.sets,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.edit),
@@ -93,7 +91,7 @@ class _TermsState extends State<TermsWidget> {
         RaisedButton(
           shape: Border(),
           color: VockifyColors.prussianBlue,
-          onPressed: () => store.dispatch(NavigateToAction.push(RouteList.quiz)),
+          onPressed: () => store.dispatch(NavigateToAction.push(Routes.quiz)),
           child: Text(
             'START QUIZ',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
@@ -107,12 +105,10 @@ class _TermsState extends State<TermsWidget> {
           color: VockifyColors.fulvous,
           onPressed: () {
             store.dispatch(
-              NavigateToAction.push(
-                Router.routeToPath(RouteList.term, {
-                  "setId": widget.setId.toString(),
-                  "termId": "new",
-                }),
-              ),
+              NavigateToAction.push(Routes.term, arguments: {
+                "setId": widget.setId.toString(),
+                "termId": "new",
+              }),
             );
           },
           child: Text(

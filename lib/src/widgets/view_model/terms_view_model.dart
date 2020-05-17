@@ -5,8 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/remove_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/router/route_list.dart';
-import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/routes.dart';
 
 class TermsViewModel {
   final bool isLoading;
@@ -22,6 +21,9 @@ class TermsViewModel {
   });
 
   @override
+  int get hashCode => quiver.hash2(terms, isLoading);
+
+  @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermsViewModel && this.terms == other.terms && this.isLoading == other.isLoading;
@@ -31,15 +33,13 @@ class TermsViewModel {
     return TermsViewModel(
       isLoading: store.state.isLoading,
       terms: store.state.terms,
-      navigateToTerm: (String setId, termId) =>
-          store.dispatch(NavigateToAction.push(Router.routeToPath(RouteList.term, {
-        "setId": setId,
-        "termId": termId,
-      }))),
+      navigateToTerm: (String setId, termId) => store.dispatch(
+        NavigateToAction.push(Routes.term, arguments: {
+          "setId": setId,
+          "termId": termId,
+        }),
+      ),
       removeTerm: (int termId) => store.dispatch(RemoveTermAction(termId)),
     );
   }
-
-  @override
-  int get hashCode => quiver.hash2(terms, isLoading);
 }
