@@ -4,16 +4,12 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/router/route_path.dart';
+import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
-import 'package:vockify/src/widgets/auth_layout.dart';
-import 'package:vockify/src/widgets/login.dart';
-import 'package:vockify/src/widgets/quiz/quiz.dart';
-//import 'package:vockify/src/widgets/sets.dart';
-import 'package:vockify/src/widgets/term.dart';
-//import 'package:vockify/src/widgets/terms.dart';
-import 'package:vockify/src/widgets/test/sets.dart';
-import 'package:vockify/src/widgets/test/terms.dart';
+import 'package:vockify/src/vockify_colors.dart';
+
+import 'router/routes.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -49,20 +45,15 @@ class VockifyApp extends StatelessWidget {
   }
 
   Route _getRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case LoginWidget.route:
-        return _buildRoute(settings, LoginWidget());
-      case SetsWidget.route:
-        return _buildRoute(settings, AuthLayoutWidget(SetsWidget()));
-      case TermsWidget.route:
-        return _buildRoute(settings, AuthLayoutWidget(TermsWidget(settings.arguments)));
-      case QuizWidget.route:
-        return _buildRoute(settings, AuthLayoutWidget(QuizWidget()));
-      case TermWidget.route:
-        return _buildRoute(settings, AuthLayoutWidget(TermWidget(settings.arguments)));
-      default:
-        return _buildRoute(settings, AppLoaderWidget());
+    for (RoutePath route in Routes.routes) {
+      final router = Router(route, settings, store);
+
+      if (router.matches()) {
+        return _buildRoute(settings, route.builder(router));
+      }
     }
+
+    return _buildRoute(settings, AppLoaderWidget());
   }
 
   MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {

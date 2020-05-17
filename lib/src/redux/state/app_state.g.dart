@@ -10,6 +10,8 @@ class _$AppState extends AppState {
   @override
   final bool isAuthorized;
   @override
+  final bool isLoading;
+  @override
   final BuiltList<SetState> sets;
   @override
   final BuiltList<TermState> terms;
@@ -19,10 +21,14 @@ class _$AppState extends AppState {
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.isAuthorized, this.sets, this.terms, this.user})
+  _$AppState._(
+      {this.isAuthorized, this.isLoading, this.sets, this.terms, this.user})
       : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
+    }
+    if (isLoading == null) {
+      throw new BuiltValueNullFieldError('AppState', 'isLoading');
     }
     if (sets == null) {
       throw new BuiltValueNullFieldError('AppState', 'sets');
@@ -47,6 +53,7 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         isAuthorized == other.isAuthorized &&
+        isLoading == other.isLoading &&
         sets == other.sets &&
         terms == other.terms &&
         user == other.user;
@@ -55,7 +62,10 @@ class _$AppState extends AppState {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, isAuthorized.hashCode), sets.hashCode), terms.hashCode),
+        $jc(
+            $jc($jc($jc(0, isAuthorized.hashCode), isLoading.hashCode),
+                sets.hashCode),
+            terms.hashCode),
         user.hashCode));
   }
 
@@ -63,6 +73,7 @@ class _$AppState extends AppState {
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('isAuthorized', isAuthorized)
+          ..add('isLoading', isLoading)
           ..add('sets', sets)
           ..add('terms', terms)
           ..add('user', user))
@@ -76,6 +87,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool _isAuthorized;
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
+
+  bool _isLoading;
+  bool get isLoading => _$this._isLoading;
+  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
 
   ListBuilder<SetState> _sets;
   ListBuilder<SetState> get sets =>
@@ -96,6 +111,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AppStateBuilder get _$this {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
+      _isLoading = _$v.isLoading;
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
@@ -124,6 +140,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$result = _$v ??
           new _$AppState._(
               isAuthorized: isAuthorized,
+              isLoading: isLoading,
               sets: sets.build(),
               terms: terms.build(),
               user: user.build());

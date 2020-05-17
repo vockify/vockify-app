@@ -6,19 +6,19 @@ import 'package:vockify/src/api/dto/term_dto.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
+import 'package:vockify/src/router/route_list.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
-import 'package:vockify/src/widgets/terms.dart';
 import 'package:vockify/src/widgets/view_model/term_view_model.dart';
 
 class TermWidget extends StatefulWidget {
-  static const String route = '/term';
-
   final int setId;
+  final int termId;
+
   final _definitionController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  TermWidget(this.setId);
+  TermWidget(this.setId, this.termId);
 
   @override
   State<StatefulWidget> createState() => _TermState(setId.toString());
@@ -36,40 +36,70 @@ class _TermState extends State<TermWidget> {
   _TermState(this.selectedSet);
 
   Widget _setsList(BuiltList<SetState> sets) {
-    return DropdownButton<String>(
-      value: selectedSet,
-      icon: Icon(Icons.arrow_downward),
-      isExpanded: true,
-      iconSize: 24,
-      elevation: 16,
-      underline: Container(
-        height: 2,
-        color: Colors.amber,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        border: Border.fromBorderSide(
+          BorderSide(color: Colors.grey),
+        ),
       ),
-      onChanged: (String newValue) {
-        setState(() {
-          selectedSet = newValue;
-        });
-      },
-      items: sets.map((set) {
-        return DropdownMenuItem<String>(
-          value: set.id.toString(),
-          child: Text(set.name),
-        );
-      }).toList(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        child: DropdownButton<String>(
+          value: selectedSet,
+          icon: Icon(Icons.arrow_downward),
+          isExpanded: true,
+          underline: Container(height: 0),
+          onChanged: (String newValue) {
+            setState(() {
+              selectedSet = newValue;
+            });
+          },
+          items: sets.map((set) {
+            return DropdownMenuItem<String>(
+              value: set.id.toString(),
+              child: Text(set.name),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 
-  Widget _translateButton() {
+  Widget _formField(String labelText, TextEditingController controller, {Widget suffixIcon}) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        labelText: labelText,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(),
+        ),
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'The value is required';
+        }
+        return null;
+      },
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  Widget _translateAddonButton() {
     if (isLoading) {
-      return CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+      return Padding(
+        padding: EdgeInsets.all(10.0),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.orange),
+          strokeWidth: 3.0,
+        ),
       );
     }
 
-    return RaisedButton(
-      child: Text('TRANSLATE'),
-      color: Colors.orange,
+    return IconButton(
       onPressed: () async {
         if (widget._nameController.text.isEmpty) {
           return;
@@ -80,8 +110,7 @@ class _TermState extends State<TermWidget> {
             isLoading = true;
           });
 
-          final data = await api
-              .translate(TranslateRequestDto([widget._nameController.text]));
+          final data = await api.translate(TranslateRequestDto([widget._nameController.text]));
 
           if (data.data.isNotEmpty) {
             widget._definitionController.text = data.data.first.text;
@@ -92,85 +121,113 @@ class _TermState extends State<TermWidget> {
           });
         }
       },
+      icon: Icon(Icons.translate),
     );
   }
 
-  Widget _submitButton(TermViewModel viewModel) {
-    return SizedBox(
-      width: double.infinity,
-      child: RaisedButton(
-        color: Colors.orange,
-        onPressed: () {
-          if (widget._formKey.currentState.validate()) {
-            viewModel.requestAddTerm(TermDto(
-              0,
-              widget._nameController.text,
-              widget._definitionController.text,
-              int.parse(selectedSet),
-            ));
-            viewModel.navigateBack(int.parse(selectedSet));
-          }
-        },
-        child: Text('SAVE'),
-      ),
+  Widget _submitButton(TermViewModel viewModel, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: RaisedButton(
+            shape: Border(),
+            color: Colors.red,
+            child: Text("CANCEL"),
+            onPressed: viewModel.navigateBack,
+          ),
+        ),
+        Expanded(
+          child: RaisedButton(
+            shape: Border(),
+            color: Colors.orange,
+            child: Text("SAVE"),
+            onPressed: () {
+              if (widget._formKey.currentState.validate()) {
+                final termDto = TermDto(
+                  widget.termId != null ? widget.termId : 0,
+                  widget._nameController.text,
+                  widget._definitionController.text,
+                  int.parse(selectedSet),
+                );
+
+                viewModel.requestSaveTerm(termDto);
+                viewModel.navigateToTerms(selectedSet);
+              }
+            },
+          ),
+        )
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'Term form',
-      redirectBackRoute: TermsWidget.route,
+      title: 'Save Term',
+      redirectBackRoute: RouteList.terms,
       redirectBackArguments: widget.setId,
       body: Center(
-        child: StoreConnector<AppState, TermViewModel>(
-          distinct: true,
-          converter: (store) {
-            return TermViewModel.fromStore(store);
-          },
-          builder: (context, viewModel) {
-            return Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Form(
-                key: widget._formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _setsList(viewModel.sets),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some name';
-                          }
-                          return null;
-                        },
-                        controller: widget._nameController,
-                        decoration: InputDecoration(labelText: 'Name:'),
+        child: LayoutBuilder(
+          builder: (context, constraint) {
+            return StoreConnector<AppState, TermViewModel>(
+              distinct: true,
+              onInit: (store) {
+                if (widget.termId != null) {
+                  final term = store.state.terms.firstWhere(
+                    (item) => item.id == widget.termId,
+                    orElse: () => null,
+                  );
+
+                  widget._nameController.text = term.name;
+                  widget._definitionController.text = term.definition;
+                  selectedSet = term.setId.toString();
+                }
+              },
+              converter: (store) {
+                return TermViewModel.fromStore(store);
+              },
+              builder: (context, viewModel) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                              child: Form(
+                                key: widget._formKey,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    _setsList(viewModel.sets),
+                                    Padding(padding: EdgeInsets.only(top: 20)),
+                                    _formField("Name", widget._nameController),
+                                    Padding(padding: EdgeInsets.only(top: 20)),
+                                    _formField(
+                                      "Definition",
+                                      widget._definitionController,
+                                      suffixIcon: _translateAddonButton(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 60,
+                            child: _submitButton(viewModel, context),
+                          )
+                        ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: _translateButton(),
-                    ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some definition';
-                          }
-                          return null;
-                        },
-                        controller: widget._definitionController,
-                        decoration: InputDecoration(labelText: 'Definition:'),
-                      ),
-                    ),
-                    _submitButton(viewModel),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           },
         ),

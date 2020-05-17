@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/route_list.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
-import 'package:vockify/src/widgets/sets.dart';
 
 class QuizWidget extends StatefulWidget {
-  static const String route = '/quiz';
-
   @override
   State<StatefulWidget> createState() => _QuizState();
 }
@@ -33,7 +31,7 @@ class _QuizState extends State<QuizWidget> {
         body: Center(
           child: Text('Add a terms before start quiz'),
         ),
-        redirectBackRoute: SetsWidget.route,
+        redirectBackRoute: RouteList.sets,
       );
     }
 

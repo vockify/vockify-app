@@ -6,7 +6,8 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/term.dart';
-import 'package:vockify/src/widgets/terms.dart';
+import 'package:vockify/src/router/route_list.dart';
+import 'package:vockify/src/router/router.dart';
 
 class SetsViewModel {
   final Function(int) removeSet;
@@ -30,7 +31,9 @@ class SetsViewModel {
     return SetsViewModel(
       sets: store.state.sets,
       removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-      navigateToTerms: (int setId) => store.dispatch(NavigateToAction.push(TermsWidget.route, arguments: setId)),
+      navigateToTerms: (int setId) => store.dispatch(NavigateToAction.push(Router.routeToPath(RouteList.terms, {
+        "id": setId.toString(),
+      }))),
       navigateToTerm: (int setId) => store.dispatch(NavigateToAction.push(TermWidget.route, arguments: setId)),
       navigateToQuiz: (int setId) => store.dispatch(NavigateToAction.push(QuizWidget.route, arguments: setId)),
     );

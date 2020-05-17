@@ -62,6 +62,11 @@ class AppApi {
     return TermResponse.fromJson(data);
   }
 
+  Future<TermResponse> updateTerm(int id, TermDto requestData) async {
+    final data = await _put('/terms/$id', requestData.toJson());
+    return TermResponse.fromJson(data);
+  }
+
   Future<void> deleteTerm(int id) async {
     await _delete('/terms/$id');
   }
@@ -105,6 +110,17 @@ class AppApi {
   Future<Map<String, dynamic>> _post(String url, dynamic body) async {
     final headers = await _getHeaders();
     final response = await http.post(
+      '$apiUrl$url',
+      body: jsonEncode(body),
+      headers: headers,
+    );
+
+    return _processResponse(response);
+  }
+
+  Future<Map<String, dynamic>> _put(String url, dynamic body) async {
+    final headers = await _getHeaders();
+    final response = await http.put(
       '$apiUrl$url',
       body: jsonEncode(body),
       headers: headers,
