@@ -4,8 +4,6 @@ import 'package:vockify/src/redux/actions/request_authorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class LoginWidget extends StatelessWidget {
-  static const route = '/login';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

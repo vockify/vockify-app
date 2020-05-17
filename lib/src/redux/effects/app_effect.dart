@@ -17,10 +17,14 @@ import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/actions/request_remove_term_action.dart';
 import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/request_update_term_action.dart';
+import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
+import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
+import 'package:vockify/src/redux/actions/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
@@ -37,6 +41,7 @@ class AppEffect {
       TypedEpic<AppState, RequestRemoveSetAction>(_requestRemoveSetAction),
       TypedEpic<AppState, RequestSetTermsAction>(_requestSetTermsAction),
       TypedEpic<AppState, RequestAddTermAction>(_requestAddTermAction),
+      TypedEpic<AppState, RequestUpdateTermAction>(_requestUpdateTermAction),
       TypedEpic<AppState, RequestRemoveTermAction>(_requestRemoveTermAction),
       TypedEpic<AppState, NavigateToAction>(_navigateToAction),
     ]);
@@ -137,10 +142,13 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
+        yield SetIsLoadingAction();
         final terms = await api.getSetTerms(action.payload);
         yield SetTermsAction(terms.toState());
       } catch (e) {
         print(e);
+      } finally {
+        yield UnsetIsLoadingAction();
       }
     });
   }
@@ -153,6 +161,20 @@ class AppEffect {
       try {
         final term = await api.addTerm(action.payload);
         yield AddTermAction(term.data.toState());
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestUpdateTermAction(
+      Stream<RequestUpdateTermAction> actions,
+      EpicStore<AppState> store,
+      ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final term = await api.updateTerm(action.payload.id, action.payload);
+        yield UpdateTermAction(term.data.toState());
       } catch (e) {
         print(e);
       }

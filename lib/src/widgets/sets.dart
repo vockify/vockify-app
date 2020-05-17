@@ -7,8 +7,6 @@ import 'package:vockify/src/widgets/view_model/add_set_modal_view_model.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
 class SetsWidget extends StatelessWidget {
-  static const String route = '/sets';
-
   final setNameController = TextEditingController();
 
   Future<void> _openAddSetModal(BuildContext context) async {
