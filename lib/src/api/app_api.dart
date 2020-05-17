@@ -140,7 +140,7 @@ class AppApi {
     }
 
     if (response.body.isNotEmpty) {
-      return json.decode(response.body);
+      return json.decode(response.body) as Map<String, dynamic>;
     }
 
     return {};

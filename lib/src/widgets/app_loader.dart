@@ -6,6 +6,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/routes.dart';
 
 class AppLoaderWidget extends StatelessWidget {
   @override
@@ -16,7 +17,7 @@ class AppLoaderWidget extends StatelessWidget {
         onInit: (store) {
           if (!store.state.isAuthorized) {
             scheduleMicrotask(() {
-              store.dispatch(NavigateToAction.replace('/login'));
+              store.dispatch(NavigateToAction.replace(Routes.login));
             });
           } else {
             store.dispatch(RequestDataAction());

@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:vockify/src/router/router.dart';
 
 class RoutePath {
   final String pattern;
-  final Widget Function(Router) builder;
+  final Widget Function(Map<String, String>) builder;
 
   RoutePath(this.pattern, this.builder);
 }
