@@ -12,7 +12,7 @@ class AppButtonBarWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.grey,
-            offset: Offset(0.0, 2.0), //(x,y)
+            offset: Offset(0.0, 2.0),
             blurRadius: 6.0,
           ),
         ],

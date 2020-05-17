@@ -13,8 +13,6 @@ import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/view_model/terms_view_model.dart';
 
 class TermsWidget extends StatefulWidget {
-  static const String route = '/terms';
-
   final int setId;
 
   TermsWidget(this.setId);

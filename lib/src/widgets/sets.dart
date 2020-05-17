@@ -7,8 +7,8 @@ import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
 class SetsWidget extends StatelessWidget {
-  static const String route = '/sets';
-
+  static const String _menuItemDelete = 'delete';
+  
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
@@ -76,8 +76,8 @@ class SetsWidget extends StatelessWidget {
                                 child: PopupMenuButton(
                                   padding: EdgeInsets.all(0),
                                   itemBuilder: (context) => [
-                                    const PopupMenuItem(
-                                      value: 'delete',
+                                    PopupMenuItem(
+                                      value: _menuItemDelete,
                                       child: Text(
                                         'Delete',
                                         style: TextStyle(color: VockifyColors.flame),
@@ -85,7 +85,7 @@ class SetsWidget extends StatelessWidget {
                                     )
                                   ],
                                   onSelected: (item) {
-                                    if (item == 'delete') {
+                                    if (item == _menuItemDelete) {
                                       viewModel.removeSet(set.id);
                                     }
                                   },
