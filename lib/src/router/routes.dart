@@ -8,7 +8,7 @@ import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/widgets/terms.dart';
 
 class Routes {
-  static final List<RoutePath> routes = [
+  static final List<RoutePath> routePaths = [
     RoutePath(
       RouteList.login,
       (router) => LoginWidget(),

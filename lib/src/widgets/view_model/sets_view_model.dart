@@ -4,19 +4,21 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
-import 'package:vockify/src/widgets/quiz/quiz.dart';
-import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/router/route_list.dart';
 import 'package:vockify/src/router/router.dart';
 
 class SetsViewModel {
   final Function(int) removeSet;
   final Function(int setId) navigateToTerms;
-  final Function(int setId) navigateToTerm;
   final Function(int setId) navigateToQuiz;
   final BuiltList<SetState> sets;
 
-  SetsViewModel({this.removeSet, this.sets, this.navigateToTerms, this.navigateToQuiz, this.navigateToTerm});
+  SetsViewModel({
+    this.removeSet,
+    this.sets,
+    this.navigateToTerms,
+    this.navigateToQuiz,
+  });
 
   @override
   int get hashCode => sets.hashCode;
@@ -31,11 +33,20 @@ class SetsViewModel {
     return SetsViewModel(
       sets: store.state.sets,
       removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-      navigateToTerms: (int setId) => store.dispatch(NavigateToAction.push(Router.routeToPath(RouteList.terms, {
-        "id": setId.toString(),
-      }))),
-      navigateToTerm: (int setId) => store.dispatch(NavigateToAction.push(TermWidget.route, arguments: setId)),
-      navigateToQuiz: (int setId) => store.dispatch(NavigateToAction.push(QuizWidget.route, arguments: setId)),
+      navigateToTerms: (int setId) => store.dispatch(
+        NavigateToAction.push(
+          Router.routeToPath(RouteList.terms, {
+            "id": setId.toString(),
+          }),
+        ),
+      ),
+      navigateToQuiz: (int setId) => store.dispatch(
+        NavigateToAction.push(
+          Router.routeToPath(RouteList.quiz, {
+            "id": setId.toString(),
+          }),
+        ),
+      ),
     );
   }
 }

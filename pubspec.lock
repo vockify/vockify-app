@@ -384,7 +384,7 @@ packages:
     dependency: "direct main"
     description:
       name: path_to_regexp
-      url: "https://pub.dartlang.org"
+      url: "http://pub-dev.wrke.in"
     source: hosted
     version: "0.3.0"
   pedantic:
