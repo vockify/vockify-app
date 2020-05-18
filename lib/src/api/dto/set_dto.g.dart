@@ -11,6 +11,7 @@ SetDto _$SetDtoFromJson(Map<String, dynamic> json) {
     json['id'] as int,
     json['name'] as String,
     json['icon'] as String,
+    json['terms_count'] as int ?? 0,
   );
 }
 
@@ -18,4 +19,5 @@ Map<String, dynamic> _$SetDtoToJson(SetDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
+      'terms_count': instance.termsCount,
     };

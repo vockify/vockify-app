@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 
 class AppLayoutWidget extends StatelessWidget {
   final String title;
   final Widget body;
   final List<Widget> actions;
+  final String redirectBackRoute;
 
   const AppLayoutWidget({
     Key key,
     this.title,
     this.body,
     this.actions = const [],
+    this.redirectBackRoute,
   }) : super(key: key);
 
   @override
@@ -41,7 +44,7 @@ class AppLayoutWidget extends StatelessWidget {
   }
 
   Widget _goBackArrow(BuildContext context) {
-    if (!Navigator.of(context).canPop()) {
+    if (!Navigator.of(context).canPop() && redirectBackRoute == null) {
       return null;
     }
 
@@ -52,7 +55,15 @@ class AppLayoutWidget extends StatelessWidget {
         return new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            dispatch(NavigateToAction.pop());
+            if (Navigator.of(context).canPop()) {
+              dispatch(NavigateToAction.pop());
+            } else {
+              if (redirectBackRoute != null) {
+                dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
+              } else {
+                dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false));
+              }
+            }
           },
         );
       },

@@ -12,4 +12,6 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
   String get name;
 
   String get icon;
+
+  int get termsCount;
 }

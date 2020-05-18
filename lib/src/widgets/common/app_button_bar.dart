@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vockify/src/vockify_colors.dart';
 
 class AppButtonBarWidget extends StatelessWidget {
-  final Iterable<Widget> children;
+  final List<Widget> children;
 
   const AppButtonBarWidget({Key key, @required this.children}) : super(key: key);
 
@@ -9,13 +10,11 @@ class AppButtonBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0.0, 2.0),
-            blurRadius: 6.0,
+        border: Border(
+          top: BorderSide(
+            color: VockifyColors.grey,
           ),
-        ],
+        ),
       ),
       height: 52,
       child: Row(

@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -31,6 +32,7 @@ class _TermsState extends State<TermsWidget> {
     final setName = set?.name ?? 'Terms';
 
     return AppLayoutWidget(
+      redirectBackRoute: Routes.sets,
       title: setName,
       actions: <Widget>[
         IconButton(
@@ -64,6 +66,7 @@ class _TermsState extends State<TermsWidget> {
                       if (index.isOdd) {
                         return Divider(
                           height: 0,
+                          thickness: 1,
                         );
                       }
 
@@ -102,11 +105,13 @@ class _TermsState extends State<TermsWidget> {
           shape: Border(),
           color: VockifyColors.fulvous,
           onPressed: () {
+            final url = Router.routeToPath(Routes.term, {
+              "setId": widget.setId.toString(),
+              "termId": "new",
+            });
+
             store.dispatch(
-              NavigateToAction.push(Routes.term, arguments: {
-                "setId": widget.setId.toString(),
-                "termId": "new",
-              }),
+              NavigateToAction.push(url),
             );
           },
           child: Text(

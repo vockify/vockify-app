@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/view_model/sets_view_model.dart';
 
 class SetsWidget extends StatelessWidget {
   static const String _menuItemDelete = 'delete';
-  
+  static const String _menuItemEdit = 'edit';
+
   @override
   Widget build(BuildContext context) {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+
     return AppLayoutWidget(
       title: 'VOCKIFY',
       actions: <Widget>[
@@ -19,7 +25,10 @@ class SetsWidget extends StatelessWidget {
             minWidth: 42,
             minHeight: 42,
           ),
-          onPressed: () {},
+          onPressed: () {
+            final url = Router.routeToPath(Routes.set, {'id': 'new'});
+            store.dispatch(NavigateToAction.push(url));
+          },
           child: Icon(
             Icons.add,
             color: VockifyColors.white,
@@ -77,6 +86,13 @@ class SetsWidget extends StatelessWidget {
                                   padding: EdgeInsets.all(0),
                                   itemBuilder: (context) => [
                                     PopupMenuItem(
+                                      value: _menuItemEdit,
+                                      child: Text(
+                                        'Edit',
+//                                        style: TextStyle(color: VockifyColors.flame),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
                                       value: _menuItemDelete,
                                       child: Text(
                                         'Delete',
@@ -87,6 +103,9 @@ class SetsWidget extends StatelessWidget {
                                   onSelected: (item) {
                                     if (item == _menuItemDelete) {
                                       viewModel.removeSet(set.id);
+                                    } else if (item == _menuItemEdit) {
+                                      final url = Router.routeToPath(Routes.set, {'id': set.id.toString()});
+                                      store.dispatch(NavigateToAction.push(url));
                                     }
                                   },
                                   icon: Icon(
@@ -107,12 +126,24 @@ class SetsWidget extends StatelessWidget {
                           overflowDirection: VerticalDirection.up,
                           children: <Widget>[
                             FlatButton(
-                              onPressed: () => null,
+                              onPressed: () {
+                                store.dispatch(NavigateToAction.push(Routes.quiz));
+                              },
                               child: Text('START QUIZ'),
                               textColor: VockifyColors.prussianBlue,
                             ),
                             FlatButton(
-                              onPressed: () => null,
+                              onPressed: () {
+                                final url = Router.routeToPath(
+                                  Routes.term,
+                                  {
+                                    'setId': set.id.toString(),
+                                    'termId': 'new',
+                                  },
+                                );
+
+                                store.dispatch(NavigateToAction.push(url));
+                              },
                               child: Text('ADD TERM'),
                               textColor: VockifyColors.fulvous,
                             ),

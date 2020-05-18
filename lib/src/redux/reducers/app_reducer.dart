@@ -10,6 +10,7 @@ import 'package:vockify/src/redux/actions/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
+import 'package:vockify/src/redux/actions/update_set_action.dart';
 import 'package:vockify/src/redux/actions/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
@@ -26,6 +27,7 @@ class AppReducer {
       TypedReducer(_setSetsReducer),
       TypedReducer(_setUserReducer),
       TypedReducer(_addSetReducer),
+      TypedReducer(_updateSetReducer),
       TypedReducer(_removeSetReducer),
 
       // terms
@@ -80,6 +82,16 @@ class AppReducer {
 
   AppState _updateTermReducer(AppState state, UpdateTermAction action) {
     return state.rebuild((builder) => builder.terms.map((item) {
+      if (item.id == action.payload.id) {
+         item = action.payload;
+      }
+
+      return item;
+    }));
+  }
+
+  AppState _updateSetReducer(AppState state, UpdateSetAction action) {
+    return state.rebuild((builder) => builder.sets.map((item) {
       if (item.id == action.payload.id) {
          item = action.payload;
       }

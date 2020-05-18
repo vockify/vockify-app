@@ -31,7 +31,6 @@ class Router {
 
   Router init() {
     _regExp = pathToRegExp(route.pattern, parameters: _parameters);
-
     return this;
   }
 
@@ -41,5 +40,10 @@ class Router {
     }
 
     return _regExp.hasMatch(settings.name);
+  }
+
+  static String routeToPath(String route, Map<String, String> params) {
+    final toPath = pathToFunction(route);
+    return toPath(params);
   }
 }

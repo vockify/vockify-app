@@ -9,6 +9,10 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 
 class AppLoaderWidget extends StatelessWidget {
+  final String route;
+
+  const AppLoaderWidget({Key key, @required this.route}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +24,7 @@ class AppLoaderWidget extends StatelessWidget {
               store.dispatch(NavigateToAction.replace(Routes.login));
             });
           } else {
-            store.dispatch(RequestDataAction());
+            store.dispatch(RequestDataAction(route: route));
           }
         },
         builder: (context, viewModel) {

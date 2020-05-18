@@ -46,10 +46,10 @@ class VockifyApp extends StatelessWidget {
 
   List<Route> _getInitialRoutes(String route) {
     if (route == Routes.login || route == Routes.app) {
-      return [_buildRoute(RouteSettings(name: Routes.app), AppLoaderWidget())];
+      return [_buildRoute(RouteSettings(name: Routes.app), AppLoaderWidget(route: Routes.sets))];
     }
 
-    return [_getRoute(RouteSettings(name: route))];
+    return [_buildRoute(RouteSettings(name: route), AppLoaderWidget(route: route))];
   }
 
   Route _getRoute(RouteSettings settings) {
@@ -61,6 +61,6 @@ class VockifyApp extends StatelessWidget {
       }
     }
 
-    return _buildRoute(settings, AppLoaderWidget());
+    return _buildRoute(settings, AppLoaderWidget(route: Routes.sets));
   }
 }

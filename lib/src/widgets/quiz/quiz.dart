@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
-import 'package:vockify/src/widgets/common/layout_button_wrapper.dart';
+import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
 
@@ -22,6 +22,8 @@ class _QuizState extends State<QuizWidget> {
   String _correctDefinition;
   String _selectedDefinition;
   Timer _selectDefinitionTimer;
+
+  int selectedDefinitionId;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class _QuizState extends State<QuizWidget> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Card(
-                  color: Colors.white70,
+                  color: VockifyColors.grey,
                   child: ListTile(
                     title: Center(
                       child: Text(_step.term),
@@ -54,7 +56,7 @@ class _QuizState extends State<QuizWidget> {
               ),
               ListTile(
                 title: Center(
-                  child: Text('Choose definition'),
+                  child: Text('CHOOSE DEFINITION'),
                 ),
               ),
               Expanded(
@@ -70,7 +72,15 @@ class _QuizState extends State<QuizWidget> {
                         onTap: () {
                           _selectDefinition(definition);
                         },
-                        title: Center(child: Text(definition)),
+                        title: Center(
+                          child: Text(
+                            definition,
+                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                  color: _getDefinitionTextColor(definition),
+                                  fontSize: 18,
+                                ),
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -80,18 +90,27 @@ class _QuizState extends State<QuizWidget> {
                 title: Text(
                   '${_step.termIndex + 1} / ${_step.termsCount}',
                   textAlign: TextAlign.center,
-                ),
-              ),
-              LayoutButtonWrapperWidget(
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: _stop,
-                  color: Colors.red,
-                  child: Text(
-                    'Stop',
-                    style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    color: VockifyColors.prussianBlue,
+                    fontSize: 16,
                   ),
                 ),
+              ),
+              AppButtonBarWidget(
+                children: [
+                  RaisedButton(
+                    shape: Border(),
+                    color: VockifyColors.flame,
+                    onPressed: _stop,
+                    child: Text(
+                      'STOP',
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: VockifyColors.ghostWhite,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ),
+                ],
               )
             ],
           );
@@ -112,12 +131,20 @@ class _QuizState extends State<QuizWidget> {
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return Colors.lightGreen;
+      return VockifyColors.prussianBlue;
     } else if (definition == _selectedDefinition) {
-      return Colors.deepOrange;
+      return VockifyColors.flame;
     }
 
-    return Colors.orangeAccent;
+    return VockifyColors.lightSteelBlue;
+  }
+
+  Color _getDefinitionTextColor(String definition) {
+    if (definition == _correctDefinition || definition == _selectedDefinition) {
+      return VockifyColors.white;
+    }
+
+    return VockifyColors.prussianBlue;
   }
 
   void _selectDefinition(String definition) {
