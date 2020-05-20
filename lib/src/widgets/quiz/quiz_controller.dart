@@ -5,6 +5,12 @@ import 'package:vockify/src/widgets/quiz/quiz_step_result.dart';
 class QuizController {
   int _index = 0;
   List<TermState> _terms = [];
+  int _correctCount = 0;
+
+  QuizStep getNextStep() {
+    next();
+    return getStep();
+  }
 
   QuizStep getStep() {
     if (_index > _terms.length - 1) {
@@ -12,19 +18,35 @@ class QuizController {
     }
 
     final term = _terms[_index];
+
     final step = QuizStep(
       term: term.name,
       definitions: _getDefinitions(),
       termIndex: _index,
       termsCount: _terms.length,
+      correctCount: _correctCount,
     );
 
     return step;
   }
 
-  String getCorrectDefinition() => _terms[_index].definition;
+  QuizStepResult getStepResult(String definition) {
+    final term = _terms[_index];
 
-  QuizStepResult getStepResult(String definition) => QuizStepResult(_terms[_index].definition, getStep());
+    if (definition == term.definition) {
+      _correctCount++;
+    }
+
+    final wrongCount = _index - _correctCount + 1;
+
+    return QuizStepResult(
+      correctCount: _correctCount,
+      wrongCount: wrongCount,
+      correctDefinition: term.definition,
+    );
+  }
+
+  int getTermsCount() => _terms.length;
 
   void next() {
     _index++;

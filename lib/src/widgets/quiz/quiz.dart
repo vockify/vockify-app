@@ -19,11 +19,18 @@ class _QuizState extends State<QuizWidget> {
   final QuizController _controller = QuizController();
 
   QuizStep _step;
-  String _correctDefinition;
-  String _selectedDefinition;
-  Timer _selectDefinitionTimer;
 
-  int selectedDefinitionId;
+  int _termsCount;
+
+  int _correctCount = 0;
+  int _wrongCount = 0;
+
+  String _selectedDefinition;
+  String _correctDefinition;
+
+  bool _isFinished = false;
+
+  Timer _selectDefinitionTimer;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +39,15 @@ class _QuizState extends State<QuizWidget> {
         title: 'Quiz',
         body: Center(
           child: Text('Add a terms before start quiz'),
+        ),
+      );
+    }
+
+    if (_isFinished) {
+      return AppLayoutWidget(
+        title: 'Quiz',
+        body: Center(
+          child: Text('Your result: ${_correctCount} / $_termsCount'),
         ),
       );
     }
@@ -86,14 +102,36 @@ class _QuizState extends State<QuizWidget> {
                   },
                 ),
               ),
-              ListTile(
-                title: Text(
-                  '${_step.termIndex + 1} / ${_step.termsCount}',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    color: VockifyColors.prussianBlue,
-                    fontSize: 16,
-                  ),
+              Container(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Wrong: ${_wrongCount}',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: VockifyColors.prussianBlue,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      'Correct: ${_correctCount}',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: VockifyColors.prussianBlue,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      'Total: ${_termsCount}',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: VockifyColors.prussianBlue,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               AppButtonBarWidget(
@@ -126,12 +164,13 @@ class _QuizState extends State<QuizWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     _controller.start(store.state.terms.toList());
+    _termsCount = _controller.getTermsCount();
     _step = _controller.getStep();
   }
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return VockifyColors.prussianBlue;
+      return VockifyColors.green;
     } else if (definition == _selectedDefinition) {
       return VockifyColors.flame;
     }
@@ -152,17 +191,18 @@ class _QuizState extends State<QuizWidget> {
       return;
     }
 
-    final correctDefinition = _controller.getCorrectDefinition();
+    final stepResult = _controller.getStepResult(definition);
 
     setState(() {
-      _correctDefinition = correctDefinition;
+      _correctCount = stepResult.correctCount;
+      _wrongCount = stepResult.wrongCount;
+      _correctDefinition = stepResult.correctDefinition;
       _selectedDefinition = definition;
     });
 
     _selectDefinitionTimer?.cancel();
     _selectDefinitionTimer = Timer(Duration(seconds: 1), () {
-      _controller.next();
-      final step = _controller.getStep();
+      final step = _controller.getNextStep();
 
       if (step != null) {
         setState(() {
@@ -171,8 +211,9 @@ class _QuizState extends State<QuizWidget> {
           _selectedDefinition = null;
         });
       } else {
-        final store = StoreProvider.of<AppState>(context);
-        store.dispatch(NavigateToAction.pop());
+        setState(() {
+          _isFinished = true;
+        });
       }
     });
   }
