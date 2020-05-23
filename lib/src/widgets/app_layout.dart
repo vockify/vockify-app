@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 
-class AppLayoutWidget extends StatelessWidget {
+class AppLayoutWidget extends StatefulWidget {
   final String title;
   final Widget body;
   final List<Widget> actions;
@@ -22,6 +27,35 @@ class AppLayoutWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _AppLayoutState(
+        title: title,
+        body: body,
+        actions: actions,
+        redirectBackRoute: redirectBackRoute,
+        profile: profile,
+      );
+}
+
+class _AppLayoutState extends State<AppLayoutWidget> {
+  final String title;
+  final Widget body;
+  final List<Widget> actions;
+  final String redirectBackRoute;
+  final bool profile;
+
+  StreamSubscription _intentDataStreamSubscription;
+
+  Store<AppState> _store;
+
+  _AppLayoutState({
+    this.title,
+    this.body,
+    this.actions,
+    this.redirectBackRoute,
+    this.profile,
+  });
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -33,16 +67,48 @@ class AppLayoutWidget extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: <Widget>[
           ...actions,
-          if (profile) StoreConnector<AppState, String>(
-            converter: (store) => store.state.user.avatar,
-            builder: (context, url) {
-              return _userAvatar(context, url);
-            },
-          ),
+          if (profile)
+            StoreConnector<AppState, String>(
+              converter: (store) => store.state.user.avatar,
+              builder: (context, url) {
+                return _userAvatar(context, url);
+              },
+            ),
         ],
       ),
       body: body,
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _intentDataStreamSubscription.cancel();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _store = StoreProvider.of<AppState>(context, listen: false);
+
+    _intentDataStreamSubscription = ReceiveSharingIntent.getTextStream().listen(
+      goToShare,
+      onError: (error) {
+        print("getTextStream error: $error");
+      },
+    );
+
+    ReceiveSharingIntent.getInitialText().then(goToShare);
+  }
+
+  void goToShare(String value) {
+    if (value != null) {
+      _store.dispatch(NavigateToAction.push(Routes.share, arguments: {
+        'term': value,
+      }));
+    }
   }
 
   Widget _goBackArrow(BuildContext context) {
@@ -73,7 +139,6 @@ class AppLayoutWidget extends StatelessWidget {
   }
 
   Widget _userAvatar(BuildContext context, String url) {
-    final store = StoreProvider.of<AppState>(context, listen: false);
     return url != null
         ? Padding(
             padding: EdgeInsets.only(right: 16, left: 8),
@@ -81,7 +146,7 @@ class AppLayoutWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => store.dispatch(NavigateToAction.push(Routes.profile)),
+                  onTap: () => _store.dispatch(NavigateToAction.push(Routes.profile)),
                   child: CircleAvatar(backgroundImage: NetworkImage(url)),
                 ),
               ],
