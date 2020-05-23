@@ -21,7 +21,7 @@ class _QuizState extends State<QuizWidget> {
 
   QuizStep _step;
 
-  int _termsCount;
+  int _stepsCount;
 
   int _correctCount;
   int _wrongCount;
@@ -34,41 +34,6 @@ class _QuizState extends State<QuizWidget> {
   Timer _selectDefinitionTimer;
 
   Store<AppState> _store;
-
-  Widget _buildResult() {
-    return Container(
-      height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'Wrong: ${_wrongCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-          Text(
-            'Correct: ${_correctCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-          Text(
-            'Total: ${_termsCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +52,13 @@ class _QuizState extends State<QuizWidget> {
           body: Column(
             children: [
               Expanded(
-                child: Center(
-                  child: Text(
-                    _wrongCount == 0 ? 'You AWESOME!' : 'You can do better\nTry again!',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                )
-              ),
+                  child: Center(
+                child: Text(
+                  _wrongCount == 0 ? 'You AWESOME!' : 'You can do better\nTry again!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              )),
               _buildResult(),
               AppButtonBarWidget(
                 children: [
@@ -198,6 +162,41 @@ class _QuizState extends State<QuizWidget> {
     _start();
   }
 
+  Widget _buildResult() {
+    return Container(
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            'Wrong: ${_wrongCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+          Text(
+            'Correct: ${_correctCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+          Text(
+            'Total: ${_stepsCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
       return VockifyColors.green;
@@ -214,6 +213,10 @@ class _QuizState extends State<QuizWidget> {
     }
 
     return VockifyColors.prussianBlue;
+  }
+
+  void _retry() {
+    setState(_start);
   }
 
   void _selectDefinition(String definition) {
@@ -248,18 +251,9 @@ class _QuizState extends State<QuizWidget> {
     });
   }
 
-  void _stop() {
-    _selectDefinitionTimer?.cancel();
-    _store.dispatch(NavigateToAction.pop());
-  }
-
-  void _retry() {
-    setState(_start);
-  }
-
   void _start() {
     _controller.start(_store.state.terms.toList());
-    _termsCount = _controller.getTermsCount();
+    _stepsCount = _controller.getStepsCount();
     _step = _controller.getStep();
 
     _correctCount = 0;
@@ -269,5 +263,10 @@ class _QuizState extends State<QuizWidget> {
     _selectedDefinition = null;
 
     _isFinished = false;
+  }
+
+  void _stop() {
+    _selectDefinitionTimer?.cancel();
+    _store.dispatch(NavigateToAction.pop());
   }
 }

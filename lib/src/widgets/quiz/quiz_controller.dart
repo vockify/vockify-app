@@ -3,6 +3,8 @@ import 'package:vockify/src/widgets/quiz/quiz_step.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step_result.dart';
 
 class QuizController {
+  static const stepsCount = 20;
+
   int _index = 0;
   List<TermState> _terms = [];
   int _correctCount = 0;
@@ -46,21 +48,23 @@ class QuizController {
     );
   }
 
-  int getTermsCount() => _terms.length;
+  int getStepsCount() => _terms?.length ?? 0;
 
   void next() {
     _index++;
   }
 
   void start(List<TermState> terms) {
-    _terms = terms.toList();
-    _terms.shuffle();
+    _terms = terms.toList()..shuffle();
+    _terms = _terms.take(stepsCount).toList();
     _index = 0;
+    _correctCount = 0;
   }
 
   void stop() {
     _terms = [];
     _index = 0;
+    _correctCount = 0;
   }
 
   List<String> _getDefinitions() {

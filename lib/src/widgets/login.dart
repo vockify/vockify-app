@@ -8,7 +8,7 @@ class LoginWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('VOCKIFY'),
       ),
       body: Center(
         child: StoreConnector<AppState, VoidCallback>(
@@ -16,9 +16,10 @@ class LoginWidget extends StatelessWidget {
             return () => store.dispatch(RequestAuthorizeAction());
           },
           builder: (context, callback) {
-            return RaisedButton(
-              child: Text('Login by Google'),
+            return FlatButton(
+              padding: EdgeInsets.all(0),
               onPressed: callback,
+              child: Image.asset('assets/btn_google_signin_dark_normal_web@2x.png', width: 240,),
             );
           },
         ),

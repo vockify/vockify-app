@@ -10,13 +10,15 @@ class AppLayoutWidget extends StatelessWidget {
   final Widget body;
   final List<Widget> actions;
   final String redirectBackRoute;
+  final bool profile;
 
-  const AppLayoutWidget({
+  AppLayoutWidget({
     Key key,
     this.title,
     this.body,
     this.actions = const [],
     this.redirectBackRoute,
+    this.profile = true,
   }) : super(key: key);
 
   @override
@@ -31,10 +33,10 @@ class AppLayoutWidget extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: <Widget>[
           ...actions,
-          StoreConnector<AppState, String>(
+          if (profile) StoreConnector<AppState, String>(
             converter: (store) => store.state.user.avatar,
             builder: (context, url) {
-              return _userAvatar(url);
+              return _userAvatar(context, url);
             },
           ),
         ],
@@ -70,14 +72,18 @@ class AppLayoutWidget extends StatelessWidget {
     );
   }
 
-  Widget _userAvatar(String url) {
+  Widget _userAvatar(BuildContext context, String url) {
+    final store = StoreProvider.of<AppState>(context, listen: false);
     return url != null
         ? Padding(
             padding: EdgeInsets.only(right: 16, left: 8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(backgroundImage: NetworkImage(url)),
+                GestureDetector(
+                  onTap: () => store.dispatch(NavigateToAction.push(Routes.profile)),
+                  child: CircleAvatar(backgroundImage: NetworkImage(url)),
+                ),
               ],
             ),
           )

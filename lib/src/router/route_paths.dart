@@ -2,6 +2,7 @@ import 'package:vockify/src/router/route_path.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
+import 'package:vockify/src/widgets/profile.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/set.dart';
 import 'package:vockify/src/widgets/sets.dart';
@@ -13,6 +14,10 @@ class RoutePaths {
     RoutePath(
       Routes.login,
       (arguments) => LoginWidget(),
+    ),
+    RoutePath(
+      Routes.profile,
+      (arguments) => ProfileWidget(),
     ),
     RoutePath(
       Routes.sets,
