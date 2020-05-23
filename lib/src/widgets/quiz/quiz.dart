@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -19,11 +20,55 @@ class _QuizState extends State<QuizWidget> {
   final QuizController _controller = QuizController();
 
   QuizStep _step;
-  String _correctDefinition;
+
+  int _termsCount;
+
+  int _correctCount;
+  int _wrongCount;
+
   String _selectedDefinition;
+  String _correctDefinition;
+
+  bool _isFinished;
+
   Timer _selectDefinitionTimer;
 
-  int selectedDefinitionId;
+  Store<AppState> _store;
+
+  Widget _buildResult() {
+    return Container(
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            'Wrong: ${_wrongCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+          Text(
+            'Correct: ${_correctCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+          Text(
+            'Total: ${_termsCount}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.prussianBlue,
+                  fontSize: 16,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +76,44 @@ class _QuizState extends State<QuizWidget> {
       return AppLayoutWidget(
         title: 'Quiz',
         body: Center(
-          child: Text('Add a terms before start quiz'),
+          child: Text('Add terms before starting quiz'),
         ),
       );
+    }
+
+    if (_isFinished) {
+      return AppLayoutWidget(
+          title: 'Quiz',
+          body: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Text(
+                    _wrongCount == 0 ? 'You AWESOME!' : 'You can do better\nTry again!',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                )
+              ),
+              _buildResult(),
+              AppButtonBarWidget(
+                children: [
+                  RaisedButton(
+                    shape: Border(),
+                    color: VockifyColors.green,
+                    onPressed: _retry,
+                    child: Text(
+                      'RETRY',
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: VockifyColors.ghostWhite,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));
     }
 
     return AppLayoutWidget(
@@ -86,16 +166,7 @@ class _QuizState extends State<QuizWidget> {
                   },
                 ),
               ),
-              ListTile(
-                title: Text(
-                  '${_step.termIndex + 1} / ${_step.termsCount}',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    color: VockifyColors.prussianBlue,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+              _buildResult(),
               AppButtonBarWidget(
                 children: [
                   RaisedButton(
@@ -123,15 +194,13 @@ class _QuizState extends State<QuizWidget> {
   void initState() {
     super.initState();
 
-    final store = StoreProvider.of<AppState>(context, listen: false);
-
-    _controller.start(store.state.terms.toList());
-    _step = _controller.getStep();
+    _store = StoreProvider.of<AppState>(context, listen: false);
+    _start();
   }
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return VockifyColors.prussianBlue;
+      return VockifyColors.green;
     } else if (definition == _selectedDefinition) {
       return VockifyColors.flame;
     }
@@ -152,17 +221,18 @@ class _QuizState extends State<QuizWidget> {
       return;
     }
 
-    final correctDefinition = _controller.getCorrectDefinition();
+    final stepResult = _controller.getStepResult(definition);
 
     setState(() {
-      _correctDefinition = correctDefinition;
+      _correctCount = stepResult.correctCount;
+      _wrongCount = stepResult.wrongCount;
+      _correctDefinition = stepResult.correctDefinition;
       _selectedDefinition = definition;
     });
 
     _selectDefinitionTimer?.cancel();
     _selectDefinitionTimer = Timer(Duration(seconds: 1), () {
-      _controller.next();
-      final step = _controller.getStep();
+      final step = _controller.getNextStep();
 
       if (step != null) {
         setState(() {
@@ -171,15 +241,33 @@ class _QuizState extends State<QuizWidget> {
           _selectedDefinition = null;
         });
       } else {
-        final store = StoreProvider.of<AppState>(context);
-        store.dispatch(NavigateToAction.pop());
+        setState(() {
+          _isFinished = true;
+        });
       }
     });
   }
 
   void _stop() {
     _selectDefinitionTimer?.cancel();
-    final store = StoreProvider.of<AppState>(context);
-    store.dispatch(NavigateToAction.pop());
+    _store.dispatch(NavigateToAction.pop());
+  }
+
+  void _retry() {
+    setState(_start);
+  }
+
+  void _start() {
+    _controller.start(_store.state.terms.toList());
+    _termsCount = _controller.getTermsCount();
+    _step = _controller.getStep();
+
+    _correctCount = 0;
+    _wrongCount = 0;
+
+    _correctDefinition = null;
+    _selectedDefinition = null;
+
+    _isFinished = false;
   }
 }

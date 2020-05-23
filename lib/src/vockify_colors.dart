@@ -26,4 +26,5 @@ class VockifyColors {
   static const black = Colors.black;
   static const white = Colors.white;
   static const grey = Colors.white70;
+  static const green = Colors.lightGreen;
 }
