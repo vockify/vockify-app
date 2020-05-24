@@ -6,7 +6,7 @@ import 'package:vockify/src/widgets/profile.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/set.dart';
 import 'package:vockify/src/widgets/sets.dart';
-import 'package:vockify/src/widgets/share.dart';
+import 'package:vockify/src/widgets/share/share.dart';
 import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/widgets/terms.dart';
 

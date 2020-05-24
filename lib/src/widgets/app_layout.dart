@@ -105,9 +105,15 @@ class _AppLayoutState extends State<AppLayoutWidget> {
 
   void goToShare(String value) {
     if (value != null) {
-      _store.dispatch(NavigateToAction.push(Routes.share, arguments: {
-        'term': value,
-      }));
+      if (ModalRoute.of(context).settings.name == Routes.share) {
+        _store.dispatch(NavigateToAction.replace(Routes.share, arguments: {
+          'term': value,
+        }));
+      } else {
+        _store.dispatch(NavigateToAction.push(Routes.share, arguments: {
+          'term': value,
+        }));
+      }
     }
   }
 
