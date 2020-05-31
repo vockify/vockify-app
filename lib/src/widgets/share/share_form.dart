@@ -44,8 +44,9 @@ class _ShareFormState extends State<ShareFormWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'First you need to create a set',
-              style: Theme.of(context).textTheme.headline4,
+              'ДЛЯ НАЧАЛА ВАМ НУЖНО ДОБАВИТЬ НАБОР',
+              style: Theme.of(context).textTheme.headline6,
+              textAlign: TextAlign.center,
             ),
             Padding(
               padding: EdgeInsets.all(20),
@@ -56,7 +57,7 @@ class _ShareFormState extends State<ShareFormWidget> {
               onPressed: () {
                 _store.dispatch(NavigateToAction.replace(Routes.set));
               },
-              child: Text('CREATE SET'),
+              child: Text('ДОБАВИТЬ НАБОР'),
             )
           ],
         ),
@@ -76,9 +77,9 @@ class _ShareFormState extends State<ShareFormWidget> {
                 children: <Widget>[
                   _buildSetsDropdown(_selectedSetId, _store.state.sets),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  _buildFormField("NAME", _nameController),
+                  _buildFormField("СЛОВО", _nameController),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  _buildFormField("DEFINITION", _definitionController),
+                  _buildFormField("ЗНАЧЕНИЕ", _definitionController),
                 ],
               ),
             ),
@@ -123,7 +124,7 @@ class _ShareFormState extends State<ShareFormWidget> {
           shape: Border(),
           color: VockifyColors.grey,
           child: Text(
-            "CANCEL",
+            "ОТМЕНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
                   fontSize: 16,
@@ -135,7 +136,7 @@ class _ShareFormState extends State<ShareFormWidget> {
           shape: Border(),
           color: VockifyColors.fulvous,
           child: Text(
-            "SAVE",
+            "СОХРАНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
@@ -176,7 +177,7 @@ class _ShareFormState extends State<ShareFormWidget> {
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return 'The value is required';
+          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
         }
 
         return null;

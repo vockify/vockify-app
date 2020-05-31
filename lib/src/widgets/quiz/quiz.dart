@@ -7,7 +7,6 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
-import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_result.dart';
@@ -44,90 +43,78 @@ class _QuizState extends State<QuizWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_step == null) {
-      return AppLayoutWidget(
-        title: 'QUIZ',
-        body: Center(
-          child: Text('Add terms before starting quiz'),
-        ),
-      );
-    }
-
     if (_isFinished) {
       return _buildResult();
     }
 
-    return AppLayoutWidget(
-      title: 'QUIZ',
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Card(
-              color: VockifyColors.lightSteelBlue,
-              child: ListTile(
-                title: Center(
-                  child: Text(
-                    _step.term,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          fontSize: 18,
-                        ),
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Card(
+            color: VockifyColors.lightSteelBlue,
+            child: ListTile(
+              title: Center(
+                child: Text(
+                  _step.term,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    fontSize: 18,
                   ),
                 ),
               ),
             ),
           ),
-          ListTile(
-            title: Center(
-              child: Text('CHOOSE DEFINITION'),
-            ),
+        ),
+        ListTile(
+          title: Center(
+            child: Text('ВЫБЕРИТЕ ЗНАЧЕНИЕ'),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(10),
-              itemCount: _step.definitions.length,
-              itemBuilder: (BuildContext context, int index) {
-                final definition = _step.definitions[index];
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: _step.definitions.length,
+            itemBuilder: (BuildContext context, int index) {
+              final definition = _step.definitions[index];
 
-                return Card(
-                  color: _getDefinitionColor(definition),
-                  child: ListTile(
-                    onTap: () {
-                      _selectDefinition(definition);
-                    },
-                    title: Center(
-                      child: Text(
-                        definition,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              color: _getDefinitionTextColor(definition),
-                              fontSize: 18,
-                            ),
+              return Card(
+                color: _getDefinitionColor(definition),
+                child: ListTile(
+                  onTap: () {
+                    _selectDefinition(definition);
+                  },
+                  title: Center(
+                    child: Text(
+                      definition,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: _getDefinitionTextColor(definition),
+                        fontSize: 18,
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-          _buildInfo(),
-          AppButtonBarWidget(
-            children: [
-              RaisedButton(
-                shape: Border(),
-                color: VockifyColors.flame,
-                onPressed: _stop,
-                child: Text(
-                  'STOP',
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: VockifyColors.ghostWhite,
-                        fontSize: 16,
-                      ),
+        ),
+        _buildInfo(),
+        AppButtonBarWidget(
+          children: [
+            RaisedButton(
+              shape: Border(),
+              color: VockifyColors.flame,
+              onPressed: _stop,
+              child: Text(
+                'ОСТАНОВИТЬ',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.ghostWhite,
+                  fontSize: 16,
                 ),
               ),
-            ],
-          )
-        ],
-      ),
+            ),
+          ],
+        )
+      ],
     );
   }
 
@@ -153,7 +140,7 @@ class _QuizState extends State<QuizWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Wrong: ${_wrongCount}',
+            'ОШИБОК: ${_wrongCount}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
@@ -161,7 +148,7 @@ class _QuizState extends State<QuizWidget> {
                 ),
           ),
           Text(
-            'Correct: ${_correctCount}',
+            'ПРАВИЛЬНО: ${_correctCount}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
@@ -169,7 +156,7 @@ class _QuizState extends State<QuizWidget> {
                 ),
           ),
           Text(
-            'Total: ${_stepsCount}',
+            'ВСЕГО: ${_stepsCount}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
@@ -182,69 +169,66 @@ class _QuizState extends State<QuizWidget> {
   }
 
   Widget _buildResult() {
-    return AppLayoutWidget(
-      title: 'QUIZ',
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
-            child: Text(
-              _wrongCount == 0 ? 'You AWESOME!' : 'You can do better\nTry again!',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline4,
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
+          child: Text(
+            _wrongCount == 0 ? 'ПОЗДРАВЛЯЮ! ВЫ ВЫУЧИЛИ ВСЕ СЛОВА!' : 'ВЫ МОЖЕТЕ ЛУЧШЕ\nПОРОБУЙТЕ СНОВА!',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline4,
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(10),
-              itemCount: _result.terms.length,
-              itemBuilder: (BuildContext context, int index) {
-                final term = _result.terms[index];
-                final isWrong = _result.wrongIds.contains(term.id);
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: _result.terms.length,
+            itemBuilder: (BuildContext context, int index) {
+              final term = _result.terms[index];
+              final isWrong = _result.wrongIds.contains(term.id);
 
-                return Card(
-                  color: isWrong ? VockifyColors.flame : VockifyColors.lightSteelBlue,
-                  child: ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Center(
-                          child: Text(
-                            term.name,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                  color: isWrong ? VockifyColors.white : VockifyColors.prussianBlue,
-                                  fontSize: 18,
-                                ),
+              return Card(
+                color: isWrong ? VockifyColors.flame : VockifyColors.lightSteelBlue,
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Center(
+                        child: Text(
+                          term.name,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: isWrong ? VockifyColors.white : VockifyColors.prussianBlue,
+                            fontSize: 18,
                           ),
                         ),
-                        isWrong ? Icon(Icons.close) : Icon(Icons.check),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          _buildInfo(),
-          AppButtonBarWidget(
-            children: [
-              RaisedButton(
-                shape: Border(),
-                color: VockifyColors.green,
-                onPressed: _retry,
-                child: Text(
-                  'RETRY',
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: VockifyColors.ghostWhite,
-                        fontSize: 16,
                       ),
+                      isWrong ? Icon(Icons.close) : Icon(Icons.check),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        _buildInfo(),
+        AppButtonBarWidget(
+          children: [
+            RaisedButton(
+              shape: Border(),
+              color: VockifyColors.green,
+              onPressed: _retry,
+              child: Text(
+                'ПОВТОРИТЬ',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: VockifyColors.ghostWhite,
+                  fontSize: 16,
                 ),
               ),
-            ],
-          )
-        ],
-      ),
+            ),
+          ],
+        )
+      ],
     );
   }
 

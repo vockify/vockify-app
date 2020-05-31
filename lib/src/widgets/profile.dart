@@ -10,7 +10,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'PROFILE',
+      title: 'МОЙ ПРОФИЛЬ',
       profile: false,
       body: Center(
         child: StoreConnector<AppState, UserState>(
@@ -46,7 +46,7 @@ class ProfileWidget extends StatelessWidget {
                     final store = StoreProvider.of<AppState>(context);
                     store.dispatch(UnauthorizeAction());
                   },
-                  child: Text('LOGOUT'),
+                  child: Text('ВЫЙТИ'),
                 ),
               ],
             );

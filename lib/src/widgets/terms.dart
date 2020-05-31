@@ -29,7 +29,7 @@ class _TermsState extends State<TermsWidget> {
     final setId = widget.setId;
     final store = StoreProvider.of<AppState>(context);
     final set = store.state.sets.firstWhere((set) => set.id == setId, orElse: () => null);
-    final setName = set?.name ?? 'Terms';
+    final setName = set?.name ?? 'МОИ СЛОВА';
 
     return AppLayoutWidget(
       redirectBackRoute: Routes.sets,
@@ -75,7 +75,7 @@ class _TermsState extends State<TermsWidget> {
                     },
                   ),
                 ),
-                _buildButtonBar(context),
+                _buildButtonBar(context, viewModel),
               ],
             );
           },
@@ -84,7 +84,7 @@ class _TermsState extends State<TermsWidget> {
     );
   }
 
-  Widget _buildButtonBar(BuildContext context) {
+  Widget _buildButtonBar(BuildContext context, TermsViewModel viewModel) {
     final store = StoreProvider.of<AppState>(context);
 
     return AppButtonBarWidget(
@@ -92,12 +92,9 @@ class _TermsState extends State<TermsWidget> {
         RaisedButton(
           shape: Border(),
           color: VockifyColors.prussianBlue,
-          onPressed: () {
-            final url = Router.routeToPath(Routes.quiz, {'setId': widget.setId.toString()});
-            store.dispatch(NavigateToAction.push(url));
-          },
+          onPressed: () => viewModel.navigateToQuiz(widget.setId),
           child: Text(
-            'START QUIZ',
+            'УЧИТЬ',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.ghostWhite,
                   fontSize: 16,
@@ -118,7 +115,7 @@ class _TermsState extends State<TermsWidget> {
             );
           },
           child: Text(
-            'ADD TERM',
+            'ДОБАВИТЬ',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
@@ -159,14 +156,14 @@ class _TermsState extends State<TermsWidget> {
       ),
       secondaryActions: <Widget>[
         IconSlideAction(
-          caption: 'EDIT',
+          caption: 'ИЗМЕНИТЬ',
           color: VockifyColors.fulvous,
           foregroundColor: VockifyColors.white,
           icon: Icons.edit,
           onTap: () => viewModel.navigateToTerm(term.setId.toString(), term.id.toString()),
         ),
         IconSlideAction(
-          caption: 'DELETE',
+          caption: 'УДАЛИТЬ',
           color: VockifyColors.flame,
           foregroundColor: VockifyColors.white,
           icon: Icons.delete,

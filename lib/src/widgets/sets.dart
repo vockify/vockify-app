@@ -47,6 +47,30 @@ class SetsWidget extends StatelessWidget {
             return SetsViewModel.fromStore(store);
           },
           builder: (context, viewModel) {
+            if (viewModel.sets.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'ДЛЯ НАЧАЛА ВАМ НУЖНО ДОБАВИТЬ НАБОР',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                    ),
+                    FlatButton(
+                      color: VockifyColors.fulvous,
+                      textColor: VockifyColors.white,
+                      onPressed: viewModel.navigateToSet,
+                      child: Text('ДОБАВИТЬ НАБОР'),
+                    )
+                  ],
+                ),
+              );
+            }
+
             return ListView.builder(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               itemCount: viewModel.sets.length,
@@ -88,14 +112,13 @@ class SetsWidget extends StatelessWidget {
                                     PopupMenuItem(
                                       value: _menuItemEdit,
                                       child: Text(
-                                        'Edit',
-//                                        style: TextStyle(color: VockifyColors.flame),
+                                        'ИЗМЕНИТЬ',
                                       ),
                                     ),
                                     PopupMenuItem(
                                       value: _menuItemDelete,
                                       child: Text(
-                                        'Delete',
+                                        'УДАЛИТЬ',
                                         style: TextStyle(color: VockifyColors.flame),
                                       ),
                                     )
@@ -126,11 +149,8 @@ class SetsWidget extends StatelessWidget {
                           overflowDirection: VerticalDirection.up,
                           children: <Widget>[
                             FlatButton(
-                              onPressed: () {
-                                final url = Router.routeToPath(Routes.quiz, {'setId': set.id.toString()});
-                                store.dispatch(NavigateToAction.push(url));
-                              },
-                              child: Text('START QUIZ'),
+                              onPressed: () => viewModel.navigateToQuiz(set.id),
+                              child: Text('УЧИТЬ'),
                               textColor: VockifyColors.prussianBlue,
                             ),
                             FlatButton(
@@ -145,7 +165,7 @@ class SetsWidget extends StatelessWidget {
 
                                 store.dispatch(NavigateToAction.push(url));
                               },
-                              child: Text('ADD TERM'),
+                              child: Text('ДОБАВИТЬ СЛОВО'),
                               textColor: VockifyColors.fulvous,
                             ),
                           ],

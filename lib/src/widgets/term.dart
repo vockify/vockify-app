@@ -34,7 +34,7 @@ class _TermState extends State<TermWidget> {
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'Save Term',
+      title: widget.termId == null ? 'ДОБАВИТЬ СЛОВО' : 'ИЗМЕНИТЬ СЛОВО',
       body: Center(
         child: LayoutBuilder(
           builder: (context, constraint) {
@@ -73,10 +73,10 @@ class _TermState extends State<TermWidget> {
                                   children: <Widget>[
                                     _setsList(viewModel.sets),
                                     Padding(padding: EdgeInsets.only(top: 20)),
-                                    _formField("Name", _nameController),
+                                    _formField("СЛОВО", _nameController),
                                     Padding(padding: EdgeInsets.only(top: 20)),
                                     _formField(
-                                      "Definition",
+                                      "ЗНАЧЕНИЕ",
                                       _definitionController,
                                       suffixIcon: _translateAddonButton(),
                                     ),
@@ -113,7 +113,7 @@ class _TermState extends State<TermWidget> {
           shape: Border(),
           color: VockifyColors.grey,
           child: Text(
-            "CANCEL",
+            "ОТМЕНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
                   fontSize: 16,
@@ -125,7 +125,7 @@ class _TermState extends State<TermWidget> {
           shape: Border(),
           color: VockifyColors.fulvous,
           child: Text(
-            "SAVE",
+            "СОХРАНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
@@ -140,7 +140,7 @@ class _TermState extends State<TermWidget> {
                 int.parse(selectedSet),
               );
 
-              viewModel.requestSaveTerm(termDto);
+              viewModel.saveTerm(termDto);
               viewModel.navigateBack();
             }
           },
@@ -162,7 +162,7 @@ class _TermState extends State<TermWidget> {
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return 'The value is required';
+          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
         }
         return null;
       },

@@ -10,14 +10,14 @@ import 'package:vockify/src/redux/state/set_state.dart';
 
 class TermViewModel {
   final BuiltList<SetState> sets;
-  final Function(TermDto) requestSaveTerm;
+  final Function(TermDto) saveTerm;
   final VoidCallback navigateBack;
 
-  TermViewModel({
-    this.requestSaveTerm,
-    this.navigateBack,
-    this.sets,
-  });
+  TermViewModel.fromStore(Store<AppState> store)
+      : sets = store.state.sets,
+        saveTerm = ((term) =>
+            term.id > 0 ? store.dispatch(RequestUpdateTermAction(term)) : store.dispatch(RequestAddTermAction(term))),
+        navigateBack = (() => store.dispatch(NavigateToAction.pop()));
 
   @override
   int get hashCode => sets.hashCode;
@@ -26,14 +26,5 @@ class TermViewModel {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermViewModel && this.sets == other.sets;
-  }
-
-  static TermViewModel fromStore(Store<AppState> store) {
-    return TermViewModel(
-      sets: store.state.sets,
-      navigateBack: () => store.dispatch(NavigateToAction.pop()),
-      requestSaveTerm: (term) =>
-          term.id > 0 ? store.dispatch(RequestUpdateTermAction(term)) : store.dispatch(RequestAddTermAction(term)),
-    );
   }
 }
