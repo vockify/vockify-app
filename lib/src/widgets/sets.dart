@@ -127,7 +127,8 @@ class SetsWidget extends StatelessWidget {
                           children: <Widget>[
                             FlatButton(
                               onPressed: () {
-                                store.dispatch(NavigateToAction.push(Routes.quiz));
+                                final url = Router.routeToPath(Routes.quiz, {'setId': set.id.toString()});
+                                store.dispatch(NavigateToAction.push(url));
                               },
                               child: Text('START QUIZ'),
                               textColor: VockifyColors.prussianBlue,

@@ -110,6 +110,8 @@ class _ShareFormState extends State<ShareFormWidget> {
         if (value.data.isNotEmpty) {
           _definitionController.text = value.data.first.text;
         }
+      }).catchError((error) {
+        print(error);
       });
     }
   }

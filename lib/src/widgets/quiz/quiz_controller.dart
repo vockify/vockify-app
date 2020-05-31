@@ -1,17 +1,35 @@
 import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/widgets/quiz/quiz_result.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step_result.dart';
 
 class QuizController {
-  static const stepsCount = 20;
+  static const stepsCount = 10;
 
   int _index = 0;
   List<TermState> _terms = [];
   int _correctCount = 0;
+  List<int> _wrongIds = [];
 
   QuizStep getNextStep() {
     next();
     return getStep();
+  }
+
+  QuizResult getResult() {
+    final terms = _terms.toList();
+    terms.sort((a ,b) {
+      if (_wrongIds.contains(a.id) && !_wrongIds.contains(b.id)) {
+        return -1;
+      }
+
+      if (!_wrongIds.contains(a.id) && _wrongIds.contains(b.id)) {
+        return 1;
+      }
+
+      return 0;
+    });
+    return QuizResult(terms: terms, wrongIds: _wrongIds);
   }
 
   QuizStep getStep() {
@@ -37,6 +55,8 @@ class QuizController {
 
     if (definition == term.definition) {
       _correctCount++;
+    } else {
+      _wrongIds.add(term.id);
     }
 
     final wrongCount = _index - _correctCount + 1;
@@ -59,12 +79,14 @@ class QuizController {
     _terms = _terms.take(stepsCount).toList();
     _index = 0;
     _correctCount = 0;
+    _wrongIds = [];
   }
 
   void stop() {
     _terms = [];
     _index = 0;
     _correctCount = 0;
+    _wrongIds = [];
   }
 
   List<String> _getDefinitions() {

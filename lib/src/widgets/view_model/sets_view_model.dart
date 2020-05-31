@@ -10,14 +10,12 @@ import 'package:vockify/src/router/routes.dart';
 class SetsViewModel {
   final Function(int) removeSet;
   final Function(int setId) navigateToTerms;
-  final Function(int setId) navigateToQuiz;
   final BuiltList<SetState> sets;
 
   SetsViewModel({
     this.removeSet,
     this.sets,
     this.navigateToTerms,
-    this.navigateToQuiz,
   });
 
   @override
@@ -37,7 +35,6 @@ class SetsViewModel {
         final url = Router.routeToPath(Routes.terms, {'id': setId.toString()});
         store.dispatch(NavigateToAction.push(url));
       },
-      navigateToQuiz: (int setId) => store.dispatch(NavigateToAction.push(Routes.quiz)),
     );
   }
 }

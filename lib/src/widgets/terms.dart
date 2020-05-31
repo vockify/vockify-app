@@ -92,7 +92,10 @@ class _TermsState extends State<TermsWidget> {
         RaisedButton(
           shape: Border(),
           color: VockifyColors.prussianBlue,
-          onPressed: () => store.dispatch(NavigateToAction.push(Routes.quiz)),
+          onPressed: () {
+            final url = Router.routeToPath(Routes.quiz, {'setId': widget.setId.toString()});
+            store.dispatch(NavigateToAction.push(url));
+          },
           child: Text(
             'START QUIZ',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
