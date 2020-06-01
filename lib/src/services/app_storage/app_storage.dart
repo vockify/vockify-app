@@ -7,6 +7,7 @@ abstract class AppStorage {
   Future<bool> containsKey(String key);
 
   Future<String> getValue(String key);
+  Future<bool> exist(String key);
 
   Future<void> remove(String key);
 

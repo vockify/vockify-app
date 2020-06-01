@@ -3,13 +3,13 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
 import 'package:vockify/src/widgets/profile.dart';
-import 'package:vockify/src/widgets/quiz/quiz.dart';
 import 'package:vockify/src/widgets/quiz/quiz_page.dart';
 import 'package:vockify/src/widgets/set.dart';
 import 'package:vockify/src/widgets/sets.dart';
 import 'package:vockify/src/widgets/share/share.dart';
 import 'package:vockify/src/widgets/term.dart';
 import 'package:vockify/src/widgets/terms.dart';
+import 'package:vockify/src/widgets/tour.dart';
 
 class RoutePaths {
   static final List<RoutePath> routePaths = [
@@ -20,6 +20,10 @@ class RoutePaths {
     RoutePath(
       Routes.profile,
       (arguments) => ProfileWidget(),
+    ),
+    RoutePath(
+      Routes.tour,
+          (arguments) => TourWidget(),
     ),
     RoutePath(
       Routes.sets,

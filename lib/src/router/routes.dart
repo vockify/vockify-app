@@ -1,5 +1,6 @@
 class Routes {
   static final String app = "/";
+  static final String tour = "/tour";
   static final String login = "/login";
   static final String profile = "/profile";
   static final String sets = "/sets";
