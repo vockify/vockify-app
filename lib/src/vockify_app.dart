@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -15,7 +16,16 @@ import 'router/route_paths.dart';
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
 
-  VockifyApp({Key key, this.store}) : super(key: key);
+  VockifyApp({Key key, this.store}) : super(key: key) {
+    ReceiveSharingIntent.getTextStream().listen(
+      _goToShare,
+      onError: (error) {
+        print("getTextStream error: $error");
+      },
+    );
+
+    ReceiveSharingIntent.getInitialText().then(_goToShare);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,5 +72,19 @@ class VockifyApp extends StatelessWidget {
     }
 
     return _buildRoute(settings, AppLoaderWidget(route: Routes.sets));
+  }
+
+  void _goToShare(String value) {
+    if (value != null) {
+      store.dispatch(
+        NavigateToAction.pushNamedAndRemoveUntil(
+          Routes.share,
+          (route) => route.settings.name != Routes.share,
+          arguments: {
+            'term': value,
+          },
+        ),
+      );
+    }
   }
 }

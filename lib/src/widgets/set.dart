@@ -26,7 +26,7 @@ class _SetState extends State<SetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.setId != null ? 'Edit Set' : 'Add Set';
+    final title = widget.setId != null ? 'ИЗМЕНИТЬ НАБОР' : 'ДОБАВИТЬ НАБОР';
 
     return AppLayoutWidget(
       title: title,
@@ -62,7 +62,7 @@ class _SetState extends State<SetWidget> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    _formField("Name", _nameController),
+                                    _formField("НАЗВАНИЕ", _nameController),
                                   ],
                                 ),
                               ),
@@ -97,7 +97,7 @@ class _SetState extends State<SetWidget> {
           shape: Border(),
           color: VockifyColors.grey,
           child: Text(
-            "CANCEL",
+            "ОТМЕНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.prussianBlue,
                   fontSize: 16,
@@ -109,7 +109,7 @@ class _SetState extends State<SetWidget> {
           shape: Border(),
           color: VockifyColors.fulvous,
           child: Text(
-            "SAVE",
+            "СОХРАНИТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
@@ -149,7 +149,7 @@ class _SetState extends State<SetWidget> {
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return 'The value is required';
+          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
         }
 
         return null;

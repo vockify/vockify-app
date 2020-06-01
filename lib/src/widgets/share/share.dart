@@ -19,7 +19,7 @@ class _ShareState extends State<ShareWidget> {
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'ADD TERM',
+      title: 'ДОБАВИТЬ СЛОВО',
       body: Center(
         child: LayoutBuilder(
           builder: (context, constraint) {

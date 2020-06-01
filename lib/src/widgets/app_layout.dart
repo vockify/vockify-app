@@ -1,16 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 
-class AppLayoutWidget extends StatefulWidget {
+class AppLayoutWidget extends StatelessWidget {
   final String title;
   final Widget body;
   final List<Widget> actions;
@@ -25,35 +20,6 @@ class AppLayoutWidget extends StatefulWidget {
     this.redirectBackRoute,
     this.profile = true,
   }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _AppLayoutState(
-        title: title,
-        body: body,
-        actions: actions,
-        redirectBackRoute: redirectBackRoute,
-        profile: profile,
-      );
-}
-
-class _AppLayoutState extends State<AppLayoutWidget> {
-  final String title;
-  final Widget body;
-  final List<Widget> actions;
-  final String redirectBackRoute;
-  final bool profile;
-
-  StreamSubscription _intentDataStreamSubscription;
-
-  Store<AppState> _store;
-
-  _AppLayoutState({
-    this.title,
-    this.body,
-    this.actions,
-    this.redirectBackRoute,
-    this.profile,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,43 +44,6 @@ class _AppLayoutState extends State<AppLayoutWidget> {
       ),
       body: body,
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _intentDataStreamSubscription.cancel();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _store = StoreProvider.of<AppState>(context, listen: false);
-
-    _intentDataStreamSubscription = ReceiveSharingIntent.getTextStream().listen(
-      goToShare,
-      onError: (error) {
-        print("getTextStream error: $error");
-      },
-    );
-
-    ReceiveSharingIntent.getInitialText().then(goToShare);
-  }
-
-  void goToShare(String value) {
-    if (value != null) {
-      if (ModalRoute.of(context).settings.name == Routes.share) {
-        _store.dispatch(NavigateToAction.replace(Routes.share, arguments: {
-          'term': value,
-        }));
-      } else {
-        _store.dispatch(NavigateToAction.push(Routes.share, arguments: {
-          'term': value,
-        }));
-      }
-    }
   }
 
   Widget _goBackArrow(BuildContext context) {
@@ -145,6 +74,8 @@ class _AppLayoutState extends State<AppLayoutWidget> {
   }
 
   Widget _userAvatar(BuildContext context, String url) {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+
     return url != null
         ? Padding(
             padding: EdgeInsets.only(right: 16, left: 8),
@@ -152,7 +83,7 @@ class _AppLayoutState extends State<AppLayoutWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => _store.dispatch(NavigateToAction.push(Routes.profile)),
+                  onTap: () => store.dispatch(NavigateToAction.push(Routes.profile)),
                   child: CircleAvatar(backgroundImage: NetworkImage(url)),
                 ),
               ],

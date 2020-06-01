@@ -4,6 +4,7 @@ import 'package:vockify/src/widgets/auth_layout.dart';
 import 'package:vockify/src/widgets/login.dart';
 import 'package:vockify/src/widgets/profile.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
+import 'package:vockify/src/widgets/quiz/quiz_page.dart';
 import 'package:vockify/src/widgets/set.dart';
 import 'package:vockify/src/widgets/sets.dart';
 import 'package:vockify/src/widgets/share/share.dart';
@@ -34,7 +35,7 @@ class RoutePaths {
     ),
     RoutePath(
       Routes.quiz,
-      (arguments) => AuthLayoutWidget(QuizWidget()),
+      (arguments) => AuthLayoutWidget(QuizPageWidget(setId: int.parse(_getArgument(arguments, 'setId')))),
     ),
     RoutePath(
       Routes.terms,

@@ -11,15 +11,25 @@ import 'package:vockify/src/router/routes.dart';
 class TermsViewModel {
   final bool isLoading;
   final BuiltList<TermState> terms;
-  final Function(int termId) removeTerm;
+  final Function(int) removeTerm;
   final Function(String, String) navigateToTerm;
+  final Function(int) navigateToQuiz;
 
-  TermsViewModel({
-    this.terms,
-    this.removeTerm,
-    this.isLoading,
-    this.navigateToTerm,
-  });
+  TermsViewModel.fromStore(Store<AppState> store)
+      : isLoading = store.state.isLoading,
+        terms = store.state.terms,
+        removeTerm = ((termId) => store.dispatch(RemoveTermAction(termId))),
+        navigateToTerm = ((setId, termId) {
+          final url = Router.routeToPath(Routes.term, {
+            "setId": setId,
+            "termId": termId,
+          });
+          store.dispatch(NavigateToAction.push(url));
+        }),
+        navigateToQuiz = ((setId) {
+          final url = Router.routeToPath(Routes.quiz, {'setId': setId.toString()});
+          store.dispatch(NavigateToAction.push(url));
+        });
 
   @override
   int get hashCode => quiver.hash2(terms, isLoading);
@@ -28,20 +38,5 @@ class TermsViewModel {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermsViewModel && this.terms == other.terms && this.isLoading == other.isLoading;
-  }
-
-  static TermsViewModel fromStore(Store<AppState> store) {
-    return TermsViewModel(
-      isLoading: store.state.isLoading,
-      terms: store.state.terms,
-      navigateToTerm: (String setId, termId) {
-        final url = Router.routeToPath(Routes.term, {
-          "setId": setId,
-          "termId": termId,
-        });
-        store.dispatch(NavigateToAction.push(url));
-      },
-      removeTerm: (int termId) => store.dispatch(RemoveTermAction(termId)),
-    );
   }
 }

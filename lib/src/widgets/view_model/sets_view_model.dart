@@ -8,17 +8,24 @@ import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 
 class SetsViewModel {
-  final Function(int) removeSet;
-  final Function(int setId) navigateToTerms;
-  final Function(int setId) navigateToQuiz;
   final BuiltList<SetState> sets;
+  final Function(int) removeSet;
+  final Function() navigateToSet;
+  final Function(int) navigateToTerms;
+  final Function(int) navigateToQuiz;
 
-  SetsViewModel({
-    this.removeSet,
-    this.sets,
-    this.navigateToTerms,
-    this.navigateToQuiz,
-  });
+  SetsViewModel.fromStore(Store<AppState> store)
+      : sets = store.state.sets,
+        removeSet = ((id) => store.dispatch(RequestRemoveSetAction(id))),
+        navigateToSet = (() => store.dispatch(NavigateToAction.replace(Routes.set))),
+        navigateToTerms = ((int setId) {
+          final url = Router.routeToPath(Routes.terms, {'id': setId.toString()});
+          store.dispatch(NavigateToAction.push(url));
+        }),
+        navigateToQuiz = ((setId) {
+          final url = Router.routeToPath(Routes.quiz, {'setId': setId.toString()});
+          store.dispatch(NavigateToAction.push(url));
+        });
 
   @override
   int get hashCode => sets.hashCode;
@@ -27,17 +34,5 @@ class SetsViewModel {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is SetsViewModel && this.sets == other.sets;
-  }
-
-  static SetsViewModel fromStore(Store<AppState> store) {
-    return SetsViewModel(
-      sets: store.state.sets,
-      removeSet: (id) => store.dispatch(RequestRemoveSetAction(id)),
-      navigateToTerms: (int setId) {
-        final url = Router.routeToPath(Routes.terms, {'id': setId.toString()});
-        store.dispatch(NavigateToAction.push(url));
-      },
-      navigateToQuiz: (int setId) => store.dispatch(NavigateToAction.push(Routes.quiz)),
-    );
   }
 }

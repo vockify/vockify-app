@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
@@ -11,7 +10,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppLayoutWidget(
-      title: 'PROFILE',
+      title: 'МОЙ ПРОФИЛЬ',
       profile: false,
       body: Center(
         child: StoreConnector<AppState, UserState>(
@@ -47,7 +46,7 @@ class ProfileWidget extends StatelessWidget {
                     final store = StoreProvider.of<AppState>(context);
                     store.dispatch(UnauthorizeAction());
                   },
-                  child: Text('LOGOUT'),
+                  child: Text('ВЫЙТИ'),
                 ),
               ],
             );
