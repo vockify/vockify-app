@@ -37,18 +37,4 @@ class WebStorage extends AppStorage {
   Future<void> setValue(String key, String value) async {
     html.window.document.cookie = '$key=$value';
   }
-
-  @override
-  Future<bool> exist(String key) async {
-    final cookie = html.window.document.cookie;
-    final Iterable<MapEntry<String, String>> entries = cookie.split(';').map((c) {
-      final keyValue = c.split('=');
-      final key = keyValue[0];
-      final value = keyValue[1];
-      return MapEntry(key, value);
-    });
-
-    final map = Map.fromEntries(entries);
-    return map.containsKey(key);
-  }
 }

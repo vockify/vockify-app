@@ -25,7 +25,7 @@ class AppLoaderWidget extends StatelessWidget {
               store.dispatch(NavigateToAction.replace(Routes.login));
             });
           } else {
-            final bool isTourFinished = await AppStorage.getInstance().exist("isTourFinished");
+            final bool isTourFinished = await AppStorage.getInstance().containsKey("isTourFinished");
 
             if (!isTourFinished) {
               scheduleMicrotask(() {
