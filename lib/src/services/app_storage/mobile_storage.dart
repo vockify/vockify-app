@@ -27,4 +27,10 @@ class MobileStorage extends AppStorage {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
+
+  @override
+  Future<bool> exist(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(key);
+  }
 }
