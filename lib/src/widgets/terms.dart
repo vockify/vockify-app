@@ -34,12 +34,6 @@ class _TermsState extends State<TermsWidget> {
     return AppLayoutWidget(
       redirectBackRoute: Routes.sets,
       title: setName,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: null,
-        ),
-      ],
       body: Center(
         child: StoreConnector<AppState, TermsViewModel>(
           onInit: (store) {

@@ -172,11 +172,11 @@ class _QuizState extends State<QuizWidget> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
+          padding: EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 10),
           child: Text(
-            _wrongCount == 0 ? 'ПОЗДРАВЛЯЮ! ВЫ ВЫУЧИЛИ ВСЕ СЛОВА!' : 'ВЫ МОЖЕТЕ ЛУЧШЕ\nПОРОБУЙТЕ СНОВА!',
+            'РЕЗУЛЬТАТ',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         Expanded(
