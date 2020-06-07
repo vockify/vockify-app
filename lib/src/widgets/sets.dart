@@ -53,8 +53,8 @@ class SetsWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'ДЛЯ НАЧАЛА ВАМ НУЖНО ДОБАВИТЬ НАБОР',
-                      style: Theme.of(context).textTheme.headline6,
+                      'ДЛЯ НАЧАЛА ВАМ НУЖНО',
+                      style: Theme.of(context).textTheme.headline5,
                       textAlign: TextAlign.center,
                     ),
                     Padding(
@@ -64,7 +64,13 @@ class SetsWidget extends StatelessWidget {
                       color: VockifyColors.fulvous,
                       textColor: VockifyColors.white,
                       onPressed: viewModel.navigateToSet,
-                      child: Text('ДОБАВИТЬ НАБОР'),
+                      child: Text(
+                        'ДОБАВИТЬ СЛОВАРЬ',
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              color: VockifyColors.white,
+                              fontSize: 18,
+                            ),
+                      ),
                     )
                   ],
                 ),

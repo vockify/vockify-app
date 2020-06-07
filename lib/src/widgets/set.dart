@@ -26,7 +26,7 @@ class _SetState extends State<SetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.setId != null ? 'ИЗМЕНИТЬ НАБОР' : 'ДОБАВИТЬ НАБОР';
+    final title = widget.setId != null ? 'ИЗМЕНИТЬ СЛОВАРЬ' : 'ДОБАВИТЬ СЛОВАРЬ';
 
     return AppLayoutWidget(
       title: title,
@@ -117,11 +117,7 @@ class _SetState extends State<SetWidget> {
           ),
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              final setDto = SetDto(
-                widget.setId != null ? widget.setId : 0,
-                _nameController.text,
-                'empty'
-              );
+              final setDto = SetDto(widget.setId != null ? widget.setId : 0, _nameController.text, 'empty');
 
               if (setDto.id > 0) {
                 store.dispatch(RequestUpdateSetAction(setDto));
