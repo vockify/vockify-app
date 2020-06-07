@@ -67,7 +67,7 @@ class _QuizState extends State<QuizWidget> {
         ),
         ListTile(
           title: Center(
-            child: Text('ВЫБЕРИТЕ ЗНАЧЕНИЕ'),
+            child: Text('ВЫБЕРИТЕ ПЕРЕВОД'),
           ),
         ),
         Expanded(

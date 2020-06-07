@@ -83,7 +83,7 @@ class _ShareFormState extends State<ShareFormWidget> {
                   Padding(padding: EdgeInsets.only(top: 20)),
                   _buildFormField("СЛОВО", _nameController),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  _buildFormField("ЗНАЧЕНИЕ", _definitionController),
+                  _buildFormField("ПЕРЕВОД", _definitionController),
                 ],
               ),
             ),
