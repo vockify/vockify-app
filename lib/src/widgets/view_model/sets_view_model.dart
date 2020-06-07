@@ -17,7 +17,7 @@ class SetsViewModel {
   SetsViewModel.fromStore(Store<AppState> store)
       : sets = store.state.sets,
         removeSet = ((id) => store.dispatch(RequestRemoveSetAction(id))),
-        navigateToSet = (() => store.dispatch(NavigateToAction.replace(Routes.set))),
+        navigateToSet = (() => store.dispatch(NavigateToAction.push(Routes.set))),
         navigateToTerms = ((int setId) {
           final url = Router.routeToPath(Routes.terms, {'id': setId.toString()});
           store.dispatch(NavigateToAction.push(url));
