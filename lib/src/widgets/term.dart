@@ -76,7 +76,7 @@ class _TermState extends State<TermWidget> {
                                     _formField("СЛОВО", _nameController),
                                     Padding(padding: EdgeInsets.only(top: 20)),
                                     _formField(
-                                      "ЗНАЧЕНИЕ",
+                                      "ПЕРЕВОД",
                                       _definitionController,
                                       suffixIcon: _translateAddonButton(),
                                     ),
