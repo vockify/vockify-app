@@ -41,7 +41,7 @@ class TermsPageWidget extends StatelessWidget {
                     child: viewModel.terms.isEmpty
                         ? Center(
                             child: Text(
-                              'Добавьте слова',
+                              'Пустой словарь',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline6,
                             ),
@@ -76,7 +76,7 @@ class TermsPageWidget extends StatelessWidget {
                           );
                         },
                         child: Text(
-                          'ДОБАВИТЬ',
+                          'ДОБАВИТЬ СЛОВО',
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
                                 color: VockifyColors.white,
                                 fontSize: 16,

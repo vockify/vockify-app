@@ -118,10 +118,10 @@ class AppEffect {
       EpicStore<AppState> store,
       ) {
     return actions.asyncExpand((action) async* {
-      yield RemoveTermAction(action.payload);
+      yield RemoveTermAction(setId: action.setId, termId: action.termId);
 
       try {
-        await api.deleteTerm(action.payload);
+        await api.deleteTerm(action.termId);
       } catch (e) {
         print(e);
       }

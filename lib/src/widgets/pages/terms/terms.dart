@@ -83,7 +83,7 @@ class _TermsState extends State<TermsWidget> {
           color: VockifyColors.flame,
           foregroundColor: VockifyColors.white,
           icon: Icons.delete,
-          onTap: () => viewModel.removeTerm(term.id),
+          onTap: () => viewModel.removeTerm(term.setId, term.id),
         )
       ],
     );

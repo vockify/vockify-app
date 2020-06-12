@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:vockify/src/helpers/plural.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
@@ -97,30 +98,38 @@ class SetsWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ButtonBarTheme(
-                      data: ButtonBarTheme.of(context),
-                      child: ButtonBar(
-                        alignment: MainAxisAlignment.end,
-                        buttonAlignedDropdown: true,
-                        overflowDirection: VerticalDirection.up,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () => viewModel.navigateToQuiz(set.id),
-                            child: Text('УЧИТЬ'),
-                            textColor: VockifyColors.prussianBlue,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 16),
+                          child: Text('${set.termsCount} ${plural(set.termsCount, ['слово', 'слова', 'слов'])}'),
+                        ),
+                        ButtonBarTheme(
+                          data: ButtonBarTheme.of(context),
+                          child: ButtonBar(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              if (set.termsCount > 0)
+                                FlatButton(
+                                  onPressed: () => viewModel.navigateToQuiz(set.id),
+                                  child: Text('УЧИТЬ'),
+                                  textColor: VockifyColors.prussianBlue,
+                                ),
+                              FlatButton(
+                                onPressed: () {
+                                  store.dispatch(NavigateToAction.push(Routes.term, arguments: {
+                                    'setId': set.id,
+                                    'termId': null,
+                                  }));
+                                },
+                                child: Text('ДОБАВИТЬ СЛОВО'),
+                                textColor: VockifyColors.fulvous,
+                              ),
+                            ],
                           ),
-                          FlatButton(
-                            onPressed: () {
-                              store.dispatch(NavigateToAction.push(Routes.term, arguments: {
-                                'setId': set.id,
-                                'termId': null,
-                              }));
-                            },
-                            child: Text('ДОБАВИТЬ СЛОВО'),
-                            textColor: VockifyColors.fulvous,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     )
                   ],
                 ),

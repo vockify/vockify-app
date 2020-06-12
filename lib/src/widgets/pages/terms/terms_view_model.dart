@@ -8,12 +8,12 @@ import 'package:vockify/src/router/routes.dart';
 
 class TermsViewModel {
   final BuiltList<TermState> terms;
-  final Function(int) removeTerm;
+  final Function(int, int) removeTerm;
   final Function(int, int) navigateToTerm;
 
   TermsViewModel.fromStore(Store<AppState> store)
       : terms = store.state.terms,
-        removeTerm = ((termId) => store.dispatch(RequestRemoveTermAction(termId))),
+        removeTerm = ((setId, termId) => store.dispatch(RequestRemoveTermAction(setId: setId, termId: termId))),
         navigateToTerm = ((setId, termId) {
           store.dispatch(NavigateToAction.push(Routes.term, arguments: {
             "setId": setId,
