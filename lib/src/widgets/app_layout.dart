@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/widgets/common/loader.dart';
 
 class AppLayoutWidget extends StatelessWidget {
   final String title;
@@ -11,6 +13,8 @@ class AppLayoutWidget extends StatelessWidget {
   final List<Widget> actions;
   final String redirectBackRoute;
   final bool profile;
+  final Function(Store<AppState>) onInit;
+  final String route;
 
   AppLayoutWidget({
     Key key,
@@ -19,30 +23,47 @@ class AppLayoutWidget extends StatelessWidget {
     this.actions = const [],
     this.redirectBackRoute,
     this.profile = true,
+    this.onInit,
+    @required this.route,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title,
-          style: TextStyle(color: VockifyColors.white),
-        ),
-        leading: _goBackArrow(context),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          ...actions,
-          if (profile)
-            StoreConnector<AppState, String>(
-              converter: (store) => store.state.user.avatar,
-              builder: (context, url) {
-                return _userAvatar(context, url);
-              },
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.isLoading && route == NavigatorHolder.state.currentDestination.path,
+      distinct: true,
+      onInit: (store) {
+        if (onInit != null) {
+          onInit(store);
+        }
+      },
+      builder: (context, isLoading) {
+        return Scaffold(
+          backgroundColor: VockifyColors.white,
+          appBar: AppBar(
+            title: Text(
+              title,
+              style: TextStyle(color: VockifyColors.white),
             ),
-        ],
-      ),
-      body: body,
+            leading: _goBackArrow(context),
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+              ...actions,
+              if (profile)
+                StoreConnector<AppState, String>(
+                  distinct: true,
+                  converter: (store) => store.state.user.avatar,
+                  builder: _userAvatar,
+                ),
+            ],
+          ),
+          body: isLoading
+              ? Center(
+                  child: LoaderWidget(),
+                )
+              : body,
+        );
+      },
     );
   }
 

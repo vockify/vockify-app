@@ -6,7 +6,6 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/route_path.dart';
-import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
@@ -64,10 +63,14 @@ class VockifyApp extends StatelessWidget {
 
   Route _getRoute(RouteSettings settings) {
     for (RoutePath routePath in RoutePaths.routePaths) {
-      final router = Router(routePath, settings);
+      final arguments = settings.arguments;
 
-      if (router.matches()) {
-        return _buildRoute(settings, routePath.builder(router.getArguments()));
+      if (arguments != null && arguments is! Map<String, dynamic>) {
+        throw ArgumentError("arguments cast error");
+      }
+
+      if (settings.name == routePath.pattern) {
+        return _buildRoute(settings, routePath.builder(arguments as Map<String, dynamic>));
       }
     }
 

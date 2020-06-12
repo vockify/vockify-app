@@ -1,15 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/request_data_action.dart';
+import 'package:vockify/src/redux/actions/request_authorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
-
-import '../vockify_colors.dart';
-import 'app_layout.dart';
 
 class TourWidget extends StatefulWidget {
   @override
@@ -20,9 +19,10 @@ class TourWidget extends StatefulWidget {
 
 class _TourWidgetState extends State<TourWidget> {
   static final List<String> _slides = [
-    'Добавляйте новые слова в словари с автоматическим переводом',
-    'Вы можете поделиться словом с Vockify из любого другого приложения, выделив его в тексте, и сразу же добавить в словарь с переводом',
-    'Учите слова играя в КВИЗ!',
+    'Создавайте словари и добавляйте новые слова с автоматическим переводом',
+    'Вы можете "поделиться" словом с Vockify из любого другого приложения, выделив его в тексте, и сразу же добавить в словарь с переводом',
+    'Запоминайте новые слова с помощью игры в квиз',
+    'Для того, что бы пользоваться всеми функциями приложения, вам необходимо авторизоваться',
   ];
 
   final CarouselController _controller = CarouselController();
@@ -33,16 +33,13 @@ class _TourWidgetState extends State<TourWidget> {
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
-    return AppLayoutWidget(
-      title: 'VOCKIFY',
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            _carousel(context),
-            _indicatorRow(context),
-            _appButtonBar(context, store),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          _carousel(context),
+          _indicatorRow(context),
+          _appButtonBar(context, store),
+        ],
       ),
     );
   }
@@ -60,25 +57,25 @@ class _TourWidgetState extends State<TourWidget> {
                   fontSize: 16,
                 ),
           ),
-          onPressed: () async {
-            _saveAndFinish(store);
+          onPressed: () {
+            _finishTour(store, skip: true);
           },
         ),
         RaisedButton(
           shape: Border(),
           color: VockifyColors.fulvous,
           child: Text(
-            _current != _slides.length - 1 ? "ПРОДОЛЖИТЬ" : "НАЧАТЬ",
+            _current != _slides.length - 1 ? "ПРОДОЛЖИТЬ" : "АВТОРИЗОВАТЬСЯ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
                 ),
           ),
-          onPressed: () async {
+          onPressed: () {
             if (_current < _slides.length - 1) {
               _controller.nextPage();
             } else {
-              _saveAndFinish(store);
+              _finishTour(store);
             }
           },
         ),
@@ -92,21 +89,19 @@ class _TourWidgetState extends State<TourWidget> {
     return Expanded(
       child: CarouselSlider(
         items: _slides
-            .map(
-              (item) => Container(
-                margin: EdgeInsets.only(top: 25),
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Center(
-                  child: Text(
-                    item,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline5.copyWith(
-                          color: VockifyColors.prussianBlue,
-                        ),
+            .map((item) => Container(
+                  margin: EdgeInsets.only(top: 25),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Center(
+                    child: Text(
+                      item,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline5.copyWith(
+                            color: VockifyColors.prussianBlue,
+                          ),
+                    ),
                   ),
-                ),
-              ),
-            )
+                ))
             .toList(),
         carouselController: _controller,
         options: CarouselOptions(
@@ -115,7 +110,6 @@ class _TourWidgetState extends State<TourWidget> {
           autoPlay: false,
           viewportFraction: 1,
           enableInfiniteScroll: false,
-          scrollPhysics: NeverScrollableScrollPhysics(),
           onPageChanged: (index, reason) {
             setState(() {
               _current = index;
@@ -126,6 +120,17 @@ class _TourWidgetState extends State<TourWidget> {
     );
   }
 
+  Future<void> _finishTour(Store store, {bool skip = false}) async {
+    final storage = AppStorage.getInstance();
+    await storage.setValue('isTourFinished', true.toString());
+
+    if (skip) {
+      store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false));
+    } else {
+      store.dispatch(RequestAuthorizeAction());
+    }
+  }
+
   Widget _indicatorRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -133,7 +138,7 @@ class _TourWidgetState extends State<TourWidget> {
         return Container(
           width: 8.0,
           height: 8.0,
-          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _current == index ? VockifyColors.prussianBlue : VockifyColors.lightSteelBlue,
@@ -141,12 +146,5 @@ class _TourWidgetState extends State<TourWidget> {
         );
       }).toList(),
     );
-  }
-
-  void _saveAndFinish(Store store) async {
-    final storage = AppStorage.getInstance();
-    await storage.setValue('isTourFinished', true.toString());
-
-    store.dispatch(RequestDataAction(route: Routes.sets));
   }
 }

@@ -1,5 +1,4 @@
-import 'package:vockify/src/services/app_storage/web_storage.dart'
-    if (dart.library.io) 'package:vockify/src/services/app_storage/mobile_storage.dart';
+import 'package:vockify/src/services/app_storage/mobile_storage.dart';
 
 abstract class AppStorage {
   static AppStorage _instance;

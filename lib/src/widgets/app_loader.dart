@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/widgets/common/loader.dart';
 
 class AppLoaderWidget extends StatelessWidget {
   final String route;
@@ -17,19 +17,19 @@ class AppLoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange,
       body: StoreConnector<AppState, Null>(
+        distinct: true,
         onInit: (store) async {
-          if (!store.state.isAuthorized) {
+          final bool isTourFinished = await AppStorage.getInstance().containsKey("isTourFinished");
+
+          if (!isTourFinished) {
             scheduleMicrotask(() {
-              store.dispatch(NavigateToAction.replace(Routes.login));
+              store.dispatch(NavigateToAction.replace(Routes.tour));
             });
           } else {
-            final bool isTourFinished = await AppStorage.getInstance().containsKey("isTourFinished");
-
-            if (!isTourFinished) {
+            if (!store.state.isAuthorized) {
               scheduleMicrotask(() {
-                store.dispatch(NavigateToAction.replace(Routes.tour));
+                store.dispatch(NavigateToAction.replace(Routes.login));
               });
             } else {
               store.dispatch(RequestDataAction(route: route));
@@ -38,12 +38,10 @@ class AppLoaderWidget extends StatelessWidget {
         },
         builder: (context, viewModel) {
           return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
-            ),
+            child: LoaderWidget(),
           );
         },
-        converter: (Store<AppState> store) => null,
+        converter: (store) => null,
       ),
     );
   }

@@ -8,9 +8,9 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
-import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
-import 'package:vockify/src/widgets/quiz/quiz_result.dart';
-import 'package:vockify/src/widgets/quiz/quiz_step.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_controller.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_result.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_step.dart';
 
 class QuizWidget extends StatefulWidget {
   final Iterable<TermState> terms;
