@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
@@ -113,7 +114,9 @@ class _ShareFormState extends State<ShareFormWidget> {
                   fontSize: 16,
                 ),
           ),
-          onPressed: () => _store.dispatch(NavigateToAction.pop()),
+          onPressed: () {
+            SystemNavigator.pop();
+          },
         ),
         RaisedButton(
           shape: Border(),
@@ -140,7 +143,7 @@ class _ShareFormState extends State<ShareFormWidget> {
                 _store.dispatch(RequestAddTermAction(termDto));
               }
 
-              _store.dispatch(NavigateToAction.pop());
+              SystemNavigator.pop();
             }
           },
         ),
