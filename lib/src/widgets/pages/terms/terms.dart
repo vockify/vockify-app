@@ -57,14 +57,15 @@ class _TermsState extends State<TermsWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Text('${term.name}'),
+              child: Text(
+                '${term.name}',
+                textAlign: TextAlign.left,
+              ),
             ),
             Expanded(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  '${term.definition}',
-                ),
+              child: Text(
+                '${term.definition}',
+                textAlign: TextAlign.right,
               ),
             ),
           ],
