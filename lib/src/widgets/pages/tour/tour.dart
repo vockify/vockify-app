@@ -7,6 +7,7 @@ import 'package:vockify/src/redux/actions/request_authorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
 
@@ -122,7 +123,7 @@ class _TourWidgetState extends State<TourWidget> {
 
   Future<void> _finishTour(Store store, {bool skip = false}) async {
     final storage = AppStorage.getInstance();
-    await storage.setValue('isTourFinished', true.toString());
+    await storage.setValue(AppStorageKey.isTourFinished, true.toString());
 
     if (skip) {
       store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false));

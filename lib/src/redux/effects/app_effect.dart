@@ -133,11 +133,19 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
+      if (action.shouldStartLoader) {
+        yield SetIsLoadingAction();
+      }
+
       try {
         final sets = await api.getSets();
         yield SetSetsAction(sets.toState());
       } catch (e) {
         print(e);
+      } finally {
+        if (action.shouldStartLoader) {
+          yield UnsetIsLoadingAction();
+        }
       }
     });
   }
@@ -147,14 +155,19 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
+      if (action.shouldStartLoader) {
         yield SetIsLoadingAction();
-        final terms = await api.getSetTerms(action.payload);
+      }
+
+      try {
+        final terms = await api.getSetTerms(action.setId);
         yield SetTermsAction(terms.toState());
       } catch (e) {
         print(e);
       } finally {
-        yield UnsetIsLoadingAction();
+        if (action.shouldStartLoader) {
+          yield UnsetIsLoadingAction();
+        }
       }
     });
   }

@@ -7,6 +7,7 @@ import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
 class AppLoaderWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class AppLoaderWidget extends StatelessWidget {
       body: StoreConnector<AppState, Null>(
         distinct: true,
         onInit: (store) async {
-          final bool isTourFinished = await AppStorage.getInstance().containsKey("isTourFinished");
+          final bool isTourFinished = await AppStorage.getInstance().containsKey(AppStorageKey.isTourFinished);
 
           if (!isTourFinished) {
             scheduleMicrotask(() {

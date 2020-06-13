@@ -26,7 +26,7 @@ class TermsPageWidget extends StatelessWidget {
       redirectBackRoute: Routes.sets,
       title: setName,
       onInit: (store) {
-        store.dispatch(RequestSetTermsAction(setId));
+        store.dispatch(RequestSetTermsAction(setId: setId));
       },
       body: Center(
         child: StoreConnector<AppState, TermsPageViewModel>(
@@ -41,9 +41,9 @@ class TermsPageWidget extends StatelessWidget {
                     child: viewModel.terms.isEmpty
                         ? Center(
                             child: Text(
-                              'Пустой словарь',
+                              'В вашем словаре еще нет слов',
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           )
                         : TermsWidget(setId),
