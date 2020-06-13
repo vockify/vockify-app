@@ -102,12 +102,12 @@ class _QuizState extends State<QuizWidget> {
           children: [
             RaisedButton(
               shape: Border(),
-              color: VockifyColors.flame,
+              color: VockifyColors.grey,
               onPressed: _stop,
               child: Text(
                 'ОСТАНОВИТЬ',
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.ghostWhite,
+                  color: VockifyColors.black,
                   fontSize: 16,
                 ),
               ),
@@ -210,12 +210,12 @@ class _QuizState extends State<QuizWidget> {
           children: [
             RaisedButton(
               shape: Border(),
-              color: VockifyColors.green,
+              color: VockifyColors.fulvous,
               onPressed: _retry,
               child: Text(
                 'ПОВТОРИТЬ',
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.ghostWhite,
+                  color: VockifyColors.white,
                   fontSize: 16,
                 ),
               ),

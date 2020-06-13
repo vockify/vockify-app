@@ -17,7 +17,7 @@ class QuizPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppLayoutWidget(
       route: Routes.quiz,
-      title: 'ИЗУЧЕНИЕ',
+      title: 'КВИЗ',
       onInit: (store) {
         store.dispatch(RequestSetTermsAction(setId: setId));
       },

@@ -96,6 +96,30 @@ class AppReducer {
   }
 
   AppState _updateTermReducer(AppState state, UpdateTermAction action) {
+    final term = state.terms.firstWhere((term) => term.id == action.payload.id, orElse: () => null);
+
+    if (term != null && term.setId != action.payload.setId) {
+      return state.rebuild((builder) {
+        builder.terms.removeWhere((item) => item.id == term.id);
+        // update terms count
+        builder.sets.map((item) {
+          if (item.id == action.payload.setId) {
+            return item.rebuild((builder) {
+              builder.termsCount = item.termsCount + 1;
+            });
+          }
+
+          if (item.id == term.setId) {
+            return item.rebuild((builder) {
+              builder.termsCount = item.termsCount - 1;
+            });
+          }
+
+          return item;
+        });
+      });
+    }
+
     return state.rebuild((builder) => builder.terms.map((item) {
       if (item.id == action.payload.id) {
          item = action.payload;
