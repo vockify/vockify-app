@@ -1,3 +1,3 @@
 class AppStorageKey {
-  static const String isTourFinished = 'isTourFinished2';
+  static const String isTourFinished = 'isTourFinished';
 }
