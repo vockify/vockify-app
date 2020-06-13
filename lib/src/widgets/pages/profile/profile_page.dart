@@ -36,7 +36,7 @@ class ProfilePageWidget extends StatelessWidget {
                     title: Center(
                       child: Text(
                         '${user.firstName} ${user.lastName}',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                     subtitle: Text(
