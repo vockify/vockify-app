@@ -12,6 +12,8 @@ class _$AppState extends AppState {
   @override
   final bool isLoading;
   @override
+  final String currentRoute;
+  @override
   final BuiltList<SetState> sets;
   @override
   final BuiltList<TermState> terms;
@@ -22,7 +24,12 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.isAuthorized, this.isLoading, this.sets, this.terms, this.user})
+      {this.isAuthorized,
+      this.isLoading,
+      this.currentRoute,
+      this.sets,
+      this.terms,
+      this.user})
       : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
@@ -54,6 +61,7 @@ class _$AppState extends AppState {
     return other is AppState &&
         isAuthorized == other.isAuthorized &&
         isLoading == other.isLoading &&
+        currentRoute == other.currentRoute &&
         sets == other.sets &&
         terms == other.terms &&
         user == other.user;
@@ -63,7 +71,9 @@ class _$AppState extends AppState {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, isAuthorized.hashCode), isLoading.hashCode),
+            $jc(
+                $jc($jc($jc(0, isAuthorized.hashCode), isLoading.hashCode),
+                    currentRoute.hashCode),
                 sets.hashCode),
             terms.hashCode),
         user.hashCode));
@@ -74,6 +84,7 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('isAuthorized', isAuthorized)
           ..add('isLoading', isLoading)
+          ..add('currentRoute', currentRoute)
           ..add('sets', sets)
           ..add('terms', terms)
           ..add('user', user))
@@ -91,6 +102,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool _isLoading;
   bool get isLoading => _$this._isLoading;
   set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+
+  String _currentRoute;
+  String get currentRoute => _$this._currentRoute;
+  set currentRoute(String currentRoute) => _$this._currentRoute = currentRoute;
 
   ListBuilder<SetState> _sets;
   ListBuilder<SetState> get sets =>
@@ -112,6 +127,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     if (_$v != null) {
       _isAuthorized = _$v.isAuthorized;
       _isLoading = _$v.isLoading;
+      _currentRoute = _$v.currentRoute;
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
@@ -141,6 +157,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               isAuthorized: isAuthorized,
               isLoading: isLoading,
+              currentRoute: currentRoute,
               sets: sets.build(),
               terms: terms.build(),
               user: user.build());

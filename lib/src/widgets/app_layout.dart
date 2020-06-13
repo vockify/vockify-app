@@ -30,7 +30,7 @@ class AppLayoutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.isLoading && route == NavigatorHolder.state.currentDestination.path,
+      converter: (store) => store.state.isLoading && store.state.currentRoute == route,
       distinct: true,
       onInit: (store) {
         if (onInit != null) {

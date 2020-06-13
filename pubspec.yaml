@@ -19,14 +19,14 @@ dependencies:
   http: ^0.12.0
   json_annotation: ^3.0.0
   oauth2: ^1.6.0
-  flutter_web_auth: 0.2.2
+  flutter_web_auth: ^0.2.2
   shared_preferences: ^0.5.7+1
   flutter_redux_navigation: ^0.6.0
   cupertino_icons: ^0.1.3
   flutter_slidable: ^0.5.4
   path_to_regexp: ^0.3.0
   quiver: ^2.1.3
-  receive_sharing_intent: 1.4.0+2
+  receive_sharing_intent: ^1.4.0+2
   carousel_slider: ^2.0.0
 
 dev_dependencies:
