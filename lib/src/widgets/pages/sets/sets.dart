@@ -29,111 +29,115 @@ class SetsWidget extends StatelessWidget {
             );
           }
 
-          return ListView.builder(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            itemCount: viewModel.sets.length,
-            itemBuilder: (BuildContext context, int index) {
-              final set = viewModel.sets[index];
+          return RefreshIndicator(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              itemCount: viewModel.sets.length,
+              itemBuilder: (BuildContext context, int index) {
+                final set = viewModel.sets[index];
 
-              return Card(
-                margin: EdgeInsets.only(top: 16),
-                child: Column(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        viewModel.navigateToTerms(set.id);
-                      },
-                      child: SizedBox(
-                        height: 80,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                              child: Container(
-                                color: VockifyColors.ghostWhite,
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 16,
-                              left: 16,
-                              right: 16,
-                              child: Text(
-                                set.name,
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: PopupMenuButton(
-                                padding: EdgeInsets.all(0),
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    value: _menuItemEdit,
-                                    child: Text(
-                                      'ИЗМЕНИТЬ',
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    value: _menuItemDelete,
-                                    child: Text(
-                                      'УДАЛИТЬ',
-                                      style: TextStyle(color: VockifyColors.flame),
-                                    ),
-                                  )
-                                ],
-                                onSelected: (item) {
-                                  if (item == _menuItemDelete) {
-                                    viewModel.removeSet(set.id);
-                                  } else if (item == _menuItemEdit) {
-                                    store.dispatch(NavigateToAction.push(Routes.set, arguments: {'id': set.id}));
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.more_horiz,
-                                  color: VockifyColors.prussianBlue,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16),
-                          child: Text('${set.termsCount} ${plural(set.termsCount, ['слово', 'слова', 'слов'])}'),
-                        ),
-                        ButtonBarTheme(
-                          data: ButtonBarTheme.of(context),
-                          child: ButtonBar(
-                            mainAxisSize: MainAxisSize.min,
+                return Card(
+                  margin: EdgeInsets.only(top: 16),
+                  child: Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          viewModel.navigateToTerms(set.id);
+                        },
+                        child: SizedBox(
+                          height: 80,
+                          child: Stack(
                             children: <Widget>[
-                              if (set.termsCount > 0)
-                                FlatButton(
-                                  onPressed: () => viewModel.navigateToQuiz(set.id),
-                                  child: Text('УЧИТЬ'),
-                                  textColor: VockifyColors.prussianBlue,
+                              Positioned.fill(
+                                child: Container(
+                                  color: VockifyColors.ghostWhite,
                                 ),
-                              FlatButton(
-                                onPressed: () {
-                                  store.dispatch(NavigateToAction.push(Routes.term, arguments: {
-                                    'setId': set.id,
-                                    'termId': null,
-                                  }));
-                                },
-                                child: Text('ДОБАВИТЬ СЛОВО'),
-                                textColor: VockifyColors.fulvous,
                               ),
+                              Positioned(
+                                bottom: 16,
+                                left: 16,
+                                right: 16,
+                                child: Text(
+                                  set.name,
+                                  style: Theme.of(context).textTheme.headline5,
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: PopupMenuButton(
+                                  padding: EdgeInsets.all(0),
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      value: _menuItemEdit,
+                                      child: Text(
+                                        'ИЗМЕНИТЬ',
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: _menuItemDelete,
+                                      child: Text(
+                                        'УДАЛИТЬ',
+                                        style: TextStyle(color: VockifyColors.flame),
+                                      ),
+                                    )
+                                  ],
+                                  onSelected: (item) {
+                                    if (item == _menuItemDelete) {
+                                      viewModel.removeSet(set.id);
+                                    } else if (item == _menuItemEdit) {
+                                      store.dispatch(NavigateToAction.push(Routes.set, arguments: {'id': set.id}));
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.more_horiz,
+                                    color: VockifyColors.prussianBlue,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
-                      ],
-                    )
-                  ],
-                ),
-              );
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 16),
+                            child: Text('${set.termsCount} ${plural(set.termsCount, ['слово', 'слова', 'слов'])}'),
+                          ),
+                          ButtonBarTheme(
+                            data: ButtonBarTheme.of(context),
+                            child: ButtonBar(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                FlatButton(
+                                  onPressed: set.termsCount > 0 ? () => viewModel.navigateToQuiz(set.id) : null,
+                                  child: Text('УЧИТЬ'),
+                                  textColor: VockifyColors.prussianBlue,
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    store.dispatch(NavigateToAction.push(Routes.term, arguments: {
+                                      'setId': set.id,
+                                      'termId': null,
+                                    }));
+                                  },
+                                  child: Text('ДОБАВИТЬ СЛОВО'),
+                                  textColor: VockifyColors.fulvous,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+            onRefresh: () async {
+              viewModel.requestSets();
             },
           );
         },

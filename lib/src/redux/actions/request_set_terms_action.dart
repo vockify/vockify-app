@@ -1,7 +1,8 @@
 import 'package:vockify/src/redux/actions/app_action.dart';
 
 class RequestSetTermsAction extends AppAction {
-  final int payload;
+  final int setId;
+  final bool shouldStartLoader;
 
-  RequestSetTermsAction(this.payload);
+  RequestSetTermsAction({this.setId, this.shouldStartLoader = true});
 }

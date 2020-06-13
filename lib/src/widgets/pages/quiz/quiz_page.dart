@@ -19,7 +19,7 @@ class QuizPageWidget extends StatelessWidget {
       route: Routes.quiz,
       title: 'ИЗУЧЕНИЕ',
       onInit: (store) {
-        store.dispatch(RequestSetTermsAction(setId));
+        store.dispatch(RequestSetTermsAction(setId: setId));
       },
       body: StoreConnector<AppState, QuizPageViewModel>(
         distinct: true,

@@ -24,18 +24,23 @@ class _TermsState extends State<TermsWidget> {
       distinct: true,
       converter: (store) => TermsViewModel.fromStore(store),
       builder: (context, viewModel) {
-        return ListView.builder(
-          itemCount: viewModel.terms.length * 2,
-          itemBuilder: (BuildContext context, int index) {
-            if (index.isOdd) {
-              return Divider(
-                height: 0,
-                thickness: 1,
-              );
-            }
+        return RefreshIndicator(
+          child: ListView.builder(
+            itemCount: viewModel.terms.length * 2,
+            itemBuilder: (BuildContext context, int index) {
+              if (index.isOdd) {
+                return Divider(
+                  height: 0,
+                  thickness: 1,
+                );
+              }
 
-            final term = viewModel.terms[(index / 2).round()];
-            return _buildTerm(term: term, viewModel: viewModel);
+              final term = viewModel.terms[(index / 2).round()];
+              return _buildTerm(term: term, viewModel: viewModel);
+            },
+          ),
+          onRefresh: () async {
+            viewModel.requestTerms(widget.setId);
           },
         );
       },
