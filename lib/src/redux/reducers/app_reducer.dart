@@ -4,6 +4,7 @@ import 'package:vockify/src/redux/actions/add_term_action.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
 import 'package:vockify/src/redux/actions/remove_set_action.dart';
 import 'package:vockify/src/redux/actions/remove_term_action.dart';
+import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_terms_action.dart';
@@ -39,6 +40,8 @@ class AppReducer {
       // loading actions
       TypedReducer(_setIsLoadingReducer),
       TypedReducer(_unsetIsLoadingReducer),
+
+      TypedReducer(_setCurrentRouteReducer),
     ]);
   }
 
@@ -135,5 +138,9 @@ class AppReducer {
 
   AppState _unsetIsLoadingReducer(AppState state, UnsetIsLoadingAction action) {
     return state.rebuild((builder) => builder.isLoading = false);
+  }
+
+  AppState _setCurrentRouteReducer(AppState state, SetCurrentRouteAction action) {
+    return state.rebuild((builder) => builder.currentRoute = action.route);
   }
 }

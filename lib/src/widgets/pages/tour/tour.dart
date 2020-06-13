@@ -32,20 +32,20 @@ class _TourWidgetState extends State<TourWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context, listen: false);
-
-    return Center(
+    return _buildWrapper(Center(
       child: Column(
         children: <Widget>[
-          _carousel(context),
-          _indicatorRow(context),
-          _appButtonBar(context, store),
+          _buildCarouselSlider(context),
+          _buildCarouselIndicator(context),
+          _buildAppButtonBar(context),
         ],
       ),
-    );
+    ));
   }
 
-  Widget _appButtonBar(BuildContext context, Store store) {
+  Widget _buildAppButtonBar(BuildContext context) {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+
     return AppButtonBarWidget(
       children: <Widget>[
         RaisedButton(
@@ -84,7 +84,24 @@ class _TourWidgetState extends State<TourWidget> {
     );
   }
 
-  Widget _carousel(BuildContext context) {
+  Widget _buildCarouselIndicator(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: Iterable<int>.generate(_slides.length).toList().map((index) {
+        return Container(
+          width: 8.0,
+          height: 8.0,
+          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _current == index ? VockifyColors.prussianBlue : VockifyColors.lightSteelBlue,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCarouselSlider(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
     return Expanded(
@@ -121,6 +138,16 @@ class _TourWidgetState extends State<TourWidget> {
     );
   }
 
+  Widget _buildWrapper(Widget widget) {
+    return StoreConnector<AppState, bool>(
+      distinct: true,
+      converter: (store) => store.state.isAuthorized,
+      builder: (context, isAuthorized) {
+        return isAuthorized ? Container() : widget;
+      },
+    );
+  }
+
   Future<void> _finishTour(Store store, {bool skip = false}) async {
     final storage = AppStorage.getInstance();
     await storage.setValue(AppStorageKey.isTourFinished, true.toString());
@@ -130,22 +157,5 @@ class _TourWidgetState extends State<TourWidget> {
     } else {
       store.dispatch(RequestAuthorizeAction());
     }
-  }
-
-  Widget _indicatorRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: Iterable<int>.generate(_slides.length).toList().map((index) {
-        return Container(
-          width: 8.0,
-          height: 8.0,
-          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _current == index ? VockifyColors.prussianBlue : VockifyColors.lightSteelBlue,
-          ),
-        );
-      }).toList(),
-    );
   }
 }

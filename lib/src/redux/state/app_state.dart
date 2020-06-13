@@ -11,6 +11,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   AppState._();
 
+  @nullable
+  String get currentRoute;
+
   bool get isAuthorized;
 
   bool get isLoading;

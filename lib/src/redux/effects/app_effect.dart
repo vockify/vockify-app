@@ -18,6 +18,7 @@ import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/request_update_set_action.dart';
 import 'package:vockify/src/redux/actions/request_update_term_action.dart';
+import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_terms_action.dart';
@@ -55,6 +56,8 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
+      yield SetCurrentRouteAction(action.name);
+
       if (action.name != '/login' && action.name != '/tour' && !store.state.isAuthorized) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
       } else if (action.name == '/login' && store.state.isAuthorized) {
@@ -88,7 +91,10 @@ class AppEffect {
         final authorization = Authorization.getInstance();
         await authorization.authenticate();
         yield AuthorizeAction();
-        yield RequestDataAction(route: Routes.sets);
+
+        final user = await api.authUser();
+        yield SetUserAction(UserState.fromDto(user.data));
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
       } catch (e) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
         print(e);
