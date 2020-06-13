@@ -1,62 +1,62 @@
 import 'package:vockify/src/router/route_path.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/auth_layout.dart';
-import 'package:vockify/src/widgets/login.dart';
-import 'package:vockify/src/widgets/profile.dart';
-import 'package:vockify/src/widgets/quiz/quiz_page.dart';
-import 'package:vockify/src/widgets/set.dart';
-import 'package:vockify/src/widgets/sets.dart';
-import 'package:vockify/src/widgets/share/share.dart';
-import 'package:vockify/src/widgets/term.dart';
-import 'package:vockify/src/widgets/terms.dart';
-import 'package:vockify/src/widgets/tour.dart';
+import 'package:vockify/src/widgets/pages/login/login_page.dart';
+import 'package:vockify/src/widgets/pages/profile/profile_page.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_page.dart';
+import 'package:vockify/src/widgets/pages/set/set_page.dart';
+import 'package:vockify/src/widgets/pages/sets/sets_page.dart';
+import 'package:vockify/src/widgets/pages/share/share_page.dart';
+import 'package:vockify/src/widgets/pages/term/term_page.dart';
+import 'package:vockify/src/widgets/pages/terms/terms_page.dart';
+import 'package:vockify/src/widgets/pages/tour/tour_page.dart';
 
 class RoutePaths {
   static final List<RoutePath> routePaths = [
     RoutePath(
       Routes.login,
-      (arguments) => LoginWidget(),
+      (arguments) => LoginPageWidget(),
     ),
     RoutePath(
       Routes.profile,
-      (arguments) => ProfileWidget(),
+      (arguments) => ProfilePageWidget(),
     ),
     RoutePath(
       Routes.tour,
-          (arguments) => TourWidget(),
+          (arguments) => TourPageWidget(),
     ),
     RoutePath(
       Routes.sets,
-      (arguments) => AuthLayoutWidget(SetsWidget()),
+      (arguments) => AuthLayoutWidget(SetsPageWidget()),
     ),
     RoutePath(
       Routes.set,
-      (arguments) => AuthLayoutWidget(SetWidget(int.tryParse(_getArgument(arguments, 'id')))),
+      (arguments) => AuthLayoutWidget(SetPageWidget(_getArgument(arguments, 'id') as int)),
     ),
     RoutePath(
       Routes.share,
-      (arguments) => AuthLayoutWidget(ShareWidget(_getArgument(arguments, 'term'))),
+      (arguments) => AuthLayoutWidget(SharePageWidget(_getArgument(arguments, 'term') as String)),
     ),
     RoutePath(
       Routes.quiz,
-      (arguments) => AuthLayoutWidget(QuizPageWidget(setId: int.parse(_getArgument(arguments, 'setId')))),
+      (arguments) => AuthLayoutWidget(QuizPageWidget(setId: _getArgument(arguments, 'setId') as int)),
     ),
     RoutePath(
       Routes.terms,
-      (arguments) => AuthLayoutWidget(TermsWidget(int.parse(_getArgument(arguments, 'id')))),
+      (arguments) => AuthLayoutWidget(TermsPageWidget(_getArgument(arguments, 'id') as int)),
     ),
     RoutePath(
       Routes.term,
       (arguments) {
-        final setId = int.parse(_getArgument(arguments, 'setId'));
-        final termId = int.tryParse(_getArgument(arguments, 'termId'));
+        final setId = _getArgument(arguments, 'setId') as int;
+        final termId = _getArgument(arguments, 'termId') as int;
 
-        return AuthLayoutWidget(TermWidget(setId, termId));
+        return AuthLayoutWidget(TermPageWidget(setId, termId));
       },
     ),
   ];
 
-  static String _getArgument(Map<String, String> arguments, String key) {
+  static dynamic _getArgument(Map<String, dynamic> arguments, String key) {
     if (!arguments.containsKey(key)) {
       throw ArgumentError("Route param:'$key' does not present");
     }

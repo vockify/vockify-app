@@ -5,20 +5,21 @@ import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/redux/actions/request_add_set_action.dart';
 import 'package:vockify/src/redux/actions/request_update_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
 
-class SetWidget extends StatefulWidget {
+class SetPageWidget extends StatefulWidget {
   final int setId;
 
-  SetWidget(this.setId);
+  SetPageWidget(this.setId);
 
   @override
-  State<StatefulWidget> createState() => _SetState();
+  State<StatefulWidget> createState() => _SetPageState();
 }
 
-class _SetState extends State<SetWidget> {
+class _SetPageState extends State<SetPageWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -29,6 +30,7 @@ class _SetState extends State<SetWidget> {
     final title = widget.setId != null ? 'ИЗМЕНИТЬ СЛОВАРЬ' : 'ДОБАВИТЬ СЛОВАРЬ';
 
     return AppLayoutWidget(
+      route: Routes.set,
       title: title,
       body: Center(
         child: LayoutBuilder(
@@ -89,7 +91,7 @@ class _SetState extends State<SetWidget> {
   }
 
   Widget _buildButtonBar(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context);
+    final store = StoreProvider.of<AppState>(context, listen: false);
 
     return AppButtonBarWidget(
       children: [

@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
@@ -13,6 +14,7 @@ import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
+import 'package:vockify/src/widgets/common/empty.dart';
 
 class ShareFormWidget extends StatefulWidget {
   final String term;
@@ -39,32 +41,10 @@ class _ShareFormState extends State<ShareFormWidget> {
   @override
   Widget build(BuildContext context) {
     if (_store.state.sets.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'ДЛЯ НАЧАЛА ВАМ НУЖНО',
-              style: Theme.of(context).textTheme.headline5,
-              textAlign: TextAlign.center,
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-            ),
-            FlatButton(
-              color: VockifyColors.fulvous,
-              textColor: VockifyColors.white,
-              onPressed: () {
-                _store.dispatch(NavigateToAction.replace(Routes.set));
-              },
-              child: Text('ДОБАВИТЬ СЛОВАРЬ',
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: VockifyColors.white,
-                        fontSize: 18,
-                      )),
-            )
-          ],
-        ),
+      return EmptyWidget(
+        text: 'Для начала вам необходимо создать новый словарь',
+        buttonText: 'СОЗДАТЬ СЛОВАРЬ',
+        onPressed: () => _store.dispatch(NavigateToAction.replace(Routes.set)),
       );
     }
 
@@ -134,7 +114,9 @@ class _ShareFormState extends State<ShareFormWidget> {
                   fontSize: 16,
                 ),
           ),
-          onPressed: () => _store.dispatch(NavigateToAction.pop()),
+          onPressed: () {
+            SystemNavigator.pop();
+          },
         ),
         RaisedButton(
           shape: Border(),
@@ -161,7 +143,7 @@ class _ShareFormState extends State<ShareFormWidget> {
                 _store.dispatch(RequestAddTermAction(termDto));
               }
 
-              _store.dispatch(NavigateToAction.pop());
+              SystemNavigator.pop();
             }
           },
         ),

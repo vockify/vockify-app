@@ -7,9 +7,9 @@ import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
-import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
-import 'package:vockify/src/widgets/view_model/term_view_model.dart';
+import 'package:vockify/src/widgets/common/loader.dart';
+import 'package:vockify/src/widgets/pages/term/term_view_model.dart';
 
 class TermWidget extends StatefulWidget {
   final int setId;
@@ -33,69 +33,64 @@ class _TermState extends State<TermWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AppLayoutWidget(
-      title: widget.termId == null ? 'ДОБАВИТЬ СЛОВО' : 'ИЗМЕНИТЬ СЛОВО',
-      body: Center(
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return StoreConnector<AppState, TermViewModel>(
-              distinct: true,
-              onInit: (store) {
-                if (widget.termId != null) {
-                  final term = store.state.terms.firstWhere(
-                    (item) => item.id == widget.termId,
-                    orElse: () => null,
-                  );
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        return StoreConnector<AppState, TermViewModel>(
+          distinct: true,
+          onInit: (store) {
+            if (widget.termId != null) {
+              final term = store.state.terms.firstWhere(
+                (item) => item.id == widget.termId,
+                orElse: () => null,
+              );
 
-                  _nameController.text = term.name;
-                  _definitionController.text = term.definition;
-                  selectedSet = term.setId.toString();
-                }
-              },
-              converter: (store) {
-                return TermViewModel.fromStore(store);
-              },
-              builder: (context, viewModel) {
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    _setsList(viewModel.sets),
-                                    Padding(padding: EdgeInsets.only(top: 20)),
-                                    _formField("СЛОВО", _nameController),
-                                    Padding(padding: EdgeInsets.only(top: 20)),
-                                    _formField(
-                                      "ПЕРЕВОД",
-                                      _definitionController,
-                                      suffixIcon: _translateAddonButton(),
-                                    ),
-                                  ],
+              _nameController.text = term.name;
+              _definitionController.text = term.definition;
+              selectedSet = term.setId.toString();
+            }
+          },
+          converter: (store) {
+            return TermViewModel.fromStore(store);
+          },
+          builder: (context, viewModel) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                _setsList(viewModel.sets),
+                                Padding(padding: EdgeInsets.only(top: 20)),
+                                _formField("СЛОВО", _nameController),
+                                Padding(padding: EdgeInsets.only(top: 20)),
+                                _formField(
+                                  "ПЕРЕВОД",
+                                  _definitionController,
+                                  suffixIcon: _translateAddonButton(),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                          _buildButtonBar(viewModel, context),
-                        ],
+                        ),
                       ),
-                    ),
+                      _buildButtonBar(viewModel, context),
+                    ],
                   ),
-                );
-              },
+                ),
+              ),
             );
           },
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -206,10 +201,7 @@ class _TermState extends State<TermWidget> {
     if (isLoading) {
       return Padding(
         padding: EdgeInsets.all(10.0),
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Colors.orange),
-          strokeWidth: 3.0,
-        ),
+        child: LoaderWidget(),
       );
     }
 

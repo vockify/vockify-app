@@ -3,7 +3,6 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 
 class QuizPageViewModel {
@@ -15,11 +14,10 @@ class QuizPageViewModel {
       : terms = store.state.terms,
         isLoading = store.state.isLoading,
         navigateToTerm = ((setId) {
-          final url = Router.routeToPath(Routes.term, {
-            "setId": setId.toString(),
-            "termId": 'new',
-          });
-          store.dispatch(NavigateToAction.push(url));
+          store.dispatch(NavigateToAction.push(Routes.term, arguments: {
+            "setId": setId,
+            "termId": null,
+          }));
         });
 
   @override

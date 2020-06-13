@@ -10,6 +10,7 @@ class AuthLayoutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
+      distinct: true,
       converter: (store) => store.state.isAuthorized,
       builder: (context, isAuthorized) {
         if (!isAuthorized) {

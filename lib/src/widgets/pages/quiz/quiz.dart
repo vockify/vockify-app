@@ -8,9 +8,9 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
-import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
-import 'package:vockify/src/widgets/quiz/quiz_result.dart';
-import 'package:vockify/src/widgets/quiz/quiz_step.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_controller.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_result.dart';
+import 'package:vockify/src/widgets/pages/quiz/quiz_step.dart';
 
 class QuizWidget extends StatefulWidget {
   final Iterable<TermState> terms;
@@ -190,22 +190,16 @@ class _QuizState extends State<QuizWidget> {
               return Card(
                 color: isWrong ? VockifyColors.flame : VockifyColors.lightSteelBlue,
                 child: ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Center(
-                        child: Text(
-                          term.name,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: isWrong ? VockifyColors.white : VockifyColors.prussianBlue,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      isWrong ? Icon(Icons.close) : Icon(Icons.check),
-                    ],
+                  trailing:isWrong ? Icon(Icons.close) : Icon(Icons.check),
+                  title: Text(
+                    term.name,
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: isWrong ? VockifyColors.white : VockifyColors.prussianBlue,
+                      fontSize: 18,
+                    ),
                   ),
+                  subtitle: Text(term.definition),
                 ),
               );
             },

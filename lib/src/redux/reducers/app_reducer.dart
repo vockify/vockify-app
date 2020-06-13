@@ -77,7 +77,19 @@ class AppReducer {
   }
 
   AppState _addTermReducer(AppState state, AddTermAction action) {
-    return state.rebuild((builder) => builder.terms.insert(0, action.payload));
+    return state.rebuild((builder) {
+      builder.terms.insert(0, action.payload);
+      // update terms count
+      builder.sets.map((item) {
+        if (item.id == action.payload.setId) {
+          return item.rebuild((builder) {
+            builder.termsCount = item.termsCount + 1;
+          });
+        }
+
+        return item;
+      });
+    });
   }
 
   AppState _updateTermReducer(AppState state, UpdateTermAction action) {
@@ -101,8 +113,19 @@ class AppReducer {
   }
 
   AppState _removeTermReducer(AppState state, RemoveTermAction action) {
-    return state.rebuild((builder) =>
-        builder.terms.removeWhere((element) => element.id == action.payload));
+    return state.rebuild((builder) {
+      builder.terms.removeWhere((element) => element.id == action.termId);
+      // update terms count
+      builder.sets.map((item) {
+        if (item.id == action.setId) {
+          return item.rebuild((builder) {
+            builder.termsCount = item.termsCount - 1;
+          });
+        }
+
+        return item;
+      });
+    });
   }
 
   // loading actions
