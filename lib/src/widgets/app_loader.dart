@@ -13,8 +13,9 @@ import 'package:vockify/src/widgets/common/loader.dart';
 
 class AppLoaderWidget extends StatelessWidget {
   final String route;
+  final Map<String, dynamic> arguments;
 
-  const AppLoaderWidget({Key key, @required this.route}) : super(key: key);
+  const AppLoaderWidget({Key key, @required this.route, this.arguments}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class AppLoaderWidget extends StatelessWidget {
                 store.dispatch(NavigateToAction.replace(Routes.login));
               });
             } else {
-              store.dispatch(RequestDataAction(route: route));
+              store.dispatch(RequestDataAction(route: route, arguments: arguments));
             }
           }
         },

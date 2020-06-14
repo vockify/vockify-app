@@ -1,5 +1,6 @@
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/services/authorization/authorization.dart';
 import 'package:vockify/src/services/authorization/authorization_exception.dart';
 
@@ -20,6 +21,6 @@ class MobileAuthorization extends Authorization {
     }
 
     final storage = AppStorage.getInstance();
-    await storage.setValue('token', token);
+    await storage.setValue(AppStorageKey.token, token);
   }
 }

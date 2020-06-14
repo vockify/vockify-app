@@ -16,6 +16,12 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isAuthorized;
 
+  @nullable
+  int get selectedSetId;
+
+  @nullable
+  String get translatedDefinition;
+
   bool get isLoading;
 
   BuiltList<SetState> get sets;

@@ -8,11 +8,15 @@ part of 'app_state.dart';
 
 class _$AppState extends AppState {
   @override
+  final String currentRoute;
+  @override
   final bool isAuthorized;
   @override
-  final bool isLoading;
+  final int selectedSetId;
   @override
-  final String currentRoute;
+  final String translatedDefinition;
+  @override
+  final bool isLoading;
   @override
   final BuiltList<SetState> sets;
   @override
@@ -24,9 +28,11 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.isAuthorized,
+      {this.currentRoute,
+      this.isAuthorized,
+      this.selectedSetId,
+      this.translatedDefinition,
       this.isLoading,
-      this.currentRoute,
       this.sets,
       this.terms,
       this.user})
@@ -59,9 +65,11 @@ class _$AppState extends AppState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AppState &&
-        isAuthorized == other.isAuthorized &&
-        isLoading == other.isLoading &&
         currentRoute == other.currentRoute &&
+        isAuthorized == other.isAuthorized &&
+        selectedSetId == other.selectedSetId &&
+        translatedDefinition == other.translatedDefinition &&
+        isLoading == other.isLoading &&
         sets == other.sets &&
         terms == other.terms &&
         user == other.user;
@@ -72,8 +80,14 @@ class _$AppState extends AppState {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, isAuthorized.hashCode), isLoading.hashCode),
-                    currentRoute.hashCode),
+                $jc(
+                    $jc(
+                        $jc(
+                            $jc($jc(0, currentRoute.hashCode),
+                                isAuthorized.hashCode),
+                            selectedSetId.hashCode),
+                        translatedDefinition.hashCode),
+                    isLoading.hashCode),
                 sets.hashCode),
             terms.hashCode),
         user.hashCode));
@@ -82,9 +96,11 @@ class _$AppState extends AppState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
-          ..add('isAuthorized', isAuthorized)
-          ..add('isLoading', isLoading)
           ..add('currentRoute', currentRoute)
+          ..add('isAuthorized', isAuthorized)
+          ..add('selectedSetId', selectedSetId)
+          ..add('translatedDefinition', translatedDefinition)
+          ..add('isLoading', isLoading)
           ..add('sets', sets)
           ..add('terms', terms)
           ..add('user', user))
@@ -95,17 +111,26 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
+  String _currentRoute;
+  String get currentRoute => _$this._currentRoute;
+  set currentRoute(String currentRoute) => _$this._currentRoute = currentRoute;
+
   bool _isAuthorized;
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
+  int _selectedSetId;
+  int get selectedSetId => _$this._selectedSetId;
+  set selectedSetId(int selectedSetId) => _$this._selectedSetId = selectedSetId;
+
+  String _translatedDefinition;
+  String get translatedDefinition => _$this._translatedDefinition;
+  set translatedDefinition(String translatedDefinition) =>
+      _$this._translatedDefinition = translatedDefinition;
+
   bool _isLoading;
   bool get isLoading => _$this._isLoading;
   set isLoading(bool isLoading) => _$this._isLoading = isLoading;
-
-  String _currentRoute;
-  String get currentRoute => _$this._currentRoute;
-  set currentRoute(String currentRoute) => _$this._currentRoute = currentRoute;
 
   ListBuilder<SetState> _sets;
   ListBuilder<SetState> get sets =>
@@ -125,9 +150,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   AppStateBuilder get _$this {
     if (_$v != null) {
-      _isAuthorized = _$v.isAuthorized;
-      _isLoading = _$v.isLoading;
       _currentRoute = _$v.currentRoute;
+      _isAuthorized = _$v.isAuthorized;
+      _selectedSetId = _$v.selectedSetId;
+      _translatedDefinition = _$v.translatedDefinition;
+      _isLoading = _$v.isLoading;
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
@@ -155,9 +182,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
-              isAuthorized: isAuthorized,
-              isLoading: isLoading,
               currentRoute: currentRoute,
+              isAuthorized: isAuthorized,
+              selectedSetId: selectedSetId,
+              translatedDefinition: translatedDefinition,
+              isLoading: isLoading,
               sets: sets.build(),
               terms: terms.build(),
               user: user.build());

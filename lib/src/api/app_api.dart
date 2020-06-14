@@ -14,6 +14,7 @@ import 'package:vockify/src/api/dto/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 
 AppApi api;
 
@@ -104,7 +105,7 @@ class AppApi {
 
   Future<Map<String, String>> _getHeaders() async {
     final storage = AppStorage.getInstance();
-    final token = await storage.getValue('token') ?? '';
+    final token = await storage.getValue(AppStorageKey.token) ?? '';
 
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

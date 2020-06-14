@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/add_set_action.dart';
 import 'package:vockify/src/redux/actions/add_term_action.dart';
 import 'package:vockify/src/redux/actions/authorize_action.dart';
@@ -16,12 +17,14 @@ import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
 import 'package:vockify/src/redux/actions/request_remove_term_action.dart';
 import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/request_translate_action.dart';
 import 'package:vockify/src/redux/actions/request_update_set_action.dart';
 import 'package:vockify/src/redux/actions/request_update_term_action.dart';
 import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/set_terms_action.dart';
+import 'package:vockify/src/redux/actions/set_translated_definition_action.dart';
 import 'package:vockify/src/redux/actions/set_user_action.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
@@ -31,6 +34,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/services/authorization/authorization.dart';
 
 class AppEffect {
@@ -47,6 +51,7 @@ class AppEffect {
       TypedEpic<AppState, RequestAddTermAction>(_requestAddTermAction),
       TypedEpic<AppState, RequestUpdateTermAction>(_requestUpdateTermAction),
       TypedEpic<AppState, RequestRemoveTermAction>(_requestRemoveTermAction),
+      TypedEpic<AppState, RequestTranslateAction>(_requestTranslateAction),
       TypedEpic<AppState, NavigateToAction>(_navigateToAction),
     ]);
   }
@@ -120,9 +125,9 @@ class AppEffect {
   }
 
   Stream<Object> _requestRemoveTermAction(
-      Stream<RequestRemoveTermAction> actions,
-      EpicStore<AppState> store,
-      ) {
+    Stream<RequestRemoveTermAction> actions,
+    EpicStore<AppState> store,
+  ) {
     return actions.asyncExpand((action) async* {
       yield RemoveTermAction(setId: action.setId, termId: action.termId);
 
@@ -130,6 +135,23 @@ class AppEffect {
         await api.deleteTerm(action.termId);
       } catch (e) {
         print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestTranslateAction(
+    Stream<RequestTranslateAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final result = await api.translate(TranslateRequestDto([action.term]));
+
+        if (result.data.isNotEmpty) {
+          yield SetTranslatedDefinitionAction(result.data.first.text);
+        }
+      } catch (error) {
+        print(error);
       }
     });
   }
@@ -179,9 +201,9 @@ class AppEffect {
   }
 
   Stream<Object> _requestAddTermAction(
-      Stream<RequestAddTermAction> actions,
-      EpicStore<AppState> store,
-      ) {
+    Stream<RequestAddTermAction> actions,
+    EpicStore<AppState> store,
+  ) {
     return actions.asyncExpand((action) async* {
       yield SetIsLoadingAction();
 
@@ -197,9 +219,9 @@ class AppEffect {
   }
 
   Stream<Object> _requestUpdateTermAction(
-      Stream<RequestUpdateTermAction> actions,
-      EpicStore<AppState> store,
-      ) {
+    Stream<RequestUpdateTermAction> actions,
+    EpicStore<AppState> store,
+  ) {
     return actions.asyncExpand((action) async* {
       try {
         final term = await api.updateTerm(action.payload.id, action.payload);
@@ -211,9 +233,9 @@ class AppEffect {
   }
 
   Stream<Object> _requestUpdateSetAction(
-      Stream<RequestUpdateSetAction> actions,
-      EpicStore<AppState> store,
-      ) {
+    Stream<RequestUpdateSetAction> actions,
+    EpicStore<AppState> store,
+  ) {
     return actions.asyncExpand((action) async* {
       try {
         final set = await api.updateSet(action.payload.id, action.payload);
@@ -234,9 +256,7 @@ class AppEffect {
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
-        final sets = await api.getSets();
-        yield SetSetsAction(sets.toState());
-        yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: action.arguments);
       } catch (e) {
         print(e);
       } finally {
@@ -251,7 +271,7 @@ class AppEffect {
   ) {
     return actions.asyncExpand((event) async* {
       final storage = AppStorage.getInstance();
-      await storage.remove('token');
+      await storage.remove(AppStorageKey.token);
 
       yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
     });

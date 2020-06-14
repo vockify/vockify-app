@@ -1,28 +1,29 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/term_dto.dart';
-import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/request_add_term_action.dart';
 import 'package:vockify/src/redux/actions/request_update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/services/app_storage/app_storage.dart';
+import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
 
 class ShareFormWidget extends StatefulWidget {
   final String term;
+  final String definition;
+  final Iterable<SetState> sets;
 
-  ShareFormWidget(this.term);
+  ShareFormWidget({this.term, this.sets, this.definition});
 
   @override
-  State<StatefulWidget> createState() => _ShareFormState(term);
+  State<StatefulWidget> createState() => _ShareFormState();
 }
 
 class _ShareFormState extends State<ShareFormWidget> {
@@ -32,15 +33,11 @@ class _ShareFormState extends State<ShareFormWidget> {
 
   int _selectedSetId;
 
-  final String term;
-
   Store<AppState> _store;
-
-  _ShareFormState(this.term);
 
   @override
   Widget build(BuildContext context) {
-    if (_store.state.sets.isEmpty) {
+    if (widget.sets.isEmpty) {
       return EmptyWidget(
         text: 'Для начала вам необходимо создать новый словарь',
         buttonText: 'СОЗДАТЬ СЛОВАРЬ',
@@ -59,19 +56,26 @@ class _ShareFormState extends State<ShareFormWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  _buildSetsDropdown(_selectedSetId, _store.state.sets),
+                  _buildSetsDropdownButton(_selectedSetId, widget.sets),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  _buildFormField("СЛОВО", _nameController),
+                  _buildTextFormField("СЛОВО", _nameController),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  _buildFormField("ПЕРЕВОД", _definitionController),
+                  _buildTextFormField("ПЕРЕВОД", _definitionController),
                 ],
               ),
             ),
           ),
         ),
-        _buildButtonBar(context),
+        _buildAppButtonBar(context),
       ],
     );
+  }
+
+  @override
+  void didUpdateWidget(ShareFormWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _update();
   }
 
   @override
@@ -86,22 +90,10 @@ class _ShareFormState extends State<ShareFormWidget> {
     super.initState();
 
     _store = StoreProvider.of<AppState>(context, listen: false);
-
-    if (_store.state.sets.isNotEmpty) {
-      _selectedSetId = _store.state.sets.first.id;
-      _nameController.text = term;
-
-      api.translate(TranslateRequestDto([_nameController.text])).then((value) {
-        if (value.data.isNotEmpty) {
-          _definitionController.text = value.data.first.text;
-        }
-      }).catchError((error) {
-        print(error);
-      });
-    }
+    _update();
   }
 
-  Widget _buildButtonBar(BuildContext context) {
+  Widget _buildAppButtonBar(BuildContext context) {
     return AppButtonBarWidget(
       children: [
         RaisedButton(
@@ -144,6 +136,8 @@ class _ShareFormState extends State<ShareFormWidget> {
               }
 
               SystemNavigator.pop();
+
+              AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
             }
           },
         ),
@@ -151,28 +145,7 @@ class _ShareFormState extends State<ShareFormWidget> {
     );
   }
 
-  Widget _buildFormField(String labelText, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(),
-        ),
-      ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
-        }
-
-        return null;
-      },
-      keyboardType: TextInputType.text,
-    );
-  }
-
-  Widget _buildSetsDropdown(int setId, BuiltList<SetState> sets) {
+  Widget _buildSetsDropdownButton(int setId, Iterable<SetState> sets) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -202,5 +175,34 @@ class _ShareFormState extends State<ShareFormWidget> {
         ),
       ),
     );
+  }
+
+  Widget _buildTextFormField(String labelText, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(),
+        ),
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
+        }
+
+        return null;
+      },
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  void _update() {
+    if (widget.sets.isNotEmpty) {
+      _selectedSetId = _selectedSetId ?? _store.state.selectedSetId ?? _store.state.sets.first.id;
+      _nameController.text = widget.term;
+      _definitionController.text = widget.definition;
+    }
   }
 }

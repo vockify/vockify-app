@@ -14,16 +14,15 @@ import 'router/route_paths.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
+  final String intent;
 
-  VockifyApp({Key key, this.store}) : super(key: key) {
+  VockifyApp({Key key, this.store, this.intent}) : super(key: key) {
     ReceiveSharingIntent.getTextStream().listen(
       _goToShare,
       onError: (error) {
         print("getTextStream error: $error");
       },
     );
-
-    ReceiveSharingIntent.getInitialText().then(_goToShare);
   }
 
   @override
@@ -54,6 +53,17 @@ class VockifyApp extends StatelessWidget {
   }
 
   List<Route> _getInitialRoutes(String route) {
+    if (intent != null) {
+      return [
+        _buildRoute(
+            RouteSettings(name: Routes.app),
+            AppLoaderWidget(
+              route: Routes.share,
+              arguments: {'term': intent},
+            ))
+      ];
+    }
+
     if (route == Routes.login || route == Routes.app) {
       return [_buildRoute(RouteSettings(name: Routes.app), AppLoaderWidget(route: Routes.sets))];
     }
