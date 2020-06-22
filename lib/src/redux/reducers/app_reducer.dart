@@ -159,11 +159,11 @@ class AppReducer {
 
   // loading actions
   AppState _setIsLoadingReducer(AppState state, SetIsLoadingAction action) {
-    return state.rebuild((builder) => builder.isLoading = true);
+    return state.rebuild((builder) => builder.loading[action.key] = true);
   }
 
   AppState _unsetIsLoadingReducer(AppState state, UnsetIsLoadingAction action) {
-    return state.rebuild((builder) => builder.isLoading = false);
+    return state.rebuild((builder) => builder.loading[action.key] = false);
   }
 
   AppState _setCurrentRouteReducer(AppState state, SetCurrentRouteAction action) {

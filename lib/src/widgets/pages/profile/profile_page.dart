@@ -13,7 +13,6 @@ class ProfilePageWidget extends StatelessWidget {
     return AppLayoutWidget(
       route: Routes.profile,
       title: 'МОЙ ПРОФИЛЬ',
-      profile: false,
       body: Center(
         child: StoreConnector<AppState, UserState>(
           distinct: true,
@@ -22,7 +21,7 @@ class ProfilePageWidget extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                if (user.avatar != null) Container(
                   width: 200,
                   height: 200,
                   decoration: BoxDecoration(

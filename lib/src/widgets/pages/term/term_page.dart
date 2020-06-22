@@ -1,20 +1,180 @@
-import 'package:flutter/material.dart';
-import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/widgets/app_layout.dart';
-import 'package:vockify/src/widgets/pages/term/term.dart';
+import 'dart:async';
 
-class TermPageWidget extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/term_dto.dart';
+import 'package:vockify/src/api/dto/translate_request_dto.dart';
+import 'package:vockify/src/redux/actions/request_add_term_action.dart';
+import 'package:vockify/src/redux/actions/request_update_term_action.dart';
+import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/widgets/app_layout.dart';
+import 'package:vockify/src/widgets/common/form_dropdown.dart';
+import 'package:vockify/src/widgets/common/form_text_field.dart';
+import 'package:vockify/src/widgets/common/loader.dart';
+import 'package:vockify/src/widgets/pages/term/term_page_view_model.dart';
+
+class TermPageWidget extends StatefulWidget {
   final int setId;
   final int termId;
 
-  TermPageWidget(this.setId, this.termId);
+  TermPageWidget({
+    @required this.setId,
+    @required this.termId,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _TermPageState();
+}
+
+class _TermPageState extends State<TermPageWidget> {
+  final _definitionController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
+  int _selectedSetId;
 
   @override
   Widget build(BuildContext context) {
+    final store = StoreProvider.of<AppState>(context);
+
     return AppLayoutWidget(
       route: Routes.term,
-      title: termId == null ? 'ДОБАВИТЬ СЛОВО' : 'ИЗМЕНИТЬ СЛОВО',
-      body: TermWidget(setId, termId),
+      actions: <Widget>[
+        RawMaterialButton(
+          constraints: BoxConstraints(
+            minWidth: 42,
+            minHeight: 42,
+          ),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              final term = TermDto(
+                widget.termId != null ? widget.termId : 0,
+                _nameController.text,
+                _definitionController.text,
+                _selectedSetId,
+              );
+
+              if (term.id > 0) {
+                store.dispatch(RequestUpdateTermAction(term));
+              } else {
+                store.dispatch(RequestAddTermAction(term));
+              }
+
+              Navigator.of(context).pop();
+            }
+          },
+          child: Text(
+            'Сохранить',
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  color: VockifyColors.white,
+                  fontSize: 18,
+                ),
+          ),
+          padding: EdgeInsets.all(16),
+        ),
+      ],
+      body: StoreConnector<AppState, TermPageViewModel>(
+        distinct: true,
+        onInit: (store) {
+          if (widget.termId != null) {
+            final term = store.state.terms.firstWhere(
+              (item) => item.id == widget.termId,
+              orElse: () => null,
+            );
+
+            _nameController.text = term.name;
+            _definitionController.text = term.definition;
+            _selectedSetId = term.setId;
+          }
+        },
+        converter: (store) {
+          return TermPageViewModel.fromStore(store);
+        },
+        builder: (context, viewModel) {
+          return Padding(
+            padding: EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  FormDropdownWidget(
+                    selectedId: _selectedSetId,
+                    items: viewModel.sets.map((set) => FormDropdownItem(set.id, set.name)),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSetId = value;
+                      });
+                    },
+                  ),
+                  FormTextFieldWidget(
+                    controller: _nameController,
+                    text: 'СЛОВО НА АНГЛИЙСКОМ',
+                    autoFocus: true,
+                  ),
+                  FormTextFieldWidget(
+                    controller: _definitionController,
+                    text: 'ПЕРЕВОД',
+                    suffix: _buildTranslateButton(),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _definitionController.dispose();
+    _nameController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedSetId = widget.setId;
+  }
+
+  Widget _buildTranslateButton() {
+    if (_isLoading) {
+      return Padding(
+        padding: EdgeInsets.all(10.0),
+        child: LoaderWidget(),
+      );
+    }
+
+    return IconButton(
+      onPressed: () async {
+        if (_nameController.text.isEmpty) {
+          return;
+        }
+
+        setState(() {
+          _isLoading = true;
+        });
+
+        try {
+          final data = await api.translate(TranslateRequestDto([_nameController.text]));
+
+          if (data.data.isNotEmpty) {
+            _definitionController.text = data.data.first.text;
+          }
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      },
+      icon: Icon(Icons.translate),
     );
   }
 }

@@ -2,35 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
 class AppLayoutWidget extends StatelessWidget {
+  final String route;
   final String title;
   final Widget body;
   final List<Widget> actions;
   final String redirectBackRoute;
-  final bool profile;
   final Function(Store<AppState>) onInit;
-  final String route;
+  final bool isContextNavigation;
 
   AppLayoutWidget({
     Key key,
+    @required this.route,
     this.title,
     this.body,
     this.actions = const [],
     this.redirectBackRoute,
-    this.profile = true,
     this.onInit,
-    @required this.route,
+    this.isContextNavigation = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.isLoading && store.state.currentRoute == route,
+      converter: (store) => isLoading(store.state, route),
       distinct: true,
       onInit: (store) {
         if (onInit != null) {
@@ -41,21 +41,15 @@ class AppLayoutWidget extends StatelessWidget {
         return Scaffold(
           backgroundColor: VockifyColors.white,
           appBar: AppBar(
-            title: Text(
-              title,
-              style: TextStyle(color: VockifyColors.white),
-            ),
+            title: title != null
+                ? Text(
+                    title,
+                    style: TextStyle(color: VockifyColors.white),
+                  )
+                : null,
             leading: _goBackArrow(context),
             automaticallyImplyLeading: false,
-            actions: <Widget>[
-              ...actions,
-              if (profile)
-                StoreConnector<AppState, String>(
-                  distinct: true,
-                  converter: (store) => store.state.user.avatar,
-                  builder: _userAvatar,
-                ),
-            ],
+            actions: actions,
           ),
           body: isLoading
               ? Center(
@@ -72,44 +66,21 @@ class AppLayoutWidget extends StatelessWidget {
       return null;
     }
 
-    return StoreConnector<AppState, Function>(
-      converter: (store) => store.dispatch,
-      distinct: true,
-      builder: (context, dispatch) {
-        return new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () {
-            if (Navigator.of(context).canPop()) {
-              dispatch(NavigateToAction.pop());
-            } else {
-              if (redirectBackRoute != null) {
-                dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
-              } else {
-                dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false));
-              }
-            }
-          },
-        );
+    final store = StoreProvider.of<AppState>(context);
+
+    return IconButton(
+      icon: new Icon(Icons.arrow_back),
+      onPressed: () {
+        if (redirectBackRoute != null) {
+          store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
+        } else {
+          if (isContextNavigation) {
+            Navigator.of(context).pop();
+          } else {
+            store.dispatch(NavigateToAction.pop());
+          }
+        }
       },
     );
-  }
-
-  Widget _userAvatar(BuildContext context, String url) {
-    final store = StoreProvider.of<AppState>(context, listen: false);
-
-    return url != null
-        ? Padding(
-            padding: EdgeInsets.only(right: 16, left: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => store.dispatch(NavigateToAction.push(Routes.profile)),
-                  child: CircleAvatar(backgroundImage: NetworkImage(url)),
-                ),
-              ],
-            ),
-          )
-        : Container();
   }
 }

@@ -8,24 +8,20 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
 
+import 'package:vockify/src/redux/selectors/selectors.dart' as selectors;
+
 class SetsViewModel {
   final bool isLoading;
   final BuiltList<SetState> sets;
   final Function() requestSets;
   final Function(int) removeSet;
-  final Function() navigateToSet;
-  final Function(int) navigateToTerms;
   final Function(int) navigateToQuiz;
 
   SetsViewModel.fromStore(Store<AppState> store)
-      : isLoading = store.state.isLoading,
+      : isLoading = selectors.isLoading(store.state, 'sets'),
         sets = store.state.sets,
-        requestSets = (() => store.dispatch(RequestSetsAction(shouldStartLoader: false))),
+        requestSets = (() => store.dispatch(RequestSetsAction(route: null))),
         removeSet = ((id) => store.dispatch(RequestRemoveSetAction(id))),
-        navigateToSet = (() => store.dispatch(NavigateToAction.push(Routes.set, arguments: {'id': null}))),
-        navigateToTerms = ((int setId) {
-          store.dispatch(NavigateToAction.push(Routes.terms, arguments: {'id': setId}));
-        }),
         navigateToQuiz = ((setId) {
           store.dispatch(NavigateToAction.push(Routes.quiz, arguments: {'setId': setId}));
         });

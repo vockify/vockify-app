@@ -63,10 +63,10 @@ class AppEffect {
     return actions.asyncExpand((action) async* {
       yield SetCurrentRouteAction(action.name);
 
-      if (action.name != '/login' && action.name != '/tour' && !store.state.isAuthorized) {
+      if (action.name != Routes.login && action.name != Routes.tour && !store.state.isAuthorized) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
-      } else if (action.name == '/login' && store.state.isAuthorized) {
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
+      } else if (action.name == Routes.login && store.state.isAuthorized) {
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
       }
     });
   }
@@ -90,7 +90,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction();
+      yield SetIsLoadingAction('app');
 
       try {
         final authorization = Authorization.getInstance();
@@ -99,12 +99,12 @@ class AppEffect {
 
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.sets, (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
       } catch (e) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
         print(e);
       } finally {
-        yield UnsetIsLoadingAction();
+        yield UnsetIsLoadingAction('app');
       }
     });
   }
@@ -161,9 +161,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      if (action.shouldStartLoader) {
-        yield SetIsLoadingAction();
-      }
+      yield SetIsLoadingAction(action.route);
 
       try {
         final sets = await api.getSets();
@@ -171,9 +169,7 @@ class AppEffect {
       } catch (e) {
         print(e);
       } finally {
-        if (action.shouldStartLoader) {
-          yield UnsetIsLoadingAction();
-        }
+        yield UnsetIsLoadingAction(action.route);
       }
     });
   }
@@ -184,7 +180,7 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       if (action.shouldStartLoader) {
-        yield SetIsLoadingAction();
+        yield SetIsLoadingAction(Routes.terms);
       }
 
       try {
@@ -194,7 +190,7 @@ class AppEffect {
         print(e);
       } finally {
         if (action.shouldStartLoader) {
-          yield UnsetIsLoadingAction();
+          yield UnsetIsLoadingAction(Routes.terms);
         }
       }
     });
@@ -205,7 +201,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction();
+      yield SetIsLoadingAction(Routes.term);
 
       try {
         final term = await api.addTerm(action.payload);
@@ -213,7 +209,7 @@ class AppEffect {
       } catch (e) {
         print(e);
       } finally {
-        yield UnsetIsLoadingAction();
+        yield UnsetIsLoadingAction(Routes.term);
       }
     });
   }
@@ -251,7 +247,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction();
+      yield SetIsLoadingAction('app');
 
       try {
         final user = await api.authUser();
@@ -260,7 +256,7 @@ class AppEffect {
       } catch (e) {
         print(e);
       } finally {
-        yield UnsetIsLoadingAction();
+        yield UnsetIsLoadingAction('app');
       }
     });
   }

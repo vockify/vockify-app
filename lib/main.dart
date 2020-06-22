@@ -33,7 +33,7 @@ void main() async {
       builder
         ..isAuthorized = isAuthorized
         ..selectedSetId = int.tryParse(selectedSetId ?? '')
-        ..isLoading = false
+        ..loading = {}
         ..sets.replace([])
         ..terms.replace([])
         ..user.update((builder) {

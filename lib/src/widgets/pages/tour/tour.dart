@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/request_authorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
@@ -59,14 +58,14 @@ class _TourWidgetState extends State<TourWidget> {
                 ),
           ),
           onPressed: () {
-            _finishTour(store, skip: true);
+            _finishTour(store);
           },
         ),
         RaisedButton(
           shape: Border(),
           color: VockifyColors.fulvous,
           child: Text(
-            _current != _slides.length - 1 ? "ПРОДОЛЖИТЬ" : "АВТОРИЗОВАТЬСЯ",
+            _current != _slides.length - 1 ? "ПРОДОЛЖИТЬ" : "НАЧАТЬ",
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
@@ -148,14 +147,10 @@ class _TourWidgetState extends State<TourWidget> {
     );
   }
 
-  Future<void> _finishTour(Store store, {bool skip = false}) async {
+  Future<void> _finishTour(Store store) async {
     final storage = AppStorage.getInstance();
     await storage.setValue(AppStorageKey.isTourFinished, true.toString());
 
-    if (skip) {
-      store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false));
-    } else {
-      store.dispatch(RequestAuthorizeAction());
-    }
+    store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false));
   }
 }

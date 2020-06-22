@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -18,9 +17,7 @@ class QuizPageWidget extends StatelessWidget {
     return AppLayoutWidget(
       route: Routes.quiz,
       title: 'КВИЗ',
-      onInit: (store) {
-        store.dispatch(RequestSetTermsAction(setId: setId));
-      },
+      isContextNavigation: false,
       body: StoreConnector<AppState, QuizPageViewModel>(
         distinct: true,
         converter: (store) => QuizPageViewModel.fromStore(store),

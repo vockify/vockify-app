@@ -22,7 +22,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   @nullable
   String get translatedDefinition;
 
-  bool get isLoading;
+  Map<String, bool> get loading;
 
   BuiltList<SetState> get sets;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_authorize_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart' as selectors;
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class LoginPageViewModel {
@@ -8,7 +9,7 @@ class LoginPageViewModel {
   final VoidCallback requestAuthorize;
 
   LoginPageViewModel.fromStore(Store<AppState> store)
-      : isLoading = store.state.isLoading,
+      : isLoading = selectors.isLoading(store.state, 'app'),
         requestAuthorize = (() => store.dispatch(RequestAuthorizeAction()));
 
   @override

@@ -16,7 +16,7 @@ class _$AppState extends AppState {
   @override
   final String translatedDefinition;
   @override
-  final bool isLoading;
+  final Map<String, bool> loading;
   @override
   final BuiltList<SetState> sets;
   @override
@@ -32,7 +32,7 @@ class _$AppState extends AppState {
       this.isAuthorized,
       this.selectedSetId,
       this.translatedDefinition,
-      this.isLoading,
+      this.loading,
       this.sets,
       this.terms,
       this.user})
@@ -40,8 +40,8 @@ class _$AppState extends AppState {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
     }
-    if (isLoading == null) {
-      throw new BuiltValueNullFieldError('AppState', 'isLoading');
+    if (loading == null) {
+      throw new BuiltValueNullFieldError('AppState', 'loading');
     }
     if (sets == null) {
       throw new BuiltValueNullFieldError('AppState', 'sets');
@@ -69,7 +69,7 @@ class _$AppState extends AppState {
         isAuthorized == other.isAuthorized &&
         selectedSetId == other.selectedSetId &&
         translatedDefinition == other.translatedDefinition &&
-        isLoading == other.isLoading &&
+        loading == other.loading &&
         sets == other.sets &&
         terms == other.terms &&
         user == other.user;
@@ -87,7 +87,7 @@ class _$AppState extends AppState {
                                 isAuthorized.hashCode),
                             selectedSetId.hashCode),
                         translatedDefinition.hashCode),
-                    isLoading.hashCode),
+                    loading.hashCode),
                 sets.hashCode),
             terms.hashCode),
         user.hashCode));
@@ -100,7 +100,7 @@ class _$AppState extends AppState {
           ..add('isAuthorized', isAuthorized)
           ..add('selectedSetId', selectedSetId)
           ..add('translatedDefinition', translatedDefinition)
-          ..add('isLoading', isLoading)
+          ..add('loading', loading)
           ..add('sets', sets)
           ..add('terms', terms)
           ..add('user', user))
@@ -128,9 +128,9 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set translatedDefinition(String translatedDefinition) =>
       _$this._translatedDefinition = translatedDefinition;
 
-  bool _isLoading;
-  bool get isLoading => _$this._isLoading;
-  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+  Map<String, bool> _loading;
+  Map<String, bool> get loading => _$this._loading;
+  set loading(Map<String, bool> loading) => _$this._loading = loading;
 
   ListBuilder<SetState> _sets;
   ListBuilder<SetState> get sets =>
@@ -154,7 +154,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _isAuthorized = _$v.isAuthorized;
       _selectedSetId = _$v.selectedSetId;
       _translatedDefinition = _$v.translatedDefinition;
-      _isLoading = _$v.isLoading;
+      _loading = _$v.loading;
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
@@ -186,7 +186,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               isAuthorized: isAuthorized,
               selectedSetId: selectedSetId,
               translatedDefinition: translatedDefinition,
-              isLoading: isLoading,
+              loading: loading,
               sets: sets.build(),
               terms: terms.build(),
               user: user.build());

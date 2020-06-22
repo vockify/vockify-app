@@ -98,6 +98,7 @@ class AppApi {
       );
       return _processResponse(response);
     } on http.ClientException catch (e) {
+      print(e);
       store.dispatch(UnauthorizeAction());
       rethrow;
     }

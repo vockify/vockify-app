@@ -8,12 +8,12 @@ import 'package:vockify/src/redux/actions/request_update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state.dart';
 
-class TermViewModel {
+class TermPageViewModel {
   final BuiltList<SetState> sets;
   final Function(TermDto) saveTerm;
   final VoidCallback navigateBack;
 
-  TermViewModel.fromStore(Store<AppState> store)
+  TermPageViewModel.fromStore(Store<AppState> store)
       : sets = store.state.sets,
         saveTerm = ((term) =>
             term.id > 0 ? store.dispatch(RequestUpdateTermAction(term)) : store.dispatch(RequestAddTermAction(term))),
@@ -25,6 +25,6 @@ class TermViewModel {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TermViewModel && this.sets == other.sets;
+    return other is TermPageViewModel && this.sets == other.sets;
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/widgets/pages/terms/terms_item.dart';
 import 'package:vockify/src/widgets/pages/terms/terms_view_model.dart';
 
 class TermsWidget extends StatefulWidget {
@@ -26,6 +26,7 @@ class _TermsState extends State<TermsWidget> {
       builder: (context, viewModel) {
         return RefreshIndicator(
           child: ListView.builder(
+            padding: EdgeInsets.only(bottom: 80),
             itemCount: viewModel.terms.length * 2,
             itemBuilder: (BuildContext context, int index) {
               if (index.isOdd) {
@@ -36,7 +37,26 @@ class _TermsState extends State<TermsWidget> {
               }
 
               final term = viewModel.terms[(index / 2).round()];
-              return _buildTerm(term: term, viewModel: viewModel);
+
+              return TermsItemWidget(
+                term: term,
+                onTap: () {
+                  Navigator.of(context).pushNamed(Routes.term, arguments: {
+                    "setId": term.setId,
+                    "termId": term.id,
+                  });
+                },
+                onEdit: () {
+                  Navigator.of(context).pushNamed(Routes.term, arguments: {
+                    "setId": term.setId,
+                    "termId": term.id,
+                  });
+                },
+                onDelete: () {
+                  viewModel.removeTerm(term.setId, term.id);
+                },
+                slidableController: _slidableController,
+              );
             },
           ),
           onRefresh: () async {
@@ -44,54 +64,6 @@ class _TermsState extends State<TermsWidget> {
           },
         );
       },
-    );
-  }
-
-  Widget _buildTerm({
-    @required TermState term,
-    @required TermsViewModel viewModel,
-  }) {
-    return Slidable(
-      key: Key(term.id.toString()),
-      controller: _slidableController,
-      actionPane: SlidableDrawerActionPane(),
-      child: ListTile(
-        onTap: () => viewModel.navigateToTerm(term.setId, term.id),
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                '${term.name}',
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                '${term.definition}',
-                textAlign: TextAlign.right,
-              ),
-            ),
-          ],
-        ),
-      ),
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'ИЗМЕНИТЬ',
-          color: VockifyColors.fulvous,
-          foregroundColor: VockifyColors.white,
-          icon: Icons.edit,
-          onTap: () => viewModel.navigateToTerm(term.setId, term.id),
-        ),
-        IconSlideAction(
-          caption: 'УДАЛИТЬ',
-          color: VockifyColors.flame,
-          foregroundColor: VockifyColors.white,
-          icon: Icons.delete,
-          onTap: () => viewModel.removeTerm(term.setId, term.id),
-        )
-      ],
     );
   }
 }

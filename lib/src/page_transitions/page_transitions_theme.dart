@@ -5,7 +5,7 @@ import 'package:vockify/src/page_transitions/web_page_transitions_builder.dart';
 final pageTransitionsTheme = PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{
   TargetPlatform.android: WebPageTransitionsBuilder(),
   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-  TargetPlatform.linux: WebPageTransitionsBuilder(),
-  TargetPlatform.macOS: WebPageTransitionsBuilder(),
-  TargetPlatform.windows: WebPageTransitionsBuilder(),
+  TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+  TargetPlatform.macOS: FadeUpwardsPageTransitionsBuilder(),
+  TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
 });

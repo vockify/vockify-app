@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/page_transitions/page_transitions_theme.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/route_path.dart';
+import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_loader.dart';
-
-import 'router/route_paths.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
   final String intent;
 
-  VockifyApp({Key key, this.store, this.intent}) : super(key: key) {
-    ReceiveSharingIntent.getTextStream().listen(
-      _goToShare,
-      onError: (error) {
-        print("getTextStream error: $error");
-      },
-    );
-  }
+  VockifyApp({Key key, this.store, this.intent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,73 +21,40 @@ class VockifyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         navigatorKey: NavigatorHolder.navigatorKey,
-        onGenerateRoute: _getRoute,
+        onGenerateRoute: Router.getRoute,
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(primarySwatch: VockifyColors.primary),
           primaryColor: VockifyColors.primary,
           primarySwatch: VockifyColors.primary,
-          pageTransitionsTheme: pageTransitionsTheme,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+//          pageTransitionsTheme: pageTransitionsTheme,
         ),
       ),
-    );
-  }
-
-  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {
-    return MaterialPageRoute(
-      settings: settings,
-      builder: (context) => builder,
     );
   }
 
   List<Route> _getInitialRoutes(String route) {
     if (intent != null) {
       return [
-        _buildRoute(
-            RouteSettings(name: Routes.app),
-            AppLoaderWidget(
-              route: Routes.share,
-              arguments: {'term': intent},
-            ))
+        Router.buildRoute(
+          RouteSettings(name: Routes.share),
+          AppLoaderWidget(
+            route: Routes.share,
+            arguments: {'term': intent},
+          ),
+        ),
       ];
     }
 
-    if (route == Routes.login || route == Routes.app) {
-      return [_buildRoute(RouteSettings(name: Routes.app), AppLoaderWidget(route: Routes.sets))];
-    }
-
-    return [_buildRoute(RouteSettings(name: route), AppLoaderWidget(route: route))];
-  }
-
-  Route _getRoute(RouteSettings settings) {
-    for (RoutePath routePath in RoutePaths.routePaths) {
-      final arguments = settings.arguments;
-
-      if (arguments != null && arguments is! Map<String, dynamic>) {
-        throw ArgumentError("arguments cast error");
-      }
-
-      if (settings.name == routePath.pattern) {
-        return _buildRoute(settings, routePath.builder(arguments as Map<String, dynamic>));
-      }
-    }
-
-    return _buildRoute(settings, AppLoaderWidget(route: Routes.sets));
-  }
-
-  void _goToShare(String value) {
-    if (value != null) {
-      store.dispatch(
-        NavigateToAction.pushNamedAndRemoveUntil(
-          Routes.share,
-          (route) => route.settings.name != Routes.share,
-          arguments: {
-            'term': value,
-          },
+    return [
+      Router.buildRoute(
+        RouteSettings(name: Routes.home),
+        AppLoaderWidget(
+          route: Routes.home,
         ),
-      );
-    }
+      ),
+    ];
   }
 }

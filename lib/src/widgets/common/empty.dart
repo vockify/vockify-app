@@ -24,7 +24,7 @@ class EmptyWidget extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           if (buttonText != null && onPressed != null)

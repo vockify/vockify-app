@@ -5,6 +5,8 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 
+import 'package:vockify/src/redux/selectors/selectors.dart' as selectors;
+
 class QuizPageViewModel {
   final Iterable<TermState> terms;
   final bool isLoading;
@@ -12,7 +14,7 @@ class QuizPageViewModel {
 
   QuizPageViewModel.fromStore(Store<AppState> store)
       : terms = store.state.terms,
-        isLoading = store.state.isLoading,
+        isLoading = selectors.isLoading(store.state, 'app'),
         navigateToTerm = ((setId) {
           store.dispatch(NavigateToAction.push(Routes.term, arguments: {
             "setId": setId,
