@@ -1,11 +1,12 @@
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/add_term_action.dart';
-import 'package:vockify/src/redux/actions/remove_term_action.dart';
-import 'package:vockify/src/redux/actions/set_added_term_action.dart';
-import 'package:vockify/src/redux/actions/set_terms_action.dart';
-import 'package:vockify/src/redux/actions/unset_terms_action.dart';
-import 'package:vockify/src/redux/actions/update_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/add_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/remove_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_added_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/unset_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/loader_state.dart';
 
 class TermReducer {
   Reducer<AppState> _reducer;
@@ -53,7 +54,8 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.replace(Map.fromEntries(entries));
       builder.terms.ids.replace(action.terms.map((term) => term.id));
-      builder.terms.isLoaded = true;
+      builder.terms.loader = LoaderState.isLoaded;
+      builder.terms.added = null;
     });
   }
 
@@ -61,7 +63,7 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.clear();
       builder.terms.ids.clear();
-      builder.terms.isLoaded = false;
+      builder.terms.loader = LoaderState.isLoading;
       builder.terms.added = null;
     });
   }

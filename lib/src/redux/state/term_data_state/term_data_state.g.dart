@@ -12,20 +12,20 @@ class _$TermDataState extends TermDataState {
   @override
   final BuiltList<int> ids;
   @override
-  final bool isLoaded;
+  final LoaderState loader;
   @override
   final BuiltMap<int, TermState> items;
 
   factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
       (new TermDataStateBuilder()..update(updates)).build();
 
-  _$TermDataState._({this.added, this.ids, this.isLoaded, this.items})
+  _$TermDataState._({this.added, this.ids, this.loader, this.items})
       : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'ids');
     }
-    if (isLoaded == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'isLoaded');
+    if (loader == null) {
+      throw new BuiltValueNullFieldError('TermDataState', 'loader');
     }
     if (items == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'items');
@@ -45,14 +45,14 @@ class _$TermDataState extends TermDataState {
     return other is TermDataState &&
         added == other.added &&
         ids == other.ids &&
-        isLoaded == other.isLoaded &&
+        loader == other.loader &&
         items == other.items;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, added.hashCode), ids.hashCode), isLoaded.hashCode),
+        $jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode),
         items.hashCode));
   }
 
@@ -61,7 +61,7 @@ class _$TermDataState extends TermDataState {
     return (newBuiltValueToStringHelper('TermDataState')
           ..add('added', added)
           ..add('ids', ids)
-          ..add('isLoaded', isLoaded)
+          ..add('loader', loader)
           ..add('items', items))
         .toString();
   }
@@ -79,9 +79,9 @@ class TermDataStateBuilder
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
   set ids(ListBuilder<int> ids) => _$this._ids = ids;
 
-  bool _isLoaded;
-  bool get isLoaded => _$this._isLoaded;
-  set isLoaded(bool isLoaded) => _$this._isLoaded = isLoaded;
+  LoaderState _loader;
+  LoaderState get loader => _$this._loader;
+  set loader(LoaderState loader) => _$this._loader = loader;
 
   MapBuilder<int, TermState> _items;
   MapBuilder<int, TermState> get items =>
@@ -94,7 +94,7 @@ class TermDataStateBuilder
     if (_$v != null) {
       _added = _$v.added?.toBuilder();
       _ids = _$v.ids?.toBuilder();
-      _isLoaded = _$v.isLoaded;
+      _loader = _$v.loader;
       _items = _$v.items?.toBuilder();
       _$v = null;
     }
@@ -122,7 +122,7 @@ class TermDataStateBuilder
           new _$TermDataState._(
               added: _added?.build(),
               ids: ids.build(),
-              isLoaded: isLoaded,
+              loader: loader,
               items: items.build());
     } catch (_) {
       String _$failedField;

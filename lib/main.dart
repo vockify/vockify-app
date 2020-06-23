@@ -48,13 +48,13 @@ void main() async {
           builder.public.update((builder) {
             builder.ids.replace([]);
             builder.items.replace({});
-            builder.isLoaded = false;
+            builder.loader = LoaderState.isLoading;
           });
         })
         ..terms.update((builder) {
           builder.ids.replace([]);
           builder.items.replace({});
-          builder.isLoaded = false;
+          builder.loader = LoaderState.isLoading;
         })
         ..user.update((builder) {
           builder

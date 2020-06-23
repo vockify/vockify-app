@@ -3,7 +3,9 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/home.dart';
 import 'package:vockify/src/widgets/pages/login/login_page.dart';
 import 'package:vockify/src/widgets/pages/profile/profile_page.dart';
+import 'package:vockify/src/widgets/pages/public_terms/public_terms_page.dart';
 import 'package:vockify/src/widgets/pages/quiz/quiz_page.dart';
+import 'package:vockify/src/widgets/pages/search/search_page.dart';
 import 'package:vockify/src/widgets/pages/set/set_page.dart';
 import 'package:vockify/src/widgets/pages/sets/sets_page.dart';
 import 'package:vockify/src/widgets/pages/share/share_page.dart';
@@ -20,6 +22,8 @@ class Router {
     Routes.tour: (arguments) => TourPageWidget(),
     Routes.sets: (arguments) => SetsPageWidget(),
     Routes.home: (arguments) => HomeWidget(),
+    Routes.search: (arguments) => SearchPageWidget(),
+    Routes.publicTerms: (arguments) => PublicTermsPageWidget(arguments['id'] as int),
     Routes.set: (arguments) => SetPageWidget(setId: arguments['id'] as int),
     Routes.share: (arguments) => SharePageWidget(term: arguments['term'] as String),
     Routes.quiz: (arguments) => QuizPageWidget(setId: arguments['setId'] as int),

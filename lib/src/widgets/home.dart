@@ -9,7 +9,6 @@ import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/pages/profile/profile_page.dart';
-import 'package:vockify/src/widgets/pages/search/search_page.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -30,6 +29,7 @@ class _HomeState extends State<HomeWidget> {
 
   final _navigatorSettings = [
     NavigatorSetting(GlobalKey<NavigatorState>(), Routes.sets),
+    NavigatorSetting(GlobalKey<NavigatorState>(), Routes.search),
   ];
 
   @override
@@ -71,7 +71,13 @@ class _HomeState extends State<HomeWidget> {
           ),
           Offstage(
             offstage: _currentIndex != 1,
-            child: SearchPageWidget(),
+            child: Navigator(
+              key: _navigatorSettings[1].key,
+              onGenerateRoute: Router.getRoute,
+              onGenerateInitialRoutes: (navigator, route) => [
+                Router.getRoute(RouteSettings(name: _navigatorSettings[1].initialRoute)),
+              ],
+            ),
           ),
           Offstage(
             offstage: _currentIndex != 2,

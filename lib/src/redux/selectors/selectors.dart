@@ -2,6 +2,13 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
+List<SetState> getPublicSets(AppState state) {
+  final ids = state.sets.public.ids;
+  final items = state.sets.public.items;
+
+  return ids.map((id) => items[id]).toList();
+}
+
 List<TermState> getTerms(AppState state) {
   final added = state.terms.added;
   final ids = state.terms.ids;

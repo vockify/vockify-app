@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/request_add_set_action.dart';
-import 'package:vockify/src/redux/actions/request_update_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_add_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -92,12 +92,12 @@ class _SetPageState extends State<SetPageWidget> {
       final items = store.state.sets.user.items;
 
       if (items.containsKey(widget.setId)) {
-        store.dispatch(RequestUpdateSetAction(SetState((builder) {
+        store.dispatch(RequestUpdateUserSetAction(SetState((builder) {
           builder.id = widget.setId;
           builder.name = _nameController.text;
         })));
       } else {
-        store.dispatch(RequestAddSetAction(SetState((builder) {
+        store.dispatch(RequestAddUserSetAction(SetState((builder) {
           builder.id = 0;
           builder.name = _nameController.text;
           builder.termsCount = 0;

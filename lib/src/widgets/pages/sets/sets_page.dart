@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vockify/src/redux/actions/request_sets_action.dart';
-import 'package:vockify/src/redux/actions/unset_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
@@ -30,7 +30,7 @@ class SetsPageWidget extends StatelessWidget {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestSetsAction());
+        store.dispatch(RequestUserSetsAction());
       },
       onDispose: (store) {
         store.dispatch(UnsetUserSetsAction());

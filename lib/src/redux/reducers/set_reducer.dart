@@ -1,12 +1,14 @@
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/add_user_set.dart';
-import 'package:vockify/src/redux/actions/remove_user_set_action.dart';
-import 'package:vockify/src/redux/actions/set_added_user_set_action.dart';
-import 'package:vockify/src/redux/actions/set_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/set_user_sets_loader.dart';
-import 'package:vockify/src/redux/actions/unset_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/update_set_terms_count_action.dart';
-import 'package:vockify/src/redux/actions/update_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
+import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_user_sets_loader_action.dart';
+import 'package:vockify/src/redux/actions/sets/unset_public_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_user_set_terms_count_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 
@@ -17,10 +19,12 @@ class SetReducer {
     _reducer = combineReducers([
       TypedReducer(_setUserSetsReducer),
       TypedReducer(_unsetUserSetsReducer),
+      TypedReducer(_setPublicSetsReducer),
+      TypedReducer(_unsetPublicSetsReducer),
       TypedReducer(_addUserSetReducer),
       TypedReducer(_updateUserSetReducer),
       TypedReducer(_removeUserSetReducer),
-      TypedReducer(_updateSetTermsCountReducer),
+      TypedReducer(_updateUserSetTermsCountReducer),
       TypedReducer(_setAddedUserSetReducer),
       TypedReducer(_setUserSetsLoader),
     ]);
@@ -52,7 +56,17 @@ class SetReducer {
     });
   }
 
-  AppState _setUserSetsLoader(AppState state, SetUserSetsLoader action) {
+  AppState _setPublicSetsReducer(AppState state, SetPublicSetsAction action) {
+    final entries = action.sets.map((set) => MapEntry(set.id, set));
+
+    return state.rebuild((builder) {
+      builder.sets.public.items.replace(Map.fromEntries(entries));
+      builder.sets.public.ids.replace(action.sets.map((set) => set.id));
+      builder.sets.public.loader = LoaderState.isLoaded;
+    });
+  }
+
+  AppState _setUserSetsLoader(AppState state, SetUserSetsLoaderAction action) {
     return state.rebuild((builder) {
       builder.sets.user.loader = action.state;
     });
@@ -65,6 +79,15 @@ class SetReducer {
       builder.sets.user.items.replace(Map.fromEntries(entries));
       builder.sets.user.ids.replace(action.sets.map((set) => set.id));
       builder.sets.user.loader = LoaderState.isLoaded;
+      builder.sets.user.added = null;
+    });
+  }
+
+  AppState _unsetPublicSetsReducer(AppState state, UnsetPublicSetsAction action) {
+    return state.rebuild((builder) {
+      builder.sets.public.items.clear();
+      builder.sets.public.ids.clear();
+      builder.sets.public.loader = LoaderState.isLoading;
     });
   }
 
@@ -77,7 +100,13 @@ class SetReducer {
     });
   }
 
-  AppState _updateSetTermsCountReducer(AppState state, UpdateSetTermsCountAction action) {
+  AppState _updateUserSetReducer(AppState state, UpdateUserSetAction action) {
+    return state.rebuild((builder) {
+      builder.sets.user.items.addEntries([MapEntry(action.set.id, action.set)]);
+    });
+  }
+
+  AppState _updateUserSetTermsCountReducer(AppState state, UpdateUserSetTermsCountAction action) {
     return state.rebuild((builder) {
       builder.sets.user.items.updateValue(
         action.setId,
@@ -85,12 +114,6 @@ class SetReducer {
           builder.termsCount = action.termsCount;
         }),
       );
-    });
-  }
-
-  AppState _updateUserSetReducer(AppState state, UpdateUserSetAction action) {
-    return state.rebuild((builder) {
-      builder.sets.user.items.addEntries([MapEntry(action.set.id, action.set)]);
     });
   }
 }

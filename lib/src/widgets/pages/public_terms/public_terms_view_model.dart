@@ -5,11 +5,11 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
-class TermsViewModel {
+class PublicTermsViewModel {
   final List<TermState> terms;
   final LoaderState loader;
 
-  TermsViewModel.fromStore(Store<AppState> store)
+  PublicTermsViewModel.fromStore(Store<AppState> store)
       : terms = getTerms(store.state),
         loader = store.state.terms.loader;
 
@@ -19,6 +19,6 @@ class TermsViewModel {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TermsViewModel && this.terms == other.terms && this.loader == other.loader;
+    return other is PublicTermsViewModel && this.terms == other.terms && this.loader == other.loader;
   }
 }

@@ -3,16 +3,17 @@ import 'dart:async';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/set_dto.dart';
-import 'package:vockify/src/redux/actions/add_user_set.dart';
-import 'package:vockify/src/redux/actions/remove_user_set_action.dart';
-import 'package:vockify/src/redux/actions/request_add_set_action.dart';
-import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
-import 'package:vockify/src/redux/actions/request_sets_action.dart';
-import 'package:vockify/src/redux/actions/request_update_set_action.dart';
-import 'package:vockify/src/redux/actions/set_added_user_set_action.dart';
-import 'package:vockify/src/redux/actions/set_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/set_user_sets_loader.dart';
-import 'package:vockify/src/redux/actions/update_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
+import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_add_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_public_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_user_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
@@ -20,15 +21,16 @@ import 'package:vockify/src/redux/state/set_state/set_state.dart';
 class SetEffect {
   Epic<AppState> getEffects() {
     return combineEpics([
-      TypedEpic<AppState, RequestSetsAction>(_requestSetsAction),
-      TypedEpic<AppState, RequestAddSetAction>(_requestAddSetAction),
-      TypedEpic<AppState, RequestUpdateSetAction>(_requestUpdateSetAction),
-      TypedEpic<AppState, RequestRemoveSetAction>(_requestRemoveSetAction),
+      TypedEpic<AppState, RequestUserSetsAction>(_requestUserSetsAction),
+      TypedEpic<AppState, RequestPublicSetsAction>(_requestPublicSetsAction),
+      TypedEpic<AppState, RequestAddUserSetAction>(_requestAddUserSetAction),
+      TypedEpic<AppState, RequestUpdateUserSetAction>(_requestUpdateUserSetAction),
+      TypedEpic<AppState, RequestRemoveUserSetAction>(_requestRemoveUserSetAction),
     ]);
   }
 
-  Stream<Object> _requestAddSetAction(
-    Stream<RequestAddSetAction> actions,
+  Stream<Object> _requestAddUserSetAction(
+    Stream<RequestAddUserSetAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
@@ -48,8 +50,22 @@ class SetEffect {
     });
   }
 
-  Stream<Object> _requestRemoveSetAction(
-    Stream<RequestRemoveSetAction> actions,
+  Stream<Object> _requestPublicSetsAction(
+    Stream<RequestPublicSetsAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final response = await api.getPublicSets();
+        yield SetPublicSetsAction(response.data.map((dto) => SetState.fromDto(dto)));
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestRemoveUserSetAction(
+    Stream<RequestRemoveUserSetAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
@@ -63,26 +79,8 @@ class SetEffect {
     });
   }
 
-  Stream<Object> _requestSetsAction(
-    Stream<RequestSetsAction> actions,
-    EpicStore<AppState> store,
-  ) {
-    return actions.asyncExpand((action) async* {
-      if (store.state.sets.user.loader == LoaderState.isLoaded) {
-        yield SetUserSetsLoader(LoaderState.refresh);
-      }
-
-      try {
-        final response = await api.getSets();
-        yield SetUserSetsAction(response.data.map((dto) => SetState.fromDto(dto)));
-      } catch (e) {
-        print(e);
-      }
-    });
-  }
-
-  Stream<Object> _requestUpdateSetAction(
-    Stream<RequestUpdateSetAction> actions,
+  Stream<Object> _requestUpdateUserSetAction(
+    Stream<RequestUpdateUserSetAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
@@ -91,6 +89,20 @@ class SetEffect {
       try {
         final response = await api.updateSet(action.set.id, SetDto.fromState(action.set));
         yield UpdateUserSetAction(SetState.fromDto(response.data));
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestUserSetsAction(
+    Stream<RequestUserSetsAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final response = await api.getUserSets();
+        yield SetUserSetsAction(response.data.map((dto) => SetState.fromDto(dto)));
       } catch (e) {
         print(e);
       }

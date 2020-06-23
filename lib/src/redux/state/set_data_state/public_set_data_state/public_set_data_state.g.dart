@@ -10,7 +10,7 @@ class _$PublicSetDataState extends PublicSetDataState {
   @override
   final BuiltList<int> ids;
   @override
-  final bool isLoaded;
+  final LoaderState loader;
   @override
   final BuiltMap<int, SetState> items;
 
@@ -18,12 +18,12 @@ class _$PublicSetDataState extends PublicSetDataState {
           [void Function(PublicSetDataStateBuilder) updates]) =>
       (new PublicSetDataStateBuilder()..update(updates)).build();
 
-  _$PublicSetDataState._({this.ids, this.isLoaded, this.items}) : super._() {
+  _$PublicSetDataState._({this.ids, this.loader, this.items}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('PublicSetDataState', 'ids');
     }
-    if (isLoaded == null) {
-      throw new BuiltValueNullFieldError('PublicSetDataState', 'isLoaded');
+    if (loader == null) {
+      throw new BuiltValueNullFieldError('PublicSetDataState', 'loader');
     }
     if (items == null) {
       throw new BuiltValueNullFieldError('PublicSetDataState', 'items');
@@ -44,21 +44,20 @@ class _$PublicSetDataState extends PublicSetDataState {
     if (identical(other, this)) return true;
     return other is PublicSetDataState &&
         ids == other.ids &&
-        isLoaded == other.isLoaded &&
+        loader == other.loader &&
         items == other.items;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, ids.hashCode), isLoaded.hashCode), items.hashCode));
+    return $jf($jc($jc($jc(0, ids.hashCode), loader.hashCode), items.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PublicSetDataState')
           ..add('ids', ids)
-          ..add('isLoaded', isLoaded)
+          ..add('loader', loader)
           ..add('items', items))
         .toString();
   }
@@ -72,9 +71,9 @@ class PublicSetDataStateBuilder
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
   set ids(ListBuilder<int> ids) => _$this._ids = ids;
 
-  bool _isLoaded;
-  bool get isLoaded => _$this._isLoaded;
-  set isLoaded(bool isLoaded) => _$this._isLoaded = isLoaded;
+  LoaderState _loader;
+  LoaderState get loader => _$this._loader;
+  set loader(LoaderState loader) => _$this._loader = loader;
 
   MapBuilder<int, SetState> _items;
   MapBuilder<int, SetState> get items =>
@@ -86,7 +85,7 @@ class PublicSetDataStateBuilder
   PublicSetDataStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids?.toBuilder();
-      _isLoaded = _$v.isLoaded;
+      _loader = _$v.loader;
       _items = _$v.items?.toBuilder();
       _$v = null;
     }
@@ -112,7 +111,7 @@ class PublicSetDataStateBuilder
     try {
       _$result = _$v ??
           new _$PublicSetDataState._(
-              ids: ids.build(), isLoaded: isLoaded, items: items.build());
+              ids: ids.build(), loader: loader, items: items.build());
     } catch (_) {
       String _$failedField;
       try {

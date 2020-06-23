@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 part 'term_data_state.g.dart';
@@ -14,7 +15,7 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
 
   BuiltList<int> get ids;
 
-  bool get isLoaded;
+  LoaderState get loader;
 
   BuiltMap<int, TermState> get items;
 }

@@ -3,48 +3,29 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/unset_terms_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
-import 'package:vockify/src/widgets/pages/terms/terms.dart';
-import 'package:vockify/src/widgets/pages/terms/terms_page_view_model.dart';
+import 'package:vockify/src/widgets/pages/public_terms/public_terms.dart';
 
-class TermsPageWidget extends StatelessWidget {
+class PublicTermsPageWidget extends StatelessWidget {
   final int setId;
 
-  TermsPageWidget(this.setId);
+  PublicTermsPageWidget(this.setId);
 
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
-    final set = store.state.sets.user.items[setId];
+    final set = store.state.sets.public.items[setId];
 
     return AppLayoutWidget(
-      route: Routes.terms,
+      route: Routes.publicTerms,
       title: set.name,
-      actions: <Widget>[
-        RawMaterialButton(
-          constraints: BoxConstraints(
-            minWidth: 42,
-            minHeight: 42,
-          ),
-          onPressed: () {
-            Navigator.of(context).pushNamed(Routes.term, arguments: {
-              "setId": setId,
-              "termId": null,
-            });
-          },
-          child: Icon(
-            Icons.add_circle,
-            color: VockifyColors.white,
-          ),
-          padding: EdgeInsets.all(16),
-          shape: CircleBorder(),
-        ),
-      ],
       onInit: (store) {
         store.dispatch(RequestTermsAction(setId: setId));
       },
@@ -53,20 +34,18 @@ class TermsPageWidget extends StatelessWidget {
       },
       isLoadingConverter: (store) => store.state.terms.loader == LoaderState.isLoading,
       body: Center(
-        child: StoreConnector<AppState, TermsPageViewModel>(
+        child: StoreConnector<AppState, Iterable<TermState>>(
             distinct: true,
-            converter: (store) {
-              return TermsPageViewModel.fromStore(store);
-            },
-            builder: (context, viewModel) {
-              if (viewModel.terms.isEmpty) {
+            converter: (store) => getTerms(store.state),
+            builder: (context, terms) {
+              if (terms.isEmpty) {
                 return EmptyWidget(text: 'В словаре пока нет слов');
               }
 
               return Stack(
                 children: <Widget>[
-                  TermsWidget(setId),
-                  if (viewModel.terms.isNotEmpty)
+                  PublicTermsWidget(setId),
+                  if (terms.isNotEmpty)
                     Container(
                       padding: EdgeInsets.all(16),
                       alignment: Alignment.bottomCenter,

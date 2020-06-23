@@ -2,36 +2,31 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:vockify/src/redux/actions/terms/request_remove_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
-import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/widgets/pages/terms/terms_item.dart';
-import 'package:vockify/src/widgets/pages/terms/terms_view_model.dart';
+import 'package:vockify/src/widgets/pages/public_terms/public_terms_item.dart';
+import 'package:vockify/src/widgets/pages/public_terms/public_terms_view_model.dart';
 
-class TermsWidget extends StatefulWidget {
+class PublicTermsWidget extends StatefulWidget {
   final int setId;
 
-  TermsWidget(this.setId);
+  PublicTermsWidget(this.setId);
 
   @override
-  State<StatefulWidget> createState() => _TermsState();
+  State<StatefulWidget> createState() => _PublicTermsState();
 }
 
-class _TermsState extends State<TermsWidget> {
-  final _slidableController = SlidableController();
-
+class _PublicTermsState extends State<PublicTermsWidget> {
   Completer _completer;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, TermsViewModel>(
+    return StoreConnector<AppState, PublicTermsViewModel>(
       distinct: true,
-      converter: (store) => TermsViewModel.fromStore(store),
+      converter: (store) => PublicTermsViewModel.fromStore(store),
       onDidChange: (viewModel) {
         if (_completer != null && !_completer.isCompleted && viewModel.loader == LoaderState.isLoaded) {
           _completer.complete();
@@ -52,24 +47,8 @@ class _TermsState extends State<TermsWidget> {
 
               final term = viewModel.terms[(index / 2).round()];
 
-              return TermsItemWidget(
+              return PublicTermsItemWidget(
                 term: term,
-                onTap: () {
-                  Navigator.of(context).pushNamed(Routes.term, arguments: {
-                    "setId": term.setId,
-                    "termId": term.id,
-                  });
-                },
-                onEdit: () {
-                  Navigator.of(context).pushNamed(Routes.term, arguments: {
-                    "setId": term.setId,
-                    "termId": term.id,
-                  });
-                },
-                onDelete: () {
-                  dispatcher.dispatch(RequestRemoveTermAction(term.id));
-                },
-                slidableController: _slidableController,
               );
             },
           ),

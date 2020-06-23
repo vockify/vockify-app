@@ -34,9 +34,9 @@ class AppApi {
     return SetResponse.fromJson(data);
   }
 
-  Future<SetResponse> updateSet(int id, SetDto requestData) async {
-    final data = await _put('/sets/$id', requestData.toJson());
-    return SetResponse.fromJson(data);
+  Future<TermResponse> addTerm(TermDto requestData) async {
+    final data = await _post('/terms/', requestData.toJson());
+    return TermResponse.fromJson(data);
   }
 
   Future<AuthUserResponse> authUser() async {
@@ -48,8 +48,12 @@ class AppApi {
     await _delete('/sets/$id');
   }
 
-  Future<SetsResponse> getSets() async {
-    final data = await _get('/sets/');
+  Future<void> deleteTerm(int id) async {
+    await _delete('/terms/$id');
+  }
+
+  Future<SetsResponse> getPublicSets() async {
+    final data = await _get('/sets/?type=public');
     return SetsResponse.fromJson(data);
   }
 
@@ -58,23 +62,24 @@ class AppApi {
     return TermsResponse.fromJson(data);
   }
 
+  Future<SetsResponse> getUserSets() async {
+    final data = await _get('/sets/');
+    return SetsResponse.fromJson(data);
+  }
+
   Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {
     final data = await _post('/translate/', requestDto);
     return TranslateResponse.fromJson(data);
   }
 
-  Future<TermResponse> addTerm(TermDto requestData) async {
-    final data = await _post('/terms/', requestData.toJson());
-    return TermResponse.fromJson(data);
+  Future<SetResponse> updateSet(int id, SetDto requestData) async {
+    final data = await _put('/sets/$id', requestData.toJson());
+    return SetResponse.fromJson(data);
   }
 
   Future<TermResponse> updateTerm(int id, TermDto requestData) async {
     final data = await _put('/terms/$id', requestData.toJson());
     return TermResponse.fromJson(data);
-  }
-
-  Future<void> deleteTerm(int id) async {
-    await _delete('/terms/$id');
   }
 
   Future<Map<String, dynamic>> _delete(String url) async {
@@ -128,18 +133,6 @@ class AppApi {
     return _processResponse(response);
   }
 
-  Future<Map<String, dynamic>> _put(String url, dynamic body) async {
-    await Future.delayed(Duration(seconds: 2));
-    final headers = await _getHeaders();
-    final response = await http.put(
-      '$apiUrl$url',
-      body: jsonEncode(body),
-      headers: headers,
-    );
-
-    return _processResponse(response);
-  }
-
   Map<String, dynamic> _processResponse(http.Response response) {
     if (response.statusCode == HttpCodes.UNAUTHORIZED) {
       store.dispatch(UnauthorizeAction());
@@ -155,5 +148,17 @@ class AppApi {
     }
 
     return {};
+  }
+
+  Future<Map<String, dynamic>> _put(String url, dynamic body) async {
+    await Future.delayed(Duration(seconds: 2));
+    final headers = await _getHeaders();
+    final response = await http.put(
+      '$apiUrl$url',
+      body: jsonEncode(body),
+      headers: headers,
+    );
+
+    return _processResponse(response);
   }
 }

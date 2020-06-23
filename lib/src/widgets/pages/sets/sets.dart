@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/request_remove_set_action.dart';
-import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_user_sets_loader_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -26,11 +27,9 @@ class _SetsState extends State<SetsWidget> {
       child: StoreConnector<AppState, SetsViewModel>(
         distinct: true,
         converter: (store) => SetsViewModel.fromStore(store),
-        onWillChange: (prev, next) {
-          if (prev.loader == LoaderState.refresh && next.loader == LoaderState.isLoaded) {
-            if (_completer != null && !_completer.isCompleted) {
-              _completer.complete();
-            }
+        onDidChange: (viewModel) {
+          if (_completer != null && !_completer.isCompleted && viewModel.loader == LoaderState.isLoaded) {
+            _completer.complete();
           }
         },
         builder: (context, viewModel) {
@@ -57,7 +56,7 @@ class _SetsState extends State<SetsWidget> {
                     Navigator.of(context).pushNamed(Routes.terms, arguments: {'id': set.id});
                   },
                   onDelete: () {
-                    dispatcher.dispatch(RequestRemoveSetAction(set.id));
+                    dispatcher.dispatch(RequestRemoveUserSetAction(set.id));
                   },
                   onEdit: () {
                     Navigator.of(context).pushNamed(Routes.set, arguments: {'id': set.id});
@@ -66,11 +65,8 @@ class _SetsState extends State<SetsWidget> {
               },
             ),
             onRefresh: () async {
-              dispatcher.dispatch(RequestSetsAction());
-
-              if (_completer != null && !_completer.isCompleted) {
-                _completer.complete();
-              }
+              dispatcher.dispatch(SetUserSetsLoaderAction(LoaderState.refresh));
+              dispatcher.dispatch(RequestUserSetsAction());
 
               _completer = Completer();
               return await _completer.future;
