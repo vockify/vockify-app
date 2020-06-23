@@ -96,8 +96,6 @@ class AppApi {
   Future<Map<String, dynamic>> _get(String url) async {
     final headers = await _getHeaders();
 
-    await Future.delayed(Duration(seconds: 2));
-
     try {
       final response = await http.get(
         '$apiUrl$url',
@@ -122,7 +120,6 @@ class AppApi {
   }
 
   Future<Map<String, dynamic>> _post(String url, dynamic body) async {
-    await Future.delayed(Duration(seconds: 2));
     final headers = await _getHeaders();
     final response = await http.post(
       '$apiUrl$url',
@@ -151,7 +148,6 @@ class AppApi {
   }
 
   Future<Map<String, dynamic>> _put(String url, dynamic body) async {
-    await Future.delayed(Duration(seconds: 2));
     final headers = await _getHeaders();
     final response = await http.put(
       '$apiUrl$url',
