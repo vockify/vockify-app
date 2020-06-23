@@ -14,6 +14,14 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
           ..avatar = userDto.avatar;
       });
 
+  factory UserState.initial({int selectedSetId}) => UserState((builder) {
+        builder
+          ..email = ''
+          ..firstName = ''
+          ..lastName = ''
+          ..selectedSetId = selectedSetId;
+      });
+
   UserState._();
 
   @nullable

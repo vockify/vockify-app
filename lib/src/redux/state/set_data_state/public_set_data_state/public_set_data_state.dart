@@ -8,11 +8,15 @@ part 'public_set_data_state.g.dart';
 abstract class PublicSetDataState implements Built<PublicSetDataState, PublicSetDataStateBuilder> {
   factory PublicSetDataState([void updates(PublicSetDataStateBuilder b)]) = _$PublicSetDataState;
 
+  factory PublicSetDataState.initial() => PublicSetDataState((builder) {
+        builder
+          ..ids.replace([])
+          ..loader = LoaderState.isLoading;
+      });
+
   PublicSetDataState._();
 
   BuiltList<int> get ids;
 
   LoaderState get loader;
-
-  BuiltMap<int, SetState> get items;
 }

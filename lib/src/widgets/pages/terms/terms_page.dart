@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/unset_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/unset_user_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -20,7 +20,7 @@ class TermsPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
-    final set = store.state.sets.user.items[setId];
+    final set = store.state.sets.items[setId];
 
     return AppLayoutWidget(
       route: Routes.terms,
@@ -46,17 +46,17 @@ class TermsPageWidget extends StatelessWidget {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestTermsAction(setId: setId));
+        store.dispatch(RequestUserTermsAction(setId: setId));
       },
       onDispose: (store) {
-        store.dispatch(UnsetTermsAction());
+        store.dispatch(UnsetUserTermsAction(setId));
       },
-      isLoadingConverter: (store) => store.state.terms.loader == LoaderState.isLoading,
+      isLoadingConverter: (store) => store.state.terms.user.loader == LoaderState.isLoading,
       body: Center(
         child: StoreConnector<AppState, TermsPageViewModel>(
             distinct: true,
             converter: (store) {
-              return TermsPageViewModel.fromStore(store);
+              return TermsPageViewModel.fromStore(store, setId);
             },
             builder: (context, viewModel) {
               if (viewModel.terms.isEmpty) {

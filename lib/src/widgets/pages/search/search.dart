@@ -56,6 +56,7 @@ class _SearchState extends State<SearchWidget> {
             onRefresh: () async {
               dispatcher.dispatch(SetPublicSetsLoaderAction(LoaderState.refresh));
               dispatcher.dispatch(RequestPublicSetsAction());
+
               _completer = Completer();
               return await _completer.future;
             },

@@ -6,15 +6,13 @@ part 'set_state.g.dart';
 abstract class SetState implements Built<SetState, SetStateBuilder> {
   factory SetState([void updates(SetStateBuilder b)]) = _$SetState;
 
-  factory SetState.fromDto(SetDto dto) {
-    return SetState((builder) {
-      builder
-        ..icon = dto.icon
-        ..name = dto.name
-        ..id = dto.id
-        ..termsCount = dto.termsCount;
-    });
-  }
+  factory SetState.fromDto(SetDto dto) => SetState((builder) {
+        builder
+          ..icon = dto.icon
+          ..name = dto.name
+          ..id = dto.id
+          ..termsCount = dto.termsCount;
+      });
 
   SetState._();
 

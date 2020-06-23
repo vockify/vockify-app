@@ -8,6 +8,12 @@ part 'user_set_data_state.g.dart';
 abstract class UserSetDataState implements Built<UserSetDataState, UserSetDataStateBuilder> {
   factory UserSetDataState([void updates(UserSetDataStateBuilder b)]) = _$UserSetDataState;
 
+  factory UserSetDataState.initial() => UserSetDataState((builder) {
+        builder
+          ..ids.replace([])
+          ..loader = LoaderState.isLoading;
+      });
+
   UserSetDataState._();
 
   @nullable
@@ -16,6 +22,4 @@ abstract class UserSetDataState implements Built<UserSetDataState, UserSetDataSt
   BuiltList<int> get ids;
 
   LoaderState get loader;
-
-  BuiltMap<int, SetState> get items;
 }

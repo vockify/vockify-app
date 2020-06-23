@@ -48,6 +48,12 @@ class AppApi {
     await _delete('/sets/$id');
   }
 
+  Future<SetResponse> copySet(int id) async {
+    await Future.delayed(Duration(seconds: 3));
+    final data = await _post('/sets/$id/copy');
+    return SetResponse.fromJson(data);
+  }
+
   Future<void> deleteTerm(int id) async {
     await _delete('/terms/$id');
   }
@@ -119,11 +125,11 @@ class AppApi {
     };
   }
 
-  Future<Map<String, dynamic>> _post(String url, dynamic body) async {
+  Future<Map<String, dynamic>> _post(String url, [dynamic body]) async {
     final headers = await _getHeaders();
     final response = await http.post(
       '$apiUrl$url',
-      body: jsonEncode(body),
+      body: body != null ? jsonEncode(body) : null,
       headers: headers,
     );
 

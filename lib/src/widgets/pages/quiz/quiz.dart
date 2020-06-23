@@ -118,12 +118,12 @@ class _QuizState extends State<QuizWidget> {
     );
   }
 
-  @override
-  void didUpdateWidget(oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    setState(_start);
-  }
+//  @override
+//  void didUpdateWidget(oldWidget) {
+//    super.didUpdateWidget(oldWidget);
+//
+//    setState(_start);
+//  }
 
   @override
   void initState() {

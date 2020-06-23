@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
@@ -50,17 +50,15 @@ class _TermPageState extends State<TermPageWidget> {
           ),
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              final items = store.state.sets.user.items;
-
-              if (items.containsKey(widget.termId)) {
-                store.dispatch(RequestUpdateTermAction(TermState((builder) {
+              if (widget.termId > 0) {
+                store.dispatch(RequestUpdateUserTermAction(TermState((builder) {
                   builder.id = widget.termId;
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;
                   builder.setId = _selectedSetId;
                 })));
               } else {
-                store.dispatch(RequestAddTermAction(TermState((builder) {
+                store.dispatch(RequestAddUserTermAction(TermState((builder) {
                   builder.id = 0;
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;

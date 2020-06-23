@@ -8,24 +8,21 @@ part of 'term_data_state.dart';
 
 class _$TermDataState extends TermDataState {
   @override
-  final TermState added;
+  final PublicTermDataState public;
   @override
-  final BuiltList<int> ids;
-  @override
-  final LoaderState loader;
+  final UserTermDataState user;
   @override
   final BuiltMap<int, TermState> items;
 
   factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
       (new TermDataStateBuilder()..update(updates)).build();
 
-  _$TermDataState._({this.added, this.ids, this.loader, this.items})
-      : super._() {
-    if (ids == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'ids');
+  _$TermDataState._({this.public, this.user, this.items}) : super._() {
+    if (public == null) {
+      throw new BuiltValueNullFieldError('TermDataState', 'public');
     }
-    if (loader == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'loader');
+    if (user == null) {
+      throw new BuiltValueNullFieldError('TermDataState', 'user');
     }
     if (items == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'items');
@@ -43,25 +40,22 @@ class _$TermDataState extends TermDataState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermDataState &&
-        added == other.added &&
-        ids == other.ids &&
-        loader == other.loader &&
+        public == other.public &&
+        user == other.user &&
         items == other.items;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode),
-        items.hashCode));
+    return $jf(
+        $jc($jc($jc(0, public.hashCode), user.hashCode), items.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TermDataState')
-          ..add('added', added)
-          ..add('ids', ids)
-          ..add('loader', loader)
+          ..add('public', public)
+          ..add('user', user)
           ..add('items', items))
         .toString();
   }
@@ -71,17 +65,15 @@ class TermDataStateBuilder
     implements Builder<TermDataState, TermDataStateBuilder> {
   _$TermDataState _$v;
 
-  TermStateBuilder _added;
-  TermStateBuilder get added => _$this._added ??= new TermStateBuilder();
-  set added(TermStateBuilder added) => _$this._added = added;
+  PublicTermDataStateBuilder _public;
+  PublicTermDataStateBuilder get public =>
+      _$this._public ??= new PublicTermDataStateBuilder();
+  set public(PublicTermDataStateBuilder public) => _$this._public = public;
 
-  ListBuilder<int> _ids;
-  ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
-  set ids(ListBuilder<int> ids) => _$this._ids = ids;
-
-  LoaderState _loader;
-  LoaderState get loader => _$this._loader;
-  set loader(LoaderState loader) => _$this._loader = loader;
+  UserTermDataStateBuilder _user;
+  UserTermDataStateBuilder get user =>
+      _$this._user ??= new UserTermDataStateBuilder();
+  set user(UserTermDataStateBuilder user) => _$this._user = user;
 
   MapBuilder<int, TermState> _items;
   MapBuilder<int, TermState> get items =>
@@ -92,9 +84,8 @@ class TermDataStateBuilder
 
   TermDataStateBuilder get _$this {
     if (_$v != null) {
-      _added = _$v.added?.toBuilder();
-      _ids = _$v.ids?.toBuilder();
-      _loader = _$v.loader;
+      _public = _$v.public?.toBuilder();
+      _user = _$v.user?.toBuilder();
       _items = _$v.items?.toBuilder();
       _$v = null;
     }
@@ -120,18 +111,14 @@ class TermDataStateBuilder
     try {
       _$result = _$v ??
           new _$TermDataState._(
-              added: _added?.build(),
-              ids: ids.build(),
-              loader: loader,
-              items: items.build());
+              public: public.build(), user: user.build(), items: items.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'added';
-        _added?.build();
-        _$failedField = 'ids';
-        ids.build();
-
+        _$failedField = 'public';
+        public.build();
+        _$failedField = 'user';
+        user.build();
         _$failedField = 'items';
         items.build();
       } catch (e) {

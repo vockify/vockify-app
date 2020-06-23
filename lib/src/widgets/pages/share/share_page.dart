@@ -5,7 +5,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
@@ -141,7 +141,7 @@ class _ShareFormState extends State<SharePageWidget> {
     if (_formKey.currentState.validate()) {
       AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
 
-      store.dispatch(RequestAddTermAction(TermState((builder) {
+      store.dispatch(RequestAddUserTermAction(TermState((builder) {
         builder.id = 0;
         builder.name = _nameController.text;
         builder.definition = _definitionController.text;

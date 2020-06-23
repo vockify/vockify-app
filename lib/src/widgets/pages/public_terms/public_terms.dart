@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_user_terms_loader_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -26,7 +27,7 @@ class _PublicTermsState extends State<PublicTermsWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PublicTermsViewModel>(
       distinct: true,
-      converter: (store) => PublicTermsViewModel.fromStore(store),
+      converter: (store) => PublicTermsViewModel.fromStore(store, widget.setId),
       onDidChange: (viewModel) {
         if (_completer != null && !_completer.isCompleted && viewModel.loader == LoaderState.isLoaded) {
           _completer.complete();
@@ -53,8 +54,8 @@ class _PublicTermsState extends State<PublicTermsWidget> {
             },
           ),
           onRefresh: () async {
-            dispatcher.dispatch(SetTermsLoaderAction(LoaderState.refresh));
-            dispatcher.dispatch(RequestTermsAction(setId: widget.setId));
+            dispatcher.dispatch(SetPublicTermsLoaderAction(LoaderState.refresh));
+            dispatcher.dispatch(RequestUserTermsAction(setId: widget.setId));
 
             _completer = Completer();
             return _completer.future;

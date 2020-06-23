@@ -36,7 +36,7 @@ class AppReducer {
   }
 
   AppState _setIsLoadingReducer(AppState state, SetIsLoadingAction action) {
-    return state.rebuild((builder) => builder.loading[action.key] = true);
+    return state.rebuild((builder) => builder.isLoading = true);
   }
 
   AppState _setUserReducer(AppState state, SetUserAction action) {
@@ -48,6 +48,6 @@ class AppReducer {
   }
 
   AppState _unsetIsLoadingReducer(AppState state, UnsetIsLoadingAction action) {
-    return state.rebuild((builder) => builder.loading[action.key] = false);
+    return state.rebuild((builder) => builder.isLoading = false);
   }
 }

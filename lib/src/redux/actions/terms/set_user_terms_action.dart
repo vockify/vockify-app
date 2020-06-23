@@ -1,8 +1,9 @@
 import 'package:vockify/src/redux/actions/app_action.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
-class SetTermsAction extends AppAction {
+class SetUserTermsAction extends AppAction {
   final Iterable<TermState> terms;
+  final int setId;
 
-  SetTermsAction(this.terms);
+  SetUserTermsAction(this.terms, this.setId);
 }

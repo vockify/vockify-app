@@ -13,23 +13,17 @@ class _$UserSetDataState extends UserSetDataState {
   final BuiltList<int> ids;
   @override
   final LoaderState loader;
-  @override
-  final BuiltMap<int, SetState> items;
 
   factory _$UserSetDataState(
           [void Function(UserSetDataStateBuilder) updates]) =>
       (new UserSetDataStateBuilder()..update(updates)).build();
 
-  _$UserSetDataState._({this.added, this.ids, this.loader, this.items})
-      : super._() {
+  _$UserSetDataState._({this.added, this.ids, this.loader}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('UserSetDataState', 'ids');
     }
     if (loader == null) {
       throw new BuiltValueNullFieldError('UserSetDataState', 'loader');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('UserSetDataState', 'items');
     }
   }
 
@@ -47,15 +41,12 @@ class _$UserSetDataState extends UserSetDataState {
     return other is UserSetDataState &&
         added == other.added &&
         ids == other.ids &&
-        loader == other.loader &&
-        items == other.items;
+        loader == other.loader;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode),
-        items.hashCode));
+    return $jf($jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode));
   }
 
   @override
@@ -63,8 +54,7 @@ class _$UserSetDataState extends UserSetDataState {
     return (newBuiltValueToStringHelper('UserSetDataState')
           ..add('added', added)
           ..add('ids', ids)
-          ..add('loader', loader)
-          ..add('items', items))
+          ..add('loader', loader))
         .toString();
   }
 }
@@ -85,11 +75,6 @@ class UserSetDataStateBuilder
   LoaderState get loader => _$this._loader;
   set loader(LoaderState loader) => _$this._loader = loader;
 
-  MapBuilder<int, SetState> _items;
-  MapBuilder<int, SetState> get items =>
-      _$this._items ??= new MapBuilder<int, SetState>();
-  set items(MapBuilder<int, SetState> items) => _$this._items = items;
-
   UserSetDataStateBuilder();
 
   UserSetDataStateBuilder get _$this {
@@ -97,7 +82,6 @@ class UserSetDataStateBuilder
       _added = _$v.added?.toBuilder();
       _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
-      _items = _$v.items?.toBuilder();
       _$v = null;
     }
     return this;
@@ -122,10 +106,7 @@ class UserSetDataStateBuilder
     try {
       _$result = _$v ??
           new _$UserSetDataState._(
-              added: _added?.build(),
-              ids: ids.build(),
-              loader: loader,
-              items: items.build());
+              added: _added?.build(), ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
@@ -133,9 +114,6 @@ class UserSetDataStateBuilder
         _added?.build();
         _$failedField = 'ids';
         ids.build();
-
-        _$failedField = 'items';
-        items.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserSetDataState', _$failedField, e.toString());

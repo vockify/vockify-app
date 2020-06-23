@@ -8,6 +8,8 @@ part of 'set_data_state.dart';
 
 class _$SetDataState extends SetDataState {
   @override
+  final BuiltMap<int, SetState> items;
+  @override
   final PublicSetDataState public;
   @override
   final UserSetDataState user;
@@ -15,7 +17,10 @@ class _$SetDataState extends SetDataState {
   factory _$SetDataState([void Function(SetDataStateBuilder) updates]) =>
       (new SetDataStateBuilder()..update(updates)).build();
 
-  _$SetDataState._({this.public, this.user}) : super._() {
+  _$SetDataState._({this.items, this.public, this.user}) : super._() {
+    if (items == null) {
+      throw new BuiltValueNullFieldError('SetDataState', 'items');
+    }
     if (public == null) {
       throw new BuiltValueNullFieldError('SetDataState', 'public');
     }
@@ -35,18 +40,21 @@ class _$SetDataState extends SetDataState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is SetDataState &&
+        items == other.items &&
         public == other.public &&
         user == other.user;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, public.hashCode), user.hashCode));
+    return $jf(
+        $jc($jc($jc(0, items.hashCode), public.hashCode), user.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SetDataState')
+          ..add('items', items)
           ..add('public', public)
           ..add('user', user))
         .toString();
@@ -56,6 +64,11 @@ class _$SetDataState extends SetDataState {
 class SetDataStateBuilder
     implements Builder<SetDataState, SetDataStateBuilder> {
   _$SetDataState _$v;
+
+  MapBuilder<int, SetState> _items;
+  MapBuilder<int, SetState> get items =>
+      _$this._items ??= new MapBuilder<int, SetState>();
+  set items(MapBuilder<int, SetState> items) => _$this._items = items;
 
   PublicSetDataStateBuilder _public;
   PublicSetDataStateBuilder get public =>
@@ -71,6 +84,7 @@ class SetDataStateBuilder
 
   SetDataStateBuilder get _$this {
     if (_$v != null) {
+      _items = _$v.items?.toBuilder();
       _public = _$v.public?.toBuilder();
       _user = _$v.user?.toBuilder();
       _$v = null;
@@ -96,10 +110,13 @@ class SetDataStateBuilder
     _$SetDataState _$result;
     try {
       _$result = _$v ??
-          new _$SetDataState._(public: public.build(), user: user.build());
+          new _$SetDataState._(
+              items: items.build(), public: public.build(), user: user.build());
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'items';
+        items.build();
         _$failedField = 'public';
         public.build();
         _$failedField = 'user';

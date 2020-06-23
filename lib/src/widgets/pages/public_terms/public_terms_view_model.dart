@@ -9,9 +9,9 @@ class PublicTermsViewModel {
   final List<TermState> terms;
   final LoaderState loader;
 
-  PublicTermsViewModel.fromStore(Store<AppState> store)
-      : terms = getTerms(store.state),
-        loader = store.state.terms.loader;
+  PublicTermsViewModel.fromStore(Store<AppState> store, int setId)
+      : terms = getPublicTerms(store.state),
+        loader = store.state.terms.public.loader;
 
   @override
   int get hashCode => hash2(terms, loader);

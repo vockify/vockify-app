@@ -3,14 +3,18 @@ import 'dart:async';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/term_dto.dart';
-import 'package:vockify/src/redux/actions/terms/add_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/remove_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_remove_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/add_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/remove_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_public_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_quiz_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_added_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_added_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_public_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_quiz_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
@@ -19,40 +23,42 @@ import 'package:vockify/src/redux/state/term_state/term_state.dart';
 class TermEffect {
   Epic<AppState> getEffects() {
     return combineEpics([
-      TypedEpic<AppState, RequestTermsAction>(_requestTermsAction),
-      TypedEpic<AppState, RequestAddTermAction>(_requestAddTermAction),
-      TypedEpic<AppState, RequestUpdateTermAction>(_requestUpdateTermAction),
-      TypedEpic<AppState, RequestRemoveTermAction>(_requestRemoveTermAction),
+      TypedEpic<AppState, RequestUserTermsAction>(_requestUserTermsAction),
+      TypedEpic<AppState, RequestPublicTermsAction>(_requestPublicTermsAction),
+      TypedEpic<AppState, RequestQuizTermsAction>(_requestQuizTermsAction),
+      TypedEpic<AppState, RequestAddUserTermAction>(_requestAddUserTermAction),
+      TypedEpic<AppState, RequestUpdateUserTermAction>(_requestUpdateUserTermAction),
+      TypedEpic<AppState, RequestRemoveUserTermAction>(_requestRemoveUserTermAction),
     ]);
   }
 
-  Stream<Object> _requestAddTermAction(
-    Stream<RequestAddTermAction> actions,
+  Stream<Object> _requestAddUserTermAction(
+    Stream<RequestAddUserTermAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetAddedTermAction(action.term);
+      yield SetAddedUserTermAction(action.term);
 
       try {
         final result = await api.addTerm(TermDto.fromState(action.term));
 
-        if (store.state.terms.loader == LoaderState.isLoaded) {
-          yield AddTermAction(TermState.fromDto(result.data));
+        if (store.state.terms.user.loader == LoaderState.isLoaded) {
+          yield AddUserTermAction(TermState.fromDto(result.data));
         }
       } catch (e) {
         print(e);
       } finally {
-        yield SetAddedTermAction(null);
+        yield SetAddedUserTermAction(null);
       }
     });
   }
 
-  Stream<Object> _requestRemoveTermAction(
-    Stream<RequestRemoveTermAction> actions,
+  Stream<Object> _requestRemoveUserTermAction(
+    Stream<RequestRemoveUserTermAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield RemoveTermAction(action.id);
+      yield RemoveUserTermAction(action.id, action.setId);
 
       try {
         if (action.id > 0) {
@@ -64,22 +70,50 @@ class TermEffect {
     });
   }
 
-  Stream<Object> _requestTermsAction(
-    Stream<RequestTermsAction> actions,
+  Stream<Object> _requestUserTermsAction(
+    Stream<RequestUserTermsAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
       try {
         final result = await api.getSetTerms(action.setId);
-        yield SetTermsAction(result.data.map((dto) => TermState.fromDto(dto)));
+        yield SetUserTermsAction(result.data.map((dto) => TermState.fromDto(dto)), action.setId);
       } catch (e) {
         print(e);
       }
     });
   }
 
-  Stream<Object> _requestUpdateTermAction(
-    Stream<RequestUpdateTermAction> actions,
+  Stream<Object> _requestPublicTermsAction(
+    Stream<RequestPublicTermsAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final result = await api.getSetTerms(action.setId);
+        yield SetPublicTermsAction(result.data.map((dto) => TermState.fromDto(dto)), action.setId);
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestQuizTermsAction(
+    Stream<RequestQuizTermsAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      try {
+        final result = await api.getSetTerms(action.setId);
+        yield SetQuizTermsAction(result.data.map((dto) => TermState.fromDto(dto)));
+      } catch (e) {
+        print(e);
+      }
+    });
+  }
+
+  Stream<Object> _requestUpdateUserTermAction(
+    Stream<RequestUpdateUserTermAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {

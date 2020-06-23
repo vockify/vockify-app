@@ -53,7 +53,7 @@ class _HomeState extends State<HomeWidget> {
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Мои словари')),
-          BottomNavigationBarItem(icon: Icon(Icons.search), title: Text('Все словари')),
+          BottomNavigationBarItem(icon: Icon(Icons.search), title: Text('Поиск словарей')),
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Профиль')),
         ],
       ),

@@ -27,43 +27,16 @@ void main() async {
   final reducer = AppReducer(SetReducer(), TermReducer());
   final effect = AppEffect(SetEffect(), TermEffect());
 
-  final epicMiddleware = new EpicMiddleware(effect.getEffects());
-
   final store = Store<AppState>(
     reducer.getState,
     middleware: [
-      epicMiddleware,
+      EpicMiddleware(effect.getEffects()),
       NavigationMiddleware(),
     ],
-    initialState: AppState((builder) {
-      builder
-        ..isAuthorized = isAuthorized
-        ..loading = {}
-        ..sets.update((builder) {
-          builder.user.update((builder) {
-            builder.ids.replace([]);
-            builder.items.replace({});
-            builder.loader = LoaderState.isLoading;
-          });
-          builder.public.update((builder) {
-            builder.ids.replace([]);
-            builder.items.replace({});
-            builder.loader = LoaderState.isLoading;
-          });
-        })
-        ..terms.update((builder) {
-          builder.ids.replace([]);
-          builder.items.replace({});
-          builder.loader = LoaderState.isLoading;
-        })
-        ..user.update((builder) {
-          builder
-            ..selectedSetId = int.tryParse(selectedSetId ?? '')
-            ..email = ''
-            ..firstName = ''
-            ..lastName = '';
-        });
-    }),
+    initialState: AppState.initial(
+      isAuthorized: isAuthorized,
+      selectedSetId: int.tryParse(selectedSetId ?? ''),
+    ),
   );
 
   setupApi(store);

@@ -4,14 +4,14 @@ import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 List<SetState> getPublicSets(AppState state) {
   final ids = state.sets.public.ids;
-  final items = state.sets.public.items;
+  final items = state.sets.items;
 
   return ids.map((id) => items[id]).toList();
 }
 
-List<TermState> getTerms(AppState state) {
-  final added = state.terms.added;
-  final ids = state.terms.ids;
+List<TermState> getUserTerms(AppState state) {
+  final added = state.terms.user.added;
+  final ids = state.terms.user.ids;
   final items = state.terms.items;
 
   return [
@@ -20,10 +20,17 @@ List<TermState> getTerms(AppState state) {
   ];
 }
 
+List<TermState> getPublicTerms(AppState state) {
+  final ids = state.terms.public.ids;
+  final items = state.terms.items;
+
+  return ids.map((id) => items[id]).toList();
+}
+
 List<SetState> getUserSets(AppState state) {
   final added = state.sets.user.added;
   final ids = state.sets.user.ids;
-  final items = state.sets.user.items;
+  final items = state.sets.items;
 
   return [
     if (added != null) added,
@@ -31,4 +38,4 @@ List<SetState> getUserSets(AppState state) {
   ];
 }
 
-bool isLoading(AppState state, String key) => state.loading[key] ?? false;
+bool isLoading(AppState state, String key) => state.isLoading;

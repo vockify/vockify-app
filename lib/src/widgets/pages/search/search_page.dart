@@ -12,21 +12,6 @@ class SearchPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppLayoutWidget(
       route: Routes.search,
-      actions: <Widget>[
-        RawMaterialButton(
-          constraints: BoxConstraints(
-            minWidth: 42,
-            minHeight: 42,
-          ),
-          child: Icon(
-            Icons.search,
-            color: VockifyColors.white,
-          ),
-          onPressed: () {},
-          padding: EdgeInsets.all(16),
-          shape: CircleBorder(),
-        ),
-      ],
       onInit: (store) {
         store.dispatch(RequestPublicSetsAction());
       },

@@ -1,43 +1,43 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'public_set_data_state.dart';
+part of 'public_term_data_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$PublicSetDataState extends PublicSetDataState {
+class _$PublicTermDataState extends PublicTermDataState {
   @override
   final BuiltList<int> ids;
   @override
   final LoaderState loader;
 
-  factory _$PublicSetDataState(
-          [void Function(PublicSetDataStateBuilder) updates]) =>
-      (new PublicSetDataStateBuilder()..update(updates)).build();
+  factory _$PublicTermDataState(
+          [void Function(PublicTermDataStateBuilder) updates]) =>
+      (new PublicTermDataStateBuilder()..update(updates)).build();
 
-  _$PublicSetDataState._({this.ids, this.loader}) : super._() {
+  _$PublicTermDataState._({this.ids, this.loader}) : super._() {
     if (ids == null) {
-      throw new BuiltValueNullFieldError('PublicSetDataState', 'ids');
+      throw new BuiltValueNullFieldError('PublicTermDataState', 'ids');
     }
     if (loader == null) {
-      throw new BuiltValueNullFieldError('PublicSetDataState', 'loader');
+      throw new BuiltValueNullFieldError('PublicTermDataState', 'loader');
     }
   }
 
   @override
-  PublicSetDataState rebuild(
-          void Function(PublicSetDataStateBuilder) updates) =>
+  PublicTermDataState rebuild(
+          void Function(PublicTermDataStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  PublicSetDataStateBuilder toBuilder() =>
-      new PublicSetDataStateBuilder()..replace(this);
+  PublicTermDataStateBuilder toBuilder() =>
+      new PublicTermDataStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is PublicSetDataState &&
+    return other is PublicTermDataState &&
         ids == other.ids &&
         loader == other.loader;
   }
@@ -49,16 +49,16 @@ class _$PublicSetDataState extends PublicSetDataState {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('PublicSetDataState')
+    return (newBuiltValueToStringHelper('PublicTermDataState')
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
   }
 }
 
-class PublicSetDataStateBuilder
-    implements Builder<PublicSetDataState, PublicSetDataStateBuilder> {
-  _$PublicSetDataState _$v;
+class PublicTermDataStateBuilder
+    implements Builder<PublicTermDataState, PublicTermDataStateBuilder> {
+  _$PublicTermDataState _$v;
 
   ListBuilder<int> _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
@@ -68,9 +68,9 @@ class PublicSetDataStateBuilder
   LoaderState get loader => _$this._loader;
   set loader(LoaderState loader) => _$this._loader = loader;
 
-  PublicSetDataStateBuilder();
+  PublicTermDataStateBuilder();
 
-  PublicSetDataStateBuilder get _$this {
+  PublicTermDataStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
@@ -80,24 +80,24 @@ class PublicSetDataStateBuilder
   }
 
   @override
-  void replace(PublicSetDataState other) {
+  void replace(PublicTermDataState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$PublicSetDataState;
+    _$v = other as _$PublicTermDataState;
   }
 
   @override
-  void update(void Function(PublicSetDataStateBuilder) updates) {
+  void update(void Function(PublicTermDataStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$PublicSetDataState build() {
-    _$PublicSetDataState _$result;
+  _$PublicTermDataState build() {
+    _$PublicTermDataState _$result;
     try {
       _$result =
-          _$v ?? new _$PublicSetDataState._(ids: ids.build(), loader: loader);
+          _$v ?? new _$PublicTermDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
@@ -105,7 +105,7 @@ class PublicSetDataStateBuilder
         ids.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'PublicSetDataState', _$failedField, e.toString());
+            'PublicTermDataState', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -80,8 +80,8 @@ class _SetPageState extends State<SetPageWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     if (widget.setId != null) {
-      final term = store.state.sets.user.items[widget.setId];
-      _nameController.text = term.name;
+      final set = store.state.sets.items[widget.setId];
+      _nameController.text = set.name;
     }
 
     super.initState();
@@ -89,9 +89,7 @@ class _SetPageState extends State<SetPageWidget> {
 
   void _onSave(Store<AppState> store) {
     if (_formKey.currentState.validate()) {
-      final items = store.state.sets.user.items;
-
-      if (items.containsKey(widget.setId)) {
+      if (widget.setId > 0) {
         store.dispatch(RequestUpdateUserSetAction(SetState((builder) {
           builder.id = widget.setId;
           builder.name = _nameController.text;

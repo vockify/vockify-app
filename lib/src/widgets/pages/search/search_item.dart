@@ -18,7 +18,7 @@ class SearchItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(top: 16),
-      color: VockifyColors.lightSteelBlue,
+      color: VockifyColors.ghostWhite,
       child: ListTile(
         title: Text(set.name),
         subtitle: Text('${set.termsCount} ${plural(set.termsCount, ['слово', 'слова', 'слов'])}'),

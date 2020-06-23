@@ -57,7 +57,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction('app');
+      yield SetIsLoadingAction();
 
       try {
         final authorization = Authorization.getInstance();
@@ -71,7 +71,7 @@ class AppEffect {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
         print(e);
       } finally {
-        yield UnsetIsLoadingAction('app');
+        yield UnsetIsLoadingAction();
       }
     });
   }
@@ -81,7 +81,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction('app');
+      yield SetIsLoadingAction();
 
       try {
         final user = await api.authUser();
@@ -90,7 +90,7 @@ class AppEffect {
       } catch (e) {
         print(e);
       } finally {
-        yield UnsetIsLoadingAction('app');
+        yield UnsetIsLoadingAction();
       }
     });
   }

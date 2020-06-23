@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:vockify/src/redux/actions/terms/request_remove_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_user_terms_loader_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -31,7 +31,7 @@ class _TermsState extends State<TermsWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, TermsViewModel>(
       distinct: true,
-      converter: (store) => TermsViewModel.fromStore(store),
+      converter: (store) => TermsViewModel.fromStore(store, widget.setId),
       onDidChange: (viewModel) {
         if (_completer != null && !_completer.isCompleted && viewModel.loader == LoaderState.isLoaded) {
           _completer.complete();
@@ -67,15 +67,15 @@ class _TermsState extends State<TermsWidget> {
                   });
                 },
                 onDelete: () {
-                  dispatcher.dispatch(RequestRemoveTermAction(term.id));
+                  dispatcher.dispatch(RequestRemoveUserTermAction(term.id, term.setId));
                 },
                 slidableController: _slidableController,
               );
             },
           ),
           onRefresh: () async {
-            dispatcher.dispatch(SetTermsLoaderAction(LoaderState.refresh));
-            dispatcher.dispatch(RequestTermsAction(setId: widget.setId));
+            dispatcher.dispatch(SetUserTermsLoaderAction(LoaderState.refresh));
+            dispatcher.dispatch(RequestUserTermsAction(setId: widget.setId));
 
             _completer = Completer();
             return _completer.future;

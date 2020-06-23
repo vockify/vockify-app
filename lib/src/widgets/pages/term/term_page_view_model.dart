@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -16,7 +16,7 @@ class TermPageViewModel {
   TermPageViewModel.fromStore(Store<AppState> store)
       : sets = getUserSets(store.state),
         saveTerm = ((term) =>
-            term.id > 0 ? store.dispatch(RequestUpdateTermAction(term)) : store.dispatch(RequestAddTermAction(term))),
+            term.id > 0 ? store.dispatch(RequestUpdateUserTermAction(term)) : store.dispatch(RequestAddUserTermAction(term))),
         navigateBack = (() => store.dispatch(NavigateToAction.pop()));
 
   @override

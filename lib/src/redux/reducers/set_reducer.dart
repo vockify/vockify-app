@@ -34,14 +34,14 @@ class SetReducer {
 
   AppState _addUserSetReducer(AppState state, AddUserSetAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.items.addEntries([MapEntry(action.set.id, action.set)]);
+      builder.sets.items.addEntries([MapEntry(action.set.id, action.set)]);
       builder.sets.user.ids.insert(0, action.set.id);
     });
   }
 
   AppState _removeUserSetReducer(AppState state, RemoveUserSetAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.items.remove(action.id);
+      builder.sets.items.remove(action.id);
       builder.sets.user.ids.remove(action.id);
     });
   }
@@ -60,7 +60,7 @@ class SetReducer {
     final entries = action.sets.map((set) => MapEntry(set.id, set));
 
     return state.rebuild((builder) {
-      builder.sets.public.items.replace(Map.fromEntries(entries));
+      builder.sets.items.addEntries(entries);
       builder.sets.public.ids.replace(action.sets.map((set) => set.id));
       builder.sets.public.loader = LoaderState.isLoaded;
     });
@@ -76,7 +76,7 @@ class SetReducer {
     final entries = action.sets.map((set) => MapEntry(set.id, set));
 
     return state.rebuild((builder) {
-      builder.sets.user.items.replace(Map.fromEntries(entries));
+      builder.sets.items.addEntries(entries);
       builder.sets.user.ids.replace(action.sets.map((set) => set.id));
       builder.sets.user.loader = LoaderState.isLoaded;
       builder.sets.user.added = null;
@@ -85,7 +85,6 @@ class SetReducer {
 
   AppState _unsetPublicSetsReducer(AppState state, UnsetPublicSetsAction action) {
     return state.rebuild((builder) {
-      builder.sets.public.items.clear();
       builder.sets.public.ids.clear();
       builder.sets.public.loader = LoaderState.isLoading;
     });
@@ -93,7 +92,6 @@ class SetReducer {
 
   AppState _unsetUserSetsReducer(AppState state, UnsetUserSetsAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.items.clear();
       builder.sets.user.ids.clear();
       builder.sets.user.loader = LoaderState.isLoading;
       builder.sets.user.added = null;
@@ -102,13 +100,13 @@ class SetReducer {
 
   AppState _updateUserSetReducer(AppState state, UpdateUserSetAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.items.addEntries([MapEntry(action.set.id, action.set)]);
+      builder.sets.items.addEntries([MapEntry(action.set.id, action.set)]);
     });
   }
 
   AppState _updateUserSetTermsCountReducer(AppState state, UpdateUserSetTermsCountAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.items.updateValue(
+      builder.sets.items.updateValue(
         action.setId,
         (value) => value.rebuild((builder) {
           builder.termsCount = action.termsCount;
