@@ -1,8 +1,7 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/redux/state/set_state.dart';
-import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/redux/state/user_state.dart';
+import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
+import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
+import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
 part 'app_state.g.dart';
 
@@ -16,17 +15,11 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isAuthorized;
 
-  @nullable
-  int get selectedSetId;
-
-  @nullable
-  String get translatedDefinition;
-
   Map<String, bool> get loading;
 
-  BuiltList<SetState> get sets;
+  SetDataState get sets;
 
-  BuiltList<TermState> get terms;
+  TermDataState get terms;
 
   UserState get user;
 }

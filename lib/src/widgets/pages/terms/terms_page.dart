@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:vockify/src/redux/actions/request_set_terms_action.dart';
+import 'package:vockify/src/redux/actions/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/unset_terms_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
@@ -18,12 +19,11 @@ class TermsPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
-    final set = store.state.sets.firstWhere((set) => set.id == setId, orElse: () => null);
-    final setName = set?.name ?? 'МОИ СЛОВА';
+    final set = store.state.sets.user.items[setId];
 
     return AppLayoutWidget(
       route: Routes.terms,
-      title: setName,
+      title: set.name,
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
@@ -45,8 +45,12 @@ class TermsPageWidget extends StatelessWidget {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestSetTermsAction(setId: setId));
+        store.dispatch(RequestTermsAction(setId: setId));
       },
+      onDispose: (store) {
+        store.dispatch(UnsetTermsAction());
+      },
+      isLoadingConverter: (store) => !store.state.terms.isLoaded,
       body: Center(
         child: StoreConnector<AppState, TermsPageViewModel>(
             distinct: true,
@@ -59,7 +63,6 @@ class TermsPageWidget extends StatelessWidget {
               }
 
               return Stack(
-                fit: StackFit.expand,
                 children: <Widget>[
                   TermsWidget(setId),
                   if (viewModel.terms.isNotEmpty)

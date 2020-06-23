@@ -1,8 +1,8 @@
-import 'package:vockify/src/api/dto/set_dto.dart';
 import 'package:vockify/src/redux/actions/app_action.dart';
+import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 class RequestAddSetAction extends AppAction {
-  final SetDto payload;
+  final SetState set;
 
-  RequestAddSetAction(this.payload);
+  RequestAddSetAction(this.set);
 }

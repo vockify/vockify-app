@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 
 class TermsItemWidget extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 part 'term_dto.g.dart';
 
@@ -18,13 +18,14 @@ class TermDto {
 
   factory TermDto.fromJson(Map<String, dynamic> json) => _$TermDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TermDtoToJson(this);
+  factory TermDto.fromState(TermState state) {
+    return TermDto(
+      state.id,
+      state.name,
+      state.definition,
+      state.setId,
+    );
+  }
 
-  TermState toState() => TermState((builder) {
-    builder
-      ..definition = definition
-      ..name = name
-      ..id = id
-      ..setId = setId;
-  });
+  Map<String, dynamic> toJson() => _$TermDtoToJson(this);
 }

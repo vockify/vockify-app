@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/unset_user_sets_action.dart';
+import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -10,7 +12,6 @@ class SetsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppLayoutWidget(
       route: Routes.sets,
-      title: 'VOCKIFY',
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
@@ -31,6 +32,10 @@ class SetsPageWidget extends StatelessWidget {
       onInit: (store) {
         store.dispatch(RequestSetsAction());
       },
+      onDispose: (store) {
+        store.dispatch(UnsetUserSetsAction());
+      },
+      isLoadingConverter: (store) => store.state.sets.user.loader == LoaderState.isLoading,
       body: SetsWidget(),
     );
   }

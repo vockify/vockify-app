@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:redux/redux.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/term_dto.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/request_add_term_action.dart';
 import 'package:vockify/src/redux/actions/request_sets_action.dart';
-import 'package:vockify/src/redux/actions/request_update_term_action.dart';
-import 'package:vockify/src/redux/actions/set_translated_definition_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
@@ -54,26 +53,7 @@ class _ShareFormState extends State<SharePageWidget> {
             minHeight: 42,
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              final term = TermDto(
-                0,
-                _nameController.text,
-                _definitionController.text,
-                _selectedSetId,
-              );
-
-              AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
-
-              store.dispatch(SetTranslatedDefinitionAction(null));
-
-              if (term.id > 0) {
-                store.dispatch(RequestUpdateTermAction(term));
-              } else {
-                store.dispatch(RequestAddTermAction(term));
-              }
-
-              SystemNavigator.pop();
-            }
+            _onSave(store);
           },
           child: Text(
             'Сохранить',
@@ -86,7 +66,7 @@ class _ShareFormState extends State<SharePageWidget> {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestSetsAction(route: Routes.share));
+        store.dispatch(RequestSetsAction());
       },
       body: StoreConnector<AppState, SharePageViewModel>(
         distinct: true,
@@ -155,5 +135,20 @@ class _ShareFormState extends State<SharePageWidget> {
         _isFocused = true;
       });
     });
+  }
+
+  void _onSave(Store<AppState> store) {
+    if (_formKey.currentState.validate()) {
+      AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
+
+      store.dispatch(RequestAddTermAction(TermState((builder) {
+        builder.id = 0;
+        builder.name = _nameController.text;
+        builder.definition = _definitionController.text;
+        builder.setId = _selectedSetId;
+      })));
+
+      SystemNavigator.pop();
+    }
   }
 }

@@ -8,26 +8,26 @@ part of 'term_state.dart';
 
 class _$TermState extends TermState {
   @override
+  final String definition;
+  @override
   final int id;
   @override
   final String name;
-  @override
-  final String definition;
   @override
   final int setId;
 
   factory _$TermState([void Function(TermStateBuilder) updates]) =>
       (new TermStateBuilder()..update(updates)).build();
 
-  _$TermState._({this.id, this.name, this.definition, this.setId}) : super._() {
+  _$TermState._({this.definition, this.id, this.name, this.setId}) : super._() {
+    if (definition == null) {
+      throw new BuiltValueNullFieldError('TermState', 'definition');
+    }
     if (id == null) {
       throw new BuiltValueNullFieldError('TermState', 'id');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('TermState', 'name');
-    }
-    if (definition == null) {
-      throw new BuiltValueNullFieldError('TermState', 'definition');
     }
     if (setId == null) {
       throw new BuiltValueNullFieldError('TermState', 'setId');
@@ -45,25 +45,25 @@ class _$TermState extends TermState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermState &&
+        definition == other.definition &&
         id == other.id &&
         name == other.name &&
-        definition == other.definition &&
         setId == other.setId;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, id.hashCode), name.hashCode), definition.hashCode),
+        $jc($jc($jc(0, definition.hashCode), id.hashCode), name.hashCode),
         setId.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TermState')
+          ..add('definition', definition)
           ..add('id', id)
           ..add('name', name)
-          ..add('definition', definition)
           ..add('setId', setId))
         .toString();
   }
@@ -71,6 +71,10 @@ class _$TermState extends TermState {
 
 class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   _$TermState _$v;
+
+  String _definition;
+  String get definition => _$this._definition;
+  set definition(String definition) => _$this._definition = definition;
 
   int _id;
   int get id => _$this._id;
@@ -80,10 +84,6 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _definition;
-  String get definition => _$this._definition;
-  set definition(String definition) => _$this._definition = definition;
-
   int _setId;
   int get setId => _$this._setId;
   set setId(int setId) => _$this._setId = setId;
@@ -92,9 +92,9 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
 
   TermStateBuilder get _$this {
     if (_$v != null) {
+      _definition = _$v.definition;
       _id = _$v.id;
       _name = _$v.name;
-      _definition = _$v.definition;
       _setId = _$v.setId;
       _$v = null;
     }
@@ -118,7 +118,7 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   _$TermState build() {
     final _$result = _$v ??
         new _$TermState._(
-            id: id, name: name, definition: definition, setId: setId);
+            definition: definition, id: id, name: name, setId: setId);
     replace(_$result);
     return _$result;
   }

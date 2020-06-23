@@ -1,8 +1,7 @@
 import 'package:vockify/src/redux/actions/app_action.dart';
 
 class RequestRemoveTermAction extends AppAction {
-  final int termId;
-  final int setId;
+  final int id;
 
-  RequestRemoveTermAction({this.setId, this.termId});
+  RequestRemoveTermAction(this.id);
 }

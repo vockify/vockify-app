@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/helpers/plural.dart';
-import 'package:vockify/src/redux/state/set_state.dart';
+import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 
 class SetsItem extends StatelessWidget {

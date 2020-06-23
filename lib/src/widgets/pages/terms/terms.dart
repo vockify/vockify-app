@@ -53,7 +53,7 @@ class _TermsState extends State<TermsWidget> {
                   });
                 },
                 onDelete: () {
-                  viewModel.removeTerm(term.setId, term.id);
+                  viewModel.removeTerm(term.id);
                 },
                 slidableController: _slidableController,
               );

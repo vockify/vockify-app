@@ -35,6 +35,7 @@ class _HomeState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: VockifyColors.white,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -52,7 +53,7 @@ class _HomeState extends State<HomeWidget> {
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Мои словари')),
-          BottomNavigationBarItem(icon: Icon(Icons.local_library), title: Text('Все словари')),
+          BottomNavigationBarItem(icon: Icon(Icons.search), title: Text('Все словари')),
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Профиль')),
         ],
       ),

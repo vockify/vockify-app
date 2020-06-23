@@ -1,8 +1,8 @@
-import 'package:vockify/src/api/dto/term_dto.dart';
 import 'package:vockify/src/redux/actions/app_action.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 class RequestAddTermAction extends AppAction {
-  final TermDto payload;
+  final TermState term;
 
-  RequestAddTermAction(this.payload);
+  RequestAddTermAction(this.term);
 }

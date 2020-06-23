@@ -24,4 +24,7 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
   String get firstName;
 
   String get lastName;
+
+  @nullable
+  int get selectedSetId;
 }

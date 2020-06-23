@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
+import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/request_add_set_action.dart';
 import 'package:vockify/src/redux/actions/request_update_set_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
+import 'package:vockify/src/widgets/common/form_text_field.dart';
 
 class SetPageWidget extends StatefulWidget {
   final int setId;
@@ -36,17 +38,7 @@ class _SetPageState extends State<SetPageWidget> {
             minHeight: 42,
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              final setDto = SetDto(widget.setId != null ? widget.setId : 0, _nameController.text, 'empty');
-
-              if (setDto.id > 0) {
-                store.dispatch(RequestUpdateSetAction(setDto));
-              } else {
-                store.dispatch(RequestAddSetAction(setDto));
-              }
-
-              Navigator.of(context).pop();
-            }
+            _onSave(store);
           },
           child: Text(
             'Сохранить',
@@ -65,7 +57,11 @@ class _SetPageState extends State<SetPageWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _buildTextFormField("НАЗВАНИЕ", _nameController),
+              FormTextFieldWidget(
+                controller: _nameController,
+                text: 'НАЗВАНИЕ',
+                autoFocus: true,
+              ),
             ],
           ),
         ),
@@ -81,39 +77,34 @@ class _SetPageState extends State<SetPageWidget> {
 
   @override
   void initState() {
-    super.initState();
-
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     if (widget.setId != null) {
-      final term = store.state.sets.firstWhere(
-        (item) => item.id == widget.setId,
-        orElse: () => null,
-      );
-
+      final term = store.state.sets.user.items[widget.setId];
       _nameController.text = term.name;
     }
+
+    super.initState();
   }
 
-  Widget _buildTextFormField(String labelText, TextEditingController controller) {
-    return TextFormField(
-      autofocus: true,
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        fillColor: VockifyColors.white,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(),
-        ),
-      ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
-        }
+  void _onSave(Store<AppState> store) {
+    if (_formKey.currentState.validate()) {
+      final items = store.state.sets.user.items;
 
-        return null;
-      },
-      keyboardType: TextInputType.text,
-    );
+      if (items.containsKey(widget.setId)) {
+        store.dispatch(RequestUpdateSetAction(SetState((builder) {
+          builder.id = widget.setId;
+          builder.name = _nameController.text;
+        })));
+      } else {
+        store.dispatch(RequestAddSetAction(SetState((builder) {
+          builder.id = 0;
+          builder.name = _nameController.text;
+          builder.termsCount = 0;
+        })));
+      }
+
+      Navigator.of(context).pop();
+    }
   }
 }

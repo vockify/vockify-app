@@ -1,4 +1,4 @@
-import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/widgets/pages/quiz/quiz_result.dart';
 import 'package:vockify/src/widgets/pages/quiz/quiz_step.dart';
 import 'package:vockify/src/widgets/pages/quiz/quiz_step_result.dart';

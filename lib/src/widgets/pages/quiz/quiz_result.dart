@@ -1,4 +1,4 @@
-import 'package:vockify/src/redux/state/term_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 class QuizResult {
   final List<TermState> terms;

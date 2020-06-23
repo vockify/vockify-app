@@ -12,15 +12,11 @@ class _$AppState extends AppState {
   @override
   final bool isAuthorized;
   @override
-  final int selectedSetId;
-  @override
-  final String translatedDefinition;
-  @override
   final Map<String, bool> loading;
   @override
-  final BuiltList<SetState> sets;
+  final SetDataState sets;
   @override
-  final BuiltList<TermState> terms;
+  final TermDataState terms;
   @override
   final UserState user;
 
@@ -30,8 +26,6 @@ class _$AppState extends AppState {
   _$AppState._(
       {this.currentRoute,
       this.isAuthorized,
-      this.selectedSetId,
-      this.translatedDefinition,
       this.loading,
       this.sets,
       this.terms,
@@ -67,8 +61,6 @@ class _$AppState extends AppState {
     return other is AppState &&
         currentRoute == other.currentRoute &&
         isAuthorized == other.isAuthorized &&
-        selectedSetId == other.selectedSetId &&
-        translatedDefinition == other.translatedDefinition &&
         loading == other.loading &&
         sets == other.sets &&
         terms == other.terms &&
@@ -80,13 +72,7 @@ class _$AppState extends AppState {
     return $jf($jc(
         $jc(
             $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc($jc(0, currentRoute.hashCode),
-                                isAuthorized.hashCode),
-                            selectedSetId.hashCode),
-                        translatedDefinition.hashCode),
+                $jc($jc($jc(0, currentRoute.hashCode), isAuthorized.hashCode),
                     loading.hashCode),
                 sets.hashCode),
             terms.hashCode),
@@ -98,8 +84,6 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('currentRoute', currentRoute)
           ..add('isAuthorized', isAuthorized)
-          ..add('selectedSetId', selectedSetId)
-          ..add('translatedDefinition', translatedDefinition)
           ..add('loading', loading)
           ..add('sets', sets)
           ..add('terms', terms)
@@ -119,28 +103,18 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isAuthorized => _$this._isAuthorized;
   set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
 
-  int _selectedSetId;
-  int get selectedSetId => _$this._selectedSetId;
-  set selectedSetId(int selectedSetId) => _$this._selectedSetId = selectedSetId;
-
-  String _translatedDefinition;
-  String get translatedDefinition => _$this._translatedDefinition;
-  set translatedDefinition(String translatedDefinition) =>
-      _$this._translatedDefinition = translatedDefinition;
-
   Map<String, bool> _loading;
   Map<String, bool> get loading => _$this._loading;
   set loading(Map<String, bool> loading) => _$this._loading = loading;
 
-  ListBuilder<SetState> _sets;
-  ListBuilder<SetState> get sets =>
-      _$this._sets ??= new ListBuilder<SetState>();
-  set sets(ListBuilder<SetState> sets) => _$this._sets = sets;
+  SetDataStateBuilder _sets;
+  SetDataStateBuilder get sets => _$this._sets ??= new SetDataStateBuilder();
+  set sets(SetDataStateBuilder sets) => _$this._sets = sets;
 
-  ListBuilder<TermState> _terms;
-  ListBuilder<TermState> get terms =>
-      _$this._terms ??= new ListBuilder<TermState>();
-  set terms(ListBuilder<TermState> terms) => _$this._terms = terms;
+  TermDataStateBuilder _terms;
+  TermDataStateBuilder get terms =>
+      _$this._terms ??= new TermDataStateBuilder();
+  set terms(TermDataStateBuilder terms) => _$this._terms = terms;
 
   UserStateBuilder _user;
   UserStateBuilder get user => _$this._user ??= new UserStateBuilder();
@@ -152,8 +126,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     if (_$v != null) {
       _currentRoute = _$v.currentRoute;
       _isAuthorized = _$v.isAuthorized;
-      _selectedSetId = _$v.selectedSetId;
-      _translatedDefinition = _$v.translatedDefinition;
       _loading = _$v.loading;
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
@@ -184,8 +156,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               currentRoute: currentRoute,
               isAuthorized: isAuthorized,
-              selectedSetId: selectedSetId,
-              translatedDefinition: translatedDefinition,
               loading: loading,
               sets: sets.build(),
               terms: terms.build(),

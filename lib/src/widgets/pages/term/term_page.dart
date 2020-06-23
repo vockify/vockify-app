@@ -1,13 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/term_dto.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/request_add_term_action.dart';
 import 'package:vockify/src/redux/actions/request_update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -35,6 +33,7 @@ class _TermPageState extends State<TermPageWidget> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
+
   int _selectedSetId;
 
   @override
@@ -51,17 +50,22 @@ class _TermPageState extends State<TermPageWidget> {
           ),
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              final term = TermDto(
-                widget.termId != null ? widget.termId : 0,
-                _nameController.text,
-                _definitionController.text,
-                _selectedSetId,
-              );
+              final items = store.state.sets.user.items;
 
-              if (term.id > 0) {
-                store.dispatch(RequestUpdateTermAction(term));
+              if (items.containsKey(widget.termId)) {
+                store.dispatch(RequestUpdateTermAction(TermState((builder) {
+                  builder.id = widget.termId;
+                  builder.name = _nameController.text;
+                  builder.definition = _definitionController.text;
+                  builder.setId = _selectedSetId;
+                })));
               } else {
-                store.dispatch(RequestAddTermAction(term));
+                store.dispatch(RequestAddTermAction(TermState((builder) {
+                  builder.id = 0;
+                  builder.name = _nameController.text;
+                  builder.definition = _definitionController.text;
+                  builder.setId = _selectedSetId;
+                })));
               }
 
               Navigator.of(context).pop();
@@ -81,10 +85,7 @@ class _TermPageState extends State<TermPageWidget> {
         distinct: true,
         onInit: (store) {
           if (widget.termId != null) {
-            final term = store.state.terms.firstWhere(
-              (item) => item.id == widget.termId,
-              orElse: () => null,
-            );
+            final term = store.state.terms.items[widget.termId];
 
             _nameController.text = term.name;
             _definitionController.text = term.definition;
@@ -132,16 +133,17 @@ class _TermPageState extends State<TermPageWidget> {
 
   @override
   void dispose() {
-    super.dispose();
     _definitionController.dispose();
     _nameController.dispose();
+
+    super.dispose();
   }
 
   @override
   void initState() {
-    super.initState();
-
     _selectedSetId = widget.setId;
+
+    super.initState();
   }
 
   Widget _buildTranslateButton() {

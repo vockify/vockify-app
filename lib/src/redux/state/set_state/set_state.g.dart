@@ -8,26 +8,27 @@ part of 'set_state.dart';
 
 class _$SetState extends SetState {
   @override
+  final String icon;
+  @override
   final int id;
   @override
   final String name;
   @override
-  final String icon;
+  final int parentSetId;
   @override
   final int termsCount;
 
   factory _$SetState([void Function(SetStateBuilder) updates]) =>
       (new SetStateBuilder()..update(updates)).build();
 
-  _$SetState._({this.id, this.name, this.icon, this.termsCount}) : super._() {
+  _$SetState._(
+      {this.icon, this.id, this.name, this.parentSetId, this.termsCount})
+      : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('SetState', 'id');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('SetState', 'name');
-    }
-    if (icon == null) {
-      throw new BuiltValueNullFieldError('SetState', 'icon');
     }
     if (termsCount == null) {
       throw new BuiltValueNullFieldError('SetState', 'termsCount');
@@ -45,24 +46,28 @@ class _$SetState extends SetState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is SetState &&
+        icon == other.icon &&
         id == other.id &&
         name == other.name &&
-        icon == other.icon &&
+        parentSetId == other.parentSetId &&
         termsCount == other.termsCount;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc($jc(0, id.hashCode), name.hashCode), icon.hashCode),
+    return $jf($jc(
+        $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
+            parentSetId.hashCode),
         termsCount.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SetState')
+          ..add('icon', icon)
           ..add('id', id)
           ..add('name', name)
-          ..add('icon', icon)
+          ..add('parentSetId', parentSetId)
           ..add('termsCount', termsCount))
         .toString();
   }
@@ -70,6 +75,10 @@ class _$SetState extends SetState {
 
 class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   _$SetState _$v;
+
+  String _icon;
+  String get icon => _$this._icon;
+  set icon(String icon) => _$this._icon = icon;
 
   int _id;
   int get id => _$this._id;
@@ -79,9 +88,9 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _icon;
-  String get icon => _$this._icon;
-  set icon(String icon) => _$this._icon = icon;
+  int _parentSetId;
+  int get parentSetId => _$this._parentSetId;
+  set parentSetId(int parentSetId) => _$this._parentSetId = parentSetId;
 
   int _termsCount;
   int get termsCount => _$this._termsCount;
@@ -91,9 +100,10 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
 
   SetStateBuilder get _$this {
     if (_$v != null) {
+      _icon = _$v.icon;
       _id = _$v.id;
       _name = _$v.name;
-      _icon = _$v.icon;
+      _parentSetId = _$v.parentSetId;
       _termsCount = _$v.termsCount;
       _$v = null;
     }
@@ -117,7 +127,11 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   _$SetState build() {
     final _$result = _$v ??
         new _$SetState._(
-            id: id, name: name, icon: icon, termsCount: termsCount);
+            icon: icon,
+            id: id,
+            name: name,
+            parentSetId: parentSetId,
+            termsCount: termsCount);
     replace(_$result);
     return _$result;
   }

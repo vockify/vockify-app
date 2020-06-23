@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/user_state.dart';
+import 'package:vockify/src/redux/state/user_state/user_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/app_layout.dart';
@@ -12,7 +12,24 @@ class ProfilePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppLayoutWidget(
       route: Routes.profile,
-      title: 'МОЙ ПРОФИЛЬ',
+      actions: <Widget>[
+        RawMaterialButton(
+          constraints: BoxConstraints(
+            minWidth: 42,
+            minHeight: 42,
+          ),
+          onPressed: () {
+            final store = StoreProvider.of<AppState>(context, listen: false);
+            store.dispatch(UnauthorizeAction());
+          },
+          child: Icon(
+            Icons.exit_to_app,
+            color: VockifyColors.white,
+          ),
+          padding: EdgeInsets.all(16),
+          shape: CircleBorder(),
+        ),
+      ],
       body: Center(
         child: StoreConnector<AppState, UserState>(
           distinct: true,
@@ -43,14 +60,6 @@ class ProfilePageWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                FlatButton(
-                  color: VockifyColors.lightSteelBlue,
-                  onPressed: () {
-                    final store = StoreProvider.of<AppState>(context, listen: false);
-                    store.dispatch(UnauthorizeAction());
-                  },
-                  child: Text('ВЫЙТИ'),
                 ),
               ],
             );

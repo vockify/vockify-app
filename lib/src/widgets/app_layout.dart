@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
@@ -13,8 +12,10 @@ class AppLayoutWidget extends StatelessWidget {
   final Widget body;
   final List<Widget> actions;
   final String redirectBackRoute;
-  final Function(Store<AppState>) onInit;
   final bool isContextNavigation;
+  final Function(Store<AppState>) onInit;
+  final Function(Store<AppState>) onDispose;
+  final bool Function(Store<AppState>) isLoadingConverter;
 
   AppLayoutWidget({
     Key key,
@@ -23,22 +24,22 @@ class AppLayoutWidget extends StatelessWidget {
     this.body,
     this.actions = const [],
     this.redirectBackRoute,
-    this.onInit,
     this.isContextNavigation = true,
+    this.onInit,
+    this.onDispose,
+    this.isLoadingConverter,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
-      converter: (store) => isLoading(store.state, route),
       distinct: true,
-      onInit: (store) {
-        if (onInit != null) {
-          onInit(store);
-        }
-      },
+      converter: isLoadingConverter != null ? isLoadingConverter : (store) => false,
+      onDispose: onDispose != null ? onDispose : null,
+      onInit: onInit != null ? onInit : null,
       builder: (context, isLoading) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: VockifyColors.white,
           appBar: AppBar(
             title: title != null
