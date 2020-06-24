@@ -40,18 +40,18 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetAddedUserSetAction(action.set);
+      yield SetAddedUserSetAction(set: action.set);
 
       try {
         final result = await api.addSet(SetDto.fromState(action.set));
 
         if (store.state.sets.user.loader == LoaderState.isLoaded) {
-          yield AddUserSetAction(SetState.fromDto(result.data));
+          yield AddUserSetAction(set: SetState.fromDto(result.data));
         }
       } catch (e) {
         print(e);
       } finally {
-        yield SetAddedUserSetAction(null);
+        yield SetAddedUserSetAction(set: null);
       }
     });
   }
@@ -64,9 +64,9 @@ class SetEffect {
       yield SetIsLoadingAction();
 
       try {
-        final response = await api.copySet(action.setId);
-        yield AddUserSetAction(SetState.fromDto(response.data));
-        yield NavigateToAction.push(Routes.quiz, arguments: {'setId': action.setId});
+        final response = await api.copySet(action.id);
+        yield AddUserSetAction(set: SetState.fromDto(response.data));
+        yield NavigateToAction.push(Routes.quiz, arguments: {'setId': action.id});
       } catch (e) {
         print(e);
       } finally {
@@ -82,7 +82,7 @@ class SetEffect {
     return actions.asyncExpand((action) async* {
       try {
         final response = await api.getPublicSets();
-        yield SetPublicSetsAction(response.data.map((dto) => SetState.fromDto(dto)));
+        yield SetPublicSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));
       } catch (e) {
         print(e);
       }
@@ -94,10 +94,10 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield RemoveUserSetAction(action.payload);
+      yield RemoveUserSetAction(id: action.id);
 
       try {
-        await api.deleteSet(action.payload);
+        await api.deleteSet(action.id);
       } catch (e) {
         print(e);
       }
@@ -109,11 +109,11 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield UpdateUserSetAction(action.set);
+      yield UpdateUserSetAction(set: action.set);
 
       try {
         final response = await api.updateSet(action.set.id, SetDto.fromState(action.set));
-        yield UpdateUserSetAction(SetState.fromDto(response.data));
+        yield UpdateUserSetAction(set: SetState.fromDto(response.data));
       } catch (e) {
         print(e);
       }
@@ -127,7 +127,7 @@ class SetEffect {
     return actions.asyncExpand((action) async* {
       try {
         final response = await api.getUserSets();
-        yield SetUserSetsAction(response.data.map((dto) => SetState.fromDto(dto)));
+        yield SetUserSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));
       } catch (e) {
         print(e);
       }

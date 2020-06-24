@@ -90,11 +90,11 @@ class _SetPageState extends State<SetPageWidget> {
       if (widget.setId != null) {
         final set = store.state.sets.items[widget.setId];
 
-        dispatcher.dispatch(RequestUpdateUserSetAction(set.rebuild((builder) {
+        dispatcher.dispatch(RequestUpdateUserSetAction(set: set.rebuild((builder) {
           builder.name = _nameController.text;
         })));
       } else {
-        dispatcher.dispatch(RequestAddUserSetAction(SetState((builder) {
+        dispatcher.dispatch(RequestAddUserSetAction(set: SetState((builder) {
           builder.id = 0;
           builder.name = _nameController.text;
           builder.termsCount = 0;

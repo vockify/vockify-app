@@ -42,7 +42,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetCurrentRouteAction(action.name);
+      yield SetCurrentRouteAction(route: action.name);
 
       if (action.name != Routes.login && action.name != Routes.tour && !store.state.isAuthorized) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
@@ -65,7 +65,7 @@ class AppEffect {
         yield AuthorizeAction();
 
         final response = await api.authUser();
-        yield SetUserAction(UserState.fromDto(response.data));
+        yield SetUserAction(user: UserState.fromDto(response.data));
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
       } catch (e) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
@@ -83,7 +83,7 @@ class AppEffect {
     return actions.asyncExpand((action) async* {
       try {
         final user = await api.authUser();
-        yield SetUserAction(UserState.fromDto(user.data));
+        yield SetUserAction(user: UserState.fromDto(user.data));
         yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: action.arguments);
       } catch (e) {
         print(e);

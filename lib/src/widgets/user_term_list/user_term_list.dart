@@ -64,14 +64,14 @@ class _UserTermListState extends State<UserTermListWidget> {
                   });
                 },
                 onDelete: () {
-                  dispatcher.dispatch(RequestRemoveUserTermAction(id, widget.setId));
+                  dispatcher.dispatch(RequestRemoveUserTermAction(id: id, setId: widget.setId));
                 },
                 slidableController: _slidableController,
               );
             },
           ),
           onRefresh: () async {
-            dispatcher.dispatch(SetUserTermsLoaderAction(LoaderState.refresh));
+            dispatcher.dispatch(SetUserTermsLoaderAction(state: LoaderState.refresh));
             dispatcher.dispatch(RequestUserTermsAction(setId: widget.setId));
 
             return storeCompleterService.registerCompleter((state) => state.terms.user.loader == LoaderState.isLoaded);

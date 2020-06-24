@@ -40,7 +40,7 @@ class AppReducer {
   }
 
   AppState _setUserReducer(AppState state, SetUserAction action) {
-    return state.rebuild((builder) => builder.user.replace(action.payload));
+    return state.rebuild((builder) => builder.user.replace(action.user));
   }
 
   AppState _unauthorizeReducer(AppState state, UnauthorizeAction action) {

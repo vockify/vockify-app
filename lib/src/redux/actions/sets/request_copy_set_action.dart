@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:vockify/src/redux/actions/app_action.dart';
 
 class RequestCopySetAction extends AppAction {
-  final int setId;
+  final int id;
 
-  RequestCopySetAction(this.setId);
+  RequestCopySetAction({@required this.id});
 }

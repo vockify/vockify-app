@@ -49,7 +49,7 @@ class _UserSetListState extends State<UserSetListWidget> {
                     Navigator.of(context).pushNamed(Routes.userTerms, arguments: {'id': id});
                   },
                   onDelete: () {
-                    dispatcher.dispatch(RequestRemoveUserSetAction(id));
+                    dispatcher.dispatch(RequestRemoveUserSetAction(id: id));
                   },
                   onEdit: () {
                     Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': id});
@@ -58,7 +58,7 @@ class _UserSetListState extends State<UserSetListWidget> {
               },
             ),
             onRefresh: () {
-              dispatcher.dispatch(SetUserSetsLoaderAction(LoaderState.refresh));
+              dispatcher.dispatch(SetUserSetsLoaderAction(state: LoaderState.refresh));
               dispatcher.dispatch(RequestUserSetsAction());
 
               return storeCompleterService.registerCompleter(

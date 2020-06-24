@@ -1,114 +1,122 @@
+import 'package:reselect/reselect.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/set_data_state/public_set_data_state/public_set_data_state.dart';
+import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
+import 'package:vockify/src/redux/state/set_data_state/user_set_data_state/user_set_data_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
+import 'package:vockify/src/redux/state/term_data_state/public_term_data_state/public_term_data_state.dart';
+import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
+import 'package:vockify/src/redux/state/term_data_state/user_term_data_state/user_term_data_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
-List<int> getPublicSetIds(AppState state) {
-  return state.sets.public.ids.toList();
-}
+Selector<AppState, SetState> getAddedUserSet =
+    createSelector1(getUserSetDataState, (UserSetDataState state) => state.added);
 
-List<SetState> getPublicSets(AppState state) {
-  final ids = state.sets.public.ids;
-  final items = state.sets.items;
+Selector<AppState, TermState> getAddedUserTerm =
+    createSelector1(getUserTermDataState, (UserTermDataState state) => state.added);
 
-  return ids.map((id) => items[id]).toList();
-}
+Selector<AppState, PublicSetDataState> getPublicSetDataState =
+    createSelector1(getSetDataState, (SetDataState state) => state.public);
 
-List<int> getPublicTermIds(AppState state) {
-  return state.terms.public.ids.toList();
-}
+Selector<AppState, List<int>> getPublicSetIds =
+    createSelector1(getPublicSetDataState, (PublicSetDataState state) => state.ids.toList());
 
-List<TermState> getPublicTerms(AppState state) {
-  final ids = state.terms.public.ids;
-  final items = state.terms.items;
+Selector<AppState, PublicTermDataState> getPublicTermDataState =
+    createSelector1(getTermDataState, (TermDataState state) => state.public);
 
-  return ids.map((id) => items[id]).toList();
-}
+Selector<AppState, List<int>> getPublicTermIds =
+    createSelector1(getPublicTermDataState, (PublicTermDataState state) => state.ids.toList());
 
-SetState getSetById(AppState state, int id) {
-  final added = state.sets.user.added;
-  final items = state.sets.items;
+Selector<AppState, Map<int, SetState>> getSetItems =
+    createSelector1(getSetDataState, (SetDataState state) => state.items.toMap());
 
-  if (id == 0) {
-    return added;
-  }
+Selector<AppState, Map<int, TermState>> getTermItems =
+    createSelector1(getTermDataState, (TermDataState state) => state.items.toMap());
 
-  return items[id];
-}
+Selector<AppState, UserSetDataState> getUserSetDataState =
+    createSelector1(getSetDataState, (SetDataState state) => state.user);
 
-TermState getTermById(AppState state, int id) {
-  final added = state.terms.user.added;
-  final items = state.terms.items;
+Selector<AppState, List<int>> getUserSetIds = createSelector1(
+    getUserSetDataState,
+    (UserSetDataState state) => [
+          if (state.added != null) 0,
+          ...state.ids,
+        ]);
 
-  if (id == 0) {
-    return added;
-  }
-
-  return items[id];
-}
-
-int getUserSetIdByParentId(AppState state, int parentId) {
-  final items = state.sets.items;
-  return state.sets.user.ids.firstWhere((id) => items[id].parentId == parentId, orElse: () => null);
-}
-
-List<int> getUserSetIds(AppState state) {
-  final added = state.sets.user.added;
-  final ids = state.sets.user.ids;
-
-  return [
-    if (added != null) 0,
-    ...ids,
-  ];
-}
-
-List<int> getUserSetParentIds(AppState state) {
-  final items = state.sets.items;
-  final ids = state.sets.user.ids.fold<List<int>>([], (result, id) {
+Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
+  getSetItems,
+  getUserSetIds,
+  (Map<int, SetState> items, List<int> ids) => ids.fold<List<int>>([], (result, id) {
     if (items[id].parentId != null) {
       result.add(items[id].parentId);
     }
 
     return result;
-  });
+  }),
+);
 
-  return ids;
-}
-
-List<SetState> getUserSets(AppState state) {
-  final added = state.sets.user.added;
-  final ids = state.sets.user.ids;
-  final items = state.sets.items;
-
-  return [
+Selector<AppState, List<SetState>> getUserSets = createSelector3(
+  getSetItems,
+  getUserSetIds,
+  getAddedUserSet,
+  (Map<int, SetState> items, List<int> ids, SetState added) => [
     if (added != null) added,
     ...ids.map((id) => items[id]),
-  ];
-}
+  ],
+);
 
-List<int> getUserTermIds(AppState state) {
-  final added = state.terms.user.added;
-  final ids = state.terms.user.ids;
+Selector<AppState, UserTermDataState> getUserTermDataState =
+    createSelector1(getTermDataState, (TermDataState state) => state.user);
 
-  return [
-    if (added != null) 0,
-    ...ids,
-  ];
-}
+Selector<AppState, List<int>> getUserTermIds = createSelector1(
+    getUserTermDataState,
+    (UserTermDataState state) => [
+          if (state.added != null) 0,
+          ...state.ids,
+        ]);
 
-List<TermState> getUserTerms(AppState state) {
-  final added = state.terms.user.added;
-  final ids = state.terms.user.ids;
-  final items = state.terms.items;
-
-  return [
+Selector<AppState, List<TermState>> getUserTerms = createSelector3(
+  getTermItems,
+  getUserTermIds,
+  getAddedUserTerm,
+  (Map<int, TermState> items, List<int> ids, TermState added) => [
     if (added != null) added,
     ...ids.map((id) => items[id]),
-  ];
+  ],
+);
+
+SetState getSetById(AppState state, int id) {
+  final added = getAddedUserSet(state);
+  final items = getSetItems(state);
+
+  if (id == 0) {
+    return added;
+  }
+
+  return items[id];
 }
 
-bool isLoading(AppState state, String key) => state.isLoading;
+SetDataState getSetDataState(AppState state) => state.sets;
 
-bool isSetCopied(AppState state, int id) {
-  final ids = getUserSetParentIds(state);
-  return ids.contains(id);
+TermState getTermById(AppState state, int id) {
+  final added = getAddedUserTerm(state);
+  final items = getTermItems(state);
+
+  if (id == 0) {
+    return added;
+  }
+
+  return items[id];
+}
+
+TermDataState getTermDataState(AppState state) => state.terms;
+
+int getUserSetIdByParentId(AppState state, int parentId) {
+  final items = getSetItems(state);
+  final ids = getUserSetIds(state);
+
+  return ids.firstWhere(
+    (id) => items[id].parentId == parentId,
+    orElse: () => null,
+  );
 }

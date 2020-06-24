@@ -4,13 +4,10 @@ import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/common/form_dropdown.dart';
 import 'package:vockify/src/widgets/common/form_text_field.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/layout.dart';
@@ -34,7 +31,6 @@ class _UserTermPageState extends State<UserTermPageWidget> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
-  int _selectedSetId;
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +49,17 @@ class _UserTermPageState extends State<UserTermPageWidget> {
               if (widget.termId != null) {
                 final term = store.state.terms.items[widget.termId];
 
-                store.dispatch(RequestUpdateUserTermAction(term.rebuild((builder) {
+                store.dispatch(RequestUpdateUserTermAction(term: term.rebuild((builder) {
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;
-                  builder.setId = _selectedSetId;
+                  builder.setId = widget.setId;
                 })));
               } else {
-                store.dispatch(RequestAddUserTermAction(TermState((builder) {
+                store.dispatch(RequestAddUserTermAction(term: TermState((builder) {
                   builder.id = 0;
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;
-                  builder.setId = _selectedSetId;
+                  builder.setId = widget.setId;
                 })));
               }
 
@@ -87,21 +83,6 @@ class _UserTermPageState extends State<UserTermPageWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              StoreConnector<AppState, List<SetState>>(
-                distinct: true,
-                converter: (store) => getUserSets(store.state),
-                builder: (context, sets) {
-                  return FormDropdownWidget(
-                    selectedId: _selectedSetId,
-                    items: sets.map((set) => FormDropdownItem(set.id, set.name)),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedSetId = value;
-                      });
-                    },
-                  );
-                },
-              ),
               FormTextFieldWidget(
                 controller: _nameController,
                 text: 'СЛОВО НА АНГЛИЙСКОМ',
@@ -130,14 +111,12 @@ class _UserTermPageState extends State<UserTermPageWidget> {
   @override
   void initState() {
     if (widget.termId != null) {
-      final state = StoreProvider.of<AppState>(context).state;
+      final state = StoreProvider.of<AppState>(context, listen: false).state;
       final term = state.terms.items[widget.termId];
 
       _nameController.text = term.name;
       _definitionController.text = term.definition;
     }
-
-    _selectedSetId = widget.setId;
 
     super.initState();
   }

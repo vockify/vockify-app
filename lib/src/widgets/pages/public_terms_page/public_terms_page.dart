@@ -29,7 +29,7 @@ class PublicTermsPageWidget extends StatelessWidget {
         store.dispatch(RequestPublicTermsAction(setId: setId));
       },
       onDispose: (store) {
-        store.dispatch(UnsetPublicTermsAction(setId));
+        store.dispatch(UnsetPublicTermsAction());
       },
       isLoading: (store) => store.state.terms.public.loader == LoaderState.isLoading,
       body: Center(
@@ -56,7 +56,7 @@ class PublicTermsPageWidget extends StatelessWidget {
                                 NavigateToAction.push(Routes.quiz, arguments: {'setId': id}),
                               );
                             } else {
-                              store.dispatch(RequestCopySetAction(setId));
+                              store.dispatch(RequestCopySetAction(id: setId));
                             }
                           },
                           child: Text(

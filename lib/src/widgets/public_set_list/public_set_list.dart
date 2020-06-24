@@ -46,7 +46,7 @@ class _PublicSetListState extends State<PublicSetListWidget> {
               },
             ),
             onRefresh: () async {
-              dispatcher.dispatch(SetPublicSetsLoaderAction(LoaderState.refresh));
+              dispatcher.dispatch(SetPublicSetsLoaderAction(state: LoaderState.refresh));
               dispatcher.dispatch(RequestPublicSetsAction());
 
               return storeCompleterService.registerCompleter(

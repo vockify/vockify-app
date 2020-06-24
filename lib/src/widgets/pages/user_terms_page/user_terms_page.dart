@@ -42,7 +42,7 @@ class UserTermsPageWidget extends StatelessWidget {
         store.dispatch(RequestUserTermsAction(setId: setId));
       },
       onDispose: (store) {
-        store.dispatch(UnsetUserTermsAction(setId));
+        store.dispatch(UnsetUserTermsAction());
       },
       isLoading: (store) => store.state.terms.user.loader == LoaderState.isLoading,
       body: Center(

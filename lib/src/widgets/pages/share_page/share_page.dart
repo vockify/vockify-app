@@ -9,6 +9,7 @@ import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -37,7 +38,6 @@ class _ShareFormState extends State<SharePageWidget> {
   final _formKey = GlobalKey<FormState>();
 
   int _selectedSetId;
-  bool _isFocused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,7 @@ class _ShareFormState extends State<SharePageWidget> {
       route: Routes.share,
       isContextNavigation: false,
       redirectBackRoute: Routes.home,
+      isLoading: (store) => store.state.sets.user.loader == LoaderState.isLoading,
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
@@ -106,7 +107,7 @@ class _ShareFormState extends State<SharePageWidget> {
                   FormTextFieldWidget(
                     controller: _definitionController,
                     text: 'ПЕРЕВОД',
-                    autoFocus: _isFocused,
+                    autoFocus: true,
                   ),
                 ],
               ),
@@ -132,10 +133,6 @@ class _ShareFormState extends State<SharePageWidget> {
 
     api.translate(TranslateRequestDto([widget.term])).then((value) {
       _definitionController.text = value.data.first.text;
-
-      setState(() {
-        _isFocused = true;
-      });
     });
 
     AppStorage.getInstance().getValue(AppStorageKey.selectedSetId).then((value) {
@@ -149,7 +146,7 @@ class _ShareFormState extends State<SharePageWidget> {
     if (_formKey.currentState.validate()) {
       AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
 
-      store.dispatch(RequestAddUserTermAction(TermState((builder) {
+      store.dispatch(RequestAddUserTermAction(term: TermState((builder) {
         builder.id = 0;
         builder.name = _nameController.text;
         builder.definition = _definitionController.text;
