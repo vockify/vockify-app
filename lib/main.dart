@@ -11,10 +11,10 @@ import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';
 import 'package:vockify/src/redux/reducers/term_reducer.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
+import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/vockify_app.dart';
 
 void main() async {
@@ -22,7 +22,6 @@ void main() async {
 
   final storage = AppStorage.getInstance();
   final isAuthorized = await storage.containsKey(AppStorageKey.token);
-  final selectedSetId = await storage.getValue(AppStorageKey.selectedSetId);
 
   final reducer = AppReducer(SetReducer(), TermReducer());
   final effect = AppEffect(SetEffect(), TermEffect());
@@ -35,12 +34,12 @@ void main() async {
     ],
     initialState: AppState.initial(
       isAuthorized: isAuthorized,
-      selectedSetId: int.tryParse(selectedSetId ?? ''),
     ),
   );
 
   setupApi(store);
   setupDispatcher(store);
+  setupStoreCompleterService(store);
 
   final intent = await ReceiveSharingIntent.getInitialText();
 

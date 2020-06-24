@@ -15,18 +15,11 @@ class _$UserState extends UserState {
   final String firstName;
   @override
   final String lastName;
-  @override
-  final int selectedSetId;
 
   factory _$UserState([void Function(UserStateBuilder) updates]) =>
       (new UserStateBuilder()..update(updates)).build();
 
-  _$UserState._(
-      {this.avatar,
-      this.email,
-      this.firstName,
-      this.lastName,
-      this.selectedSetId})
+  _$UserState._({this.avatar, this.email, this.firstName, this.lastName})
       : super._() {
     if (email == null) {
       throw new BuiltValueNullFieldError('UserState', 'email');
@@ -53,18 +46,14 @@ class _$UserState extends UserState {
         avatar == other.avatar &&
         email == other.email &&
         firstName == other.firstName &&
-        lastName == other.lastName &&
-        selectedSetId == other.selectedSetId;
+        lastName == other.lastName;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc(
-            $jc($jc($jc(0, avatar.hashCode), email.hashCode),
-                firstName.hashCode),
-            lastName.hashCode),
-        selectedSetId.hashCode));
+        $jc($jc($jc(0, avatar.hashCode), email.hashCode), firstName.hashCode),
+        lastName.hashCode));
   }
 
   @override
@@ -73,8 +62,7 @@ class _$UserState extends UserState {
           ..add('avatar', avatar)
           ..add('email', email)
           ..add('firstName', firstName)
-          ..add('lastName', lastName)
-          ..add('selectedSetId', selectedSetId))
+          ..add('lastName', lastName))
         .toString();
   }
 }
@@ -98,10 +86,6 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   String get lastName => _$this._lastName;
   set lastName(String lastName) => _$this._lastName = lastName;
 
-  int _selectedSetId;
-  int get selectedSetId => _$this._selectedSetId;
-  set selectedSetId(int selectedSetId) => _$this._selectedSetId = selectedSetId;
-
   UserStateBuilder();
 
   UserStateBuilder get _$this {
@@ -110,7 +94,6 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
       _email = _$v.email;
       _firstName = _$v.firstName;
       _lastName = _$v.lastName;
-      _selectedSetId = _$v.selectedSetId;
       _$v = null;
     }
     return this;
@@ -136,8 +119,7 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
             avatar: avatar,
             email: email,
             firstName: firstName,
-            lastName: lastName,
-            selectedSetId: selectedSetId);
+            lastName: lastName);
     replace(_$result);
     return _$result;
   }

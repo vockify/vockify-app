@@ -7,11 +7,11 @@ class Routes {
   static const String quiz = "/quiz/:setId";
 
   // home routes
-  static const String profile = "/profile";
+  static const String main = "/main";
   static const String search = "/search";
+  static const String profile = "/profile";
+  static const String userSet = "/user_set";
+  static const String userTerms = "/user_terms";
+  static const String userTerm = "/user_term";
   static const String publicTerms = "/public_terms";
-  static const String sets = "/sets";
-  static const String set = "/sets/:id";
-  static const String terms = "/sets/:id/terms";
-  static const String term = "/sets/:setId/terms/:termId";
 }

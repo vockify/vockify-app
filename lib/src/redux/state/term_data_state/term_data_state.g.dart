@@ -8,24 +8,24 @@ part of 'term_data_state.dart';
 
 class _$TermDataState extends TermDataState {
   @override
+  final BuiltMap<int, TermState> items;
+  @override
   final PublicTermDataState public;
   @override
   final UserTermDataState user;
-  @override
-  final BuiltMap<int, TermState> items;
 
   factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
       (new TermDataStateBuilder()..update(updates)).build();
 
-  _$TermDataState._({this.public, this.user, this.items}) : super._() {
+  _$TermDataState._({this.items, this.public, this.user}) : super._() {
+    if (items == null) {
+      throw new BuiltValueNullFieldError('TermDataState', 'items');
+    }
     if (public == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'public');
     }
     if (user == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'user');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'items');
     }
   }
 
@@ -40,23 +40,23 @@ class _$TermDataState extends TermDataState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TermDataState &&
+        items == other.items &&
         public == other.public &&
-        user == other.user &&
-        items == other.items;
+        user == other.user;
   }
 
   @override
   int get hashCode {
     return $jf(
-        $jc($jc($jc(0, public.hashCode), user.hashCode), items.hashCode));
+        $jc($jc($jc(0, items.hashCode), public.hashCode), user.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TermDataState')
+          ..add('items', items)
           ..add('public', public)
-          ..add('user', user)
-          ..add('items', items))
+          ..add('user', user))
         .toString();
   }
 }
@@ -64,6 +64,11 @@ class _$TermDataState extends TermDataState {
 class TermDataStateBuilder
     implements Builder<TermDataState, TermDataStateBuilder> {
   _$TermDataState _$v;
+
+  MapBuilder<int, TermState> _items;
+  MapBuilder<int, TermState> get items =>
+      _$this._items ??= new MapBuilder<int, TermState>();
+  set items(MapBuilder<int, TermState> items) => _$this._items = items;
 
   PublicTermDataStateBuilder _public;
   PublicTermDataStateBuilder get public =>
@@ -75,18 +80,13 @@ class TermDataStateBuilder
       _$this._user ??= new UserTermDataStateBuilder();
   set user(UserTermDataStateBuilder user) => _$this._user = user;
 
-  MapBuilder<int, TermState> _items;
-  MapBuilder<int, TermState> get items =>
-      _$this._items ??= new MapBuilder<int, TermState>();
-  set items(MapBuilder<int, TermState> items) => _$this._items = items;
-
   TermDataStateBuilder();
 
   TermDataStateBuilder get _$this {
     if (_$v != null) {
+      _items = _$v.items?.toBuilder();
       _public = _$v.public?.toBuilder();
       _user = _$v.user?.toBuilder();
-      _items = _$v.items?.toBuilder();
       _$v = null;
     }
     return this;
@@ -111,16 +111,16 @@ class TermDataStateBuilder
     try {
       _$result = _$v ??
           new _$TermDataState._(
-              public: public.build(), user: user.build(), items: items.build());
+              items: items.build(), public: public.build(), user: user.build());
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'items';
+        items.build();
         _$failedField = 'public';
         public.build();
         _$failedField = 'user';
         user.build();
-        _$failedField = 'items';
-        items.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'TermDataState', _$failedField, e.toString());

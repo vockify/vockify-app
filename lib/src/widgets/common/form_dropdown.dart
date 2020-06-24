@@ -1,6 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+
+class FormDropdownItem {
+  final int id;
+  final String text;
+
+  FormDropdownItem(this.id, this.text);
+}
 
 class FormDropdownWidget extends StatelessWidget {
   final int selectedId;
@@ -43,11 +50,4 @@ class FormDropdownWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class FormDropdownItem {
-  final int id;
-  final String text;
-
-  FormDropdownItem(this.id, this.text);
 }

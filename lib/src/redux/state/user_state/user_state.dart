@@ -14,12 +14,11 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
           ..avatar = userDto.avatar;
       });
 
-  factory UserState.initial({int selectedSetId}) => UserState((builder) {
+  factory UserState.initial() => UserState((builder) {
         builder
           ..email = ''
           ..firstName = ''
-          ..lastName = ''
-          ..selectedSetId = selectedSetId;
+          ..lastName = '';
       });
 
   UserState._();
@@ -32,7 +31,4 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
   String get firstName;
 
   String get lastName;
-
-  @nullable
-  int get selectedSetId;
 }

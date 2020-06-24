@@ -5,32 +5,33 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/vockify_colors.dart';
-import 'package:vockify/src/widgets/pages/profile/profile_page.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/common/loader.dart';
+import 'package:vockify/src/widgets/home_navigator.dart';
+import 'package:vockify/src/widgets/pages/profile_page/profile_page.dart';
+
+enum HomeItem {
+  main,
+  search,
+  profile,
+}
 
 class HomeWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeState();
 }
 
-class NavigatorSetting {
-  final GlobalKey<NavigatorState> key;
-  final String initialRoute;
-
-  NavigatorSetting(this.key, this.initialRoute);
-}
-
 class _HomeState extends State<HomeWidget> {
   StreamSubscription _intentSubscription;
 
-  int _currentIndex = 0;
+  HomeItem _currentItem = HomeItem.main;
 
-  final _navigatorSettings = [
-    NavigatorSetting(GlobalKey<NavigatorState>(), Routes.sets),
-    NavigatorSetting(GlobalKey<NavigatorState>(), Routes.search),
-  ];
+  final _navigatorSettings = {
+    HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
+    HomeItem.search: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.search),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +39,17 @@ class _HomeState extends State<HomeWidget> {
       resizeToAvoidBottomInset: false,
       backgroundColor: VockifyColors.white,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
+        currentIndex: _currentItem.index,
+        onTap: (index) {
+          final item = HomeItem.values[index];
+
+          if (_navigatorSettings.containsKey(item) && item == _currentItem) {
+            final settings = _navigatorSettings[item];
+            settings.key.currentState.popUntil((route) => route.settings.name == settings.initialRoute);
+          }
+
           setState(() {
-            if (index < _navigatorSettings.length && index == _currentIndex) {
-              final key = _navigatorSettings[index].key;
-              final initialRoute = _navigatorSettings[index].initialRoute;
-
-              key.currentState.popUntil((route) => route.settings.name == initialRoute);
-            }
-
-            _currentIndex = index;
+            _currentItem = item;
           });
         },
         items: [
@@ -60,28 +61,32 @@ class _HomeState extends State<HomeWidget> {
       body: Stack(
         children: <Widget>[
           Offstage(
-            offstage: _currentIndex != 0,
-            child: Navigator(
-              key: _navigatorSettings[0].key,
-              onGenerateRoute: Router.getRoute,
-              onGenerateInitialRoutes: (navigator, route) => [
-                Router.getRoute(RouteSettings(name: _navigatorSettings[0].initialRoute)),
-              ],
-            ),
+            offstage: _currentItem != HomeItem.main,
+            child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]),
           ),
           Offstage(
-            offstage: _currentIndex != 1,
-            child: Navigator(
-              key: _navigatorSettings[1].key,
-              onGenerateRoute: Router.getRoute,
-              onGenerateInitialRoutes: (navigator, route) => [
-                Router.getRoute(RouteSettings(name: _navigatorSettings[1].initialRoute)),
-              ],
-            ),
+            offstage: _currentItem != HomeItem.search,
+            child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.search]),
           ),
           Offstage(
-            offstage: _currentIndex != 2,
+            offstage: _currentItem != HomeItem.profile,
             child: ProfilePageWidget(),
+          ),
+          StoreConnector<AppState, bool>(
+            distinct: true,
+            converter: (store) => store.state.isLoading,
+            builder: (context, isLoading) {
+              if (isLoading) {
+                return Container(
+                  color: Color(0x00000000),
+                  child: Center(
+                    child: LoaderWidget(),
+                  ),
+                );
+              }
+
+              return Container();
+            },
           ),
         ],
       ),
@@ -109,9 +114,7 @@ class _HomeState extends State<HomeWidget> {
 
   void _goToShare(String value) {
     if (value != null) {
-      final store = StoreProvider.of<AppState>(context);
-
-      store.dispatch(
+      dispatcher.dispatch(
         NavigateToAction.pushNamedAndRemoveUntil(
           Routes.share,
           (route) => route.settings.name != Routes.share,

@@ -15,12 +15,8 @@ import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.da
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_public_sets_loader_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_user_set_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_public_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
@@ -65,7 +61,7 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetPublicTermsLoaderAction(LoaderState.isLoading);
+      yield SetIsLoadingAction();
 
       try {
         final response = await api.copySet(action.setId);
@@ -74,7 +70,7 @@ class SetEffect {
       } catch (e) {
         print(e);
       } finally {
-        yield SetPublicTermsLoaderAction(LoaderState.isLoaded);
+        yield UnsetIsLoadingAction();
       }
     });
   }

@@ -81,16 +81,12 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetIsLoadingAction();
-
       try {
         final user = await api.authUser();
         yield SetUserAction(UserState.fromDto(user.data));
         yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: action.arguments);
       } catch (e) {
         print(e);
-      } finally {
-        yield UnsetIsLoadingAction();
       }
     });
   }

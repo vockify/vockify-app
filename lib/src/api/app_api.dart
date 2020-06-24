@@ -44,14 +44,13 @@ class AppApi {
     return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
-  Future<void> deleteSet(int id) async {
-    await _delete('/sets/$id');
-  }
-
   Future<SetResponse> copySet(int id) async {
-    await Future.delayed(Duration(seconds: 3));
     final data = await _post('/sets/$id/copy');
     return SetResponse.fromJson(data);
+  }
+
+  Future<void> deleteSet(int id) async {
+    await _delete('/sets/$id');
   }
 
   Future<void> deleteTerm(int id) async {

@@ -8,10 +8,11 @@ part of 'set_dto.dart';
 
 SetDto _$SetDtoFromJson(Map<String, dynamic> json) {
   return SetDto(
-    json['id'] as int,
-    json['name'] as String,
-    json['icon'] as String,
-    json['terms_count'] as int ?? 0,
+    id: json['id'] as int,
+    name: json['name'] as String,
+    parentId: json['parent_set_id'] as int,
+    icon: json['icon'] as String,
+    termsCount: json['terms_count'] as int ?? 0,
   );
 }
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$SetDtoToJson(SetDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
+      'parent_set_id': instance.parentId,
       'terms_count': instance.termsCount,
     };

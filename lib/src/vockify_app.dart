@@ -5,8 +5,8 @@ import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/router.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/vockify_colors.dart';
-import 'package:vockify/src/widgets/app_loader.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/initial.dart';
 
 class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
@@ -39,7 +39,7 @@ class VockifyApp extends StatelessWidget {
       return [
         Router.buildRoute(
           RouteSettings(name: Routes.share),
-          AppLoaderWidget(
+          InitialWidget(
             route: Routes.share,
             arguments: {'term': intent},
           ),
@@ -50,7 +50,7 @@ class VockifyApp extends StatelessWidget {
     return [
       Router.buildRoute(
         RouteSettings(name: Routes.home),
-        AppLoaderWidget(
+        InitialWidget(
           route: Routes.home,
         ),
       ),

@@ -12,11 +12,11 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState.initial({bool isAuthorized, int selectedSetId}) => AppState((builder) {
         builder
           ..isAuthorized = isAuthorized ?? false
-          ..isLoading = true
+          ..isLoading = false
           ..sets.replace(SetDataState.initial())
           ..terms.replace(TermDataState.initial())
           ..quiz.replace(QuizDataState.initial())
-          ..user.replace(UserState.initial(selectedSetId: selectedSetId));
+          ..user.replace(UserState.initial());
       });
 
   AppState._();
@@ -28,11 +28,11 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isLoading;
 
+  QuizDataState get quiz;
+
   SetDataState get sets;
 
   TermDataState get terms;
-
-  QuizDataState get quiz;
 
   UserState get user;
 }
