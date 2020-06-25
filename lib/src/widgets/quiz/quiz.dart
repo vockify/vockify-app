@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
@@ -38,8 +36,6 @@ class _QuizState extends State<QuizWidget> {
   bool _isFinished;
 
   Timer _selectDefinitionTimer;
-
-  Store<AppState> _store;
 
   @override
   Widget build(BuildContext context) {
@@ -118,19 +114,10 @@ class _QuizState extends State<QuizWidget> {
     );
   }
 
-//  @override
-//  void didUpdateWidget(oldWidget) {
-//    super.didUpdateWidget(oldWidget);
-//
-//    setState(_start);
-//  }
-
   @override
   void initState() {
-    super.initState();
-
-    _store = StoreProvider.of<AppState>(context, listen: false);
     _start();
+    super.initState();
   }
 
   Widget _buildInfo() {
@@ -297,6 +284,6 @@ class _QuizState extends State<QuizWidget> {
 
   void _stop() {
     _selectDefinitionTimer?.cancel();
-    _store.dispatch(NavigateToAction.pop());
+    dispatcher.dispatch(NavigateToAction.pop());
   }
 }

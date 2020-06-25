@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -74,7 +75,7 @@ class _HomeState extends State<HomeWidget> {
           ),
           StoreConnector<AppState, bool>(
             distinct: true,
-            converter: (store) => store.state.isLoading,
+            converter: (store) => isLoading(store.state),
             builder: (context, isLoading) {
               if (isLoading) {
                 return Container(

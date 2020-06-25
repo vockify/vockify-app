@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
@@ -64,18 +65,16 @@ class LayoutWidget extends StatelessWidget {
       return null;
     }
 
-    final store = StoreProvider.of<AppState>(context);
-
     return IconButton(
       icon: new Icon(Icons.arrow_back),
       onPressed: () {
         if (redirectBackRoute != null) {
-          store.dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
+          dispatcher.dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
         } else {
           if (isContextNavigation) {
             Navigator.of(context).pop();
           } else {
-            store.dispatch(NavigateToAction.pop());
+            dispatcher.dispatch(NavigateToAction.pop());
           }
         }
       },

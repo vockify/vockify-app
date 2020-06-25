@@ -44,7 +44,7 @@ class PublicTermListWidget extends StatelessWidget {
                 );
               },
             ),
-            onRefresh: () async {
+            onRefresh: () {
               dispatcher.dispatch(SetPublicTermsLoaderAction(state: LoaderState.refresh));
               dispatcher.dispatch(RequestPublicTermsAction(setId: setId));
 

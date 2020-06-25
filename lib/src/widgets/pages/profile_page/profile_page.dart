@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/layout.dart';
@@ -19,8 +21,7 @@ class ProfilePageWidget extends StatelessWidget {
             minHeight: 42,
           ),
           onPressed: () {
-            final store = StoreProvider.of<AppState>(context, listen: false);
-            store.dispatch(UnauthorizeAction());
+            dispatcher.dispatch(UnauthorizeAction());
           },
           child: Icon(
             Icons.exit_to_app,
@@ -33,7 +34,7 @@ class ProfilePageWidget extends StatelessWidget {
       body: Center(
         child: StoreConnector<AppState, UserState>(
           distinct: true,
-          converter: (store) => store.state.user,
+          converter: (store) => getUserState(store.state),
           builder: (context, user) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,

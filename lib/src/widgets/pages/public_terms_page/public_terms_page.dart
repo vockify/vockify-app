@@ -7,6 +7,7 @@ import 'package:vockify/src/redux/actions/terms/unset_public_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/layout.dart';
@@ -52,11 +53,11 @@ class PublicTermsPageWidget extends StatelessWidget {
                           fillColor: VockifyColors.prussianBlue,
                           onPressed: () {
                             if (id != null) {
-                              store.dispatch(
+                              dispatcher.dispatch(
                                 NavigateToAction.push(Routes.quiz, arguments: {'setId': id}),
                               );
                             } else {
-                              store.dispatch(RequestCopySetAction(id: setId));
+                              dispatcher.dispatch(RequestCopySetAction(id: setId));
                             }
                           },
                           child: Text(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/request_data_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -36,7 +37,7 @@ class _InitialState extends State<InitialWidget> {
   }
 
   Future<void> _navigate() async {
-    final state = StoreProvider.of<AppState>(context, listen: false).state;
+    final store = StoreProvider.of<AppState>(context, listen: false);
     final bool isTourFinished = await AppStorage.getInstance().containsKey(AppStorageKey.isTourFinished);
 
     if (!isTourFinished) {
@@ -44,7 +45,7 @@ class _InitialState extends State<InitialWidget> {
         dispatcher.dispatch(NavigateToAction.replace(Routes.tour));
       });
     } else {
-      if (!state.isAuthorized) {
+      if (!isAuthorized(store.state)) {
         scheduleMicrotask(() {
           dispatcher.dispatch(NavigateToAction.replace(Routes.login));
         });

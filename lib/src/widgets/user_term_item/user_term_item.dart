@@ -41,13 +41,13 @@ class UserTermItemWidget extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    '${term.name}',
+                    term.name,
                     textAlign: TextAlign.left,
                   ),
                 ),
                 Expanded(
                   child: Text(
-                    '${term.definition}',
+                    term.definition,
                     textAlign: TextAlign.right,
                   ),
                 ),

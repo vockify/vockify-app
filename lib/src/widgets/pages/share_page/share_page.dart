@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:redux/redux.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
@@ -12,6 +11,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
@@ -41,8 +41,6 @@ class _ShareFormState extends State<SharePageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context);
-
     return LayoutWidget(
       route: Routes.share,
       isContextNavigation: false,
@@ -55,7 +53,7 @@ class _ShareFormState extends State<SharePageWidget> {
             minHeight: 42,
           ),
           onPressed: () {
-            _onSave(store);
+            _onSave();
           },
           child: Text(
             'Сохранить',
@@ -78,7 +76,7 @@ class _ShareFormState extends State<SharePageWidget> {
             return EmptyWidget(
               text: 'Для начала вам необходимо создать новый словарь',
               buttonText: 'СОЗДАТЬ СЛОВАРЬ',
-              onPressed: () => store.dispatch(NavigateToAction.replace(Routes.home)),
+              onPressed: () => dispatcher.dispatch(NavigateToAction.replace(Routes.home)),
             );
           }
 
@@ -142,11 +140,11 @@ class _ShareFormState extends State<SharePageWidget> {
     });
   }
 
-  void _onSave(Store<AppState> store) {
+  void _onSave() {
     if (_formKey.currentState.validate()) {
       AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
 
-      store.dispatch(RequestAddUserTermAction(term: TermState((builder) {
+      dispatcher.dispatch(RequestAddUserTermAction(term: TermState((builder) {
         builder.id = 0;
         builder.name = _nameController.text;
         builder.definition = _definitionController.text;

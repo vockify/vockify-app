@@ -70,7 +70,7 @@ class _UserTermListState extends State<UserTermListWidget> {
               );
             },
           ),
-          onRefresh: () async {
+          onRefresh: () {
             dispatcher.dispatch(SetUserTermsLoaderAction(state: LoaderState.refresh));
             dispatcher.dispatch(RequestUserTermsAction(setId: widget.setId));
 

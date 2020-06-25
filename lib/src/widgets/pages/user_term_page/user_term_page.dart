@@ -6,6 +6,7 @@ import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dar
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/form_text_field.dart';
@@ -34,8 +35,6 @@ class _UserTermPageState extends State<UserTermPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context);
-
     return LayoutWidget(
       route: Routes.userTerm,
       actions: <Widget>[
@@ -47,15 +46,15 @@ class _UserTermPageState extends State<UserTermPageWidget> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               if (widget.termId != null) {
+                final store = StoreProvider.of<AppState>(context);
                 final term = store.state.terms.items[widget.termId];
 
-                store.dispatch(RequestUpdateUserTermAction(term: term.rebuild((builder) {
+                dispatcher.dispatch(RequestUpdateUserTermAction(term: term.rebuild((builder) {
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;
-                  builder.setId = widget.setId;
                 })));
               } else {
-                store.dispatch(RequestAddUserTermAction(term: TermState((builder) {
+                dispatcher.dispatch(RequestAddUserTermAction(term: TermState((builder) {
                   builder.id = 0;
                   builder.name = _nameController.text;
                   builder.definition = _definitionController.text;
@@ -111,8 +110,8 @@ class _UserTermPageState extends State<UserTermPageWidget> {
   @override
   void initState() {
     if (widget.termId != null) {
-      final state = StoreProvider.of<AppState>(context, listen: false).state;
-      final term = state.terms.items[widget.termId];
+      final store = StoreProvider.of<AppState>(context, listen: false);
+      final term = store.state.terms.items[widget.termId];
 
       _nameController.text = term.name;
       _definitionController.text = term.definition;

@@ -1,5 +1,6 @@
 import 'package:reselect/reselect.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/public_set_data_state/public_set_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/user_set_data_state/user_set_data_state.dart';
@@ -8,6 +9,7 @@ import 'package:vockify/src/redux/state/term_data_state/public_term_data_state/p
 import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
 import 'package:vockify/src/redux/state/term_data_state/user_term_data_state/user_term_data_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
+import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
 Selector<AppState, SetState> getAddedUserSet =
     createSelector1(getUserSetDataState, (UserSetDataState state) => state.added);
@@ -26,6 +28,11 @@ Selector<AppState, PublicTermDataState> getPublicTermDataState =
 
 Selector<AppState, List<int>> getPublicTermIds =
     createSelector1(getPublicTermDataState, (PublicTermDataState state) => state.ids.toList());
+
+Selector<AppState, List<TermState>> getQuizTerms = createSelector1(
+  getQuizDataState,
+  (QuizDataState state) => state.items.toList(),
+);
 
 Selector<AppState, Map<int, SetState>> getSetItems =
     createSelector1(getSetDataState, (SetDataState state) => state.items.toMap());
@@ -75,15 +82,7 @@ Selector<AppState, List<int>> getUserTermIds = createSelector1(
           ...state.ids,
         ]);
 
-Selector<AppState, List<TermState>> getUserTerms = createSelector3(
-  getTermItems,
-  getUserTermIds,
-  getAddedUserTerm,
-  (Map<int, TermState> items, List<int> ids, TermState added) => [
-    if (added != null) added,
-    ...ids.map((id) => items[id]),
-  ],
-);
+QuizDataState getQuizDataState(AppState state) => state.quiz;
 
 SetState getSetById(AppState state, int id) {
   final added = getAddedUserSet(state);
@@ -120,3 +119,9 @@ int getUserSetIdByParentId(AppState state, int parentId) {
     orElse: () => null,
   );
 }
+
+UserState getUserState(AppState state) => state.user;
+
+bool isAuthorized(AppState state) => state.isAuthorized;
+
+bool isLoading(AppState state) => state.isLoading;

@@ -16,7 +16,7 @@ import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/update_user_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
@@ -109,11 +109,11 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield UpdateUserSetAction(set: action.set);
+      yield UpdateSetAction(set: action.set);
 
       try {
         final response = await api.updateSet(action.set.id, SetDto.fromState(action.set));
-        yield UpdateUserSetAction(set: SetState.fromDto(response.data));
+        yield UpdateSetAction(set: SetState.fromDto(response.data));
       } catch (e) {
         print(e);
       }

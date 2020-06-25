@@ -7,8 +7,8 @@ import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_loader_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/update_user_set_action.dart';
-import 'package:vockify/src/redux/actions/sets/update_user_set_terms_count_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
+import 'package:vockify/src/redux/actions/sets/update_set_terms_count_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 
@@ -22,9 +22,9 @@ class SetReducer {
       TypedReducer(_setPublicSetsReducer),
       TypedReducer(_unsetPublicSetsReducer),
       TypedReducer(_addUserSetReducer),
-      TypedReducer(_updateUserSetReducer),
+      TypedReducer(_updateSetReducer),
       TypedReducer(_removeUserSetReducer),
-      TypedReducer(_updateUserSetTermsCountReducer),
+      TypedReducer(_updateSetTermsCountReducer),
       TypedReducer(_setAddedUserSetReducer),
       TypedReducer(_setUserSetsLoader),
     ]);
@@ -98,13 +98,13 @@ class SetReducer {
     });
   }
 
-  AppState _updateUserSetReducer(AppState state, UpdateUserSetAction action) {
+  AppState _updateSetReducer(AppState state, UpdateSetAction action) {
     return state.rebuild((builder) {
       builder.sets.items.addEntries([MapEntry(action.set.id, action.set)]);
     });
   }
 
-  AppState _updateUserSetTermsCountReducer(AppState state, UpdateUserSetTermsCountAction action) {
+  AppState _updateSetTermsCountReducer(AppState state, UpdateSetTermsCountAction action) {
     return state.rebuild((builder) {
       builder.sets.items.updateValue(
         action.setId,

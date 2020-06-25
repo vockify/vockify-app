@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/terms/request_quiz_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/unset_quiz_terms_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
@@ -28,7 +29,7 @@ class QuizPageWidget extends StatelessWidget {
       },
       body: StoreConnector<AppState, Iterable<TermState>>(
         distinct: true,
-        converter: (store) => store.state.quiz.items,
+        converter: (store) => getQuizTerms(store.state),
         builder: (context, terms) {
           return QuizWidget(
             terms: terms,

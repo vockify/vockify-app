@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -140,7 +141,7 @@ class _TourWidgetState extends State<TourWidget> {
   Widget _buildWrapper(Widget widget) {
     return StoreConnector<AppState, bool>(
       distinct: true,
-      converter: (store) => store.state.isAuthorized,
+      converter: (store) => isAuthorized(store.state),
       builder: (context, isAuthorized) {
         return isAuthorized ? Container() : widget;
       },

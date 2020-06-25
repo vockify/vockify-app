@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/request_authorize_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
@@ -15,7 +16,7 @@ class LoginPageWidget extends StatelessWidget {
       body: Center(
         child: StoreConnector<AppState, bool>(
           distinct: true,
-          converter: (store) => store.state.isLoading,
+          converter: (store) => isLoading(store.state),
           builder: (context, isLoading) {
             if (isLoading) {
               return LoaderWidget();
