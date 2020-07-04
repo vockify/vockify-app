@@ -6,7 +6,7 @@ import 'package:vockify/src/redux/actions/terms/request_public_terms_action.dart
 import 'package:vockify/src/redux/actions/terms/unset_public_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -21,7 +21,7 @@ class PublicTermsPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
-    final set = store.state.sets.items[setId];
+    final set = getSetById(store.state, setId);
 
     return LayoutWidget(
       route: Routes.publicTerms,
@@ -32,7 +32,7 @@ class PublicTermsPageWidget extends StatelessWidget {
       onDispose: (store) {
         store.dispatch(UnsetPublicTermsAction());
       },
-      isLoading: (store) => store.state.terms.public.loader == LoaderState.isLoading,
+      isLoading: (store) => getPublicTermLoader(store.state) == LoaderState.isLoading,
       body: Center(
         child: Stack(
           children: <Widget>[

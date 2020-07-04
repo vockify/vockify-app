@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_dto.dart';
 
 part 'sets_response.g.dart';
 

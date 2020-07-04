@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_bar_action.dart';
@@ -30,7 +31,7 @@ class MainPageWidget extends StatelessWidget {
       onDispose: (store) {
         store.dispatch(UnsetUserSetsAction());
       },
-      isLoading: (store) => store.state.sets.user.loader == LoaderState.isLoading,
+      isLoading: (store) => getUserSetLoader(store.state) == LoaderState.isLoading,
       body: UserSetListWidget(),
     );
   }

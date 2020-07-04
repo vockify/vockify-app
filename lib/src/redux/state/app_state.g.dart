@@ -14,11 +14,11 @@ class _$AppState extends AppState {
   @override
   final bool isLoading;
   @override
+  final QuizDataState quiz;
+  @override
   final SetDataState sets;
   @override
   final TermDataState terms;
-  @override
-  final QuizDataState quiz;
   @override
   final UserState user;
 
@@ -29,9 +29,9 @@ class _$AppState extends AppState {
       {this.currentRoute,
       this.isAuthorized,
       this.isLoading,
+      this.quiz,
       this.sets,
       this.terms,
-      this.quiz,
       this.user})
       : super._() {
     if (isAuthorized == null) {
@@ -40,14 +40,14 @@ class _$AppState extends AppState {
     if (isLoading == null) {
       throw new BuiltValueNullFieldError('AppState', 'isLoading');
     }
+    if (quiz == null) {
+      throw new BuiltValueNullFieldError('AppState', 'quiz');
+    }
     if (sets == null) {
       throw new BuiltValueNullFieldError('AppState', 'sets');
     }
     if (terms == null) {
       throw new BuiltValueNullFieldError('AppState', 'terms');
-    }
-    if (quiz == null) {
-      throw new BuiltValueNullFieldError('AppState', 'quiz');
     }
     if (user == null) {
       throw new BuiltValueNullFieldError('AppState', 'user');
@@ -68,9 +68,9 @@ class _$AppState extends AppState {
         currentRoute == other.currentRoute &&
         isAuthorized == other.isAuthorized &&
         isLoading == other.isLoading &&
+        quiz == other.quiz &&
         sets == other.sets &&
         terms == other.terms &&
-        quiz == other.quiz &&
         user == other.user;
   }
 
@@ -84,9 +84,9 @@ class _$AppState extends AppState {
                         $jc($jc(0, currentRoute.hashCode),
                             isAuthorized.hashCode),
                         isLoading.hashCode),
-                    sets.hashCode),
-                terms.hashCode),
-            quiz.hashCode),
+                    quiz.hashCode),
+                sets.hashCode),
+            terms.hashCode),
         user.hashCode));
   }
 
@@ -96,9 +96,9 @@ class _$AppState extends AppState {
           ..add('currentRoute', currentRoute)
           ..add('isAuthorized', isAuthorized)
           ..add('isLoading', isLoading)
+          ..add('quiz', quiz)
           ..add('sets', sets)
           ..add('terms', terms)
-          ..add('quiz', quiz)
           ..add('user', user))
         .toString();
   }
@@ -119,6 +119,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isLoading => _$this._isLoading;
   set isLoading(bool isLoading) => _$this._isLoading = isLoading;
 
+  QuizDataStateBuilder _quiz;
+  QuizDataStateBuilder get quiz => _$this._quiz ??= new QuizDataStateBuilder();
+  set quiz(QuizDataStateBuilder quiz) => _$this._quiz = quiz;
+
   SetDataStateBuilder _sets;
   SetDataStateBuilder get sets => _$this._sets ??= new SetDataStateBuilder();
   set sets(SetDataStateBuilder sets) => _$this._sets = sets;
@@ -127,10 +131,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   TermDataStateBuilder get terms =>
       _$this._terms ??= new TermDataStateBuilder();
   set terms(TermDataStateBuilder terms) => _$this._terms = terms;
-
-  QuizDataStateBuilder _quiz;
-  QuizDataStateBuilder get quiz => _$this._quiz ??= new QuizDataStateBuilder();
-  set quiz(QuizDataStateBuilder quiz) => _$this._quiz = quiz;
 
   UserStateBuilder _user;
   UserStateBuilder get user => _$this._user ??= new UserStateBuilder();
@@ -143,9 +143,9 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _currentRoute = _$v.currentRoute;
       _isAuthorized = _$v.isAuthorized;
       _isLoading = _$v.isLoading;
+      _quiz = _$v.quiz?.toBuilder();
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
-      _quiz = _$v.quiz?.toBuilder();
       _user = _$v.user?.toBuilder();
       _$v = null;
     }
@@ -174,19 +174,19 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               currentRoute: currentRoute,
               isAuthorized: isAuthorized,
               isLoading: isLoading,
+              quiz: quiz.build(),
               sets: sets.build(),
               terms: terms.build(),
-              quiz: quiz.build(),
               user: user.build());
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'quiz';
+        quiz.build();
         _$failedField = 'sets';
         sets.build();
         _$failedField = 'terms';
         terms.build();
-        _$failedField = 'quiz';
-        quiz.build();
         _$failedField = 'user';
         user.build();
       } catch (e) {

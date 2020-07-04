@@ -8,10 +8,11 @@ part of 'term_dto.dart';
 
 TermDto _$TermDtoFromJson(Map<String, dynamic> json) {
   return TermDto(
-    json['id'] as int,
-    json['name'] as String,
-    json['definition'] as String,
-    json['set_id'] as int,
+    id: json['id'] as int,
+    name: json['name'] as String,
+    setId: json['set_id'] as int,
+    definition: json['definition'] as String,
+    memorizationLevel: json['memorization_level'] as String,
   );
 }
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$TermDtoToJson(TermDto instance) => <String, dynamic>{
       'name': instance.name,
       'definition': instance.definition,
       'set_id': instance.setId,
+      'memorization_level': instance.memorizationLevel,
     };

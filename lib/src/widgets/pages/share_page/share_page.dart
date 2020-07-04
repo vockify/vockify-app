@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/translate_request_dto.dart';
+import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -45,7 +46,7 @@ class _ShareFormState extends State<SharePageWidget> {
       route: Routes.share,
       isContextNavigation: false,
       redirectBackRoute: Routes.home,
-      isLoading: (store) => store.state.sets.user.loader == LoaderState.isLoading,
+      isLoading: (store) => getUserSetLoader(store.state) == LoaderState.isLoading,
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
@@ -70,7 +71,7 @@ class _ShareFormState extends State<SharePageWidget> {
       },
       body: StoreConnector<AppState, Iterable<SetState>>(
         distinct: true,
-        converter: (store) => getUserSets(store.state),
+        converter: (store) => getSetItems(store.state).values,
         builder: (context, sets) {
           if (sets.isEmpty) {
             return EmptyWidget(
@@ -144,12 +145,14 @@ class _ShareFormState extends State<SharePageWidget> {
     if (_formKey.currentState.validate()) {
       AppStorage.getInstance().setValue(AppStorageKey.selectedSetId, _selectedSetId.toString());
 
-      dispatcher.dispatch(RequestAddUserTermAction(term: TermState((builder) {
-        builder.id = 0;
-        builder.name = _nameController.text;
-        builder.definition = _definitionController.text;
-        builder.setId = _selectedSetId;
-      })));
+      dispatcher.dispatch(RequestAddUserTermAction(
+        term: TermDto(
+          id: 0,
+          name: _nameController.text,
+          setId: _selectedSetId,
+          definition: _definitionController.text,
+        ),
+      ));
 
       SystemNavigator.pop();
     }

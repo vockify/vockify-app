@@ -8,8 +8,6 @@ part of 'user_term_data_state.dart';
 
 class _$UserTermDataState extends UserTermDataState {
   @override
-  final TermState added;
-  @override
   final BuiltList<int> ids;
   @override
   final LoaderState loader;
@@ -18,7 +16,7 @@ class _$UserTermDataState extends UserTermDataState {
           [void Function(UserTermDataStateBuilder) updates]) =>
       (new UserTermDataStateBuilder()..update(updates)).build();
 
-  _$UserTermDataState._({this.added, this.ids, this.loader}) : super._() {
+  _$UserTermDataState._({this.ids, this.loader}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('UserTermDataState', 'ids');
     }
@@ -39,20 +37,18 @@ class _$UserTermDataState extends UserTermDataState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserTermDataState &&
-        added == other.added &&
         ids == other.ids &&
         loader == other.loader;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserTermDataState')
-          ..add('added', added)
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
@@ -62,10 +58,6 @@ class _$UserTermDataState extends UserTermDataState {
 class UserTermDataStateBuilder
     implements Builder<UserTermDataState, UserTermDataStateBuilder> {
   _$UserTermDataState _$v;
-
-  TermStateBuilder _added;
-  TermStateBuilder get added => _$this._added ??= new TermStateBuilder();
-  set added(TermStateBuilder added) => _$this._added = added;
 
   ListBuilder<int> _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
@@ -79,7 +71,6 @@ class UserTermDataStateBuilder
 
   UserTermDataStateBuilder get _$this {
     if (_$v != null) {
-      _added = _$v.added?.toBuilder();
       _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
       _$v = null;
@@ -104,14 +95,11 @@ class UserTermDataStateBuilder
   _$UserTermDataState build() {
     _$UserTermDataState _$result;
     try {
-      _$result = _$v ??
-          new _$UserTermDataState._(
-              added: _added?.build(), ids: ids.build(), loader: loader);
+      _$result =
+          _$v ?? new _$UserTermDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'added';
-        _added?.build();
         _$failedField = 'ids';
         ids.build();
       } catch (e) {

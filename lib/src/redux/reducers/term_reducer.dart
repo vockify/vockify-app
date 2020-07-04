@@ -1,7 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/terms/add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/remove_user_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_added_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_public_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_quiz_terms_action.dart';
@@ -12,7 +11,7 @@ import 'package:vockify/src/redux/actions/terms/unset_quiz_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/unset_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/update_term_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 
 class TermReducer {
   Reducer<AppState> _reducer;
@@ -28,7 +27,6 @@ class TermReducer {
       TypedReducer(_addUserTermReducer),
       TypedReducer(_updateTermReducer),
       TypedReducer(_removeUserTermReducer),
-      TypedReducer(_setAddedUserTermReducer),
       TypedReducer(_setUserTermsLoader),
       TypedReducer(_setPublicTermsLoader),
     ]);
@@ -47,16 +45,6 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.remove(action.id);
       builder.terms.user.ids.remove(action.id);
-    });
-  }
-
-  AppState _setAddedUserTermReducer(AppState state, SetAddedUserTermAction action) {
-    return state.rebuild((builder) {
-      if (action.term == null) {
-        builder.terms.user.added = null;
-      } else {
-        builder.terms.user.added.replace(action.term);
-      }
     });
   }
 
@@ -96,7 +84,6 @@ class TermReducer {
       builder.terms.items.addEntries(entries);
       builder.terms.user.ids.replace(action.terms.map((term) => term.id));
       builder.terms.user.loader = LoaderState.isLoaded;
-      builder.terms.user.added = null;
     });
   }
 
@@ -118,7 +105,6 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.user.ids.clear();
       builder.terms.user.loader = LoaderState.isLoading;
-      builder.terms.user.added = null;
     });
   }
 

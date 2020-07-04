@@ -1,7 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
 import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_loader_action.dart';
@@ -10,7 +9,7 @@ import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_terms_count_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 
 class SetReducer {
   Reducer<AppState> _reducer;
@@ -25,7 +24,6 @@ class SetReducer {
       TypedReducer(_updateSetReducer),
       TypedReducer(_removeUserSetReducer),
       TypedReducer(_updateSetTermsCountReducer),
-      TypedReducer(_setAddedUserSetReducer),
       TypedReducer(_setUserSetsLoader),
     ]);
   }
@@ -43,16 +41,6 @@ class SetReducer {
     return state.rebuild((builder) {
       builder.sets.items.remove(action.id);
       builder.sets.user.ids.remove(action.id);
-    });
-  }
-
-  AppState _setAddedUserSetReducer(AppState state, SetAddedUserSetAction action) {
-    return state.rebuild((builder) {
-      if (action.set == null) {
-        builder.sets.user.added = null;
-      } else {
-        builder.sets.user.added.replace(action.set);
-      }
     });
   }
 
@@ -79,7 +67,6 @@ class SetReducer {
       builder.sets.items.addEntries(entries);
       builder.sets.user.ids.replace(action.sets.map((set) => set.id));
       builder.sets.user.loader = LoaderState.isLoaded;
-      builder.sets.user.added = null;
     });
   }
 
@@ -94,7 +81,6 @@ class SetReducer {
     return state.rebuild((builder) {
       builder.sets.user.ids.clear();
       builder.sets.user.loader = LoaderState.isLoading;
-      builder.sets.user.added = null;
     });
   }
 
@@ -109,7 +95,7 @@ class SetReducer {
       builder.sets.items.updateValue(
         action.setId,
         (value) => value.rebuild((builder) {
-          builder.termsCount = action.termsCount;
+          builder.terms.count = action.count;
         }),
       );
     });

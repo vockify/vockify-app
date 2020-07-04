@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:vockify/src/api/dto/sets/set_terms_dto.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 part 'set_dto.g.dart';
@@ -16,21 +17,24 @@ class SetDto {
   @JsonKey(name: 'parent_set_id', nullable: true)
   final int parentId;
 
-  @JsonKey(name: 'terms_count', nullable: true, defaultValue: 0)
-  final int termsCount;
+  final SetTermsDto terms;
 
   SetDto({
     @required this.id,
     @required this.name,
     this.parentId,
     this.icon,
-    this.termsCount,
+    this.terms,
   });
 
   factory SetDto.fromJson(Map<String, dynamic> json) => _$SetDtoFromJson(json);
 
   factory SetDto.fromState(SetState state) {
-    return SetDto(id: state.id, name: state.name, parentId: state.parentId);
+    return SetDto(
+      id: state.id,
+      name: state.name,
+      parentId: state.parentId,
+    );
   }
 
   Map<String, dynamic> toJson() => _$SetDtoToJson(this);

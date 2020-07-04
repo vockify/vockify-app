@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
@@ -14,16 +15,26 @@ class TermDto {
   @JsonKey(name: 'set_id')
   final int setId;
 
-  TermDto(this.id, this.name, this.definition, this.setId);
+  @JsonKey(name: 'memorization_level')
+  final String memorizationLevel;
+
+  TermDto({
+    @required this.id,
+    @required this.name,
+    @required this.setId,
+    @required this.definition,
+    this.memorizationLevel,
+  });
 
   factory TermDto.fromJson(Map<String, dynamic> json) => _$TermDtoFromJson(json);
 
   factory TermDto.fromState(TermState state) {
     return TermDto(
-      state.id,
-      state.name,
-      state.definition,
-      state.setId,
+      id: state.id,
+      name: state.name,
+      definition: state.definition,
+      setId: state.setId,
+      memorizationLevel: state.memorizationLevel.toString(),
     );
   }
 

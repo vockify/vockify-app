@@ -6,7 +6,7 @@ import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_user_terms_loader_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
@@ -50,6 +50,7 @@ class _UserTermListState extends State<UserTermListWidget> {
               final id = ids[(index / 2).round()];
 
               return UserTermItemWidget(
+                key: ValueKey(id),
                 id: id,
                 onTap: () {
                   Navigator.of(context).pushNamed(Routes.userTerm, arguments: {

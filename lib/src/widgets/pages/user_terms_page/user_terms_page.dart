@@ -3,8 +3,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/unset_user_terms_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/app_bar_action.dart';
@@ -19,7 +20,7 @@ class UserTermsPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
-    final set = store.state.sets.items[setId];
+    final set = getSetById(store.state, setId);
 
     return LayoutWidget(
       route: Routes.userTerms,
@@ -44,14 +45,14 @@ class UserTermsPageWidget extends StatelessWidget {
       onDispose: (store) {
         store.dispatch(UnsetUserTermsAction());
       },
-      isLoading: (store) => store.state.terms.user.loader == LoaderState.isLoading,
+      isLoading: (store) => getUserTermLoader(store.state) == LoaderState.isLoading,
       body: Center(
         child: Stack(
           children: <Widget>[
             UserTermListWidget(setId),
             StoreConnector<AppState, bool>(
               distinct: true,
-              converter: (store) => store.state.terms.user.ids.isNotEmpty,
+              converter: (store) => getUserTermIds(store.state).isNotEmpty,
               builder: (context, isNotEmpty) {
                 if (isNotEmpty) {
                   return Container(

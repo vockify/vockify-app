@@ -15,11 +15,15 @@ class _$TermState extends TermState {
   final String name;
   @override
   final int setId;
+  @override
+  final MemorizationLevel memorizationLevel;
 
   factory _$TermState([void Function(TermStateBuilder) updates]) =>
       (new TermStateBuilder()..update(updates)).build();
 
-  _$TermState._({this.definition, this.id, this.name, this.setId}) : super._() {
+  _$TermState._(
+      {this.definition, this.id, this.name, this.setId, this.memorizationLevel})
+      : super._() {
     if (definition == null) {
       throw new BuiltValueNullFieldError('TermState', 'definition');
     }
@@ -48,14 +52,16 @@ class _$TermState extends TermState {
         definition == other.definition &&
         id == other.id &&
         name == other.name &&
-        setId == other.setId;
+        setId == other.setId &&
+        memorizationLevel == other.memorizationLevel;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, definition.hashCode), id.hashCode), name.hashCode),
-        setId.hashCode));
+        $jc($jc($jc($jc(0, definition.hashCode), id.hashCode), name.hashCode),
+            setId.hashCode),
+        memorizationLevel.hashCode));
   }
 
   @override
@@ -64,7 +70,8 @@ class _$TermState extends TermState {
           ..add('definition', definition)
           ..add('id', id)
           ..add('name', name)
-          ..add('setId', setId))
+          ..add('setId', setId)
+          ..add('memorizationLevel', memorizationLevel))
         .toString();
   }
 }
@@ -88,6 +95,11 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   int get setId => _$this._setId;
   set setId(int setId) => _$this._setId = setId;
 
+  MemorizationLevel _memorizationLevel;
+  MemorizationLevel get memorizationLevel => _$this._memorizationLevel;
+  set memorizationLevel(MemorizationLevel memorizationLevel) =>
+      _$this._memorizationLevel = memorizationLevel;
+
   TermStateBuilder();
 
   TermStateBuilder get _$this {
@@ -96,6 +108,7 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _setId = _$v.setId;
+      _memorizationLevel = _$v.memorizationLevel;
       _$v = null;
     }
     return this;
@@ -118,7 +131,11 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
   _$TermState build() {
     final _$result = _$v ??
         new _$TermState._(
-            definition: definition, id: id, name: name, setId: setId);
+            definition: definition,
+            id: id,
+            name: name,
+            setId: setId,
+            memorizationLevel: memorizationLevel);
     replace(_$result);
     return _$result;
   }

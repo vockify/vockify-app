@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/redux/actions/sets/request_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_public_sets_action.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/public_set_list/public_set_list.dart';
@@ -17,7 +18,7 @@ class SearchPageWidget extends StatelessWidget {
       onDispose: (store) {
         store.dispatch(UnsetPublicSetsAction());
       },
-      isLoading: (store) => store.state.sets.public.loader == LoaderState.isLoading,
+      isLoading: (store) => getPublicSetLoader(store.state) == LoaderState.isLoading,
       body: PublicSetListWidget(),
     );
   }

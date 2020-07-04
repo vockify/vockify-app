@@ -16,12 +16,12 @@ class _$SetState extends SetState {
   @override
   final int parentId;
   @override
-  final int termsCount;
+  final SetTermsState terms;
 
   factory _$SetState([void Function(SetStateBuilder) updates]) =>
       (new SetStateBuilder()..update(updates)).build();
 
-  _$SetState._({this.icon, this.id, this.name, this.parentId, this.termsCount})
+  _$SetState._({this.icon, this.id, this.name, this.parentId, this.terms})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('SetState', 'id');
@@ -29,8 +29,8 @@ class _$SetState extends SetState {
     if (name == null) {
       throw new BuiltValueNullFieldError('SetState', 'name');
     }
-    if (termsCount == null) {
-      throw new BuiltValueNullFieldError('SetState', 'termsCount');
+    if (terms == null) {
+      throw new BuiltValueNullFieldError('SetState', 'terms');
     }
   }
 
@@ -49,7 +49,7 @@ class _$SetState extends SetState {
         id == other.id &&
         name == other.name &&
         parentId == other.parentId &&
-        termsCount == other.termsCount;
+        terms == other.terms;
   }
 
   @override
@@ -57,7 +57,7 @@ class _$SetState extends SetState {
     return $jf($jc(
         $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
             parentId.hashCode),
-        termsCount.hashCode));
+        terms.hashCode));
   }
 
   @override
@@ -67,7 +67,7 @@ class _$SetState extends SetState {
           ..add('id', id)
           ..add('name', name)
           ..add('parentId', parentId)
-          ..add('termsCount', termsCount))
+          ..add('terms', terms))
         .toString();
   }
 }
@@ -91,9 +91,10 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   int get parentId => _$this._parentId;
   set parentId(int parentId) => _$this._parentId = parentId;
 
-  int _termsCount;
-  int get termsCount => _$this._termsCount;
-  set termsCount(int termsCount) => _$this._termsCount = termsCount;
+  SetTermsStateBuilder _terms;
+  SetTermsStateBuilder get terms =>
+      _$this._terms ??= new SetTermsStateBuilder();
+  set terms(SetTermsStateBuilder terms) => _$this._terms = terms;
 
   SetStateBuilder();
 
@@ -103,7 +104,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _parentId = _$v.parentId;
-      _termsCount = _$v.termsCount;
+      _terms = _$v.terms?.toBuilder();
       _$v = null;
     }
     return this;
@@ -124,13 +125,26 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
 
   @override
   _$SetState build() {
-    final _$result = _$v ??
-        new _$SetState._(
-            icon: icon,
-            id: id,
-            name: name,
-            parentId: parentId,
-            termsCount: termsCount);
+    _$SetState _$result;
+    try {
+      _$result = _$v ??
+          new _$SetState._(
+              icon: icon,
+              id: id,
+              name: name,
+              parentId: parentId,
+              terms: terms.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'terms';
+        terms.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'SetState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

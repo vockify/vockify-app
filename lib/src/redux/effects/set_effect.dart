@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_dto.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
 import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
@@ -13,13 +13,12 @@ import 'package:vockify/src/redux/actions/sets/request_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_added_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
 
@@ -40,10 +39,10 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetAddedUserSetAction(set: action.set);
+      yield SetIsLoadingAction();
 
       try {
-        final result = await api.addSet(SetDto.fromState(action.set));
+        final result = await api.addSet(action.set);
 
         if (store.state.sets.user.loader == LoaderState.isLoaded) {
           yield AddUserSetAction(set: SetState.fromDto(result.data));
@@ -51,7 +50,7 @@ class SetEffect {
       } catch (e) {
         print(e);
       } finally {
-        yield SetAddedUserSetAction(set: null);
+        yield UnsetIsLoadingAction();
       }
     });
   }
@@ -109,13 +108,15 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield UpdateSetAction(set: action.set);
+      yield SetIsLoadingAction();
 
       try {
-        final response = await api.updateSet(action.set.id, SetDto.fromState(action.set));
+        final response = await api.updateSet(action.set.id, action.set);
         yield UpdateSetAction(set: SetState.fromDto(response.data));
       } catch (e) {
         print(e);
+      } finally {
+        yield UnsetIsLoadingAction();
       }
     });
   }

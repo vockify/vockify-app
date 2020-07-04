@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vockify/src/api/dto/sets/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_terms_dto.dart';
 import 'package:vockify/src/redux/actions/sets/request_add_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
+import 'package:vockify/src/redux/state/set_state/set_terms_state/set_terms_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -76,7 +80,7 @@ class _SetPageState extends State<SetPageWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     if (widget.setId != null) {
-      final set = store.state.sets.items[widget.setId];
+      final set = getSetById(store.state, widget.setId);
       _nameController.text = set.name;
     }
 
@@ -88,17 +92,19 @@ class _SetPageState extends State<SetPageWidget> {
 
     if (_formKey.currentState.validate()) {
       if (widget.setId != null) {
-        final set = store.state.sets.items[widget.setId];
-
-        dispatcher.dispatch(RequestUpdateUserSetAction(set: set.rebuild((builder) {
-          builder.name = _nameController.text;
-        })));
+        dispatcher.dispatch(RequestUpdateUserSetAction(
+          set: SetDto(
+            id: widget.setId,
+            name: _nameController.text,
+          ),
+        ));
       } else {
-        dispatcher.dispatch(RequestAddUserSetAction(set: SetState((builder) {
-          builder.id = 0;
-          builder.name = _nameController.text;
-          builder.termsCount = 0;
-        })));
+        dispatcher.dispatch(RequestAddUserSetAction(
+          set: SetDto(
+            id: 0,
+            name: _nameController.text,
+          ),
+        ));
       }
 
       Navigator.of(context).pop();

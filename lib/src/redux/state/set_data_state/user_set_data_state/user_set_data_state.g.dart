@@ -8,8 +8,6 @@ part of 'user_set_data_state.dart';
 
 class _$UserSetDataState extends UserSetDataState {
   @override
-  final SetState added;
-  @override
   final BuiltList<int> ids;
   @override
   final LoaderState loader;
@@ -18,7 +16,7 @@ class _$UserSetDataState extends UserSetDataState {
           [void Function(UserSetDataStateBuilder) updates]) =>
       (new UserSetDataStateBuilder()..update(updates)).build();
 
-  _$UserSetDataState._({this.added, this.ids, this.loader}) : super._() {
+  _$UserSetDataState._({this.ids, this.loader}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('UserSetDataState', 'ids');
     }
@@ -39,20 +37,18 @@ class _$UserSetDataState extends UserSetDataState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserSetDataState &&
-        added == other.added &&
         ids == other.ids &&
         loader == other.loader;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, added.hashCode), ids.hashCode), loader.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserSetDataState')
-          ..add('added', added)
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
@@ -62,10 +58,6 @@ class _$UserSetDataState extends UserSetDataState {
 class UserSetDataStateBuilder
     implements Builder<UserSetDataState, UserSetDataStateBuilder> {
   _$UserSetDataState _$v;
-
-  SetStateBuilder _added;
-  SetStateBuilder get added => _$this._added ??= new SetStateBuilder();
-  set added(SetStateBuilder added) => _$this._added = added;
 
   ListBuilder<int> _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
@@ -79,7 +71,6 @@ class UserSetDataStateBuilder
 
   UserSetDataStateBuilder get _$this {
     if (_$v != null) {
-      _added = _$v.added?.toBuilder();
       _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
       _$v = null;
@@ -104,14 +95,11 @@ class UserSetDataStateBuilder
   _$UserSetDataState build() {
     _$UserSetDataState _$result;
     try {
-      _$result = _$v ??
-          new _$UserSetDataState._(
-              added: _added?.build(), ids: ids.build(), loader: loader);
+      _$result =
+          _$v ?? new _$UserSetDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'added';
-        _added?.build();
         _$failedField = 'ids';
         ids.build();
       } catch (e) {

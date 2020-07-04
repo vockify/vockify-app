@@ -35,7 +35,7 @@ class UserSetItemWidget extends StatelessWidget {
           color: VockifyColors.ghostWhite,
           child: ListTile(
             title: Text(set.name),
-            subtitle: Text('${set.termsCount} ${plural(set.termsCount, ['слово', 'слова', 'слов'])}'),
+            subtitle: Text('${set.terms.count} ${plural(set.terms.count, ['слово', 'слова', 'слов'])}'),
             trailing: PopupMenuButton(
               padding: EdgeInsets.all(0),
               itemBuilder: (context) => [

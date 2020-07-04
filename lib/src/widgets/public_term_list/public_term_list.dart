@@ -4,7 +4,7 @@ import 'package:vockify/src/redux/actions/terms/request_public_terms_action.dart
 import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/widgets/common/empty.dart';

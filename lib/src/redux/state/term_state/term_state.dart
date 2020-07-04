@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/api/dto/term_dto.dart';
+import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
 
 part 'term_state.g.dart';
 
@@ -12,7 +13,8 @@ abstract class TermState implements Built<TermState, TermStateBuilder> {
         ..definition = dto.definition
         ..name = dto.name
         ..id = dto.id
-        ..setId = dto.setId;
+        ..setId = dto.setId
+        ..memorizationLevel = MemorizationLevel(dto.memorizationLevel);
     });
   }
 
@@ -25,4 +27,7 @@ abstract class TermState implements Built<TermState, TermStateBuilder> {
   String get name;
 
   int get setId;
+
+  @nullable
+  MemorizationLevel get memorizationLevel;
 }

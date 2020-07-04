@@ -27,7 +27,7 @@ class PublicSetItemWidget extends StatelessWidget {
           color: VockifyColors.ghostWhite,
           child: ListTile(
             title: Text(model.set.name),
-            subtitle: Text('${model.set.termsCount} ${plural(model.set.termsCount, ['слово', 'слова', 'слов'])}'),
+            subtitle: Text('${model.set.terms.count} ${plural(model.set.terms.count, ['слово', 'слова', 'слов'])}'),
             trailing: model.isAdded ? Icon(Icons.check) : null,
             onTap: onTap,
           ),

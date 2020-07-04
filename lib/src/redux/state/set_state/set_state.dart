@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_dto.dart';
+import 'package:vockify/src/redux/state/set_state/set_terms_state/set_terms_state.dart';
 
 part 'set_state.g.dart';
 
@@ -12,7 +13,7 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
           ..name = dto.name
           ..id = dto.id
           ..parentId = dto.parentId
-          ..termsCount = dto.termsCount;
+          ..terms.replace(SetTermsState.fromDto(dto.terms));
       });
 
   SetState._();
@@ -27,5 +28,5 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
   @nullable
   int get parentId;
 
-  int get termsCount;
+  SetTermsState get terms;
 }
