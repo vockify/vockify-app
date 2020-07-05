@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vockify/src/vockify_colors.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
 
 class LoaderWidget extends StatelessWidget {
   @override

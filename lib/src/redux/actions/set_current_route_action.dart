@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
+
 class SetCurrentRouteAction {
   final String route;
 
-  SetCurrentRouteAction(this.route);
+  SetCurrentRouteAction({@required this.route});
 }

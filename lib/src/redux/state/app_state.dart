@@ -1,13 +1,23 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/redux/state/set_state.dart';
-import 'package:vockify/src/redux/state/term_state.dart';
-import 'package:vockify/src/redux/state/user_state.dart';
+import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
+import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
+import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
+import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
 part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState([void updates(AppStateBuilder b)]) = _$AppState;
+
+  factory AppState.initial({bool isAuthorized, int selectedSetId}) => AppState((builder) {
+        builder
+          ..isAuthorized = isAuthorized ?? false
+          ..isLoading = false
+          ..sets.replace(SetDataState.initial())
+          ..terms.replace(TermDataState.initial())
+          ..quiz.replace(QuizDataState.initial())
+          ..user.replace(UserState.initial());
+      });
 
   AppState._();
 
@@ -16,17 +26,13 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isAuthorized;
 
-  @nullable
-  int get selectedSetId;
-
-  @nullable
-  String get translatedDefinition;
-
   bool get isLoading;
 
-  BuiltList<SetState> get sets;
+  QuizDataState get quiz;
 
-  BuiltList<TermState> get terms;
+  SetDataState get sets;
+
+  TermDataState get terms;
 
   UserState get user;
 }

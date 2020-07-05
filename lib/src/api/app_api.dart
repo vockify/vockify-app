@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:vockify/src/api/dto/auth_user_response.dart';
-import 'package:vockify/src/api/dto/set_dto.dart';
-import 'package:vockify/src/api/dto/set_response.dart';
-import 'package:vockify/src/api/dto/sets_response.dart';
-import 'package:vockify/src/api/dto/term_dto.dart';
-import 'package:vockify/src/api/dto/term_response.dart';
-import 'package:vockify/src/api/dto/terms_response.dart';
-import 'package:vockify/src/api/dto/translate_request_dto.dart';
-import 'package:vockify/src/api/dto/translate_response.dart';
+import 'package:vockify/src/api/dto/sets/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_response.dart';
+import 'package:vockify/src/api/dto/sets/sets_response.dart';
+import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/api/dto/terms/term_response.dart';
+import 'package:vockify/src/api/dto/terms/terms_response.dart';
+import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
+import 'package:vockify/src/api/dto/translate/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
@@ -34,9 +34,9 @@ class AppApi {
     return SetResponse.fromJson(data);
   }
 
-  Future<SetResponse> updateSet(int id, SetDto requestData) async {
-    final data = await _put('/sets/$id', requestData.toJson());
-    return SetResponse.fromJson(data);
+  Future<TermResponse> addTerm(TermDto requestData) async {
+    final data = await _post('/terms/', requestData.toJson());
+    return TermResponse.fromJson(data);
   }
 
   Future<AuthUserResponse> authUser() async {
@@ -44,12 +44,21 @@ class AppApi {
     return data == null ? null : AuthUserResponse.fromJson(data);
   }
 
+  Future<SetResponse> copySet(int id) async {
+    final data = await _post('/sets/$id/copy');
+    return SetResponse.fromJson(data);
+  }
+
   Future<void> deleteSet(int id) async {
     await _delete('/sets/$id');
   }
 
-  Future<SetsResponse> getSets() async {
-    final data = await _get('/sets/');
+  Future<void> deleteTerm(int id) async {
+    await _delete('/terms/$id');
+  }
+
+  Future<SetsResponse> getPublicSets() async {
+    final data = await _get('/sets/?type=public');
     return SetsResponse.fromJson(data);
   }
 
@@ -58,23 +67,24 @@ class AppApi {
     return TermsResponse.fromJson(data);
   }
 
+  Future<SetsResponse> getUserSets() async {
+    final data = await _get('/sets/');
+    return SetsResponse.fromJson(data);
+  }
+
   Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {
     final data = await _post('/translate/', requestDto);
     return TranslateResponse.fromJson(data);
   }
 
-  Future<TermResponse> addTerm(TermDto requestData) async {
-    final data = await _post('/terms/', requestData.toJson());
-    return TermResponse.fromJson(data);
+  Future<SetResponse> updateSet(int id, SetDto requestData) async {
+    final data = await _put('/sets/$id', requestData.toJson());
+    return SetResponse.fromJson(data);
   }
 
   Future<TermResponse> updateTerm(int id, TermDto requestData) async {
     final data = await _put('/terms/$id', requestData.toJson());
     return TermResponse.fromJson(data);
-  }
-
-  Future<void> deleteTerm(int id) async {
-    await _delete('/terms/$id');
   }
 
   Future<Map<String, dynamic>> _delete(String url) async {
@@ -98,6 +108,7 @@ class AppApi {
       );
       return _processResponse(response);
     } on http.ClientException catch (e) {
+      print(e);
       store.dispatch(UnauthorizeAction());
       rethrow;
     }
@@ -113,22 +124,11 @@ class AppApi {
     };
   }
 
-  Future<Map<String, dynamic>> _post(String url, dynamic body) async {
+  Future<Map<String, dynamic>> _post(String url, [dynamic body]) async {
     final headers = await _getHeaders();
     final response = await http.post(
       '$apiUrl$url',
-      body: jsonEncode(body),
-      headers: headers,
-    );
-
-    return _processResponse(response);
-  }
-
-  Future<Map<String, dynamic>> _put(String url, dynamic body) async {
-    final headers = await _getHeaders();
-    final response = await http.put(
-      '$apiUrl$url',
-      body: jsonEncode(body),
+      body: body != null ? jsonEncode(body) : null,
       headers: headers,
     );
 
@@ -150,5 +150,16 @@ class AppApi {
     }
 
     return {};
+  }
+
+  Future<Map<String, dynamic>> _put(String url, dynamic body) async {
+    final headers = await _getHeaders();
+    final response = await http.put(
+      '$apiUrl$url',
+      body: jsonEncode(body),
+      headers: headers,
+    );
+
+    return _processResponse(response);
   }
 }
