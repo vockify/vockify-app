@@ -65,8 +65,11 @@ class TermReducer {
   }
 
   AppState _setQuizTermsReducer(AppState state, SetQuizTermsAction action) {
+    final entries = action.terms.map((term) => MapEntry(term.id, term));
+
     return state.rebuild((builder) {
-      builder.quiz.items.replace(action.terms);
+      builder.terms.items.addEntries(entries);
+      builder.quiz.ids.replace(action.terms.map((term) => term.id));
       builder.quiz.loader = LoaderState.isLoaded;
     });
   }
@@ -96,7 +99,7 @@ class TermReducer {
 
   AppState _unsetQuizTermsReducer(AppState state, UnsetQuizTermsAction action) {
     return state.rebuild((builder) {
-      builder.quiz.items.clear();
+      builder.quiz.ids.clear();
       builder.quiz.loader = LoaderState.isLoading;
     });
   }

@@ -1,19 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:vockify/src/redux/state/term_state/term_state.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
+import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/common/app_button_bar.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_result.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
+import 'package:vockify/src/widgets/quiz_result/quiz_result.dart';
 
 class QuizWidget extends StatefulWidget {
-  final Iterable<TermState> terms;
+  final Iterable<int> ids;
 
-  const QuizWidget({Key key, this.terms}) : super(key: key);
+  const QuizWidget({Key key, this.ids}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QuizState();
@@ -25,11 +29,6 @@ class _QuizState extends State<QuizWidget> {
   QuizStep _step;
   QuizResult _result;
 
-  int _stepsCount;
-
-  int _correctCount;
-  int _wrongCount;
-
   String _selectedDefinition;
   String _correctDefinition;
 
@@ -40,35 +39,37 @@ class _QuizState extends State<QuizWidget> {
   @override
   Widget build(BuildContext context) {
     if (_isFinished) {
-      return _buildResult();
+      return QuizResultWidget(
+        result: _result,
+        onPressContinue: _continue,
+      );
     }
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: Card(
-            color: VockifyColors.lightSteelBlue,
-            child: ListTile(
-              title: Center(
-                child: Text(
-                  _step.term,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        fontSize: 18,
-                      ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Card(
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    _step.name,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontSize: 18,
+                        ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        ListTile(
-          title: Center(
-            child: Text('ВЫБЕРИТЕ ПЕРЕВОД'),
-          ),
-        ),
-        Expanded(
+        Container(
+          height: 280,
           child: ListView.builder(
             padding: const EdgeInsets.all(10),
+            physics: new NeverScrollableScrollPhysics(),
             itemCount: _step.definitions.length,
             itemBuilder: (BuildContext context, int index) {
               final definition = _step.definitions[index];
@@ -93,23 +94,6 @@ class _QuizState extends State<QuizWidget> {
             },
           ),
         ),
-        _buildInfo(),
-        AppButtonBarWidget(
-          children: [
-            RaisedButton(
-              shape: Border(),
-              color: VockifyColors.grey,
-              onPressed: _stop,
-              child: Text(
-                'ОСТАНОВИТЬ',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: VockifyColors.black,
-                      fontSize: 16,
-                    ),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
@@ -120,97 +104,8 @@ class _QuizState extends State<QuizWidget> {
     super.initState();
   }
 
-  Widget _buildInfo() {
-    return Container(
-      height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'ОШИБОК: ${_wrongCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-          Text(
-            'ПРАВИЛЬНО: ${_correctCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-          Text(
-            'ВСЕГО: ${_stepsCount}',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  color: VockifyColors.prussianBlue,
-                  fontSize: 16,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResult() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 10),
-          child: Text(
-            'РЕЗУЛЬТАТ',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(10),
-            itemCount: _result.terms.length,
-            itemBuilder: (BuildContext context, int index) {
-              final term = _result.terms[index];
-              final isWrong = _result.wrongIds.contains(term.id);
-
-              return Card(
-                color: isWrong ? VockifyColors.flame : VockifyColors.lightSteelBlue,
-                child: ListTile(
-                  trailing: isWrong ? Icon(Icons.close) : Icon(Icons.check),
-                  title: Text(
-                    term.name,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          color: isWrong ? VockifyColors.white : VockifyColors.prussianBlue,
-                          fontSize: 18,
-                        ),
-                  ),
-                  subtitle: Text(term.definition),
-                ),
-              );
-            },
-          ),
-        ),
-        _buildInfo(),
-        AppButtonBarWidget(
-          children: [
-            RaisedButton(
-              shape: Border(),
-              color: VockifyColors.fulvous,
-              onPressed: _retry,
-              child: Text(
-                'ПОВТОРИТЬ',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: VockifyColors.white,
-                      fontSize: 16,
-                    ),
-              ),
-            ),
-          ],
-        )
-      ],
-    );
+  void _continue() {
+    setState(_start);
   }
 
   Color _getDefinitionColor(String definition) {
@@ -231,10 +126,6 @@ class _QuizState extends State<QuizWidget> {
     return VockifyColors.prussianBlue;
   }
 
-  void _retry() {
-    setState(_start);
-  }
-
   void _selectDefinition(String definition) {
     if (_selectDefinitionTimer?.isActive ?? false) {
       return;
@@ -243,11 +134,11 @@ class _QuizState extends State<QuizWidget> {
     final stepResult = _controller.getStepResult(definition);
 
     setState(() {
-      _correctCount = stepResult.correctCount;
-      _wrongCount = stepResult.wrongCount;
       _correctDefinition = stepResult.correctDefinition;
       _selectedDefinition = definition;
     });
+
+    _update();
 
     _selectDefinitionTimer?.cancel();
     _selectDefinitionTimer = Timer(Duration(seconds: 1), () {
@@ -269,12 +160,11 @@ class _QuizState extends State<QuizWidget> {
   }
 
   void _start() {
-    _controller.start(widget.terms.toList());
-    _stepsCount = _controller.getStepsCount();
-    _step = _controller.getStep();
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    final terms = widget.ids.map((id) => getTermById(store.state, id)).toList();
 
-    _correctCount = 0;
-    _wrongCount = 0;
+    _controller.start(terms);
+    _step = _controller.getStep();
 
     _correctDefinition = null;
     _selectedDefinition = null;
@@ -282,8 +172,20 @@ class _QuizState extends State<QuizWidget> {
     _isFinished = false;
   }
 
-  void _stop() {
-    _selectDefinitionTimer?.cancel();
-    dispatcher.dispatch(NavigateToAction.pop());
+  void _update() {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    final term = getTermById(store.state, _step.termId);
+
+    final memorizationLevel = _selectedDefinition == _correctDefinition
+        ? MemorizationLevel.up(term.memorizationLevel)
+        : MemorizationLevel.down(term.memorizationLevel);
+
+    if (memorizationLevel != term.memorizationLevel) {
+      dispatcher.dispatch(RequestUpdateUserTermAction(
+        term: TermDto.fromState(term.rebuild((builder) {
+          builder.memorizationLevel = memorizationLevel;
+        })),
+      ));
+    }
   }
 }

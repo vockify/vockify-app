@@ -8,16 +8,16 @@ part of 'quiz_data_state.dart';
 
 class _$QuizDataState extends QuizDataState {
   @override
-  final BuiltList<TermState> items;
+  final BuiltList<int> ids;
   @override
   final LoaderState loader;
 
   factory _$QuizDataState([void Function(QuizDataStateBuilder) updates]) =>
       (new QuizDataStateBuilder()..update(updates)).build();
 
-  _$QuizDataState._({this.items, this.loader}) : super._() {
-    if (items == null) {
-      throw new BuiltValueNullFieldError('QuizDataState', 'items');
+  _$QuizDataState._({this.ids, this.loader}) : super._() {
+    if (ids == null) {
+      throw new BuiltValueNullFieldError('QuizDataState', 'ids');
     }
     if (loader == null) {
       throw new BuiltValueNullFieldError('QuizDataState', 'loader');
@@ -34,20 +34,18 @@ class _$QuizDataState extends QuizDataState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is QuizDataState &&
-        items == other.items &&
-        loader == other.loader;
+    return other is QuizDataState && ids == other.ids && loader == other.loader;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, items.hashCode), loader.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('QuizDataState')
-          ..add('items', items)
+          ..add('ids', ids)
           ..add('loader', loader))
         .toString();
   }
@@ -57,10 +55,9 @@ class QuizDataStateBuilder
     implements Builder<QuizDataState, QuizDataStateBuilder> {
   _$QuizDataState _$v;
 
-  ListBuilder<TermState> _items;
-  ListBuilder<TermState> get items =>
-      _$this._items ??= new ListBuilder<TermState>();
-  set items(ListBuilder<TermState> items) => _$this._items = items;
+  ListBuilder<int> _ids;
+  ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
+  set ids(ListBuilder<int> ids) => _$this._ids = ids;
 
   LoaderState _loader;
   LoaderState get loader => _$this._loader;
@@ -70,7 +67,7 @@ class QuizDataStateBuilder
 
   QuizDataStateBuilder get _$this {
     if (_$v != null) {
-      _items = _$v.items?.toBuilder();
+      _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
       _$v = null;
     }
@@ -94,13 +91,12 @@ class QuizDataStateBuilder
   _$QuizDataState build() {
     _$QuizDataState _$result;
     try {
-      _$result =
-          _$v ?? new _$QuizDataState._(items: items.build(), loader: loader);
+      _$result = _$v ?? new _$QuizDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'items';
-        items.build();
+        _$failedField = 'ids';
+        ids.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'QuizDataState', _$failedField, e.toString());

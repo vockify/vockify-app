@@ -11,7 +11,6 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
-import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';

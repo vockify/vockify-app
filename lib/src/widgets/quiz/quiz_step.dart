@@ -1,12 +1,14 @@
 class QuizStep {
-  final String term;
+  final int termId;
+  final String name;
   final List<String> definitions;
   final int termsCount;
   final int termIndex;
   final int correctCount;
 
   QuizStep({
-    this.term,
+    this.termId,
+    this.name,
     this.definitions,
     this.termsCount,
     this.termIndex,

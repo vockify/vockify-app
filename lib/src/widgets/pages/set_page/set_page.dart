@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/dto/sets/set_dto.dart';
-import 'package:vockify/src/api/dto/sets/set_terms_dto.dart';
 import 'package:vockify/src/redux/actions/sets/request_add_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/set_state/set_state.dart';
-import 'package:vockify/src/redux/state/set_state/set_terms_state/set_terms_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -88,8 +85,6 @@ class _SetPageState extends State<SetPageWidget> {
   }
 
   void _onSave() {
-    final store = StoreProvider.of<AppState>(context, listen: false);
-
     if (_formKey.currentState.validate()) {
       if (widget.setId != null) {
         dispatcher.dispatch(RequestUpdateUserSetAction(
