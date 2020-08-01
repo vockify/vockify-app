@@ -12,46 +12,70 @@ import 'package:vockify/src/redux/state/term_data_state/user_term_data_state/use
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
-Selector<AppState, PublicSetDataState> getPublicSetDataState =
-    createSelector1(getSetDataState, (SetDataState state) => state.public);
-
-Selector<AppState, List<int>> getPublicSetIds =
-    createSelector1(getPublicSetDataState, (PublicSetDataState state) => state.ids.toList());
-
-Selector<AppState, LoaderState> getPublicSetLoader =
-    createSelector1(getPublicSetDataState, (PublicSetDataState state) => state.loader);
-
-Selector<AppState, PublicTermDataState> getPublicTermDataState =
-    createSelector1(getTermDataState, (TermDataState state) => state.public);
-
-Selector<AppState, List<int>> getPublicTermIds =
-    createSelector1(getPublicTermDataState, (PublicTermDataState state) => state.ids.toList());
-
-Selector<AppState, LoaderState> getPublicTermLoader =
-    createSelector1(getPublicTermDataState, (PublicTermDataState state) => state.loader);
-
-Selector<AppState, LoaderState> getQuizLoader =
-    createSelector1(getQuizDataState, (QuizDataState state) => state.loader);
-
-Selector<AppState, List<TermState>> getQuizTerms = createSelector1(
-  getQuizDataState,
-  (QuizDataState state) => state.items.toList(),
+Selector<AppState, PublicSetDataState> getPublicSetDataState = createSelector1(
+  getSetDataState,
+  (SetDataState state) => state.public,
 );
 
-Selector<AppState, Map<int, SetState>> getSetItems =
-    createSelector1(getSetDataState, (SetDataState state) => state.items.toMap());
+Selector<AppState, List<int>> getPublicSetIds = createSelector1(
+  getPublicSetDataState,
+  (PublicSetDataState state) => state.ids.toList(),
+);
 
-Selector<AppState, Map<int, TermState>> getTermItems =
-    createSelector1(getTermDataState, (TermDataState state) => state.items.toMap());
+Selector<AppState, LoaderState> getPublicSetLoader = createSelector1(
+  getPublicSetDataState,
+  (PublicSetDataState state) => state.loader,
+);
 
-Selector<AppState, UserSetDataState> getUserSetDataState =
-    createSelector1(getSetDataState, (SetDataState state) => state.user);
+Selector<AppState, PublicTermDataState> getPublicTermDataState = createSelector1(
+  getTermDataState,
+  (TermDataState state) => state.public,
+);
 
-Selector<AppState, List<int>> getUserSetIds =
-    createSelector1(getUserSetDataState, (UserSetDataState state) => state.ids.toList());
+Selector<AppState, List<int>> getPublicTermIds = createSelector1(
+  getPublicTermDataState,
+  (PublicTermDataState state) => state.ids.toList(),
+);
 
-Selector<AppState, LoaderState> getUserSetLoader =
-    createSelector1(getUserSetDataState, (UserSetDataState state) => state.loader);
+Selector<AppState, LoaderState> getPublicTermLoader = createSelector1(
+  getPublicTermDataState,
+  (PublicTermDataState state) => state.loader,
+);
+
+Selector<AppState, LoaderState> getQuizLoader = createSelector1(
+  getQuizDataState,
+  (QuizDataState state) => state.loader,
+);
+
+Selector<AppState, List<int>> getQuizTermIds = createSelector1(
+  getQuizDataState,
+  (QuizDataState state) => state.ids.toList(),
+);
+
+Selector<AppState, Map<int, SetState>> getSetItems = createSelector1(
+  getSetDataState,
+  (SetDataState state) => state.items.toMap(),
+);
+
+Selector<AppState, Map<int, TermState>> getTermItems = createSelector1(
+  getTermDataState,
+  (TermDataState state) => state.items.toMap(),
+);
+
+Selector<AppState, UserSetDataState> getUserSetDataState = createSelector1(
+  getSetDataState,
+  (SetDataState state) => state.user,
+);
+
+Selector<AppState, List<int>> getUserSetIds = createSelector1(
+  getUserSetDataState,
+  (UserSetDataState state) => state.ids.toList(),
+);
+
+Selector<AppState, LoaderState> getUserSetLoader = createSelector1(
+  getUserSetDataState,
+  (UserSetDataState state) => state.loader,
+);
 
 Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
   getSetItems,
@@ -65,14 +89,20 @@ Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
   }),
 );
 
-Selector<AppState, UserTermDataState> getUserTermDataState =
-    createSelector1(getTermDataState, (TermDataState state) => state.user);
+Selector<AppState, UserTermDataState> getUserTermDataState = createSelector1(
+  getTermDataState,
+  (TermDataState state) => state.user,
+);
 
-Selector<AppState, List<int>> getUserTermIds =
-    createSelector1(getUserTermDataState, (UserTermDataState state) => state.ids.toList());
+Selector<AppState, List<int>> getUserTermIds = createSelector1(
+  getUserTermDataState,
+  (UserTermDataState state) => state.ids.toList(),
+);
 
-Selector<AppState, LoaderState> getUserTermLoader =
-    createSelector1(getUserTermDataState, (UserTermDataState state) => state.loader);
+Selector<AppState, LoaderState> getUserTermLoader = createSelector1(
+  getUserTermDataState,
+  (UserTermDataState state) => state.loader,
+);
 
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 

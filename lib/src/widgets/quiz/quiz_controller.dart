@@ -1,10 +1,11 @@
+import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/widgets/quiz/quiz_result.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step.dart';
 import 'package:vockify/src/widgets/quiz/quiz_step_result.dart';
 
 class QuizController {
-  static const stepsCount = 10;
+  static const _roundTermsCount = 10;
 
   int _index = 0;
   List<TermState> _terms = [];
@@ -17,19 +18,21 @@ class QuizController {
   }
 
   QuizResult getResult() {
-    final terms = _terms.toList();
-    terms.sort((a, b) {
-      if (_wrongIds.contains(a.id) && !_wrongIds.contains(b.id)) {
+    final termIds = _terms.map((term) => term.id).toList();
+
+    termIds.sort((a, b) {
+      if (_wrongIds.contains(a) && !_wrongIds.contains(b)) {
         return -1;
       }
 
-      if (!_wrongIds.contains(a.id) && _wrongIds.contains(b.id)) {
+      if (!_wrongIds.contains(a) && _wrongIds.contains(b)) {
         return 1;
       }
 
       return 0;
     });
-    return QuizResult(terms: terms, wrongIds: _wrongIds);
+
+    return QuizResult(termIds: termIds, wrongIds: _wrongIds);
   }
 
   QuizStep getStep() {
@@ -40,8 +43,9 @@ class QuizController {
     final term = _terms[_index];
 
     final step = QuizStep(
-      term: term.name,
-      definitions: _getDefinitions(),
+      termId: term.id,
+      name: term.name,
+      definitions: _getStepDefinitions(),
       termIndex: _index,
       termsCount: _terms.length,
       correctCount: _correctCount,
@@ -75,8 +79,7 @@ class QuizController {
   }
 
   void start(List<TermState> terms) {
-    _terms = terms.toList()..shuffle();
-    _terms = _terms.take(stepsCount).toList();
+    _terms = _getRoundTerms(terms);
     _index = 0;
     _correctCount = 0;
     _wrongIds = [];
@@ -89,7 +92,17 @@ class QuizController {
     _wrongIds = [];
   }
 
-  List<String> _getDefinitions() {
+  List<TermState> _getRoundTerms(List<TermState> terms) =>
+      _getSortedTerms(terms).take(_roundTermsCount).toList()..shuffle();
+
+  List<TermState> _getSortedTerms(List<TermState> terms) {
+    final sorted = terms.toList();
+    sorted.shuffle();
+    sorted.sort((a, b) => MemorizationLevel.compare(a.memorizationLevel, b.memorizationLevel));
+    return sorted;
+  }
+
+  List<String> _getStepDefinitions() {
     final terms = _terms.toList();
     terms.removeAt(_index);
     terms.shuffle();

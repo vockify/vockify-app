@@ -7,7 +7,6 @@ import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dar
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';

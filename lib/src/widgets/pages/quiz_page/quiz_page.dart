@@ -5,7 +5,6 @@ import 'package:vockify/src/redux/actions/terms/unset_quiz_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
-import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
@@ -27,12 +26,12 @@ class QuizPageWidget extends StatelessWidget {
       onDispose: (store) {
         store.dispatch(UnsetQuizTermsAction());
       },
-      body: StoreConnector<AppState, Iterable<TermState>>(
+      body: StoreConnector<AppState, Iterable<int>>(
         distinct: true,
-        converter: (store) => getQuizTerms(store.state),
-        builder: (context, terms) {
+        converter: (store) => getQuizTermIds(store.state),
+        builder: (context, ids) {
           return QuizWidget(
-            terms: terms,
+            ids: ids,
           );
         },
       ),
