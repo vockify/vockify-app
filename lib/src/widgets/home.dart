@@ -11,7 +11,7 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/home_navigator.dart';
-import 'package:vockify/src/widgets/pages/profile_page/profile_page.dart';
+import 'package:vockify/src/screens/profile_screen.dart';
 
 enum HomeItem {
   main,
@@ -71,7 +71,7 @@ class _HomeState extends State<HomeWidget> {
           ),
           Offstage(
             offstage: _currentItem != HomeItem.profile,
-            child: ProfilePageWidget(),
+            child: ProfileScreenWidget(),
           ),
           StoreConnector<AppState, bool>(
             distinct: true,

@@ -21,18 +21,18 @@ import 'package:vockify/src/widgets/common/form_dropdown.dart';
 import 'package:vockify/src/widgets/common/form_text_field.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
-class SharePageWidget extends StatefulWidget {
+class ShareScreenWidget extends StatefulWidget {
   final String term;
 
-  SharePageWidget({
+  ShareScreenWidget({
     @required this.term,
   });
 
   @override
-  State<StatefulWidget> createState() => _ShareFormState();
+  State<StatefulWidget> createState() => _ShareScreenState();
 }
 
-class _ShareFormState extends State<SharePageWidget> {
+class _ShareScreenState extends State<ShareScreenWidget> {
   final _definitionController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

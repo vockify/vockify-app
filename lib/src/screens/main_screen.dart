@@ -9,7 +9,7 @@ import 'package:vockify/src/widgets/common/app_bar_action.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/user_set_list/user_set_list.dart';
 
-class MainPageWidget extends StatelessWidget {
+class MainScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(

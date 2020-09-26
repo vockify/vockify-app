@@ -13,10 +13,10 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/public_term_list/public_term_list.dart';
 
-class PublicTermsPageWidget extends StatelessWidget {
+class PublicTermsScreenWidget extends StatelessWidget {
   final int setId;
 
-  PublicTermsPageWidget({this.setId});
+  PublicTermsScreenWidget({this.setId});
 
   @override
   Widget build(BuildContext context) {

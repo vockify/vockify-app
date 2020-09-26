@@ -14,20 +14,20 @@ import 'package:vockify/src/widgets/common/form_text_field.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
-class UserTermPageWidget extends StatefulWidget {
+class UserTermScreenWidget extends StatefulWidget {
   final int setId;
   final int termId;
 
-  UserTermPageWidget({
+  UserTermScreenWidget({
     @required this.setId,
     @required this.termId,
   });
 
   @override
-  State<StatefulWidget> createState() => _UserTermPageState();
+  State<StatefulWidget> createState() => _UserTermScreenState();
 }
 
-class _UserTermPageState extends State<UserTermPageWidget> {
+class _UserTermScreenState extends State<UserTermScreenWidget> {
   final _definitionController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

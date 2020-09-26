@@ -6,7 +6,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
-class LoginPageWidget extends StatelessWidget {
+class LoginScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
