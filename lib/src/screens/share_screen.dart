@@ -129,8 +129,8 @@ class _ShareScreenState extends State<ShareScreenWidget> {
 
     _nameController.text = widget.term;
 
-    api.translate(TranslateRequestDto([widget.term])).then((value) {
-      _definitionController.text = value.data.first.text;
+    api.translate(TranslateRequestDto(widget.term)).then((value) {
+      _definitionController.text = value.data.definitions.first;
     });
 
     AppStorage.getInstance().getValue(AppStorageKey.selectedSetId).then((value) {

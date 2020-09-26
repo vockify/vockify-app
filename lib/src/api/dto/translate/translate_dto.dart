@@ -4,10 +4,11 @@ part 'translate_dto.g.dart';
 
 @JsonSerializable(nullable: false)
 class TranslateDto {
-  @JsonKey(name: 'Text')
-  final String text;
+  final String term;
+  final String transcription;
+  final List<String> definitions;
 
-  TranslateDto(this.text);
+  TranslateDto(this.term, this.transcription, this.definitions);
 
   factory TranslateDto.fromJson(Map<String, dynamic> json) => _$TranslateDtoFromJson(json);
 

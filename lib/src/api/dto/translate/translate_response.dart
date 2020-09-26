@@ -5,7 +5,7 @@ part 'translate_response.g.dart';
 
 @JsonSerializable(nullable: false)
 class TranslateResponse {
-  final List<TranslateDto> data;
+  final TranslateDto data;
 
   TranslateResponse(this.data);
 

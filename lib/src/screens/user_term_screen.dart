@@ -143,10 +143,10 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
         });
 
         try {
-          final data = await api.translate(TranslateRequestDto([_nameController.text]));
+          final data = await api.translate(TranslateRequestDto(_nameController.text));
 
-          if (data.data.isNotEmpty) {
-            _definitionController.text = data.data.first.text;
+          if (data.data.definitions.isNotEmpty) {
+            _definitionController.text = data.data.definitions.first;
           }
         } finally {
           setState(() {

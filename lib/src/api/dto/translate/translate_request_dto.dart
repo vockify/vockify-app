@@ -4,9 +4,9 @@ part 'translate_request_dto.g.dart';
 
 @JsonSerializable(nullable: false)
 class TranslateRequestDto {
-  final List<String> words;
+  final String text;
 
-  TranslateRequestDto(this.words);
+  TranslateRequestDto(this.text);
 
   factory TranslateRequestDto.fromJson(Map<String, dynamic> json) => _$TranslateRequestDtoFromJson(json);
 

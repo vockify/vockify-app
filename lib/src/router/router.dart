@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/user_term_screen.dart';
 import 'package:vockify/src/widgets/home.dart';
 import 'package:vockify/src/screens/login_screen.dart';
 import 'package:vockify/src/screens/main_screen.dart';
@@ -10,7 +11,6 @@ import 'package:vockify/src/screens/search_screen.dart';
 import 'package:vockify/src/screens/set_screen.dart';
 import 'package:vockify/src/screens/share_screen.dart';
 import 'package:vockify/src/screens/tour_screen.dart';
-import 'package:vockify/src/screens/user_term_screen.dart';
 import 'package:vockify/src/screens/user_terms_screen.dart';
 
 typedef Widget PathBuilder(Map<String, dynamic> arguments);

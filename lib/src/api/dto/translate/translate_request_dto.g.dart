@@ -8,12 +8,12 @@ part of 'translate_request_dto.dart';
 
 TranslateRequestDto _$TranslateRequestDtoFromJson(Map<String, dynamic> json) {
   return TranslateRequestDto(
-    (json['words'] as List).map((e) => e as String).toList(),
+    json['text'] as String,
   );
 }
 
 Map<String, dynamic> _$TranslateRequestDtoToJson(
         TranslateRequestDto instance) =>
     <String, dynamic>{
-      'words': instance.words,
+      'text': instance.text,
     };
