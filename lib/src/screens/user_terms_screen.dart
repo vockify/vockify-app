@@ -12,10 +12,10 @@ import 'package:vockify/src/widgets/common/app_bar_action.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/user_term_list/user_term_list.dart';
 
-class UserTermsPageWidget extends StatelessWidget {
+class UserTermsScreenWidget extends StatelessWidget {
   final int setId;
 
-  UserTermsPageWidget({@required this.setId});
+  UserTermsScreenWidget({@required this.setId});
 
   @override
   Widget build(BuildContext context) {

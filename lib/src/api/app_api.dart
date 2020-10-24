@@ -73,7 +73,7 @@ class AppApi {
   }
 
   Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {
-    final data = await _post('/translate/', requestDto);
+    final data = await _post('/v1/translate/', requestDto);
     return TranslateResponse.fromJson(data);
   }
 

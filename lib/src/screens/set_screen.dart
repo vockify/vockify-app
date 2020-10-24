@@ -11,18 +11,18 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/form_text_field.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
-class SetPageWidget extends StatefulWidget {
+class SetScreenWidget extends StatefulWidget {
   final int setId;
 
-  SetPageWidget({
+  SetScreenWidget({
     @required this.setId,
   });
 
   @override
-  State<StatefulWidget> createState() => _SetPageState();
+  State<StatefulWidget> createState() => _SetScreenState();
 }
 
-class _SetPageState extends State<SetPageWidget> {
+class _SetScreenState extends State<SetScreenWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 

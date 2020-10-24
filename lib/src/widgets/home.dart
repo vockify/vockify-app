@@ -8,12 +8,14 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/start_screen.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/home_navigator.dart';
-import 'package:vockify/src/widgets/pages/profile_page/profile_page.dart';
+import 'package:vockify/src/screens/profile_screen.dart';
 
 enum HomeItem {
+  start,
   main,
   search,
   profile,
@@ -27,7 +29,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeState extends State<HomeWidget> {
   StreamSubscription _intentSubscription;
 
-  HomeItem _currentItem = HomeItem.main;
+  HomeItem _currentItem = HomeItem.start;
 
   final _navigatorSettings = {
     HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
@@ -54,13 +56,34 @@ class _HomeState extends State<HomeWidget> {
           });
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Мои словари')),
-          BottomNavigationBarItem(icon: Icon(Icons.search), title: Text('Поиск словарей')),
-          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Профиль')),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle),
+            title: Text('Перевод'),
+            backgroundColor: VockifyColors.fulvous,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Мои словари'),
+            backgroundColor: VockifyColors.fulvous,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Поиск словарей'),
+            backgroundColor: VockifyColors.fulvous,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text('Профиль'),
+            backgroundColor: VockifyColors.fulvous,
+          ),
         ],
       ),
       body: Stack(
         children: <Widget>[
+          Offstage(
+            offstage: _currentItem != HomeItem.start,
+            child: StartScreenWidget(),
+          ),
           Offstage(
             offstage: _currentItem != HomeItem.main,
             child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]),
@@ -71,7 +94,7 @@ class _HomeState extends State<HomeWidget> {
           ),
           Offstage(
             offstage: _currentItem != HomeItem.profile,
-            child: ProfilePageWidget(),
+            child: ProfileScreenWidget(),
           ),
           StoreConnector<AppState, bool>(
             distinct: true,

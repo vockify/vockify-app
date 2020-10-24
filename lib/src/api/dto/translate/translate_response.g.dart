@@ -8,9 +8,7 @@ part of 'translate_response.dart';
 
 TranslateResponse _$TranslateResponseFromJson(Map<String, dynamic> json) {
   return TranslateResponse(
-    (json['data'] as List)
-        .map((e) => TranslateDto.fromJson(e as Map<String, dynamic>))
-        .toList(),
+    TranslateDto.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 

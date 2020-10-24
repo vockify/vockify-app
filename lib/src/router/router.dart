@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/user_term_screen.dart';
 import 'package:vockify/src/widgets/home.dart';
-import 'package:vockify/src/widgets/pages/login_page/login_page.dart';
-import 'package:vockify/src/widgets/pages/main_page/main_page.dart';
-import 'package:vockify/src/widgets/pages/profile_page/profile_page.dart';
-import 'package:vockify/src/widgets/pages/public_terms_page/public_terms_page.dart';
-import 'package:vockify/src/widgets/pages/quiz_page/quiz_page.dart';
-import 'package:vockify/src/widgets/pages/search_page/search_page.dart';
-import 'package:vockify/src/widgets/pages/set_page/set_page.dart';
-import 'package:vockify/src/widgets/pages/share_page/share_page.dart';
-import 'package:vockify/src/widgets/pages/tour_page/tour_page.dart';
-import 'package:vockify/src/widgets/pages/user_term_page/user_term_page.dart';
-import 'package:vockify/src/widgets/pages/user_terms_page/user_terms_page.dart';
+import 'package:vockify/src/screens/login_screen.dart';
+import 'package:vockify/src/screens/main_screen.dart';
+import 'package:vockify/src/screens/profile_screen.dart';
+import 'package:vockify/src/screens/public_terms_screen.dart';
+import 'package:vockify/src/screens/quiz_screen.dart';
+import 'package:vockify/src/screens/search_screen.dart';
+import 'package:vockify/src/screens/set_screen.dart';
+import 'package:vockify/src/screens/share_screen.dart';
+import 'package:vockify/src/screens/tour_screen.dart';
+import 'package:vockify/src/screens/user_terms_screen.dart';
 
 typedef Widget PathBuilder(Map<String, dynamic> arguments);
 
 class Router {
   static final Map<String, PathBuilder> _paths = {
-    Routes.login: (arguments) => LoginPageWidget(),
-    Routes.profile: (arguments) => ProfilePageWidget(),
-    Routes.tour: (arguments) => TourPageWidget(),
-    Routes.main: (arguments) => MainPageWidget(),
+    Routes.login: (arguments) => LoginScreenWidget(),
+    Routes.profile: (arguments) => ProfileScreenWidget(),
+    Routes.tour: (arguments) => TourScreenWidget(),
+    Routes.main: (arguments) => MainScreenWidget(),
     Routes.home: (arguments) => HomeWidget(),
-    Routes.search: (arguments) => SearchPageWidget(),
-    Routes.publicTerms: (arguments) => PublicTermsPageWidget(setId: arguments['id'] as int),
-    Routes.userSet: (arguments) => SetPageWidget(setId: arguments['id'] as int),
-    Routes.share: (arguments) => SharePageWidget(term: arguments['term'] as String),
-    Routes.quiz: (arguments) => QuizPageWidget(setId: arguments['setId'] as int),
-    Routes.userTerms: (arguments) => UserTermsPageWidget(setId: arguments['id'] as int),
+    Routes.search: (arguments) => SearchScreenWidget(),
+    Routes.publicTerms: (arguments) => PublicTermsScreenWidget(setId: arguments['id'] as int),
+    Routes.userSet: (arguments) => SetScreenWidget(setId: arguments['id'] as int),
+    Routes.share: (arguments) => ShareScreenWidget(term: arguments['term'] as String),
+    Routes.quiz: (arguments) => QuizScreenWidget(setId: arguments['setId'] as int),
+    Routes.userTerms: (arguments) => UserTermsScreenWidget(setId: arguments['id'] as int),
     Routes.userTerm: (arguments) =>
-        UserTermPageWidget(setId: arguments['setId'] as int, termId: arguments['termId'] as int),
+        UserTermScreenWidget(setId: arguments['setId'] as int, termId: arguments['termId'] as int),
   };
 
   static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {

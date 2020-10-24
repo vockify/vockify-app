@@ -9,10 +9,10 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/quiz/quiz.dart';
 
-class QuizPageWidget extends StatelessWidget {
+class QuizScreenWidget extends StatelessWidget {
   final int setId;
 
-  const QuizPageWidget({Key key, this.setId}) : super(key: key);
+  const QuizScreenWidget({Key key, this.setId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

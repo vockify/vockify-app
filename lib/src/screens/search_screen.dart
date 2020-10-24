@@ -7,7 +7,7 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/public_set_list/public_set_list.dart';
 
-class SearchPageWidget extends StatelessWidget {
+class SearchScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(

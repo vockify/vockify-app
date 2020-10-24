@@ -9,7 +9,7 @@ import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
-class ProfilePageWidget extends StatelessWidget {
+class ProfileScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
