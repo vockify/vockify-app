@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/redux/state/set_data_state/public_set_data_state/public_set_data_state.dart';
-import 'package:vockify/src/redux/state/set_data_state/user_set_data_state/user_set_data_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 part 'set_data_state.g.dart';
@@ -12,15 +11,18 @@ abstract class SetDataState implements Built<SetDataState, SetDataStateBuilder> 
   factory SetDataState.initial() => SetDataState((builder) {
         builder
           ..items.replace({})
-          ..public.replace(PublicSetDataState.initial())
-          ..user.replace(UserSetDataState.initial());
+          ..publicSetIds.replace([])
+          ..userSetIds.replace([])
+          ..loader = LoaderState.isLoading;
       });
 
   SetDataState._();
 
   BuiltMap<int, SetState> get items;
 
-  PublicSetDataState get public;
+  LoaderState get loader;
 
-  UserSetDataState get user;
+  BuiltList<int> get publicSetIds;
+
+  BuiltList<int> get userSetIds;
 }

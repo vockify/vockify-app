@@ -16,18 +16,24 @@ class _$SetState extends SetState {
   @override
   final int parentId;
   @override
+  final String type;
+  @override
   final SetTermsState terms;
 
   factory _$SetState([void Function(SetStateBuilder) updates]) =>
       (new SetStateBuilder()..update(updates)).build();
 
-  _$SetState._({this.icon, this.id, this.name, this.parentId, this.terms})
+  _$SetState._(
+      {this.icon, this.id, this.name, this.parentId, this.type, this.terms})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('SetState', 'id');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('SetState', 'name');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('SetState', 'type');
     }
     if (terms == null) {
       throw new BuiltValueNullFieldError('SetState', 'terms');
@@ -49,14 +55,17 @@ class _$SetState extends SetState {
         id == other.id &&
         name == other.name &&
         parentId == other.parentId &&
+        type == other.type &&
         terms == other.terms;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
-            parentId.hashCode),
+        $jc(
+            $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
+                parentId.hashCode),
+            type.hashCode),
         terms.hashCode));
   }
 
@@ -67,6 +76,7 @@ class _$SetState extends SetState {
           ..add('id', id)
           ..add('name', name)
           ..add('parentId', parentId)
+          ..add('type', type)
           ..add('terms', terms))
         .toString();
   }
@@ -91,6 +101,10 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   int get parentId => _$this._parentId;
   set parentId(int parentId) => _$this._parentId = parentId;
 
+  String _type;
+  String get type => _$this._type;
+  set type(String type) => _$this._type = type;
+
   SetTermsStateBuilder _terms;
   SetTermsStateBuilder get terms =>
       _$this._terms ??= new SetTermsStateBuilder();
@@ -104,6 +118,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _parentId = _$v.parentId;
+      _type = _$v.type;
       _terms = _$v.terms?.toBuilder();
       _$v = null;
     }
@@ -133,6 +148,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
               id: id,
               name: name,
               parentId: parentId,
+              type: type,
               terms: terms.build());
     } catch (_) {
       String _$failedField;

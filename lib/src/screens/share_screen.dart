@@ -5,7 +5,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
-import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -45,7 +45,7 @@ class _ShareScreenState extends State<ShareScreenWidget> {
       route: Routes.share,
       isContextNavigation: false,
       redirectBackRoute: Routes.home,
-      isLoading: (store) => getUserSetLoader(store.state) == LoaderState.isLoading,
+      isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
@@ -66,7 +66,7 @@ class _ShareScreenState extends State<ShareScreenWidget> {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestUserSetsAction());
+        store.dispatch(RequestSetsAction(type: SetType.own));
       },
       body: StoreConnector<AppState, Iterable<SetState>>(
         distinct: true,

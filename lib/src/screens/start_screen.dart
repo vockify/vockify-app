@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vockify/src/redux/actions/sets/request_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
+import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/unset_sets_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -13,12 +14,12 @@ class StartScreenWidget extends StatelessWidget {
     return LayoutWidget(
       route: Routes.start,
       onInit: (store) {
-        store.dispatch(RequestUserSetsAction());
+        store.dispatch(RequestSetsAction(type: SetType.all));
       },
       onDispose: (store) {
-        store.dispatch(UnsetUserSetsAction());
+        store.dispatch(UnsetSetsAction());
       },
-      isLoading: (store) => getUserSetLoader(store.state) == LoaderState.isLoading,
+      isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
       body: AddUserTermWidget(),
     );
   }

@@ -17,6 +17,8 @@ class SetDto {
   @JsonKey(name: 'parent_set_id', nullable: true)
   final int parentId;
 
+  final String type;
+
   final SetTermsDto terms;
 
   SetDto({
@@ -24,6 +26,7 @@ class SetDto {
     @required this.name,
     this.parentId,
     this.icon,
+    this.type,
     this.terms,
   });
 
@@ -33,6 +36,7 @@ class SetDto {
     return SetDto(
       id: state.id,
       name: state.name,
+      type: state.type,
       parentId: state.parentId,
     );
   }
