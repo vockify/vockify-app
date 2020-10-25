@@ -1,18 +1,13 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/add_user_term/user_term_text_field.dart';
-import 'package:vockify/src/widgets/common/form_dropdown.dart';
 
 class AddUserTermWidget extends StatefulWidget {
   @override
@@ -23,13 +18,11 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  String _term = '';
+  String _transcription = '';
   List<String> _definitions = [];
 
   final List<String> _selectedDefinitions = [];
-
-  String _transcription = '';
-
-  int _selectedSetId;
 
   @override
   Widget build(BuildContext context) {
@@ -40,30 +33,42 @@ class _AddUserTermState extends State<AddUserTermWidget> {
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: EdgeInsets.only(bottom: 16),
                 child: UserTermTextFieldWidget(
                   controller: _nameController,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 30),
-                child: Text(
-                  _transcription,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        fontSize: 20,
-                      ),
+                padding: EdgeInsets.only(bottom: 20),
+                child: RichText(
+                  text: TextSpan(
+                    text: _term,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontSize: 20,
+                        ),
+                    children: [
+                      TextSpan(
+                        text: ' [${_transcription}]',
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontSize: 20,
+                              color: VockifyColors.lightSteelBlue,
+                            ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: _buildDefinitionChips(),
-                ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Text('Выберите перевод:'),
               ),
-              _buildSetsDropdown(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: _buildDefinitionChips(),
+              ),
               _buildAddButton(),
             ],
           ),
@@ -82,14 +87,21 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   void initState() {
     super.initState();
 
-    final state = StoreProvider.of<AppState>(context, listen: false).state;
-    _selectedSetId = getUserSetIds(state).first;
-
     _nameController.addListener(() {
+      if (_nameController.text.isEmpty) {
+        if (_definitions.isNotEmpty || _transcription.isNotEmpty) {
+          setState(() {
+            _term = '';
+            _transcription = '';
+            _definitions = [];
+          });
+        }
+      }
+
       EasyDebounce.debounce(
         'translate',
         Duration(milliseconds: 500),
-        _handleChangeName,
+        _translate,
       );
     });
   }
@@ -110,21 +122,19 @@ class _AddUserTermState extends State<AddUserTermWidget> {
             child: RawMaterialButton(
               padding: EdgeInsets.all(16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-              fillColor: VockifyColors.green,
+              fillColor: VockifyColors.prussianBlue,
               onPressed: () {
-                dispatcher.dispatch(RequestAddUserTermAction(
-                  term: TermDto(
-                    id: 0,
-                    name: _nameController.text,
-                    setId: _selectedSetId,
-                    definition: definition,
-                  ),
-                ));
+                dispatcher.dispatch(
+                  NavigateToAction.push(Routes.userSetSelect, arguments: {
+                    'term': _term,
+                    'definition': definition,
+                  }),
+                );
               },
               child: Text(
-                'Сохранить',
+                'Добавить в словарь',
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: VockifyColors.black,
+                      color: VockifyColors.white,
                       fontSize: 16,
                     ),
               ),
@@ -140,12 +150,18 @@ class _AddUserTermState extends State<AddUserTermWidget> {
       spacing: 8,
       children: _definitions.map((definition) {
         return ChoiceChip(
+          backgroundColor: VockifyColors.white,
+          selectedColor: VockifyColors.lightSteelBlue,
           label: Text(definition),
+          labelStyle: TextStyle(color: VockifyColors.black),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            side: BorderSide(
+              width: 1,
+              color: VockifyColors.lightSteelBlue,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2)),
           ),
           selected: _selectedDefinitions.contains(definition),
-          visualDensity: VisualDensity.compact,
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
@@ -160,40 +176,8 @@ class _AddUserTermState extends State<AddUserTermWidget> {
     );
   }
 
-  Widget _buildSetsDropdown() {
-    if (_definitions.isEmpty) {
-      return Container();
-    }
-
-    return StoreConnector<AppState, List<SetState>>(
-      distinct: true,
-      converter: (store) {
-        final items = getSetItems(store.state);
-        return getUserSetIds(store.state).map((id) => items[id]).toList();
-      },
-      builder: (context, sets) {
-        return FormDropdownWidget(
-          items: sets.map((set) => FormDropdownItem(set.id, set.name)),
-          selectedId: _selectedSetId,
-          onChanged: (id) {
-            setState(() {
-              _selectedSetId = id;
-            });
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> _handleChangeName() async {
-    if (_nameController.text.isEmpty) {
-      if (_definitions.isNotEmpty || _transcription.isNotEmpty) {
-        setState(() {
-          _definitions = [];
-          _transcription = '';
-        });
-      }
-
+  Future<void> _translate() async {
+    if (_nameController.text.isEmpty || _nameController.text == _term) {
       return;
     }
 
@@ -203,8 +187,9 @@ class _AddUserTermState extends State<AddUserTermWidget> {
       _selectedDefinitions.clear();
 
       setState(() {
-        _definitions = data.data.definitions;
+        _term = data.data.term;
         _transcription = data.data.transcription;
+        _definitions = data.data.definitions;
       });
     } catch (e) {
       print(e);

@@ -18,4 +18,6 @@ class Routes {
   static const String userTerms = "/user_terms";
   static const String userTerm = "/user_term";
   static const String publicTerms = "/public_terms";
+
+  static const String userSetSelect = '/user_set_select';
 }

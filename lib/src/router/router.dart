@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/start_screen.dart';
+import 'package:vockify/src/screens/user_set_select_screen.dart';
 import 'package:vockify/src/screens/user_term_screen.dart';
 import 'package:vockify/src/widgets/home.dart';
 import 'package:vockify/src/screens/login_screen.dart';
@@ -20,6 +22,11 @@ class Router {
     Routes.login: (arguments) => LoginScreenWidget(),
     Routes.profile: (arguments) => ProfileScreenWidget(),
     Routes.tour: (arguments) => TourScreenWidget(),
+    Routes.start: (arguments) => StartScreenWidget(),
+    Routes.userSetSelect: (arguments) => UserSetSelectScreenWidget(
+          term: arguments['term'] as String,
+          definition: arguments['definition'] as String,
+        ),
     Routes.main: (arguments) => MainScreenWidget(),
     Routes.home: (arguments) => HomeWidget(),
     Routes.search: (arguments) => SearchScreenWidget(),
@@ -28,8 +35,10 @@ class Router {
     Routes.share: (arguments) => ShareScreenWidget(term: arguments['term'] as String),
     Routes.quiz: (arguments) => QuizScreenWidget(setId: arguments['setId'] as int),
     Routes.userTerms: (arguments) => UserTermsScreenWidget(setId: arguments['id'] as int),
-    Routes.userTerm: (arguments) =>
-        UserTermScreenWidget(setId: arguments['setId'] as int, termId: arguments['termId'] as int),
+    Routes.userTerm: (arguments) => UserTermScreenWidget(
+          setId: arguments['setId'] as int,
+          termId: arguments['termId'] as int,
+        ),
   };
 
   static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
