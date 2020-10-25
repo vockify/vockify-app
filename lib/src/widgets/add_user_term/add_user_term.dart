@@ -1,8 +1,8 @@
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/sets/set_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
@@ -10,9 +10,9 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/add_user_term/user_term_text_field.dart';
 import 'package:vockify/src/widgets/common/form_dropdown.dart';
-import 'package:vockify/src/widgets/common/form_text_field.dart';
-import 'package:vockify/src/widgets/common/primary_button.dart';
 
 class AddUserTermWidget extends StatefulWidget {
   @override
@@ -22,8 +22,6 @@ class AddUserTermWidget extends StatefulWidget {
 class _AddUserTermState extends State<AddUserTermWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  bool _isLoading = false;
 
   List<String> _definitions = [];
 
@@ -35,22 +33,40 @@ class _AddUserTermState extends State<AddUserTermWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FormTextFieldWidget(
-              controller: _nameController,
-              text: 'ВВЕДИТЕ СЛОВО',
-            ),
-            Text(_transcription),
-            _buildDefinitionChips(),
-            _buildSetsDropdown(),
-            _buildAddButton(),
-          ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: UserTermTextFieldWidget(
+                  controller: _nameController,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: Text(
+                  _transcription,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        fontSize: 20,
+                      ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: _buildDefinitionChips(),
+                ),
+              ),
+              _buildSetsDropdown(),
+              _buildAddButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -83,27 +99,53 @@ class _AddUserTermState extends State<AddUserTermWidget> {
       return Container();
     }
 
-    return PrimaryButtonWidget(
-      text: 'Сохранить',
-      onPressed: () {
-        dispatcher.dispatch(RequestAddUserTermAction(
-          term: TermDto(
-            id: 0,
-            name: _nameController.text,
-            setId: _selectedSetId,
-            definition: _selectedDefinitions.join(', '),
+    final definition = _selectedDefinitions.isEmpty ? _definitions.first : _selectedDefinitions.join(', ');
+
+    return Container(
+      padding: EdgeInsets.only(top: 16),
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: RawMaterialButton(
+              padding: EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
+              fillColor: VockifyColors.green,
+              onPressed: () {
+                dispatcher.dispatch(RequestAddUserTermAction(
+                  term: TermDto(
+                    id: 0,
+                    name: _nameController.text,
+                    setId: _selectedSetId,
+                    definition: definition,
+                  ),
+                ));
+              },
+              child: Text(
+                'Сохранить',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: VockifyColors.black,
+                      fontSize: 16,
+                    ),
+              ),
+            ),
           ),
-        ));
-      },
+        ],
+      ),
     );
   }
 
   Widget _buildDefinitionChips() {
     return Wrap(
+      spacing: 8,
       children: _definitions.map((definition) {
         return ChoiceChip(
           label: Text(definition),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+          ),
           selected: _selectedDefinitions.contains(definition),
+          visualDensity: VisualDensity.compact,
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
@@ -145,12 +187,15 @@ class _AddUserTermState extends State<AddUserTermWidget> {
 
   Future<void> _handleChangeName() async {
     if (_nameController.text.isEmpty) {
+      if (_definitions.isNotEmpty || _transcription.isNotEmpty) {
+        setState(() {
+          _definitions = [];
+          _transcription = '';
+        });
+      }
+
       return;
     }
-
-    setState(() {
-      _isLoading = true;
-    });
 
     try {
       final data = await api.translate(TranslateRequestDto(_nameController.text));
@@ -161,10 +206,8 @@ class _AddUserTermState extends State<AddUserTermWidget> {
         _definitions = data.data.definitions;
         _transcription = data.data.transcription;
       });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    } catch (e) {
+      print(e);
     }
   }
 }

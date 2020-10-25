@@ -39,7 +39,7 @@ class _HomeState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: VockifyColors.white,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentItem.index,
