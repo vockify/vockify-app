@@ -11,6 +11,7 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
 
   factory TermDataState.initial() => TermDataState((builder) {
         builder
+          ..lastAddedTerm = ''
           ..items.replace({})
           ..public.replace(PublicTermDataState.initial())
           ..user.replace(UserTermDataState.initial());
@@ -19,6 +20,8 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
   TermDataState._();
 
   BuiltMap<int, TermState> get items;
+
+  String get lastAddedTerm;
 
   PublicTermDataState get public;
 

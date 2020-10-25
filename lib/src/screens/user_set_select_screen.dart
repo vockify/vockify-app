@@ -36,6 +36,8 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
             minHeight: 42,
           ),
           onPressed: () {
+            dispatcher.dispatch(NavigateToAction.pop());
+
             dispatcher.dispatch(
               RequestAddUserTermAction(
                 term: TermDto(
@@ -46,8 +48,6 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
                 ),
               ),
             );
-
-            dispatcher.dispatch(NavigateToAction.pop());
           },
           child: Text(
             'Добавить',

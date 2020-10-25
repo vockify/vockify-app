@@ -23,21 +23,21 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
       controller: widget.controller,
       style: TextStyle(fontSize: 24),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(24),
+        contentPadding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         suffixIcon: _isCloseButtonVisible
             ? GestureDetector(
                 onTap: () {
                   widget.controller.clear();
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   child: Icon(Icons.close),
                 ),
               )
             : null,
         hintText: 'Начните вводить слово',
+        hintStyle: TextStyle(color: Colors.grey),
         fillColor: Colors.white,
-        border: OutlineInputBorder(),
       ),
     );
   }

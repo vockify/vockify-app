@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/app_router.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/initial.dart';
@@ -20,7 +20,7 @@ class VockifyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         navigatorKey: NavigatorHolder.navigatorKey,
-        onGenerateRoute: Router.getRoute,
+        onGenerateRoute: AppRouter.getRoute,
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
@@ -37,7 +37,7 @@ class VockifyApp extends StatelessWidget {
   List<Route> _getInitialRoutes(String route) {
     if (intent != null) {
       return [
-        Router.buildRoute(
+        AppRouter.buildRoute(
           RouteSettings(name: Routes.share),
           InitialWidget(
             route: Routes.share,
@@ -48,7 +48,7 @@ class VockifyApp extends StatelessWidget {
     }
 
     return [
-      Router.buildRoute(
+      AppRouter.buildRoute(
         RouteSettings(name: Routes.home),
         InitialWidget(
           route: Routes.home,

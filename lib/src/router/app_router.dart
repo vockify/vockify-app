@@ -17,7 +17,7 @@ import 'package:vockify/src/screens/user_terms_screen.dart';
 
 typedef Widget PathBuilder(Map<String, dynamic> arguments);
 
-class Router {
+class AppRouter {
   static final Map<String, PathBuilder> _paths = {
     Routes.login: (arguments) => LoginScreenWidget(),
     Routes.profile: (arguments) => ProfileScreenWidget(),
@@ -42,7 +42,7 @@ class Router {
   };
 
   static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
-    return MaterialPageRoute(
+    return MaterialPageRoute<dynamic>(
       settings: settings,
       builder: (context) => builder,
     );

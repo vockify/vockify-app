@@ -1,9 +1,12 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
+import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -26,54 +29,82 @@ class _AddUserTermState extends State<AddUserTermWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 16),
-                child: UserTermTextFieldWidget(
-                  controller: _nameController,
-                ),
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Form(
+              key: _formKey,
+              child: UserTermTextFieldWidget(
+                controller: _nameController,
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: RichText(
-                  text: TextSpan(
-                    text: _term,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontSize: 20,
+            ),
+            if (_term.isNotEmpty)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16, 16, 16, 80),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 30),
+                          child: Text(
+                            _definitions.first,
+                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                  fontSize: 24,
+                                ),
+                          ),
                         ),
-                    children: [
-                      TextSpan(
-                        text: ' [${_transcription}]',
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontSize: 20,
-                              color: VockifyColors.lightSteelBlue,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: RichText(
+                            text: TextSpan(
+                              text: _term,
+                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                    fontSize: 20,
+                                  ),
+                              children: [
+                                TextSpan(
+                                  text: ' [${_transcription}]',
+                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                        fontSize: 20,
+                                        color: VockifyColors.lightSteelBlue,
+                                      ),
+                                )
+                              ],
                             ),
-                      )
-                    ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            'Выберите перевод:',
+                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                  fontSize: 16,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+                          child: _buildDefinitionChips(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Text('Выберите перевод:'),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 16),
-                child: _buildDefinitionChips(),
-              ),
-              _buildAddButton(),
-            ],
-          ),
+              )
+          ],
         ),
-      ),
+        if (_definitions.isNotEmpty)
+          Container(
+            padding: EdgeInsets.all(16),
+            alignment: Alignment.bottomCenter,
+            child: _buildAddButton(),
+          ),
+      ],
     );
   }
 
@@ -107,41 +138,41 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   }
 
   Widget _buildAddButton() {
-    if (_definitions.isEmpty) {
-      return Container();
-    }
-
     final definition = _selectedDefinitions.isEmpty ? _definitions.first : _selectedDefinitions.join(', ');
 
-    return Container(
-      padding: EdgeInsets.only(top: 16),
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: RawMaterialButton(
-              padding: EdgeInsets.all(16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-              fillColor: VockifyColors.prussianBlue,
-              onPressed: () {
-                dispatcher.dispatch(
-                  NavigateToAction.push(Routes.userSetSelect, arguments: {
-                    'term': _term,
-                    'definition': definition,
-                  }),
-                );
-              },
-              child: Text(
-                'Добавить в словарь',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: VockifyColors.white,
-                      fontSize: 16,
-                    ),
-              ),
-            ),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: StoreConnector<AppState, String>(
+            distinct: true,
+            converter: (store) => getLastAddedTerm(store.state),
+            builder: (context, lastAddedTerm) {
+              final isTermAdded = lastAddedTerm == _term;
+
+              return RawMaterialButton(
+                padding: EdgeInsets.all(16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
+                fillColor: isTermAdded ? VockifyColors.green : VockifyColors.prussianBlue,
+                onPressed: () {
+                  dispatcher.dispatch(
+                    NavigateToAction.push(Routes.userSetSelect, arguments: {
+                      'term': _term,
+                      'definition': definition,
+                    }),
+                  );
+                },
+                child: Text(
+                  isTermAdded ? 'Уже в словаре' : 'Добавить в словарь',
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: VockifyColors.white,
+                        fontSize: 16,
+                      ),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -152,7 +183,12 @@ class _AddUserTermState extends State<AddUserTermWidget> {
         return ChoiceChip(
           backgroundColor: VockifyColors.white,
           selectedColor: VockifyColors.lightSteelBlue,
-          label: Text(definition),
+          label: Text(
+            definition,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  fontSize: 16,
+                ),
+          ),
           labelStyle: TextStyle(color: VockifyColors.black),
           shape: RoundedRectangleBorder(
             side: BorderSide(
