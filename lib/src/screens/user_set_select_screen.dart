@@ -29,36 +29,6 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userSetSelect,
-      actions: <Widget>[
-        RawMaterialButton(
-          constraints: BoxConstraints(
-            minWidth: 42,
-            minHeight: 42,
-          ),
-          onPressed: () {
-            dispatcher.dispatch(NavigateToAction.pop());
-
-            dispatcher.dispatch(
-              RequestAddUserTermAction(
-                term: TermDto(
-                  id: 0,
-                  name: widget.term,
-                  definition: widget.definition,
-                  setId: _selectedSetId,
-                ),
-              ),
-            );
-          },
-          child: Text(
-            'Добавить',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: VockifyColors.white,
-                  fontSize: 18,
-                ),
-          ),
-          padding: EdgeInsets.all(16),
-        ),
-      ],
       body: UserSetSelectListWidget(
         selectedSetId: _selectedSetId,
         onSelect: _onSelect,
@@ -70,5 +40,18 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
     setState(() {
       _selectedSetId = id;
     });
+
+    dispatcher.dispatch(NavigateToAction.pop());
+
+    dispatcher.dispatch(
+      RequestAddUserTermAction(
+        term: TermDto(
+          id: 0,
+          name: widget.term,
+          definition: widget.definition,
+          setId: _selectedSetId,
+        ),
+      ),
+    );
   }
 }

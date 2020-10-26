@@ -151,8 +151,17 @@ class _AddUserTermState extends State<AddUserTermWidget> {
 
               return RawMaterialButton(
                 padding: EdgeInsets.all(16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-                fillColor: isTermAdded ? VockifyColors.green : VockifyColors.prussianBlue,
+                shape: RoundedRectangleBorder(
+                  side: isTermAdded
+                      ? BorderSide(
+                          color: VockifyColors.prussianBlue,
+                        )
+                      : BorderSide.none,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
+                fillColor: isTermAdded ? VockifyColors.white : VockifyColors.prussianBlue,
                 onPressed: () {
                   dispatcher.dispatch(
                     NavigateToAction.push(Routes.userSetSelect, arguments: {
@@ -164,7 +173,7 @@ class _AddUserTermState extends State<AddUserTermWidget> {
                 child: Text(
                   isTermAdded ? 'Уже в словаре' : 'Добавить в словарь',
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: VockifyColors.white,
+                        color: isTermAdded ? VockifyColors.prussianBlue : VockifyColors.white,
                         fontSize: 16,
                       ),
                 ),

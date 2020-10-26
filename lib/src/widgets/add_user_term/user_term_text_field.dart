@@ -35,7 +35,7 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
                 ),
               )
             : null,
-        hintText: 'Начните вводить слово',
+        hintText: 'Введите слово',
         hintStyle: TextStyle(color: Colors.grey),
         fillColor: Colors.white,
       ),

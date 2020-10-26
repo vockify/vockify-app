@@ -23,9 +23,12 @@ class UserSetSelectListWidget extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(24),
-            child: Text('Выберите словарь', style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontSize: 18,
-            ),),
+            child: Text(
+              'Выберите словарь',
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 18,
+                  ),
+            ),
           ),
           Expanded(
             child: StoreConnector<AppState, List<int>>(
