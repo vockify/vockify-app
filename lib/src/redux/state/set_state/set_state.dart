@@ -12,6 +12,7 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
           ..icon = dto.icon
           ..name = dto.name
           ..id = dto.id
+          ..type = dto.type
           ..parentId = dto.parentId
           ..terms.replace(SetTermsState.fromDto(dto.terms));
       });
@@ -27,6 +28,8 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
 
   @nullable
   int get parentId;
+
+  String get type;
 
   SetTermsState get terms;
 }

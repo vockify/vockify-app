@@ -1,30 +1,28 @@
 import 'package:redux/redux.dart';
+import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
 import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_public_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_user_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_user_sets_loader_action.dart';
-import 'package:vockify/src/redux/actions/sets/unset_public_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/unset_user_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_sets_action.dart';
+import 'package:vockify/src/redux/actions/sets/set_sets_loader_action.dart';
+import 'package:vockify/src/redux/actions/sets/unset_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_terms_count_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
+import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 class SetReducer {
   Reducer<AppState> _reducer;
 
   SetReducer() {
     _reducer = combineReducers([
-      TypedReducer(_setUserSetsReducer),
-      TypedReducer(_unsetUserSetsReducer),
-      TypedReducer(_setPublicSetsReducer),
-      TypedReducer(_unsetPublicSetsReducer),
+      TypedReducer(_setSetsReducer),
+      TypedReducer(_unsetSetsReducer),
       TypedReducer(_addUserSetReducer),
       TypedReducer(_updateSetReducer),
       TypedReducer(_removeUserSetReducer),
       TypedReducer(_updateSetTermsCountReducer),
-      TypedReducer(_setUserSetsLoader),
+      TypedReducer(_setSetsLoaderReducer),
     ]);
   }
 
@@ -33,54 +31,53 @@ class SetReducer {
   AppState _addUserSetReducer(AppState state, AddUserSetAction action) {
     return state.rebuild((builder) {
       builder.sets.items.addEntries([MapEntry(action.set.id, action.set)]);
-      builder.sets.user.ids.insert(0, action.set.id);
+      builder.sets.userSetIds.insert(0, action.set.id);
     });
   }
 
   AppState _removeUserSetReducer(AppState state, RemoveUserSetAction action) {
     return state.rebuild((builder) {
       builder.sets.items.remove(action.id);
-      builder.sets.user.ids.remove(action.id);
+      builder.sets.userSetIds.remove(action.id);
     });
   }
 
-  AppState _setPublicSetsReducer(AppState state, SetPublicSetsAction action) {
-    final entries = action.sets.map((set) => MapEntry(set.id, set));
+  AppState _setSetsLoaderReducer(AppState state, SetSetsLoaderAction action) {
+    return state.rebuild((builder) {
+      builder.sets.loader = action.state;
+    });
+  }
+
+  AppState _setSetsReducer(AppState state, SetSetsAction action) {
+    final List<MapEntry<int, SetState>> entries = [];
+    final List<int> userSetIds = [];
+    final List<int> publicSetIds = [];
+
+    action.sets.forEach((set) {
+      entries.add(MapEntry(set.id, set));
+
+      if (set.type == SetType.public) {
+        publicSetIds.add(set.id);
+      }
+
+      if (set.type == SetType.own) {
+        userSetIds.add(set.id);
+      }
+    });
 
     return state.rebuild((builder) {
       builder.sets.items.addEntries(entries);
-      builder.sets.public.ids.replace(action.sets.map((set) => set.id));
-      builder.sets.public.loader = LoaderState.isLoaded;
+      builder.sets.userSetIds.replace(userSetIds);
+      builder.sets.publicSetIds.replace(publicSetIds);
+      builder.sets.loader = LoaderState.isLoaded;
     });
   }
 
-  AppState _setUserSetsLoader(AppState state, SetUserSetsLoaderAction action) {
+  AppState _unsetSetsReducer(AppState state, UnsetSetsAction action) {
     return state.rebuild((builder) {
-      builder.sets.user.loader = action.state;
-    });
-  }
-
-  AppState _setUserSetsReducer(AppState state, SetUserSetsAction action) {
-    final entries = action.sets.map((set) => MapEntry(set.id, set));
-
-    return state.rebuild((builder) {
-      builder.sets.items.addEntries(entries);
-      builder.sets.user.ids.replace(action.sets.map((set) => set.id));
-      builder.sets.user.loader = LoaderState.isLoaded;
-    });
-  }
-
-  AppState _unsetPublicSetsReducer(AppState state, UnsetPublicSetsAction action) {
-    return state.rebuild((builder) {
-      builder.sets.public.ids.clear();
-      builder.sets.public.loader = LoaderState.isLoading;
-    });
-  }
-
-  AppState _unsetUserSetsReducer(AppState state, UnsetUserSetsAction action) {
-    return state.rebuild((builder) {
-      builder.sets.user.ids.clear();
-      builder.sets.user.loader = LoaderState.isLoading;
+      builder.sets.userSetIds.clear();
+      builder.sets.publicSetIds.clear();
+      builder.sets.loader = LoaderState.isLoading;
     });
   }
 

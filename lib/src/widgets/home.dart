@@ -8,16 +8,15 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/profile_screen.dart';
 import 'package:vockify/src/screens/start_screen.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/home_navigator.dart';
-import 'package:vockify/src/screens/profile_screen.dart';
 
 enum HomeItem {
   start,
   main,
-  search,
   profile,
 }
 
@@ -33,7 +32,6 @@ class _HomeState extends State<HomeWidget> {
 
   final _navigatorSettings = {
     HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
-    HomeItem.search: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.search),
   };
 
   @override
@@ -67,11 +65,6 @@ class _HomeState extends State<HomeWidget> {
             backgroundColor: VockifyColors.fulvous,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Поиск словарей'),
-            backgroundColor: VockifyColors.fulvous,
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('Профиль'),
             backgroundColor: VockifyColors.fulvous,
@@ -87,10 +80,6 @@ class _HomeState extends State<HomeWidget> {
           Offstage(
             offstage: _currentItem != HomeItem.main,
             child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]),
-          ),
-          Offstage(
-            offstage: _currentItem != HomeItem.search,
-            child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.search]),
           ),
           Offstage(
             offstage: _currentItem != HomeItem.profile,

@@ -29,7 +29,7 @@ class _SetScreenState extends State<SetScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
-      route: Routes.userSet,
+      route: Routes.sets,
       actions: <Widget>[
         RawMaterialButton(
           constraints: BoxConstraints(
