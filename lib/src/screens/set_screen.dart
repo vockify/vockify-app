@@ -8,7 +8,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/common/form_text_field.dart';
+import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
 class SetScreenWidget extends StatefulWidget {
@@ -54,7 +54,7 @@ class _SetScreenState extends State<SetScreenWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              FormTextFieldWidget(
+              PrimaryTextFormFieldWidget(
                 controller: _nameController,
                 text: 'НАЗВАНИЕ',
                 autoFocus: true,

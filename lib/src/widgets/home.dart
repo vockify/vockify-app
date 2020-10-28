@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/screens/profile_screen.dart';
 import 'package:vockify/src/screens/start_screen.dart';
@@ -21,6 +19,10 @@ enum HomeItem {
 }
 
 class HomeWidget extends StatefulWidget {
+  final String intent;
+
+  const HomeWidget({Key key, this.intent}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _HomeState();
 }
@@ -29,6 +31,7 @@ class _HomeState extends State<HomeWidget> {
   StreamSubscription _intentSubscription;
 
   HomeItem _currentItem = HomeItem.start;
+  String _intent;
 
   final _navigatorSettings = {
     HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
@@ -75,7 +78,7 @@ class _HomeState extends State<HomeWidget> {
         children: <Widget>[
           Offstage(
             offstage: _currentItem != HomeItem.start,
-            child: StartScreenWidget(),
+            child: StartScreenWidget(term: _intent),
           ),
           Offstage(
             offstage: _currentItem != HomeItem.main,
@@ -117,6 +120,10 @@ class _HomeState extends State<HomeWidget> {
   void initState() {
     super.initState();
 
+    if (widget.intent != null) {
+      _intent = widget.intent;
+    }
+
     _intentSubscription = ReceiveSharingIntent.getTextStream().listen(
       _goToShare,
       onError: (error) {
@@ -127,15 +134,10 @@ class _HomeState extends State<HomeWidget> {
 
   void _goToShare(String value) {
     if (value != null) {
-      dispatcher.dispatch(
-        NavigateToAction.pushNamedAndRemoveUntil(
-          Routes.share,
-          (route) => route.settings.name != Routes.share,
-          arguments: {
-            'term': value,
-          },
-        ),
-      );
+      setState(() {
+        _intent = value;
+        _currentItem = HomeItem.start;
+      });
     }
   }
 }

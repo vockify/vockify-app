@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FormTextFieldWidget extends StatelessWidget {
+class PrimaryTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String text;
   final Widget suffix;
   final bool autoFocus;
   final bool isRequired;
 
-  const FormTextFieldWidget({
+  const PrimaryTextFormFieldWidget({
     Key key,
     @required this.controller,
     @required this.text,
