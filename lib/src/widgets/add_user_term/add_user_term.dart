@@ -56,45 +56,52 @@ class _AddUserTermState extends State<AddUserTermWidget> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 30),
                           child: Text(
-                            _definitions.first,
+                            _getPrimaryDefinition(),
                             style: Theme.of(context).textTheme.bodyText2.copyWith(
                                   fontSize: 24,
                                 ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: RichText(
-                            text: TextSpan(
-                              text: _term,
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                    fontSize: 20,
-                                  ),
-                              children: [
-                                TextSpan(
-                                  text: ' [${_transcription}]',
-                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                        fontSize: 20,
-                                        color: VockifyColors.lightSteelBlue,
-                                      ),
-                                )
-                              ],
+                        if (_hasTranscription())
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: RichText(
+                              text: TextSpan(
+                                text: _term,
+                                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                      fontSize: 20,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: ' [${_transcription}]',
+                                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                          fontSize: 20,
+                                          color: VockifyColors.lightSteelBlue,
+                                        ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            'Выберите перевод:',
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                  fontSize: 16,
+                        if (_isDefinitionChipsVisible())
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 8),
+                                child: Text(
+                                  'Выберите значения:',
+                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                        fontSize: 16,
+                                      ),
                                 ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 16),
+                                child: _buildDefinitionChips(),
+                              ),
+                            ],
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: _buildDefinitionChips(),
-                        ),
                       ],
                     ),
                   ),
@@ -113,19 +120,19 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   }
 
   @override
-  void dispose() {
-    _nameController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   void didUpdateWidget(covariant AddUserTermWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.term != null) {
       _nameController.text = widget.term;
     }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+
+    super.dispose();
   }
 
   void initState() {
@@ -237,6 +244,12 @@ class _AddUserTermState extends State<AddUserTermWidget> {
       }).toList(),
     );
   }
+
+  String _getPrimaryDefinition() => _definitions.first;
+
+  bool _hasTranscription() => _transcription != '';
+
+  bool _isDefinitionChipsVisible() => _definitions.length > 1;
 
   Future<void> _translate() async {
     if (_nameController.text.isEmpty || _nameController.text == _term) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class PrimaryTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
-  final String text;
+  final String label;
   final Widget suffix;
   final bool autoFocus;
   final bool isRequired;
@@ -11,7 +11,7 @@ class PrimaryTextFormFieldWidget extends StatelessWidget {
   const PrimaryTextFormFieldWidget({
     Key key,
     @required this.controller,
-    @required this.text,
+    @required this.label,
     this.suffix,
     this.autoFocus = false,
     this.isRequired = true,
@@ -26,10 +26,11 @@ class PrimaryTextFormFieldWidget extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           suffixIcon: suffix,
-          labelText: text,
+          labelText: label,
           fillColor: Colors.white,
           border: OutlineInputBorder(
             borderSide: BorderSide(),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
           ),
         ),
         validator: (value) {

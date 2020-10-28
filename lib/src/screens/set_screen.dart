@@ -56,7 +56,7 @@ class _SetScreenState extends State<SetScreenWidget> {
             children: <Widget>[
               PrimaryTextFormFieldWidget(
                 controller: _nameController,
-                text: 'НАЗВАНИЕ',
+                label: 'НАЗВАНИЕ',
                 autoFocus: true,
               ),
             ],
