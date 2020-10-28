@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/unset_user_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/unset_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
@@ -40,19 +40,19 @@ class UserTermsScreenWidget extends StatelessWidget {
         ),
       ],
       onInit: (store) {
-        store.dispatch(RequestUserTermsAction(setId: setId));
+        store.dispatch(RequestTermsAction(setId: setId));
       },
       onDispose: (store) {
-        store.dispatch(UnsetUserTermsAction());
+        store.dispatch(UnsetTermsAction());
       },
-      isLoading: (store) => getUserTermLoader(store.state) == LoaderState.isLoading,
+      isLoading: (store) => getTermLoader(store.state) == LoaderState.isLoading,
       body: Center(
         child: Stack(
           children: <Widget>[
             UserTermListWidget(setId),
             StoreConnector<AppState, bool>(
               distinct: true,
-              converter: (store) => getUserTermIds(store.state).isNotEmpty,
+              converter: (store) => getTermIds(store.state).isNotEmpty,
               builder: (context, isNotEmpty) {
                 if (isNotEmpty) {
                   return Container(

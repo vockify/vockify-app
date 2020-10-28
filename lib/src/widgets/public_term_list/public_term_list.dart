@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/terms/request_public_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
@@ -19,7 +19,7 @@ class PublicTermListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<int>>(
         distinct: true,
-        converter: (store) => getPublicTermIds(store.state),
+        converter: (store) => getTermIds(store.state),
         builder: (context, ids) {
           if (ids.isEmpty) {
             return EmptyWidget(text: 'В словаре пока нет слов');
@@ -45,11 +45,11 @@ class PublicTermListWidget extends StatelessWidget {
               },
             ),
             onRefresh: () {
-              dispatcher.dispatch(SetPublicTermsLoaderAction(state: LoaderState.refresh));
-              dispatcher.dispatch(RequestPublicTermsAction(setId: setId));
+              dispatcher.dispatch(SetTermsLoaderAction(state: LoaderState.refresh));
+              dispatcher.dispatch(RequestTermsAction(setId: setId));
 
               return storeCompleterService.registerCompleter(
-                (state) => state.terms.public.loader == LoaderState.isLoaded,
+                (state) => state.terms.loader == LoaderState.isLoaded,
               );
             },
           );

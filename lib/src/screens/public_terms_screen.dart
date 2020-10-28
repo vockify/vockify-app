@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/sets/request_copy_set_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_public_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/unset_public_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/unset_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
@@ -27,12 +27,12 @@ class PublicTermsScreenWidget extends StatelessWidget {
       route: Routes.publicTerms,
       title: set.name,
       onInit: (store) {
-        store.dispatch(RequestPublicTermsAction(setId: setId));
+        store.dispatch(RequestTermsAction(setId: setId));
       },
       onDispose: (store) {
-        store.dispatch(UnsetPublicTermsAction());
+        store.dispatch(UnsetTermsAction());
       },
-      isLoading: (store) => getPublicTermLoader(store.state) == LoaderState.isLoading,
+      isLoading: (store) => getTermLoader(store.state) == LoaderState.isLoading,
       body: Center(
         child: Stack(
           children: <Widget>[
