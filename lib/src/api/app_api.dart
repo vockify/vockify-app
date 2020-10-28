@@ -22,6 +22,12 @@ void setupApi(Store store) {
   api = AppApi(store);
 }
 
+class SetType {
+  static const String all = 'all';
+  static const String own = 'own';
+  static const String public = 'public';
+}
+
 class AppApi {
   static const apiUrl = 'https://vockify.website/api';
 
@@ -57,19 +63,14 @@ class AppApi {
     await _delete('/terms/$id');
   }
 
-  Future<SetsResponse> getPublicSets() async {
-    final data = await _get('/sets/?type=public');
+  Future<SetsResponse> getSets(String type) async {
+    final data = await _get('/sets/?type=$type');
     return SetsResponse.fromJson(data);
   }
 
   Future<TermsResponse> getSetTerms(int setId) async {
     final data = await _get('/sets/$setId/terms');
     return TermsResponse.fromJson(data);
-  }
-
-  Future<SetsResponse> getUserSets() async {
-    final data = await _get('/sets/');
-    return SetsResponse.fromJson(data);
   }
 
   Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {

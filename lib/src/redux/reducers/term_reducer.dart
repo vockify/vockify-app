@@ -28,10 +28,9 @@ class TermReducer {
       TypedReducer(_addUserTermReducer),
       TypedReducer(_updateTermReducer),
       TypedReducer(_removeUserTermReducer),
-      TypedReducer(_setUserTermsLoader),
-      TypedReducer(_setPublicTermsLoader),
-      TypedReducer(_setPublicTermsLoader),
-      TypedReducer(_setLastAddedTerm),
+      TypedReducer(_setUserTermsLoaderReducer),
+      TypedReducer(_setPublicTermsLoaderReducer),
+      TypedReducer(_setLastAddedTermReducer),
     ]);
   }
 
@@ -51,13 +50,13 @@ class TermReducer {
     });
   }
 
-  AppState _setLastAddedTerm(AppState state, SetLastAddedTerm action) {
+  AppState _setLastAddedTermReducer(AppState state, SetLastAddedTerm action) {
     return state.rebuild((builder) {
       builder.terms.lastAddedTerm = action.name;
     });
   }
 
-  AppState _setPublicTermsLoader(AppState state, SetPublicTermsLoaderAction action) {
+  AppState _setPublicTermsLoaderReducer(AppState state, SetPublicTermsLoaderAction action) {
     return state.rebuild((builder) {
       builder.terms.public.loader = action.state;
     });
@@ -83,7 +82,7 @@ class TermReducer {
     });
   }
 
-  AppState _setUserTermsLoader(AppState state, SetUserTermsLoaderAction action) {
+  AppState _setUserTermsLoaderReducer(AppState state, SetUserTermsLoaderAction action) {
     return state.rebuild((builder) {
       builder.terms.user.loader = action.state;
     });

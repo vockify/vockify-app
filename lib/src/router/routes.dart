@@ -10,11 +10,12 @@ class Routes {
   // home routes
   static const String start = "/start";
   static const String main = "/main";
-  static const String search = "/search";
   static const String profile = "/profile";
 
-  // other routes
+  // set routes
   static const String userSet = "/user_set";
+  
+  // other routes
   static const String userTerms = "/user_terms";
   static const String userTerm = "/user_term";
   static const String publicTerms = "/public_terms";

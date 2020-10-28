@@ -10,22 +10,29 @@ class _$SetDataState extends SetDataState {
   @override
   final BuiltMap<int, SetState> items;
   @override
-  final PublicSetDataState public;
+  final LoaderState loader;
   @override
-  final UserSetDataState user;
+  final BuiltList<int> publicSetIds;
+  @override
+  final BuiltList<int> userSetIds;
 
   factory _$SetDataState([void Function(SetDataStateBuilder) updates]) =>
       (new SetDataStateBuilder()..update(updates)).build();
 
-  _$SetDataState._({this.items, this.public, this.user}) : super._() {
+  _$SetDataState._(
+      {this.items, this.loader, this.publicSetIds, this.userSetIds})
+      : super._() {
     if (items == null) {
       throw new BuiltValueNullFieldError('SetDataState', 'items');
     }
-    if (public == null) {
-      throw new BuiltValueNullFieldError('SetDataState', 'public');
+    if (loader == null) {
+      throw new BuiltValueNullFieldError('SetDataState', 'loader');
     }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('SetDataState', 'user');
+    if (publicSetIds == null) {
+      throw new BuiltValueNullFieldError('SetDataState', 'publicSetIds');
+    }
+    if (userSetIds == null) {
+      throw new BuiltValueNullFieldError('SetDataState', 'userSetIds');
     }
   }
 
@@ -41,22 +48,26 @@ class _$SetDataState extends SetDataState {
     if (identical(other, this)) return true;
     return other is SetDataState &&
         items == other.items &&
-        public == other.public &&
-        user == other.user;
+        loader == other.loader &&
+        publicSetIds == other.publicSetIds &&
+        userSetIds == other.userSetIds;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, items.hashCode), public.hashCode), user.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, items.hashCode), loader.hashCode),
+            publicSetIds.hashCode),
+        userSetIds.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SetDataState')
           ..add('items', items)
-          ..add('public', public)
-          ..add('user', user))
+          ..add('loader', loader)
+          ..add('publicSetIds', publicSetIds)
+          ..add('userSetIds', userSetIds))
         .toString();
   }
 }
@@ -70,23 +81,30 @@ class SetDataStateBuilder
       _$this._items ??= new MapBuilder<int, SetState>();
   set items(MapBuilder<int, SetState> items) => _$this._items = items;
 
-  PublicSetDataStateBuilder _public;
-  PublicSetDataStateBuilder get public =>
-      _$this._public ??= new PublicSetDataStateBuilder();
-  set public(PublicSetDataStateBuilder public) => _$this._public = public;
+  LoaderState _loader;
+  LoaderState get loader => _$this._loader;
+  set loader(LoaderState loader) => _$this._loader = loader;
 
-  UserSetDataStateBuilder _user;
-  UserSetDataStateBuilder get user =>
-      _$this._user ??= new UserSetDataStateBuilder();
-  set user(UserSetDataStateBuilder user) => _$this._user = user;
+  ListBuilder<int> _publicSetIds;
+  ListBuilder<int> get publicSetIds =>
+      _$this._publicSetIds ??= new ListBuilder<int>();
+  set publicSetIds(ListBuilder<int> publicSetIds) =>
+      _$this._publicSetIds = publicSetIds;
+
+  ListBuilder<int> _userSetIds;
+  ListBuilder<int> get userSetIds =>
+      _$this._userSetIds ??= new ListBuilder<int>();
+  set userSetIds(ListBuilder<int> userSetIds) =>
+      _$this._userSetIds = userSetIds;
 
   SetDataStateBuilder();
 
   SetDataStateBuilder get _$this {
     if (_$v != null) {
       _items = _$v.items?.toBuilder();
-      _public = _$v.public?.toBuilder();
-      _user = _$v.user?.toBuilder();
+      _loader = _$v.loader;
+      _publicSetIds = _$v.publicSetIds?.toBuilder();
+      _userSetIds = _$v.userSetIds?.toBuilder();
       _$v = null;
     }
     return this;
@@ -111,16 +129,20 @@ class SetDataStateBuilder
     try {
       _$result = _$v ??
           new _$SetDataState._(
-              items: items.build(), public: public.build(), user: user.build());
+              items: items.build(),
+              loader: loader,
+              publicSetIds: publicSetIds.build(),
+              userSetIds: userSetIds.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'items';
         items.build();
-        _$failedField = 'public';
-        public.build();
-        _$failedField = 'user';
-        user.build();
+
+        _$failedField = 'publicSetIds';
+        publicSetIds.build();
+        _$failedField = 'userSetIds';
+        userSetIds.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SetDataState', _$failedField, e.toString());
