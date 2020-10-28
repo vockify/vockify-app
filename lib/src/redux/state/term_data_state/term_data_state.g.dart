@@ -13,11 +13,14 @@ class _$TermDataState extends TermDataState {
   final PublicTermDataState public;
   @override
   final UserTermDataState user;
+  @override
+  final String lastAddedTerm;
 
   factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
       (new TermDataStateBuilder()..update(updates)).build();
 
-  _$TermDataState._({this.items, this.public, this.user}) : super._() {
+  _$TermDataState._({this.items, this.public, this.user, this.lastAddedTerm})
+      : super._() {
     if (items == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'items');
     }
@@ -26,6 +29,9 @@ class _$TermDataState extends TermDataState {
     }
     if (user == null) {
       throw new BuiltValueNullFieldError('TermDataState', 'user');
+    }
+    if (lastAddedTerm == null) {
+      throw new BuiltValueNullFieldError('TermDataState', 'lastAddedTerm');
     }
   }
 
@@ -42,13 +48,15 @@ class _$TermDataState extends TermDataState {
     return other is TermDataState &&
         items == other.items &&
         public == other.public &&
-        user == other.user;
+        user == other.user &&
+        lastAddedTerm == other.lastAddedTerm;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, items.hashCode), public.hashCode), user.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, items.hashCode), public.hashCode), user.hashCode),
+        lastAddedTerm.hashCode));
   }
 
   @override
@@ -56,7 +64,8 @@ class _$TermDataState extends TermDataState {
     return (newBuiltValueToStringHelper('TermDataState')
           ..add('items', items)
           ..add('public', public)
-          ..add('user', user))
+          ..add('user', user)
+          ..add('lastAddedTerm', lastAddedTerm))
         .toString();
   }
 }
@@ -80,6 +89,11 @@ class TermDataStateBuilder
       _$this._user ??= new UserTermDataStateBuilder();
   set user(UserTermDataStateBuilder user) => _$this._user = user;
 
+  String _lastAddedTerm;
+  String get lastAddedTerm => _$this._lastAddedTerm;
+  set lastAddedTerm(String lastAddedTerm) =>
+      _$this._lastAddedTerm = lastAddedTerm;
+
   TermDataStateBuilder();
 
   TermDataStateBuilder get _$this {
@@ -87,6 +101,7 @@ class TermDataStateBuilder
       _items = _$v.items?.toBuilder();
       _public = _$v.public?.toBuilder();
       _user = _$v.user?.toBuilder();
+      _lastAddedTerm = _$v.lastAddedTerm;
       _$v = null;
     }
     return this;
@@ -111,7 +126,10 @@ class TermDataStateBuilder
     try {
       _$result = _$v ??
           new _$TermDataState._(
-              items: items.build(), public: public.build(), user: user.build());
+              items: items.build(),
+              public: public.build(),
+              user: user.build(),
+              lastAddedTerm: lastAddedTerm);
     } catch (_) {
       String _$failedField;
       try {

@@ -1,6 +1,7 @@
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/terms/add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/remove_user_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_last_added_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_public_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_public_terms_loader_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_quiz_terms_action.dart';
@@ -29,6 +30,7 @@ class TermReducer {
       TypedReducer(_removeUserTermReducer),
       TypedReducer(_setUserTermsLoaderReducer),
       TypedReducer(_setPublicTermsLoaderReducer),
+      TypedReducer(_setLastAddedTermReducer),
     ]);
   }
 
@@ -45,6 +47,12 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.remove(action.id);
       builder.terms.user.ids.remove(action.id);
+    });
+  }
+
+  AppState _setLastAddedTermReducer(AppState state, SetLastAddedTerm action) {
+    return state.rebuild((builder) {
+      builder.terms.lastAddedTerm = action.name;
     });
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vockify/src/router/router.dart';
+import 'package:vockify/src/router/app_router.dart';
 
 class HomeNavigatorSettings {
   final GlobalKey<NavigatorState> key;
@@ -17,9 +17,9 @@ class HomeNavigatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       key: settings.key,
-      onGenerateRoute: Router.getRoute,
+      onGenerateRoute: AppRouter.getRoute,
       onGenerateInitialRoutes: (navigator, route) => [
-        Router.getRoute(RouteSettings(name: settings.initialRoute)),
+        AppRouter.getRoute(RouteSettings(name: settings.initialRoute)),
       ],
     );
   }

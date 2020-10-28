@@ -13,10 +13,12 @@ class Routes {
   static const String profile = "/profile";
 
   // set routes
-  static const String sets = "/sets";
+  static const String userSet = "/user_set";
   
   // other routes
   static const String userTerms = "/user_terms";
   static const String userTerm = "/user_term";
   static const String publicTerms = "/public_terms";
+
+  static const String userSetSelect = '/user_set_select';
 }

@@ -18,7 +18,7 @@ class MainScreenWidget extends StatelessWidget {
       actions: <Widget>[
         AppBarAction(
           onPressed: () {
-            Navigator.of(context).pushNamed(Routes.sets, arguments: {'id': null});
+            Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
           },
           icon: Icon(
             Icons.add_circle,

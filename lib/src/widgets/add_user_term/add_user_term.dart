@@ -1,18 +1,16 @@
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/api/dto/sets/set_dto.dart';
-import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
-import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
-import 'package:vockify/src/widgets/common/form_dropdown.dart';
-import 'package:vockify/src/widgets/common/form_text_field.dart';
-import 'package:vockify/src/widgets/common/primary_button.dart';
+import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/add_user_term/user_term_text_field.dart';
 
 class AddUserTermWidget extends StatefulWidget {
   @override
@@ -23,36 +21,90 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool _isLoading = false;
-
+  String _term = '';
+  String _transcription = '';
   List<String> _definitions = [];
 
   final List<String> _selectedDefinitions = [];
 
-  String _transcription = '';
-
-  int _selectedSetId;
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FormTextFieldWidget(
-              controller: _nameController,
-              text: 'ВВЕДИТЕ СЛОВО',
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Form(
+              key: _formKey,
+              child: UserTermTextFieldWidget(
+                controller: _nameController,
+              ),
             ),
-            Text(_transcription),
-            _buildDefinitionChips(),
-            _buildSetsDropdown(),
-            _buildAddButton(),
+            if (_term.isNotEmpty)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16, 16, 16, 80),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 30),
+                          child: Text(
+                            _definitions.first,
+                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                  fontSize: 24,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: RichText(
+                            text: TextSpan(
+                              text: _term,
+                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                    fontSize: 20,
+                                  ),
+                              children: [
+                                TextSpan(
+                                  text: ' [${_transcription}]',
+                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                        fontSize: 20,
+                                        color: VockifyColors.lightSteelBlue,
+                                      ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            'Выберите перевод:',
+                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                  fontSize: 16,
+                                ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+                          child: _buildDefinitionChips(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
           ],
         ),
-      ),
+        if (_definitions.isNotEmpty)
+          Container(
+            padding: EdgeInsets.all(16),
+            alignment: Alignment.bottomCenter,
+            child: _buildAddButton(),
+          ),
+      ],
     );
   }
 
@@ -66,43 +118,94 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   void initState() {
     super.initState();
 
-    final state = StoreProvider.of<AppState>(context, listen: false).state;
-    _selectedSetId = getUserSetIds(state).first;
-
     _nameController.addListener(() {
+      if (_nameController.text.isEmpty) {
+        if (_definitions.isNotEmpty || _transcription.isNotEmpty) {
+          setState(() {
+            _term = '';
+            _transcription = '';
+            _definitions = [];
+          });
+        }
+      }
+
       EasyDebounce.debounce(
         'translate',
         Duration(milliseconds: 500),
-        _handleChangeName,
+        _translate,
       );
     });
   }
 
   Widget _buildAddButton() {
-    if (_definitions.isEmpty) {
-      return Container();
-    }
+    final definition = _selectedDefinitions.isEmpty ? _definitions.first : _selectedDefinitions.join(', ');
 
-    return PrimaryButtonWidget(
-      text: 'Сохранить',
-      onPressed: () {
-        dispatcher.dispatch(RequestAddUserTermAction(
-          term: TermDto(
-            id: 0,
-            name: _nameController.text,
-            setId: _selectedSetId,
-            definition: _selectedDefinitions.join(', '),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: StoreConnector<AppState, String>(
+            distinct: true,
+            converter: (store) => getLastAddedTerm(store.state),
+            builder: (context, lastAddedTerm) {
+              final isTermAdded = lastAddedTerm == _term;
+
+              return RawMaterialButton(
+                padding: EdgeInsets.all(16),
+                shape: RoundedRectangleBorder(
+                  side: isTermAdded
+                      ? BorderSide(
+                          color: VockifyColors.prussianBlue,
+                        )
+                      : BorderSide.none,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
+                fillColor: isTermAdded ? VockifyColors.white : VockifyColors.prussianBlue,
+                onPressed: () {
+                  dispatcher.dispatch(
+                    NavigateToAction.push(Routes.userSetSelect, arguments: {
+                      'term': _term,
+                      'definition': definition,
+                    }),
+                  );
+                },
+                child: Text(
+                  isTermAdded ? 'Уже в словаре' : 'Добавить в словарь',
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        color: isTermAdded ? VockifyColors.prussianBlue : VockifyColors.white,
+                        fontSize: 16,
+                      ),
+                ),
+              );
+            },
           ),
-        ));
-      },
+        ),
+      ],
     );
   }
 
   Widget _buildDefinitionChips() {
     return Wrap(
+      spacing: 8,
       children: _definitions.map((definition) {
         return ChoiceChip(
-          label: Text(definition),
+          backgroundColor: VockifyColors.white,
+          selectedColor: VockifyColors.lightSteelBlue,
+          label: Text(
+            definition,
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  fontSize: 16,
+                ),
+          ),
+          labelStyle: TextStyle(color: VockifyColors.black),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              color: VockifyColors.lightSteelBlue,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
           selected: _selectedDefinitions.contains(definition),
           onSelected: (bool selected) {
             setState(() {
@@ -118,39 +221,10 @@ class _AddUserTermState extends State<AddUserTermWidget> {
     );
   }
 
-  Widget _buildSetsDropdown() {
-    if (_definitions.isEmpty) {
-      return Container();
-    }
-
-    return StoreConnector<AppState, List<SetState>>(
-      distinct: true,
-      converter: (store) {
-        final items = getSetItems(store.state);
-        return getUserSetIds(store.state).map((id) => items[id]).toList();
-      },
-      builder: (context, sets) {
-        return FormDropdownWidget(
-          items: sets.map((set) => FormDropdownItem(set.id, set.name)),
-          selectedId: _selectedSetId,
-          onChanged: (id) {
-            setState(() {
-              _selectedSetId = id;
-            });
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> _handleChangeName() async {
-    if (_nameController.text.isEmpty) {
+  Future<void> _translate() async {
+    if (_nameController.text.isEmpty || _nameController.text == _term) {
       return;
     }
-
-    setState(() {
-      _isLoading = true;
-    });
 
     try {
       final data = await api.translate(TranslateRequestDto(_nameController.text));
@@ -158,13 +232,12 @@ class _AddUserTermState extends State<AddUserTermWidget> {
       _selectedDefinitions.clear();
 
       setState(() {
-        _definitions = data.data.definitions;
+        _term = data.data.term;
         _transcription = data.data.transcription;
+        _definitions = data.data.definitions;
       });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    } catch (e) {
+      print(e);
     }
   }
 }

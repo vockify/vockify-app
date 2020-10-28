@@ -12,6 +12,7 @@ import 'package:vockify/src/redux/actions/terms/request_quiz_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_last_added_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_public_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_quiz_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_user_terms_action.dart';
@@ -49,6 +50,8 @@ class TermEffect {
         if (store.state.terms.user.loader == LoaderState.isLoaded) {
           yield AddUserTermAction(term: TermState.fromDto(result.data));
         }
+
+        yield SetLastAddedTerm(name: result.data.name);
       } catch (e) {
         print(e);
       } finally {

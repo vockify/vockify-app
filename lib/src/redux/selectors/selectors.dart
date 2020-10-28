@@ -91,6 +91,11 @@ Selector<AppState, LoaderState> getUserTermLoader = createSelector1(
   (UserTermDataState state) => state.loader,
 );
 
+Selector<AppState, String> getLastAddedTerm = createSelector1(
+  getTermDataState,
+  (TermDataState state) => state.lastAddedTerm,
+);
+
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 
 SetState getSetById(AppState state, int id) => getSetItems(state)[id];

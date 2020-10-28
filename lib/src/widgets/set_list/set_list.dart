@@ -48,7 +48,7 @@ class _SetListState extends State<SetListWidget> {
                         dispatcher.dispatch(RequestRemoveUserSetAction(id: id));
                       },
                       onEdit: () {
-                        Navigator.of(context).pushNamed(Routes.sets, arguments: {'id': id});
+                        Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': id});
                       },
                     );
                   },
