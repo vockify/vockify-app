@@ -4,7 +4,7 @@ import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';

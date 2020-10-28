@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:vockify/src/redux/state/term_data_state/public_term_data_state/public_term_data_state.dart';
-import 'package:vockify/src/redux/state/term_data_state/user_term_data_state/user_term_data_state.dart';
+import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 part 'term_data_state.g.dart';
@@ -13,17 +12,17 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
         builder
           ..lastAddedTerm = ''
           ..items.replace({})
-          ..public.replace(PublicTermDataState.initial())
-          ..user.replace(UserTermDataState.initial());
+          ..ids.replace([])
+          ..loader = LoaderState.isLoading;
       });
 
   TermDataState._();
+
+  BuiltList<int> get ids;
 
   BuiltMap<int, TermState> get items;
 
   String get lastAddedTerm;
 
-  PublicTermDataState get public;
-
-  UserTermDataState get user;
+  LoaderState get loader;
 }

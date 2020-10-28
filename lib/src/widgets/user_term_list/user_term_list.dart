@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_user_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_user_terms_loader_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
@@ -29,7 +29,7 @@ class _UserTermListState extends State<UserTermListWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<int>>(
       distinct: true,
-      converter: (store) => getUserTermIds(store.state),
+      converter: (store) => getTermIds(store.state),
       builder: (context, ids) {
         if (ids.isEmpty) {
           return EmptyWidget(text: 'В словаре пока нет слов');
@@ -72,10 +72,10 @@ class _UserTermListState extends State<UserTermListWidget> {
             },
           ),
           onRefresh: () {
-            dispatcher.dispatch(SetUserTermsLoaderAction(state: LoaderState.refresh));
-            dispatcher.dispatch(RequestUserTermsAction(setId: widget.setId));
+            dispatcher.dispatch(SetTermsLoaderAction(state: LoaderState.refresh));
+            dispatcher.dispatch(RequestTermsAction(setId: widget.setId));
 
-            return storeCompleterService.registerCompleter((state) => state.terms.user.loader == LoaderState.isLoaded);
+            return storeCompleterService.registerCompleter((state) => state.terms.loader == LoaderState.isLoaded);
           },
         );
       },

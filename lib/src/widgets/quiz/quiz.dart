@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
-import 'package:vockify/src/redux/actions/terms/request_update_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
