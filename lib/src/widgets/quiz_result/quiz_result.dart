@@ -73,7 +73,7 @@ class QuizResultWidget extends StatelessWidget {
                               return FractionallySizedBox(
                                 widthFactor: _correctCount / result.termIds.length,
                                 child: Container(
-                                  color: Colors.green,
+                                  color: VockifyColors.success,
                                 ),
                               );
                             }),

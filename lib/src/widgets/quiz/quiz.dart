@@ -102,16 +102,18 @@ class _QuizState extends State<QuizWidget> {
         Container(
           child: ListView.builder(
             shrinkWrap: true,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             physics: new NeverScrollableScrollPhysics(),
             itemCount: _step.definitions.length,
             itemBuilder: (BuildContext context, int index) {
               final definition = _step.definitions[index];
 
               return Card(
+                margin: EdgeInsets.only(bottom: 16),
                 color: _getDefinitionColor(definition),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
+                  side: BorderSide(color: VockifyColors.lightSteelBlue),
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: ListTile(
@@ -148,12 +150,12 @@ class _QuizState extends State<QuizWidget> {
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return VockifyColors.green;
+      return VockifyColors.success;
     } else if (definition == _selectedDefinition) {
-      return VockifyColors.flame;
+      return VockifyColors.fail;
     }
 
-    return VockifyColors.lightSteelBlue;
+    return VockifyColors.beauBlue;
   }
 
   Color _getDefinitionTextColor(String definition) {
