@@ -4,8 +4,8 @@ import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/widgets/add_user_term/user_set_select_list.dart';
 import 'package:vockify/src/widgets/layout.dart';
+import 'package:vockify/src/widgets/start_user_term_form/user_set_select_list.dart';
 
 class UserSetSelectScreenWidget extends StatefulWidget {
   final String term;

@@ -5,8 +5,8 @@ import 'package:vockify/src/redux/actions/sets/unset_sets_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/widgets/add_user_term/add_user_term.dart';
 import 'package:vockify/src/widgets/layout.dart';
+import 'package:vockify/src/widgets/start_user_term_form/start_user_term_form.dart';
 
 class StartScreenWidget extends StatelessWidget {
   final String term;
@@ -24,7 +24,7 @@ class StartScreenWidget extends StatelessWidget {
         store.dispatch(UnsetSetsAction());
       },
       isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
-      body: AddUserTermWidget(term: term),
+      body: StartUserTermFormWidget(term: term),
     );
   }
 }

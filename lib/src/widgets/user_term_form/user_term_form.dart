@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
-import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
+import 'package:vockify/src/widgets/user_term_form/definition_chips.dart';
+import 'package:vockify/src/widgets/user_term_form/transcription_text.dart';
 
 class UserTermFormWidget extends StatefulWidget {
   final Key formKey;
@@ -18,6 +19,8 @@ class UserTermFormWidget extends StatefulWidget {
 }
 
 class _UserTermFormState extends State<UserTermFormWidget> {
+  static const _delimiter = ', ';
+
   String _term = '';
   String _definition = '';
   String _transcription = '';
@@ -45,44 +48,20 @@ class _UserTermFormState extends State<UserTermFormWidget> {
                 label: 'Перевод',
               ),
               if (_hasTranscription())
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: RichText(
-                    text: TextSpan(
-                      text: _term,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 20,
-                          ),
-                      children: [
-                        TextSpan(
-                          text: ' [${_transcription}]',
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                fontSize: 20,
-                                color: VockifyColors.lightSteelBlue,
-                              ),
-                        )
-                      ],
-                    ),
-                  ),
+                TranscriptionTextWidget(
+                  term: _term,
+                  transcription: _transcription,
                 ),
               if (_isDefinitionChipsVisible())
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        'Выберите значения:',
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontSize: 16,
-                            ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: _buildDefinitionChips(),
-                    ),
-                  ],
+                DefinitionChipsWidget(
+                  definitions: _definitions,
+                  selectedDefinitions: _selectedDefinitions,
+                  onChange: (updated) {
+                    setState(() {
+                      _selectedDefinitions = updated;
+                      widget.definitionController.text = updated.join(_delimiter);
+                    });
+                  },
                 ),
             ],
           ),
@@ -94,95 +73,52 @@ class _UserTermFormState extends State<UserTermFormWidget> {
   @override
   void didUpdateWidget(covariant UserTermFormWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _updateState();
+  }
 
-    if (widget.termController.text.isNotEmpty) {
-      _translate();
-    }
+  @override
+  void dispose() {
+    widget.termController.removeListener(_handleTermControllerChange);
+    widget.definitionController.removeListener(_handleDefinitionControllerChange);
 
-    _definition = widget.definitionController.text;
-
-    if (widget.definitionController.text.isNotEmpty) {
-      _selectedDefinitions = widget.definitionController.text.split(', ');
-    }
+    super.dispose();
   }
 
   void initState() {
     super.initState();
 
-    if (widget.termController.text.isNotEmpty) {
-      _translate();
-    }
+    _updateState();
 
-    _definition = widget.definitionController.text;
-
-    if (widget.definitionController.text.isNotEmpty) {
-      _selectedDefinitions = widget.definitionController.text.split(', ');
-    }
-
-    widget.termController.addListener(() {
-      if (widget.termController.text.isEmpty) {
-        if (_definitions.isNotEmpty || _transcription.isNotEmpty || _term.isNotEmpty) {
-          setState(() {
-            _term = '';
-            _transcription = '';
-            _definitions = [];
-          });
-        }
-      }
-
-      EasyDebounce.debounce(
-        'translate',
-        Duration(milliseconds: 500),
-        _translate,
-      );
-    });
-
-    widget.definitionController.addListener(() {
-      if (widget.definitionController.text != _definition) {
-        setState(() {
-          _definition = widget.definitionController.text;
-          _selectedDefinitions =
-              widget.definitionController.text.split(', ').where((definition) => definition.isNotEmpty).toList();
-        });
-      }
-    });
+    widget.termController.addListener(_handleTermControllerChange);
+    widget.definitionController.addListener(_handleDefinitionControllerChange);
   }
 
-  Widget _buildDefinitionChips() {
-    return Wrap(
-      spacing: 8,
-      children: _definitions.map((definition) {
-        return ChoiceChip(
-          backgroundColor: VockifyColors.white,
-          selectedColor: VockifyColors.lightSteelBlue,
-          label: Text(
-            definition,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontSize: 16,
-                ),
-          ),
-          labelStyle: TextStyle(color: VockifyColors.black),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              width: 1,
-              color: VockifyColors.lightSteelBlue,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(2)),
-          ),
-          selected: _selectedDefinitions.contains(definition),
-          onSelected: (bool selected) {
-            setState(() {
-              if (selected) {
-                _selectedDefinitions.add(definition);
-              } else {
-                _selectedDefinitions.remove(definition);
-              }
+  List<String> _getUserDefinitions() => _definition.split(_delimiter);
 
-              widget.definitionController.text = _selectedDefinitions.join(', ');
-            });
-          },
-        );
-      }).toList(),
+  void _handleDefinitionControllerChange() {
+    if (widget.definitionController.text != _definition) {
+      setState(() {
+        _definition = widget.definitionController.text;
+        _selectedDefinitions = _getUserDefinitions().where((definition) => definition.isNotEmpty).toList();
+      });
+    }
+  }
+
+  void _handleTermControllerChange() {
+    if (widget.termController.text.isEmpty) {
+      if (_definitions.isNotEmpty || _transcription.isNotEmpty || _term.isNotEmpty) {
+        setState(() {
+          _term = '';
+          _transcription = '';
+          _definitions = [];
+        });
+      }
+    }
+
+    EasyDebounce.debounce(
+      'translate',
+      Duration(milliseconds: 500),
+      _translate,
     );
   }
 
@@ -198,7 +134,7 @@ class _UserTermFormState extends State<UserTermFormWidget> {
     try {
       final data = await api.translate(TranslateRequestDto(widget.termController.text));
 
-      final userDefinitions = widget.definitionController.text.split(', ');
+      final userDefinitions = _getUserDefinitions();
 
       setState(() {
         _term = data.data.term;
@@ -209,6 +145,18 @@ class _UserTermFormState extends State<UserTermFormWidget> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  void _updateState() {
+    _definition = widget.definitionController.text;
+
+    if (widget.termController.text.isNotEmpty) {
+      _translate();
+    }
+
+    if (_definition.isNotEmpty) {
+      _selectedDefinitions = _definition.split(_delimiter);
     }
   }
 }
