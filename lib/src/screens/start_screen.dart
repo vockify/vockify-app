@@ -9,6 +9,10 @@ import 'package:vockify/src/widgets/add_user_term/add_user_term.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
 class StartScreenWidget extends StatelessWidget {
+  final String term;
+
+  const StartScreenWidget({Key key, this.term}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
@@ -20,7 +24,7 @@ class StartScreenWidget extends StatelessWidget {
         store.dispatch(UnsetSetsAction());
       },
       isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
-      body: AddUserTermWidget(),
+      body: AddUserTermWidget(term: term),
     );
   }
 }

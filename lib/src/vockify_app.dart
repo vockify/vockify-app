@@ -35,23 +35,12 @@ class VockifyApp extends StatelessWidget {
   }
 
   List<Route> _getInitialRoutes(String route) {
-    if (intent != null) {
-      return [
-        AppRouter.buildRoute(
-          RouteSettings(name: Routes.share),
-          InitialWidget(
-            route: Routes.share,
-            arguments: {'term': intent},
-          ),
-        ),
-      ];
-    }
-
     return [
       AppRouter.buildRoute(
         RouteSettings(name: Routes.home),
         InitialWidget(
           route: Routes.home,
+          arguments: {'intent': intent},
         ),
       ),
     ];

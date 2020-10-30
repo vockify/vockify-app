@@ -6,7 +6,6 @@ import 'package:vockify/src/screens/profile_screen.dart';
 import 'package:vockify/src/screens/public_terms_screen.dart';
 import 'package:vockify/src/screens/quiz_screen.dart';
 import 'package:vockify/src/screens/set_screen.dart';
-import 'package:vockify/src/screens/share_screen.dart';
 import 'package:vockify/src/screens/start_screen.dart';
 import 'package:vockify/src/screens/tour_screen.dart';
 import 'package:vockify/src/screens/user_set_select_screen.dart';
@@ -27,10 +26,9 @@ class AppRouter {
           definition: arguments['definition'] as String,
         ),
     Routes.main: (arguments) => MainScreenWidget(),
-    Routes.home: (arguments) => HomeWidget(),
+    Routes.home: (arguments) => HomeWidget(intent: arguments['intent'] as String),
     Routes.publicTerms: (arguments) => PublicTermsScreenWidget(setId: arguments['id'] as int),
     Routes.userSet: (arguments) => SetScreenWidget(setId: arguments['id'] as int),
-    Routes.share: (arguments) => ShareScreenWidget(term: arguments['term'] as String),
     Routes.quiz: (arguments) => QuizScreenWidget(setId: arguments['setId'] as int),
     Routes.userTerms: (arguments) => UserTermsScreenWidget(setId: arguments['id'] as int),
     Routes.userTerm: (arguments) => UserTermScreenWidget(

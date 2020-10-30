@@ -10,7 +10,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/common/form_text_field.dart';
+import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
@@ -86,12 +86,12 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              FormTextFieldWidget(
+              PrimaryTextFormFieldWidget(
                 controller: _nameController,
                 text: 'СЛОВО НА АНГЛИЙСКОМ',
                 autoFocus: true,
               ),
-              FormTextFieldWidget(
+              PrimaryTextFormFieldWidget(
                 controller: _definitionController,
                 text: 'ПЕРЕВОД',
                 suffix: _buildTranslateButton(),

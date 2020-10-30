@@ -13,6 +13,10 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/add_user_term/user_term_text_field.dart';
 
 class AddUserTermWidget extends StatefulWidget {
+  final String term;
+
+  const AddUserTermWidget({Key key, this.term}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _AddUserTermState();
 }
@@ -115,8 +119,21 @@ class _AddUserTermState extends State<AddUserTermWidget> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant AddUserTermWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.term != null) {
+      _nameController.text = widget.term;
+    }
+  }
+
   void initState() {
     super.initState();
+
+    if (widget.term != null) {
+      _nameController.text = widget.term;
+    }
 
     _nameController.addListener(() {
       if (_nameController.text.isEmpty) {
