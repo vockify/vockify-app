@@ -6,6 +6,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/actions/request_data_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
@@ -40,7 +41,7 @@ class _InitialState extends State<InitialWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
     final bool isTourFinished = await AppStorage.getInstance().containsKey(AppStorageKey.isTourFinished);
 
-    if (!isTourFinished) {
+    if (!isTourFinished && isFeatureFlagEnabled(store.state, FeatureFlag.tour)) {
       scheduleMicrotask(() {
         dispatcher.dispatch(NavigateToAction.replace(Routes.tour));
       });
