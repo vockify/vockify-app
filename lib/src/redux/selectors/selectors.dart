@@ -1,5 +1,6 @@
 import 'package:reselect/reselect.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
@@ -99,3 +100,5 @@ UserState getUserState(AppState state) => state.user;
 bool isAuthorized(AppState state) => state.isAuthorized;
 
 bool isLoading(AppState state) => state.isLoading;
+
+bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag];

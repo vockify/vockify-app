@@ -21,6 +21,8 @@ class _$AppState extends AppState {
   final TermDataState terms;
   @override
   final UserState user;
+  @override
+  final FeatureFlagState featureFlags;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -32,7 +34,8 @@ class _$AppState extends AppState {
       this.quiz,
       this.sets,
       this.terms,
-      this.user})
+      this.user,
+      this.featureFlags})
       : super._() {
     if (isAuthorized == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
@@ -51,6 +54,9 @@ class _$AppState extends AppState {
     }
     if (user == null) {
       throw new BuiltValueNullFieldError('AppState', 'user');
+    }
+    if (featureFlags == null) {
+      throw new BuiltValueNullFieldError('AppState', 'featureFlags');
     }
   }
 
@@ -71,7 +77,8 @@ class _$AppState extends AppState {
         quiz == other.quiz &&
         sets == other.sets &&
         terms == other.terms &&
-        user == other.user;
+        user == other.user &&
+        featureFlags == other.featureFlags;
   }
 
   @override
@@ -81,13 +88,15 @@ class _$AppState extends AppState {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc(0, currentRoute.hashCode),
-                            isAuthorized.hashCode),
-                        isLoading.hashCode),
-                    quiz.hashCode),
-                sets.hashCode),
-            terms.hashCode),
-        user.hashCode));
+                        $jc(
+                            $jc($jc(0, currentRoute.hashCode),
+                                isAuthorized.hashCode),
+                            isLoading.hashCode),
+                        quiz.hashCode),
+                    sets.hashCode),
+                terms.hashCode),
+            user.hashCode),
+        featureFlags.hashCode));
   }
 
   @override
@@ -99,7 +108,8 @@ class _$AppState extends AppState {
           ..add('quiz', quiz)
           ..add('sets', sets)
           ..add('terms', terms)
-          ..add('user', user))
+          ..add('user', user)
+          ..add('featureFlags', featureFlags))
         .toString();
   }
 }
@@ -136,6 +146,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   UserStateBuilder get user => _$this._user ??= new UserStateBuilder();
   set user(UserStateBuilder user) => _$this._user = user;
 
+  FeatureFlagStateBuilder _featureFlags;
+  FeatureFlagStateBuilder get featureFlags =>
+      _$this._featureFlags ??= new FeatureFlagStateBuilder();
+  set featureFlags(FeatureFlagStateBuilder featureFlags) =>
+      _$this._featureFlags = featureFlags;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -147,6 +163,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
+      _featureFlags = _$v.featureFlags?.toBuilder();
       _$v = null;
     }
     return this;
@@ -177,7 +194,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               quiz: quiz.build(),
               sets: sets.build(),
               terms: terms.build(),
-              user: user.build());
+              user: user.build(),
+              featureFlags: featureFlags.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -189,6 +207,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         terms.build();
         _$failedField = 'user';
         user.build();
+        _$failedField = 'featureFlags';
+        featureFlags.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());
