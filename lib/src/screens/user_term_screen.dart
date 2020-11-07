@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
-import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -10,9 +8,8 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
-import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/layout.dart';
+import 'package:vockify/src/widgets/user_term_form/user_term_form.dart';
 
 class UserTermScreenWidget extends StatefulWidget {
   final int setId;
@@ -28,11 +25,9 @@ class UserTermScreenWidget extends StatefulWidget {
 }
 
 class _UserTermScreenState extends State<UserTermScreenWidget> {
+  final _termController = TextEditingController();
   final _definitionController = TextEditingController();
-  final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +45,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
                 dispatcher.dispatch(RequestUpdateUserTermAction(
                   term: TermDto(
                     id: widget.termId,
-                    name: _nameController.text,
+                    name: _termController.text,
                     setId: widget.setId,
                     definition: _definitionController.text,
                   ),
@@ -59,7 +54,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
                 dispatcher.dispatch(RequestAddUserTermAction(
                   term: TermDto(
                     id: 0,
-                    name: _nameController.text,
+                    name: _termController.text,
                     setId: widget.setId,
                     definition: _definitionController.text,
                   ),
@@ -79,26 +74,10 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
           padding: EdgeInsets.all(16),
         ),
       ],
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              PrimaryTextFormFieldWidget(
-                controller: _nameController,
-                text: 'СЛОВО НА АНГЛИЙСКОМ',
-                autoFocus: true,
-              ),
-              PrimaryTextFormFieldWidget(
-                controller: _definitionController,
-                text: 'ПЕРЕВОД',
-                suffix: _buildTranslateButton(),
-              ),
-            ],
-          ),
-        ),
+      body: UserTermFormWidget(
+        formKey: _formKey,
+        termController: _termController,
+        definitionController: _definitionController,
       ),
     );
   }
@@ -106,7 +85,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
   @override
   void dispose() {
     _definitionController.dispose();
-    _nameController.dispose();
+    _termController.dispose();
 
     super.dispose();
   }
@@ -117,44 +96,10 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
       final store = StoreProvider.of<AppState>(context, listen: false);
       final term = getTermById(store.state, widget.termId);
 
-      _nameController.text = term.name;
+      _termController.text = term.name;
       _definitionController.text = term.definition;
     }
 
     super.initState();
-  }
-
-  Widget _buildTranslateButton() {
-    if (_isLoading) {
-      return Padding(
-        padding: EdgeInsets.all(10.0),
-        child: LoaderWidget(),
-      );
-    }
-
-    return IconButton(
-      onPressed: () async {
-        if (_nameController.text.isEmpty) {
-          return;
-        }
-
-        setState(() {
-          _isLoading = true;
-        });
-
-        try {
-          final data = await api.translate(TranslateRequestDto(_nameController.text));
-
-          if (data.data.definitions.isNotEmpty) {
-            _definitionController.text = data.data.definitions.first;
-          }
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      },
-      icon: Icon(Icons.translate),
-    );
   }
 }

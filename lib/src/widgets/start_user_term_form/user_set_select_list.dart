@@ -3,8 +3,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/widgets/add_user_term/user_set_select_item.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
+import 'package:vockify/src/widgets/start_user_term_form/user_set_select_item.dart';
 
 class UserSetSelectListWidget extends StatelessWidget {
   final int selectedSetId;

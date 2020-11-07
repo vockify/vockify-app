@@ -36,7 +36,7 @@ class UserTermItemWidget extends StatelessWidget {
           child: ListTile(
             onTap: onTap,
             title: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(

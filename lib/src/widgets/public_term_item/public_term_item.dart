@@ -21,7 +21,7 @@ class PublicTermItemWidget extends StatelessWidget {
       builder: (context, term) {
         return ListTile(
           title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Expanded(

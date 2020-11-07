@@ -10,26 +10,28 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
-import 'package:vockify/src/widgets/add_user_term/user_term_text_field.dart';
+import 'package:vockify/src/widgets/start_user_term_form/user_term_text_field.dart';
+import 'package:vockify/src/widgets/user_term_form/definition_chips.dart';
+import 'package:vockify/src/widgets/user_term_form/transcription_text.dart';
 
-class AddUserTermWidget extends StatefulWidget {
+class StartUserTermFormWidget extends StatefulWidget {
   final String term;
 
-  const AddUserTermWidget({Key key, this.term}) : super(key: key);
+  const StartUserTermFormWidget({Key key, this.term}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _AddUserTermState();
+  State<StatefulWidget> createState() => _StartUserTermFormState();
 }
 
-class _AddUserTermState extends State<AddUserTermWidget> {
+class _StartUserTermFormState extends State<StartUserTermFormWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   String _term = '';
   String _transcription = '';
-  List<String> _definitions = [];
 
-  final List<String> _selectedDefinitions = [];
+  List<String> _definitions = [];
+  List<String> _selectedDefinitions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -56,45 +58,27 @@ class _AddUserTermState extends State<AddUserTermWidget> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 30),
                           child: Text(
-                            _definitions.first,
+                            _getPrimaryDefinition(),
                             style: Theme.of(context).textTheme.bodyText2.copyWith(
                                   fontSize: 24,
                                 ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: RichText(
-                            text: TextSpan(
-                              text: _term,
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                    fontSize: 20,
-                                  ),
-                              children: [
-                                TextSpan(
-                                  text: ' [${_transcription}]',
-                                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                        fontSize: 20,
-                                        color: VockifyColors.lightSteelBlue,
-                                      ),
-                                )
-                              ],
-                            ),
+                        if (_hasTranscription())
+                          TranscriptionTextWidget(
+                            term: _term,
+                            transcription: _transcription,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            'Выберите перевод:',
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                  fontSize: 16,
-                                ),
+                        if (_isDefinitionChipsVisible())
+                          DefinitionChipsWidget(
+                            definitions: _definitions,
+                            selectedDefinitions: _selectedDefinitions,
+                            onChange: (updated) {
+                              setState(() {
+                                _selectedDefinitions = updated;
+                              });
+                            },
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: _buildDefinitionChips(),
-                        ),
                       ],
                     ),
                   ),
@@ -113,19 +97,19 @@ class _AddUserTermState extends State<AddUserTermWidget> {
   }
 
   @override
-  void dispose() {
-    _nameController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant AddUserTermWidget oldWidget) {
+  void didUpdateWidget(covariant StartUserTermFormWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.term != null) {
       _nameController.text = widget.term;
     }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+
+    super.dispose();
   }
 
   void initState() {
@@ -202,41 +186,11 @@ class _AddUserTermState extends State<AddUserTermWidget> {
     );
   }
 
-  Widget _buildDefinitionChips() {
-    return Wrap(
-      spacing: 8,
-      children: _definitions.map((definition) {
-        return ChoiceChip(
-          backgroundColor: VockifyColors.white,
-          selectedColor: VockifyColors.lightSteelBlue,
-          label: Text(
-            definition,
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontSize: 16,
-                ),
-          ),
-          labelStyle: TextStyle(color: VockifyColors.black),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              width: 1,
-              color: VockifyColors.lightSteelBlue,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(2)),
-          ),
-          selected: _selectedDefinitions.contains(definition),
-          onSelected: (bool selected) {
-            setState(() {
-              if (selected) {
-                _selectedDefinitions.add(definition);
-              } else {
-                _selectedDefinitions.remove(definition);
-              }
-            });
-          },
-        );
-      }).toList(),
-    );
-  }
+  String _getPrimaryDefinition() => _definitions.first;
+
+  bool _hasTranscription() => _transcription != '';
+
+  bool _isDefinitionChipsVisible() => _definitions.length > 1;
 
   Future<void> _translate() async {
     if (_nameController.text.isEmpty || _nameController.text == _term) {
