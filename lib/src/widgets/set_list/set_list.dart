@@ -24,6 +24,7 @@ class _SetListState extends State<SetListWidget> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16),
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: <Widget>[

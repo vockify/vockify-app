@@ -21,10 +21,17 @@ class VockifyColors {
   static const fulvous = Color(0xFFE28413);
   static const ghostWhite = Color(0xFFE8EBF7);
   static const lightSteelBlue = Color(0xFFACBED8);
+  static const beauBlue = Color(0xFFC5D0DE);
   static const prussianBlue = Color(0xFF002642);
+  static const lapisLazuli = Color(0xFF025d9e);
+  static const bitterLemon = Color(0xFFD0E01D);
+  static const roseMadder = Color(0xFFDA2C38);
+  static const persianGreen = Color(0xFF2A9D8F);
 
   static const black = Colors.black;
   static const white = Colors.white;
   static const grey = Colors.white70;
-  static const green = Colors.lightGreen;
+
+  static const success = persianGreen;
+  static const fail = flame;
 }

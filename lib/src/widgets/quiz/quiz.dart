@@ -48,16 +48,50 @@ class _QuizState extends State<QuizWidget> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 16),
+          child: Center(
+            child: Text(
+              '${_step.termIndex} / ${_step.termsCount}',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    fontSize: 16,
+                    color: VockifyColors.prussianBlue,
+                  ),
+            ),
+          ),
+        ),
+        Padding(
+            padding: EdgeInsets.all(16),
+            child: Stack(
+              children: [
+                Container(
+                  color: VockifyColors.lightSteelBlue,
+                  height: 4,
+                ),
+                Container(
+                  height: 4,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return FractionallySizedBox(
+                      widthFactor: _step.termIndex / _step.termsCount,
+                      child: Container(
+                        color: VockifyColors.prussianBlue,
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            )),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Card(
+              elevation: 0,
               child: ListTile(
                 title: Center(
                   child: Text(
                     _step.name,
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          fontSize: 18,
+                          fontSize: 24,
                         ),
                   ),
                 ),
@@ -66,16 +100,22 @@ class _QuizState extends State<QuizWidget> {
           ),
         ),
         Container(
-          height: 280,
           child: ListView.builder(
-            padding: const EdgeInsets.all(10),
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             physics: new NeverScrollableScrollPhysics(),
             itemCount: _step.definitions.length,
             itemBuilder: (BuildContext context, int index) {
               final definition = _step.definitions[index];
 
               return Card(
+                margin: EdgeInsets.only(bottom: 16),
                 color: _getDefinitionColor(definition),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: VockifyColors.lightSteelBlue),
+                  borderRadius: BorderRadius.circular(2),
+                ),
                 child: ListTile(
                   onTap: () {
                     _selectDefinition(definition);
@@ -110,12 +150,12 @@ class _QuizState extends State<QuizWidget> {
 
   Color _getDefinitionColor(String definition) {
     if (definition == _correctDefinition) {
-      return VockifyColors.green;
+      return VockifyColors.success;
     } else if (definition == _selectedDefinition) {
-      return VockifyColors.flame;
+      return VockifyColors.fail;
     }
 
-    return VockifyColors.lightSteelBlue;
+    return VockifyColors.beauBlue;
   }
 
   Color _getDefinitionTextColor(String definition) {

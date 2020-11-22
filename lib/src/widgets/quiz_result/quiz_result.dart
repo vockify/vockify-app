@@ -73,7 +73,7 @@ class QuizResultWidget extends StatelessWidget {
                               return FractionallySizedBox(
                                 widthFactor: _correctCount / result.termIds.length,
                                 child: Container(
-                                  color: Colors.green,
+                                  color: VockifyColors.success,
                                 ),
                               );
                             }),
@@ -142,7 +142,7 @@ class QuizResultWidget extends StatelessWidget {
 
   String _getPhrase() {
     if (_percentage == 100) {
-      return _congratulationPhrases[Random().nextInt(_cheerPhrases.length)];
+      return _congratulationPhrases[Random().nextInt(_congratulationPhrases.length)];
     }
 
     return _cheerPhrases[Random().nextInt(_cheerPhrases.length)];
