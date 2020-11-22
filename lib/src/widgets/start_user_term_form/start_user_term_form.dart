@@ -69,7 +69,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                             term: _term,
                             transcription: _transcription,
                           ),
-                        if (_isDefinitionChipsVisible())
+                        if (_areDefinitionChipsVisible())
                           DefinitionChipsWidget(
                             definitions: _definitions,
                             selectedDefinitions: _selectedDefinitions,
@@ -190,7 +190,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
   bool _hasTranscription() => _transcription != '';
 
-  bool _isDefinitionChipsVisible() => _definitions.length > 1;
+  bool _areDefinitionChipsVisible() => _definitions.length > 1;
 
   Future<void> _translate() async {
     if (_nameController.text.isEmpty || _nameController.text == _term) {
