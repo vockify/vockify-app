@@ -56,11 +56,9 @@ class SetReducer {
     action.sets.forEach((set) {
       entries.add(MapEntry(set.id, set));
 
-      if (set.type == SetType.public) {
+      if (set.userId == AppApi.publicUserId) {
         publicSetIds.add(set.id);
-      }
-
-      if (set.type == SetType.own) {
+      } else {
         userSetIds.add(set.id);
       }
     });

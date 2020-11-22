@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/terms/term_filters_dto.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_terms_count_action.dart';
 import 'package:vockify/src/redux/actions/terms/add_user_term_action.dart';
@@ -63,7 +64,7 @@ class TermEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final result = await api.getSetTerms(action.setId);
+        final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
         yield SetQuizTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
       } catch (e) {
         print(e);
@@ -115,7 +116,7 @@ class TermEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final result = await api.getSetTerms(action.setId);
+        final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
         yield SetTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
       } catch (e) {
         print(e);

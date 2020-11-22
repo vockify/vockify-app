@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
 import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
@@ -109,7 +110,7 @@ class SetEffect {
   ) {
     return actions.asyncExpand((action) async* {
       try {
-        final response = await api.getSets(action.type);
+        final response = await api.getSets(SetFiltersDto(userIds: action.userIds));
         yield SetSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));
       } catch (e) {
         print(e);

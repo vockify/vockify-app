@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:vockify/src/api/dto/auth_user_response.dart';
 import 'package:vockify/src/api/dto/sets/set_dto.dart';
+import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_response.dart';
 import 'package:vockify/src/api/dto/sets/sets_response.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/api/dto/terms/term_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_response.dart';
 import 'package:vockify/src/api/dto/terms/terms_response.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
@@ -22,14 +24,9 @@ void setupApi(Store store) {
   api = AppApi(store);
 }
 
-class SetType {
-  static const String all = 'all';
-  static const String own = 'own';
-  static const String public = 'public';
-}
-
 class AppApi {
-  static const apiUrl = 'https://vockify.website/api';
+  static const apiUri = 'api.vockify.website';
+  static const publicUserId = 18;
 
   final Store store;
 
@@ -63,13 +60,13 @@ class AppApi {
     await _delete('/terms/$id');
   }
 
-  Future<SetsResponse> getSets(String type) async {
-    final data = await _get('/sets/?type=$type');
+  Future<SetsResponse> getSets(SetFiltersDto filters) async {
+    final data = await _get('/sets', filters.toJson());
     return SetsResponse.fromJson(data);
   }
 
-  Future<TermsResponse> getSetTerms(int setId) async {
-    final data = await _get('/sets/$setId/terms');
+  Future<TermsResponse> getTerms(TermFiltersDto filters) async {
+    final data = await _get('/terms', filters.toJson());
     return TermsResponse.fromJson(data);
   }
 
@@ -92,19 +89,19 @@ class AppApi {
     final headers = await _getHeaders();
 
     final response = await http.delete(
-      '$apiUrl$url',
+      Uri.http(apiUri, url),
       headers: headers,
     );
 
     return _processResponse(response);
   }
 
-  Future<Map<String, dynamic>> _get(String url) async {
+  Future<Map<String, dynamic>> _get(String url, [Map<String, String> queryParameters]) async {
     final headers = await _getHeaders();
 
     try {
       final response = await http.get(
-        '$apiUrl$url',
+        Uri.http(apiUri, url, queryParameters),
         headers: headers,
       );
       return _processResponse(response);
@@ -120,7 +117,8 @@ class AppApi {
     final token = await storage.getValue(AppStorageKey.token) ?? '';
 
     return <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };
   }
@@ -128,7 +126,7 @@ class AppApi {
   Future<Map<String, dynamic>> _post(String url, [dynamic body]) async {
     final headers = await _getHeaders();
     final response = await http.post(
-      '$apiUrl$url',
+      Uri.http(apiUri, url),
       body: body != null ? jsonEncode(body) : null,
       headers: headers,
     );
@@ -156,7 +154,7 @@ class AppApi {
   Future<Map<String, dynamic>> _put(String url, dynamic body) async {
     final headers = await _getHeaders();
     final response = await http.put(
-      '$apiUrl$url',
+      Uri.http(apiUri, url),
       body: jsonEncode(body),
       headers: headers,
     );

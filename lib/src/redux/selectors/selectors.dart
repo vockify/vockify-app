@@ -1,4 +1,5 @@
 import 'package:reselect/reselect.dart';
+import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
@@ -94,6 +95,9 @@ int getUserSetIdByParentId(AppState state, int parentId) {
     orElse: () => null,
   );
 }
+
+Selector<AppState, List<int>> getPublicAndCurrentUserIds =
+    createSelector1(getUserState, (UserState state) => [state.id, AppApi.publicUserId]);
 
 UserState getUserState(AppState state) => state.user;
 

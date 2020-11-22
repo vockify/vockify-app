@@ -16,7 +16,7 @@ class _$SetState extends SetState {
   @override
   final int parentId;
   @override
-  final String type;
+  final int userId;
   @override
   final SetTermsState terms;
 
@@ -24,7 +24,7 @@ class _$SetState extends SetState {
       (new SetStateBuilder()..update(updates)).build();
 
   _$SetState._(
-      {this.icon, this.id, this.name, this.parentId, this.type, this.terms})
+      {this.icon, this.id, this.name, this.parentId, this.userId, this.terms})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('SetState', 'id');
@@ -32,8 +32,8 @@ class _$SetState extends SetState {
     if (name == null) {
       throw new BuiltValueNullFieldError('SetState', 'name');
     }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('SetState', 'type');
+    if (userId == null) {
+      throw new BuiltValueNullFieldError('SetState', 'userId');
     }
     if (terms == null) {
       throw new BuiltValueNullFieldError('SetState', 'terms');
@@ -55,7 +55,7 @@ class _$SetState extends SetState {
         id == other.id &&
         name == other.name &&
         parentId == other.parentId &&
-        type == other.type &&
+        userId == other.userId &&
         terms == other.terms;
   }
 
@@ -65,7 +65,7 @@ class _$SetState extends SetState {
         $jc(
             $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
                 parentId.hashCode),
-            type.hashCode),
+            userId.hashCode),
         terms.hashCode));
   }
 
@@ -76,7 +76,7 @@ class _$SetState extends SetState {
           ..add('id', id)
           ..add('name', name)
           ..add('parentId', parentId)
-          ..add('type', type)
+          ..add('userId', userId)
           ..add('terms', terms))
         .toString();
   }
@@ -101,9 +101,9 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   int get parentId => _$this._parentId;
   set parentId(int parentId) => _$this._parentId = parentId;
 
-  String _type;
-  String get type => _$this._type;
-  set type(String type) => _$this._type = type;
+  int _userId;
+  int get userId => _$this._userId;
+  set userId(int userId) => _$this._userId = userId;
 
   SetTermsStateBuilder _terms;
   SetTermsStateBuilder get terms =>
@@ -118,7 +118,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
       _id = _$v.id;
       _name = _$v.name;
       _parentId = _$v.parentId;
-      _type = _$v.type;
+      _userId = _$v.userId;
       _terms = _$v.terms?.toBuilder();
       _$v = null;
     }
@@ -148,7 +148,7 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
               id: id,
               name: name,
               parentId: parentId,
-              type: type,
+              userId: userId,
               terms: terms.build());
     } catch (_) {
       String _$failedField;

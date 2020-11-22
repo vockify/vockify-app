@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_sets_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -18,7 +17,7 @@ class StartScreenWidget extends StatelessWidget {
     return LayoutWidget(
       route: Routes.start,
       onInit: (store) {
-        store.dispatch(RequestSetsAction(type: SetType.all));
+        store.dispatch(RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state)));
       },
       onDispose: (store) {
         store.dispatch(UnsetSetsAction());
