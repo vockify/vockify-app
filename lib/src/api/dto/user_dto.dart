@@ -4,6 +4,8 @@ part 'user_dto.g.dart';
 
 @JsonSerializable(nullable: false)
 class UserDto {
+  final int id;
+
   final String email;
 
   @JsonKey(name: 'first_name')
@@ -14,7 +16,7 @@ class UserDto {
 
   final String avatar;
 
-  UserDto(this.email, this.firstName, this.lastName, this.avatar);
+  UserDto(this.id, this.email, this.firstName, this.lastName, this.avatar);
 
   factory UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 

@@ -8,6 +8,8 @@ part of 'user_state.dart';
 
 class _$UserState extends UserState {
   @override
+  final int id;
+  @override
   final String avatar;
   @override
   final String email;
@@ -19,8 +21,12 @@ class _$UserState extends UserState {
   factory _$UserState([void Function(UserStateBuilder) updates]) =>
       (new UserStateBuilder()..update(updates)).build();
 
-  _$UserState._({this.avatar, this.email, this.firstName, this.lastName})
+  _$UserState._(
+      {this.id, this.avatar, this.email, this.firstName, this.lastName})
       : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('UserState', 'id');
+    }
     if (email == null) {
       throw new BuiltValueNullFieldError('UserState', 'email');
     }
@@ -43,6 +49,7 @@ class _$UserState extends UserState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserState &&
+        id == other.id &&
         avatar == other.avatar &&
         email == other.email &&
         firstName == other.firstName &&
@@ -52,13 +59,15 @@ class _$UserState extends UserState {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, avatar.hashCode), email.hashCode), firstName.hashCode),
+        $jc($jc($jc($jc(0, id.hashCode), avatar.hashCode), email.hashCode),
+            firstName.hashCode),
         lastName.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserState')
+          ..add('id', id)
           ..add('avatar', avatar)
           ..add('email', email)
           ..add('firstName', firstName)
@@ -69,6 +78,10 @@ class _$UserState extends UserState {
 
 class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   _$UserState _$v;
+
+  int _id;
+  int get id => _$this._id;
+  set id(int id) => _$this._id = id;
 
   String _avatar;
   String get avatar => _$this._avatar;
@@ -90,6 +103,7 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
 
   UserStateBuilder get _$this {
     if (_$v != null) {
+      _id = _$v.id;
       _avatar = _$v.avatar;
       _email = _$v.email;
       _firstName = _$v.firstName;
@@ -116,6 +130,7 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   _$UserState build() {
     final _$result = _$v ??
         new _$UserState._(
+            id: id,
             avatar: avatar,
             email: email,
             firstName: firstName,

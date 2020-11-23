@@ -12,7 +12,7 @@ SetDto _$SetDtoFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     parentId: json['parent_set_id'] as int,
     icon: json['icon'] as String,
-    type: json['type'] as String,
+    userId: json['user_id'] as int,
     terms: SetTermsDto.fromJson(json['terms'] as Map<String, dynamic>),
   );
 }
@@ -22,6 +22,6 @@ Map<String, dynamic> _$SetDtoToJson(SetDto instance) => <String, dynamic>{
       'name': instance.name,
       'icon': instance.icon,
       'parent_set_id': instance.parentId,
-      'type': instance.type,
+      'user_id': instance.userId,
       'terms': instance.terms,
     };

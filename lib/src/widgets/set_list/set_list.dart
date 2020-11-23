@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_sets_loader_action.dart';
@@ -104,8 +103,10 @@ class _SetListState extends State<SetListWidget> {
         ),
       ),
       onRefresh: () {
+        final store = StoreProvider.of<AppState>(context);
+
         dispatcher.dispatch(SetSetsLoaderAction(state: LoaderState.refresh));
-        dispatcher.dispatch(RequestSetsAction(type: SetType.all));
+        dispatcher.dispatch(RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state)));
 
         return storeCompleterService.registerCompleter(
           (state) => state.sets.loader == LoaderState.isLoaded,

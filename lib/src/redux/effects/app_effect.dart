@@ -66,7 +66,9 @@ class AppEffect {
 
         final response = await api.authUser();
         yield SetUserAction(user: UserState.fromDto(response.data));
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
+        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false, arguments: {
+          "intent": null,
+        });
       } catch (e) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
         print(e);
