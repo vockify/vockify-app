@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vockify/src/api/dto/translate/translate_dto.dart';
+import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 
 part 'translate_response.g.dart';
 
 @JsonSerializable(nullable: false)
 class TranslateResponse {
-  final TranslateDto data;
+  final List<DictionaryEntryDto> data;
 
   TranslateResponse(this.data);
 
