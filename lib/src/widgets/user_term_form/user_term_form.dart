@@ -124,7 +124,7 @@ class _UserTermFormState extends State<UserTermFormWidget> {
 
   bool _hasTranscription() => _transcription != '';
 
-  bool _areDefinitionChipsVisible() => _definitions.length > 1;
+  bool _areDefinitionChipsVisible() => _definitions.length > 0;
 
   Future<void> _translate() async {
     if (widget.termController.text.isEmpty || widget.termController.text == _term) {
@@ -132,14 +132,14 @@ class _UserTermFormState extends State<UserTermFormWidget> {
     }
 
     try {
-      final data = await api.translate(TranslateRequestDto(widget.termController.text));
+      final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
 
       final userDefinitions = _getUserDefinitions();
 
       setState(() {
-        _term = data.data.term;
-        _transcription = data.data.transcription;
-        _definitions = data.data.definitions;
+        _term = data.length > 0 ? data.first.text : '';
+        _transcription = data.length > 0 ? data.first.transcription : '';
+        _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
 
         _selectedDefinitions = _definitions.where((definition) => userDefinitions.contains(definition)).toList();
       });

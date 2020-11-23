@@ -190,7 +190,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
   bool _hasTranscription() => _transcription != '';
 
-  bool _areDefinitionChipsVisible() => _definitions.length > 1;
+  bool _areDefinitionChipsVisible() => _definitions.length > 0;
 
   Future<void> _translate() async {
     if (_nameController.text.isEmpty || _nameController.text == _term) {
@@ -198,14 +198,14 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     }
 
     try {
-      final data = await api.translate(TranslateRequestDto(_nameController.text));
+      final data = (await api.translate(TranslateRequestDto(_nameController.text))).data;
 
       _selectedDefinitions.clear();
 
       setState(() {
-        _term = data.data.term;
-        _transcription = data.data.transcription;
-        _definitions = data.data.definitions;
+        _term = data.length > 0 ? data.first.text : '';
+        _transcription = data.length > 0 ? data.first.transcription : '';
+        _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
       });
     } catch (e) {
       print(e);
