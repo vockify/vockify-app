@@ -8,11 +8,11 @@ part of 'set_filters_dto.dart';
 
 SetFiltersDto _$SetFiltersDtoFromJson(Map<String, dynamic> json) {
   return SetFiltersDto(
-    userIds: (json['userIds'] as List).map((e) => e as int).toList(),
+    userIds: (json['filter[user_id]'] as List).map((e) => e as int).toList(),
   );
 }
 
 Map<String, dynamic> _$SetFiltersDtoToJson(SetFiltersDto instance) =>
     <String, dynamic>{
-      'userIds': instance.userIds,
+      'filter[user_id]': SetFiltersDto.toCommaSeparatedList(instance.userIds),
     };

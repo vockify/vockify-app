@@ -96,12 +96,12 @@ class AppApi {
     return _processResponse(response);
   }
 
-  Future<Map<String, dynamic>> _get(String url, [Map<String, String> queryParameters]) async {
+  Future<Map<String, dynamic>> _get(String url, [Map<String, dynamic> queryParameters = const {}]) async {
     final headers = await _getHeaders();
 
     try {
       final response = await http.get(
-        Uri.http(apiUri, url, queryParameters),
+        Uri.http(apiUri, url, queryParameters.cast<String, String>()),
         headers: headers,
       );
       return _processResponse(response);
