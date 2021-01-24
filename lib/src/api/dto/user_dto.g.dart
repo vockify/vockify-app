@@ -13,6 +13,7 @@ UserDto _$UserDtoFromJson(Map<String, dynamic> json) {
     json['first_name'] as String,
     json['last_name'] as String,
     json['avatar'] as String,
+    json['is_registered'] as bool,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'avatar': instance.avatar,
+      'is_registered': instance.isRegistered,
     };

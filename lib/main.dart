@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
+import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
@@ -24,7 +25,7 @@ void main() async {
   final isAuthorized = await storage.containsKey(AppStorageKey.token);
 
   final reducer = AppReducer(SetReducer(), TermReducer());
-  final effect = AppEffect(SetEffect(), TermEffect());
+  final effect = AppEffect(SetEffect(), TermEffect(), AuthEffect());
 
   final store = Store<AppState>(
     reducer.getState,

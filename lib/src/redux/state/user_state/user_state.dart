@@ -12,7 +12,8 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
           ..email = userDto.email
           ..firstName = userDto.firstName
           ..lastName = userDto.lastName
-          ..avatar = userDto.avatar;
+          ..avatar = userDto.avatar
+          ..isRegistered = userDto.isRegistered;
       });
 
   factory UserState.initial() => UserState((builder) {
@@ -20,7 +21,8 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
           ..id = 0
           ..email = ''
           ..firstName = ''
-          ..lastName = '';
+          ..lastName = ''
+          ..isRegistered = false;
       });
 
   UserState._();
@@ -32,7 +34,11 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
 
   String get email;
 
+  @nullable
   String get firstName;
 
+  @nullable
   String get lastName;
+
+  bool get isRegistered;
 }

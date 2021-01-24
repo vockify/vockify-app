@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
-import 'package:vockify/src/api/dto/auth_user_response.dart';
+import 'package:vockify/src/api/dto/auth/register_response.dart';
+import 'package:vockify/src/api/dto/auth/user_response.dart';
 import 'package:vockify/src/api/dto/sets/set_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_response.dart';
@@ -14,7 +15,7 @@ import 'package:vockify/src/api/dto/terms/terms_response.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
-import 'package:vockify/src/redux/actions/unauthorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/unauthorize_action.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 
@@ -32,6 +33,11 @@ class AppApi {
 
   AppApi(this.store);
 
+  Future<RegisterResponse> register() async {
+    final data = await _post('/auth/register');
+    return data == null ? null : RegisterResponse.fromJson(data);
+  }
+
   Future<SetResponse> addSet(SetDto requestData) async {
     final data = await _post('/sets/', requestData.toJson());
     return SetResponse.fromJson(data);
@@ -42,9 +48,9 @@ class AppApi {
     return TermResponse.fromJson(data);
   }
 
-  Future<AuthUserResponse> authUser() async {
+  Future<UserResponse> getUser() async {
     final data = await _get('/auth/user');
-    return data == null ? null : AuthUserResponse.fromJson(data);
+    return data == null ? null : UserResponse.fromJson(data);
   }
 
   Future<SetResponse> copySet(int id) async {
@@ -107,7 +113,6 @@ class AppApi {
       return _processResponse(response);
     } on http.ClientException catch (e) {
       print(e);
-      store.dispatch(UnauthorizeAction());
       rethrow;
     }
   }

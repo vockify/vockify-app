@@ -1,9 +1,8 @@
 import 'package:redux/redux.dart';
-import 'package:vockify/src/redux/actions/authorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/authorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/set_user_action.dart';
 import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
-import 'package:vockify/src/redux/actions/set_user_action.dart';
-import 'package:vockify/src/redux/actions/unauthorize_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';
 import 'package:vockify/src/redux/reducers/term_reducer.dart';
@@ -18,7 +17,6 @@ class AppReducer {
       TypedReducer(termDataReducer.getState),
       TypedReducer(_authorizeReducer),
       TypedReducer(_setUserReducer),
-      TypedReducer(_unauthorizeReducer),
       TypedReducer(_setIsLoadingReducer),
       TypedReducer(_unsetIsLoadingReducer),
       TypedReducer(_setCurrentRouteReducer),
@@ -41,10 +39,6 @@ class AppReducer {
 
   AppState _setUserReducer(AppState state, SetUserAction action) {
     return state.rebuild((builder) => builder.user.replace(action.user));
-  }
-
-  AppState _unauthorizeReducer(AppState state, UnauthorizeAction action) {
-    return state.rebuild((builder) => builder.isAuthorized = false);
   }
 
   AppState _unsetIsLoadingReducer(AppState state, UnsetIsLoadingAction action) {
