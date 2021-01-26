@@ -152,6 +152,6 @@ class _TourWidgetState extends State<TourWidget> {
     final storage = AppStorage.getInstance();
     await storage.setValue(AppStorageKey.isTourFinished, true.toString());
 
-    dispatcher.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false));
+    dispatcher.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false));
   }
 }

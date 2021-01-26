@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:vockify/src/redux/actions/request_data_action.dart';
+import 'package:vockify/src/redux/actions/auth/request_register_action.dart';
+import 'package:vockify/src/redux/actions/auth/request_user_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
@@ -48,10 +49,10 @@ class _InitialState extends State<InitialWidget> {
     } else {
       if (!isAuthorized(store.state)) {
         scheduleMicrotask(() {
-          dispatcher.dispatch(NavigateToAction.replace(Routes.login));
+          dispatcher.dispatch(RequestRegisterAction(route: widget.route));
         });
       } else {
-        dispatcher.dispatch(RequestDataAction(route: widget.route, arguments: widget.arguments));
+        dispatcher.dispatch(RequestUserAction(route: widget.route, arguments: widget.arguments));
       }
     }
   }
