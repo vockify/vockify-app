@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/request_authorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/request_authorize_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';

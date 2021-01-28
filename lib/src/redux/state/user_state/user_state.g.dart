@@ -17,12 +17,19 @@ class _$UserState extends UserState {
   final String firstName;
   @override
   final String lastName;
+  @override
+  final bool isRegistered;
 
   factory _$UserState([void Function(UserStateBuilder) updates]) =>
       (new UserStateBuilder()..update(updates)).build();
 
   _$UserState._(
-      {this.id, this.avatar, this.email, this.firstName, this.lastName})
+      {this.id,
+      this.avatar,
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.isRegistered})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('UserState', 'id');
@@ -30,11 +37,8 @@ class _$UserState extends UserState {
     if (email == null) {
       throw new BuiltValueNullFieldError('UserState', 'email');
     }
-    if (firstName == null) {
-      throw new BuiltValueNullFieldError('UserState', 'firstName');
-    }
-    if (lastName == null) {
-      throw new BuiltValueNullFieldError('UserState', 'lastName');
+    if (isRegistered == null) {
+      throw new BuiltValueNullFieldError('UserState', 'isRegistered');
     }
   }
 
@@ -53,15 +57,18 @@ class _$UserState extends UserState {
         avatar == other.avatar &&
         email == other.email &&
         firstName == other.firstName &&
-        lastName == other.lastName;
+        lastName == other.lastName &&
+        isRegistered == other.isRegistered;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, id.hashCode), avatar.hashCode), email.hashCode),
-            firstName.hashCode),
-        lastName.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, id.hashCode), avatar.hashCode), email.hashCode),
+                firstName.hashCode),
+            lastName.hashCode),
+        isRegistered.hashCode));
   }
 
   @override
@@ -71,7 +78,8 @@ class _$UserState extends UserState {
           ..add('avatar', avatar)
           ..add('email', email)
           ..add('firstName', firstName)
-          ..add('lastName', lastName))
+          ..add('lastName', lastName)
+          ..add('isRegistered', isRegistered))
         .toString();
   }
 }
@@ -99,6 +107,10 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   String get lastName => _$this._lastName;
   set lastName(String lastName) => _$this._lastName = lastName;
 
+  bool _isRegistered;
+  bool get isRegistered => _$this._isRegistered;
+  set isRegistered(bool isRegistered) => _$this._isRegistered = isRegistered;
+
   UserStateBuilder();
 
   UserStateBuilder get _$this {
@@ -108,6 +120,7 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
       _email = _$v.email;
       _firstName = _$v.firstName;
       _lastName = _$v.lastName;
+      _isRegistered = _$v.isRegistered;
       _$v = null;
     }
     return this;
@@ -134,7 +147,8 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
             avatar: avatar,
             email: email,
             firstName: firstName,
-            lastName: lastName);
+            lastName: lastName,
+            isRegistered: isRegistered);
     replace(_$result);
     return _$result;
   }

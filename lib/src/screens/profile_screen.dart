@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/unauthorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/request_authorize_action.dart';
+import 'package:vockify/src/redux/actions/auth/unauthorize_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
@@ -15,20 +16,30 @@ class ProfileScreenWidget extends StatelessWidget {
     return LayoutWidget(
       route: Routes.profile,
       actions: <Widget>[
-        RawMaterialButton(
-          constraints: BoxConstraints(
-            minWidth: 42,
-            minHeight: 42,
-          ),
-          onPressed: () {
-            dispatcher.dispatch(UnauthorizeAction());
+        StoreConnector<AppState, UserState>(
+          distinct: true,
+          converter: (store) => getUserState(store.state),
+          builder: (context, user) {
+            if (user.isRegistered) {
+              return RawMaterialButton(
+                constraints: BoxConstraints(
+                  minWidth: 42,
+                  minHeight: 42,
+                ),
+                onPressed: () {
+                  dispatcher.dispatch(UnauthorizeAction());
+                },
+                child: Icon(
+                  Icons.exit_to_app,
+                  color: VockifyColors.white,
+                ),
+                padding: EdgeInsets.all(16),
+                shape: CircleBorder(),
+              );
+            }
+
+            return Container();
           },
-          child: Icon(
-            Icons.exit_to_app,
-            color: VockifyColors.white,
-          ),
-          padding: EdgeInsets.all(16),
-          shape: CircleBorder(),
         ),
       ],
       body: Center(
@@ -50,24 +61,47 @@ class ProfileScreenWidget extends StatelessWidget {
                   ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        '${user.firstName} ${user.lastName}',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ),
-                    subtitle: Text(
-                      user.email,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  child: _buildContent(context, user),
                 ),
               ],
             );
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, UserState user) {
+    if (user.isRegistered) {
+      return ListTile(
+        title: Center(
+          child: Text(
+            '${user.firstName} ${user.lastName}',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+        ),
+        subtitle: Text(
+          user.email,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FlatButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            dispatcher.dispatch(RequestAuthorizeAction());
+          },
+          child: Image.asset(
+            'assets/btn_google_signin_dark_normal_web@2x.png',
+            width: 240,
+          ),
+        ),
+      ],
     );
   }
 }

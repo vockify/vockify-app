@@ -9,8 +9,11 @@ Authorization getAuthorization() => MobileAuthorization();
 class MobileAuthorization extends Authorization {
   @override
   Future<void> authenticate() async {
+    final storage = AppStorage.getInstance();
+    final currentToken = await storage.getValue(AppStorageKey.token) ?? '';
+
     final result = await FlutterWebAuth.authenticate(
-      url: "${Authorization.url}?type=app",
+      url: "${Authorization.url}?type=app&token=${currentToken}",
       callbackUrlScheme: "vockify",
     );
 
@@ -20,7 +23,6 @@ class MobileAuthorization extends Authorization {
       throw AuthorizationException('Token is empty');
     }
 
-    final storage = AppStorage.getInstance();
     await storage.setValue(AppStorageKey.token, token);
   }
 }
