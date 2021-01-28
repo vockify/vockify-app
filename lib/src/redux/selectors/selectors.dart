@@ -16,7 +16,7 @@ Selector<AppState, List<int>> getLastAddedTermIds = createSelector1(
   (HistoryDataState state) => state.ids.toList(),
 );
 
-Selector<AppState, LoaderState> getLastTermLoader = createSelector1(
+Selector<AppState, LoaderState> getHistoryLoader = createSelector1(
   getHistoryDataState,
   (HistoryDataState state) => state.loader,
 );

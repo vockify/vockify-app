@@ -48,9 +48,7 @@ class TermEffect {
       try {
         final result = await api.addTerm(action.term);
 
-        if (store.state.terms.loader == LoaderState.isLoaded) {
-          yield AddUserTermAction(term: TermState.fromDto(result.data));
-        }
+        yield AddUserTermAction(term: TermState.fromDto(result.data));
       } catch (e) {
         print(e);
       } finally {

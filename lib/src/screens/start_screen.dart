@@ -22,7 +22,7 @@ class StartScreenWidget extends StatelessWidget {
         store.dispatch(RequestInitialDataAction());
       },
       isLoading: (store) =>
-          getSetLoader(store.state) == LoaderState.isLoading || getLastTermLoader(store.state) == LoaderState.isLoading,
+          getSetLoader(store.state) == LoaderState.isLoading || getHistoryLoader(store.state) == LoaderState.isLoading,
       body: StartUserTermFormWidget(term: term),
     );
   }
