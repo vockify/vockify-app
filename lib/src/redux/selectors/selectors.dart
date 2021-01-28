@@ -2,6 +2,7 @@ import 'package:reselect/reselect.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
+import 'package:vockify/src/redux/state/last_term_data_state/last_term_data_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
@@ -11,8 +12,13 @@ import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
 Selector<AppState, List<int>> getLastAddedTermIds = createSelector1(
-  getTermDataState,
-  (TermDataState state) => state.lastAddedIds.toList(),
+  getLastTermDataState,
+  (LastTermDataState state) => state.ids.toList(),
+);
+
+Selector<AppState, LoaderState> getLastTermLoader = createSelector1(
+  getLastTermDataState,
+  (LastTermDataState state) => state.loader,
 );
 
 Selector<AppState, List<int>> getPublicAndCurrentUserIds =
@@ -87,6 +93,8 @@ List<TermState> getLastAddedTerms(AppState state) {
 
   return ids.map((id) => items[id]).toList();
 }
+
+LastTermDataState getLastTermDataState(AppState state) => state.lastTerms;
 
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 

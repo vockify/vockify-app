@@ -16,6 +16,8 @@ class _$AppState extends AppState {
   @override
   final QuizDataState quiz;
   @override
+  final LastTermDataState lastTerms;
+  @override
   final SetDataState sets;
   @override
   final TermDataState terms;
@@ -32,6 +34,7 @@ class _$AppState extends AppState {
       this.isAuthorized,
       this.isLoading,
       this.quiz,
+      this.lastTerms,
       this.sets,
       this.terms,
       this.user,
@@ -45,6 +48,9 @@ class _$AppState extends AppState {
     }
     if (quiz == null) {
       throw new BuiltValueNullFieldError('AppState', 'quiz');
+    }
+    if (lastTerms == null) {
+      throw new BuiltValueNullFieldError('AppState', 'lastTerms');
     }
     if (sets == null) {
       throw new BuiltValueNullFieldError('AppState', 'sets');
@@ -75,6 +81,7 @@ class _$AppState extends AppState {
         isAuthorized == other.isAuthorized &&
         isLoading == other.isLoading &&
         quiz == other.quiz &&
+        lastTerms == other.lastTerms &&
         sets == other.sets &&
         terms == other.terms &&
         user == other.user &&
@@ -89,10 +96,12 @@ class _$AppState extends AppState {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc(0, currentRoute.hashCode),
-                                isAuthorized.hashCode),
-                            isLoading.hashCode),
-                        quiz.hashCode),
+                            $jc(
+                                $jc($jc(0, currentRoute.hashCode),
+                                    isAuthorized.hashCode),
+                                isLoading.hashCode),
+                            quiz.hashCode),
+                        lastTerms.hashCode),
                     sets.hashCode),
                 terms.hashCode),
             user.hashCode),
@@ -106,6 +115,7 @@ class _$AppState extends AppState {
           ..add('isAuthorized', isAuthorized)
           ..add('isLoading', isLoading)
           ..add('quiz', quiz)
+          ..add('lastTerms', lastTerms)
           ..add('sets', sets)
           ..add('terms', terms)
           ..add('user', user)
@@ -132,6 +142,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   QuizDataStateBuilder _quiz;
   QuizDataStateBuilder get quiz => _$this._quiz ??= new QuizDataStateBuilder();
   set quiz(QuizDataStateBuilder quiz) => _$this._quiz = quiz;
+
+  LastTermDataStateBuilder _lastTerms;
+  LastTermDataStateBuilder get lastTerms =>
+      _$this._lastTerms ??= new LastTermDataStateBuilder();
+  set lastTerms(LastTermDataStateBuilder lastTerms) =>
+      _$this._lastTerms = lastTerms;
 
   SetDataStateBuilder _sets;
   SetDataStateBuilder get sets => _$this._sets ??= new SetDataStateBuilder();
@@ -160,6 +176,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _isAuthorized = _$v.isAuthorized;
       _isLoading = _$v.isLoading;
       _quiz = _$v.quiz?.toBuilder();
+      _lastTerms = _$v.lastTerms?.toBuilder();
       _sets = _$v.sets?.toBuilder();
       _terms = _$v.terms?.toBuilder();
       _user = _$v.user?.toBuilder();
@@ -192,6 +209,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               isAuthorized: isAuthorized,
               isLoading: isLoading,
               quiz: quiz.build(),
+              lastTerms: lastTerms.build(),
               sets: sets.build(),
               terms: terms.build(),
               user: user.build(),
@@ -201,6 +219,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       try {
         _$failedField = 'quiz';
         quiz.build();
+        _$failedField = 'lastTerms';
+        lastTerms.build();
         _$failedField = 'sets';
         sets.build();
         _$failedField = 'terms';

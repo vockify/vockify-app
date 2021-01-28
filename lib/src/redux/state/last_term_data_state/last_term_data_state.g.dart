@@ -1,88 +1,77 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'term_data_state.dart';
+part of 'last_term_data_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$TermDataState extends TermDataState {
+class _$LastTermDataState extends LastTermDataState {
   @override
   final BuiltList<int> ids;
   @override
-  final BuiltMap<int, TermState> items;
-  @override
   final LoaderState loader;
 
-  factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
-      (new TermDataStateBuilder()..update(updates)).build();
+  factory _$LastTermDataState(
+          [void Function(LastTermDataStateBuilder) updates]) =>
+      (new LastTermDataStateBuilder()..update(updates)).build();
 
-  _$TermDataState._({this.ids, this.items, this.loader}) : super._() {
+  _$LastTermDataState._({this.ids, this.loader}) : super._() {
     if (ids == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'ids');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'items');
+      throw new BuiltValueNullFieldError('LastTermDataState', 'ids');
     }
     if (loader == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'loader');
+      throw new BuiltValueNullFieldError('LastTermDataState', 'loader');
     }
   }
 
   @override
-  TermDataState rebuild(void Function(TermDataStateBuilder) updates) =>
+  LastTermDataState rebuild(void Function(LastTermDataStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  TermDataStateBuilder toBuilder() => new TermDataStateBuilder()..replace(this);
+  LastTermDataStateBuilder toBuilder() =>
+      new LastTermDataStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TermDataState &&
+    return other is LastTermDataState &&
         ids == other.ids &&
-        items == other.items &&
         loader == other.loader;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, ids.hashCode), items.hashCode), loader.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('TermDataState')
+    return (newBuiltValueToStringHelper('LastTermDataState')
           ..add('ids', ids)
-          ..add('items', items)
           ..add('loader', loader))
         .toString();
   }
 }
 
-class TermDataStateBuilder
-    implements Builder<TermDataState, TermDataStateBuilder> {
-  _$TermDataState _$v;
+class LastTermDataStateBuilder
+    implements Builder<LastTermDataState, LastTermDataStateBuilder> {
+  _$LastTermDataState _$v;
 
   ListBuilder<int> _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
   set ids(ListBuilder<int> ids) => _$this._ids = ids;
 
-  MapBuilder<int, TermState> _items;
-  MapBuilder<int, TermState> get items =>
-      _$this._items ??= new MapBuilder<int, TermState>();
-  set items(MapBuilder<int, TermState> items) => _$this._items = items;
-
   LoaderState _loader;
   LoaderState get loader => _$this._loader;
   set loader(LoaderState loader) => _$this._loader = loader;
 
-  TermDataStateBuilder();
+  LastTermDataStateBuilder();
 
-  TermDataStateBuilder get _$this {
+  LastTermDataStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids?.toBuilder();
-      _items = _$v.items?.toBuilder();
       _loader = _$v.loader;
       _$v = null;
     }
@@ -90,35 +79,32 @@ class TermDataStateBuilder
   }
 
   @override
-  void replace(TermDataState other) {
+  void replace(LastTermDataState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$TermDataState;
+    _$v = other as _$LastTermDataState;
   }
 
   @override
-  void update(void Function(TermDataStateBuilder) updates) {
+  void update(void Function(LastTermDataStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$TermDataState build() {
-    _$TermDataState _$result;
+  _$LastTermDataState build() {
+    _$LastTermDataState _$result;
     try {
-      _$result = _$v ??
-          new _$TermDataState._(
-              ids: ids.build(), items: items.build(), loader: loader);
+      _$result =
+          _$v ?? new _$LastTermDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'ids';
         ids.build();
-        _$failedField = 'items';
-        items.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'TermDataState', _$failedField, e.toString());
+            'LastTermDataState', _$failedField, e.toString());
       }
       rethrow;
     }
