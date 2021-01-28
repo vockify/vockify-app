@@ -109,6 +109,7 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
+      print('requested');
       try {
         final response = await api.getSets(SetFiltersDto(userIds: action.userIds));
         yield SetSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));

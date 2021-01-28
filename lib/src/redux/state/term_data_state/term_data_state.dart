@@ -10,9 +10,9 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
 
   factory TermDataState.initial() => TermDataState((builder) {
         builder
-          ..lastAddedTerm = ''
           ..items.replace({})
           ..ids.replace([])
+          ..lastAddedIds.replace([])
           ..loader = LoaderState.isLoading;
       });
 
@@ -22,7 +22,7 @@ abstract class TermDataState implements Built<TermDataState, TermDataStateBuilde
 
   BuiltMap<int, TermState> get items;
 
-  String get lastAddedTerm;
+  BuiltList<int> get lastAddedIds;
 
   LoaderState get loader;
 }

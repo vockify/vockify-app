@@ -10,10 +10,13 @@ import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
-Selector<AppState, String> getLastAddedTerm = createSelector1(
+Selector<AppState, List<int>> getLastAddedTermIds = createSelector1(
   getTermDataState,
-  (TermDataState state) => state.lastAddedTerm,
+  (TermDataState state) => state.lastAddedIds.toList(),
 );
+
+Selector<AppState, List<int>> getPublicAndCurrentUserIds =
+    createSelector1(getUserState, (UserState state) => [state.id, AppApi.publicUserId]);
 
 Selector<AppState, List<int>> getPublicSetIds = createSelector1(
   getSetDataState,
@@ -59,6 +62,8 @@ Selector<AppState, LoaderState> getTermLoader = createSelector1(
   (TermDataState state) => state.loader,
 );
 
+Selector<AppState, int> getUserId = createSelector1(getUserState, (UserState state) => state.id);
+
 Selector<AppState, List<int>> getUserSetIds = createSelector1(
   getSetDataState,
   (SetDataState state) => state.userSetIds.toList(),
@@ -75,6 +80,13 @@ Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
     return result;
   }),
 );
+
+List<TermState> getLastAddedTerms(AppState state) {
+  final items = getTermItems(state);
+  final ids = getLastAddedTermIds(state);
+
+  return ids.map((id) => items[id]).toList();
+}
 
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 
@@ -96,13 +108,10 @@ int getUserSetIdByParentId(AppState state, int parentId) {
   );
 }
 
-Selector<AppState, List<int>> getPublicAndCurrentUserIds =
-    createSelector1(getUserState, (UserState state) => [state.id, AppApi.publicUserId]);
-
 UserState getUserState(AppState state) => state.user;
 
 bool isAuthorized(AppState state) => state.isAuthorized;
 
-bool isLoading(AppState state) => state.isLoading;
-
 bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag];
+
+bool isLoading(AppState state) => state.isLoading;

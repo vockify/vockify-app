@@ -101,7 +101,7 @@ class AppApi {
 
     try {
       final response = await http.get(
-        Uri.http(apiUri, url, queryParameters.cast<String, String>()),
+        Uri.http(apiUri, url, queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>()),
         headers: headers,
       );
       return _processResponse(response);

@@ -28,9 +28,9 @@ class VockifyColors {
   static const roseMadder = Color(0xFFDA2C38);
   static const persianGreen = Color(0xFF2A9D8F);
 
-  static const black = Colors.black;
+  static const black = Colors.black54;
   static const white = Colors.white;
-  static const grey = Colors.white70;
+  static const grey = Colors.black12;
 
   static const success = persianGreen;
   static const fail = flame;
