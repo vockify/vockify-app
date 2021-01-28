@@ -34,7 +34,7 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.addEntries([MapEntry(action.term.id, action.term)]);
       builder.terms.ids.insert(0, action.term.id);
-      builder.lastTerms.ids.insert(0, action.term.id);
+      builder.history.ids.insert(0, action.term.id);
     });
   }
 
@@ -50,8 +50,8 @@ class TermReducer {
 
     return state.rebuild((builder) {
       builder.terms.items.addEntries(entries);
-      builder.lastTerms.ids.replace(action.terms.map((term) => term.id));
-      builder.lastTerms.loader = LoaderState.isLoaded;
+      builder.history.ids.replace(action.terms.map((term) => term.id));
+      builder.history.loader = LoaderState.isLoaded;
     });
   }
 

@@ -1,6 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
-import 'package:vockify/src/redux/state/last_term_data_state/last_term_data_state.dart';
+import 'package:vockify/src/redux/state/history_data_state/history_data_state.dart';
 import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
 import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
@@ -19,7 +19,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
           ..sets.replace(SetDataState.initial())
           ..terms.replace(TermDataState.initial())
           ..quiz.replace(QuizDataState.initial())
-          ..lastTerms.replace(LastTermDataState.initial())
+          ..history.replace(HistoryDataState.initial())
           ..user.replace(UserState.initial());
       });
 
@@ -34,7 +34,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   bool get isLoading;
 
-  LastTermDataState get lastTerms;
+  HistoryDataState get history;
 
   QuizDataState get quiz;
 

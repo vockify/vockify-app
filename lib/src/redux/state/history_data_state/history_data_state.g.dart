@@ -1,42 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'last_term_data_state.dart';
+part of 'history_data_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$LastTermDataState extends LastTermDataState {
+class _$HistoryDataState extends HistoryDataState {
   @override
   final BuiltList<int> ids;
   @override
   final LoaderState loader;
 
-  factory _$LastTermDataState(
-          [void Function(LastTermDataStateBuilder) updates]) =>
-      (new LastTermDataStateBuilder()..update(updates)).build();
+  factory _$HistoryDataState(
+          [void Function(HistoryDataStateBuilder) updates]) =>
+      (new HistoryDataStateBuilder()..update(updates)).build();
 
-  _$LastTermDataState._({this.ids, this.loader}) : super._() {
+  _$HistoryDataState._({this.ids, this.loader}) : super._() {
     if (ids == null) {
-      throw new BuiltValueNullFieldError('LastTermDataState', 'ids');
+      throw new BuiltValueNullFieldError('HistoryDataState', 'ids');
     }
     if (loader == null) {
-      throw new BuiltValueNullFieldError('LastTermDataState', 'loader');
+      throw new BuiltValueNullFieldError('HistoryDataState', 'loader');
     }
   }
 
   @override
-  LastTermDataState rebuild(void Function(LastTermDataStateBuilder) updates) =>
+  HistoryDataState rebuild(void Function(HistoryDataStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  LastTermDataStateBuilder toBuilder() =>
-      new LastTermDataStateBuilder()..replace(this);
+  HistoryDataStateBuilder toBuilder() =>
+      new HistoryDataStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is LastTermDataState &&
+    return other is HistoryDataState &&
         ids == other.ids &&
         loader == other.loader;
   }
@@ -48,16 +48,16 @@ class _$LastTermDataState extends LastTermDataState {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('LastTermDataState')
+    return (newBuiltValueToStringHelper('HistoryDataState')
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
   }
 }
 
-class LastTermDataStateBuilder
-    implements Builder<LastTermDataState, LastTermDataStateBuilder> {
-  _$LastTermDataState _$v;
+class HistoryDataStateBuilder
+    implements Builder<HistoryDataState, HistoryDataStateBuilder> {
+  _$HistoryDataState _$v;
 
   ListBuilder<int> _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
@@ -67,9 +67,9 @@ class LastTermDataStateBuilder
   LoaderState get loader => _$this._loader;
   set loader(LoaderState loader) => _$this._loader = loader;
 
-  LastTermDataStateBuilder();
+  HistoryDataStateBuilder();
 
-  LastTermDataStateBuilder get _$this {
+  HistoryDataStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids?.toBuilder();
       _loader = _$v.loader;
@@ -79,24 +79,24 @@ class LastTermDataStateBuilder
   }
 
   @override
-  void replace(LastTermDataState other) {
+  void replace(HistoryDataState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$LastTermDataState;
+    _$v = other as _$HistoryDataState;
   }
 
   @override
-  void update(void Function(LastTermDataStateBuilder) updates) {
+  void update(void Function(HistoryDataStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$LastTermDataState build() {
-    _$LastTermDataState _$result;
+  _$HistoryDataState build() {
+    _$HistoryDataState _$result;
     try {
       _$result =
-          _$v ?? new _$LastTermDataState._(ids: ids.build(), loader: loader);
+          _$v ?? new _$HistoryDataState._(ids: ids.build(), loader: loader);
     } catch (_) {
       String _$failedField;
       try {
@@ -104,7 +104,7 @@ class LastTermDataStateBuilder
         ids.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'LastTermDataState', _$failedField, e.toString());
+            'HistoryDataState', _$failedField, e.toString());
       }
       rethrow;
     }
