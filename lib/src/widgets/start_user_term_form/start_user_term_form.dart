@@ -146,7 +146,6 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                             id: id,
                             onTap: (text) {
                               _nameController.text = text;
-                              // _translate(text);
                             },
                           ),
                         );

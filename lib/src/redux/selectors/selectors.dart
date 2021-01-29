@@ -87,12 +87,12 @@ Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
   }),
 );
 
-List<TermState> getLastAddedTerms(AppState state) {
-  final items = getTermItems(state);
-  final ids = getLastAddedTermIds(state);
-
-  return ids.map((id) => items[id]).toList();
-}
+Selector<AppState, List<TermState>> getLastAddedTerms = createSelector2(
+  getTermItems,
+  getLastAddedTermIds,
+  (Map<int, TermState> items, List<int> ids) =>
+      ids.where(items.containsKey).map((id) => items[id]).toList(),
+);
 
 HistoryDataState getHistoryDataState(AppState state) => state.history;
 
