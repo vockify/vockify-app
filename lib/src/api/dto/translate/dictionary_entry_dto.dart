@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vockify/src/api/dto/translate/part_of_speech.dart';
 import 'package:vockify/src/api/dto/translate/translation_dto.dart';
 
 part 'dictionary_entry_dto.g.dart';

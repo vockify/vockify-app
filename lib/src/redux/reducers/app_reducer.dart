@@ -26,7 +26,9 @@ class AppReducer {
   AppState getState(AppState state, Object action) => _reducer(state, action);
 
   AppState _authorizeReducer(AppState state, AuthorizeAction action) {
-    return state.rebuild((builder) => builder.isAuthorized = true);
+    return state.rebuild((builder) {
+      builder.authToken = action.authToken;
+    });
   }
 
   AppState _setCurrentRouteReducer(AppState state, SetCurrentRouteAction action) {

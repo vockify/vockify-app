@@ -8,7 +8,7 @@ Authorization getAuthorization() => MobileAuthorization();
 
 class MobileAuthorization extends Authorization {
   @override
-  Future<void> authenticate() async {
+  Future<String> authenticate() async {
     final storage = AppStorage.getInstance();
     final currentToken = await storage.getValue(AppStorageKey.token) ?? '';
 
@@ -23,6 +23,6 @@ class MobileAuthorization extends Authorization {
       throw AuthorizationException('Token is empty');
     }
 
-    await storage.setValue(AppStorageKey.token, token);
+    return token;
   }
 }

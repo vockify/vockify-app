@@ -12,7 +12,7 @@ class _$AppState extends AppState {
   @override
   final FeatureFlagState featureFlags;
   @override
-  final bool isAuthorized;
+  final String authToken;
   @override
   final bool isLoading;
   @override
@@ -32,7 +32,7 @@ class _$AppState extends AppState {
   _$AppState._(
       {this.currentRoute,
       this.featureFlags,
-      this.isAuthorized,
+      this.authToken,
       this.isLoading,
       this.history,
       this.quiz,
@@ -43,8 +43,8 @@ class _$AppState extends AppState {
     if (featureFlags == null) {
       throw new BuiltValueNullFieldError('AppState', 'featureFlags');
     }
-    if (isAuthorized == null) {
-      throw new BuiltValueNullFieldError('AppState', 'isAuthorized');
+    if (authToken == null) {
+      throw new BuiltValueNullFieldError('AppState', 'authToken');
     }
     if (isLoading == null) {
       throw new BuiltValueNullFieldError('AppState', 'isLoading');
@@ -79,7 +79,7 @@ class _$AppState extends AppState {
     return other is AppState &&
         currentRoute == other.currentRoute &&
         featureFlags == other.featureFlags &&
-        isAuthorized == other.isAuthorized &&
+        authToken == other.authToken &&
         isLoading == other.isLoading &&
         history == other.history &&
         quiz == other.quiz &&
@@ -99,7 +99,7 @@ class _$AppState extends AppState {
                             $jc(
                                 $jc($jc(0, currentRoute.hashCode),
                                     featureFlags.hashCode),
-                                isAuthorized.hashCode),
+                                authToken.hashCode),
                             isLoading.hashCode),
                         history.hashCode),
                     quiz.hashCode),
@@ -113,7 +113,7 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('currentRoute', currentRoute)
           ..add('featureFlags', featureFlags)
-          ..add('isAuthorized', isAuthorized)
+          ..add('authToken', authToken)
           ..add('isLoading', isLoading)
           ..add('history', history)
           ..add('quiz', quiz)
@@ -137,9 +137,9 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set featureFlags(FeatureFlagStateBuilder featureFlags) =>
       _$this._featureFlags = featureFlags;
 
-  bool _isAuthorized;
-  bool get isAuthorized => _$this._isAuthorized;
-  set isAuthorized(bool isAuthorized) => _$this._isAuthorized = isAuthorized;
+  String _authToken;
+  String get authToken => _$this._authToken;
+  set authToken(String authToken) => _$this._authToken = authToken;
 
   bool _isLoading;
   bool get isLoading => _$this._isLoading;
@@ -173,7 +173,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     if (_$v != null) {
       _currentRoute = _$v.currentRoute;
       _featureFlags = _$v.featureFlags?.toBuilder();
-      _isAuthorized = _$v.isAuthorized;
+      _authToken = _$v.authToken;
       _isLoading = _$v.isLoading;
       _history = _$v.history?.toBuilder();
       _quiz = _$v.quiz?.toBuilder();
@@ -206,7 +206,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               currentRoute: currentRoute,
               featureFlags: featureFlags.build(),
-              isAuthorized: isAuthorized,
+              authToken: authToken,
               isLoading: isLoading,
               history: history.build(),
               quiz: quiz.build(),

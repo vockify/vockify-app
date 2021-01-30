@@ -11,9 +11,9 @@ part 'app_state.g.dart';
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState([void updates(AppStateBuilder b)]) = _$AppState;
 
-  factory AppState.initial({bool isAuthorized, int selectedSetId}) => AppState((builder) {
+  factory AppState.initial({String authToken, int selectedSetId}) => AppState((builder) {
         builder
-          ..isAuthorized = isAuthorized ?? false
+          ..authToken = authToken
           ..isLoading = false
           ..featureFlags.replace(FeatureFlagState.initial())
           ..sets.replace(SetDataState.initial())
@@ -30,7 +30,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   FeatureFlagState get featureFlags;
 
-  bool get isAuthorized;
+  String get authToken;
 
   bool get isLoading;
 

@@ -118,8 +118,10 @@ int getUserSetIdByParentId(AppState state, int parentId) {
 
 UserState getUserState(AppState state) => state.user;
 
-bool isAuthorized(AppState state) => state.isAuthorized;
+bool isAuthorized(AppState state) => state.authToken.isNotEmpty && state.authToken != null;
 
 bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag];
 
 bool isLoading(AppState state) => state.isLoading;
+
+String authToken(AppState state) => state.authToken;
