@@ -7,9 +7,11 @@ import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/start_user_term_form/history_term_item.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_term_text_field.dart';
 import 'package:vockify/src/widgets/user_term_form/definition_chips.dart';
 import 'package:vockify/src/widgets/user_term_form/transcription_text.dart';
@@ -46,14 +48,14 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                 controller: _nameController,
               ),
             ),
-            if (_term.isNotEmpty)
+            if (_definitions.isNotEmpty)
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 80),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(bottom: 30),
@@ -83,7 +85,75 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                     ),
                   ),
                 ),
-              )
+              ),
+            if (_term.isEmpty)
+              StoreConnector<AppState, List<int>>(
+                distinct: true,
+                converter: (store) => getLastAddedTermIds(store.state),
+                builder: (context, ids) {
+                  if (ids.isEmpty) {
+                    return Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Icon(
+                            Icons.history,
+                            color: VockifyColors.black,
+                            size: 64,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(48, 0, 48, 16),
+                            child: Text(
+                              'Начните вводить слово и добавьте его в словарь',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                color: VockifyColors.black,
+                                fontSize: 18,
+                                height: 1.3,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: 16, bottom: 32),
+                      itemCount: ids.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'Последние добавленные слова',
+                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                            ),
+                          );
+                        }
+
+                        final id = ids[index - 1];
+
+                        return Container(
+                          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                          child: HistoryTermItemWidget(
+                            key: ValueKey(id),
+                            id: id,
+                            onTap: (text) {
+                              _nameController.text = text;
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
           ],
         ),
         if (_definitions.isNotEmpty)
@@ -121,22 +191,28 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
     _nameController.addListener(() {
       if (_nameController.text.isEmpty) {
-        if (_definitions.isNotEmpty || _transcription.isNotEmpty) {
-          setState(() {
-            _term = '';
-            _transcription = '';
-            _definitions = [];
-          });
-        }
+        setState(() {
+          _term = '';
+          _transcription = '';
+          _definitions = [];
+        });
+      } else {
+        setState(() {
+          _term = _nameController.text;
+        });
       }
 
       EasyDebounce.debounce(
         'translate',
         Duration(milliseconds: 500),
-        _translate,
+        () {
+          _translate(_nameController.text);
+        },
       );
     });
   }
+
+  bool _areDefinitionChipsVisible() => _definitions.length > 0;
 
   Widget _buildAddButton() {
     final definition = _selectedDefinitions.isEmpty ? _definitions.first : _selectedDefinitions.join(', ');
@@ -144,11 +220,11 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     return Row(
       children: <Widget>[
         Expanded(
-          child: StoreConnector<AppState, String>(
+          child: StoreConnector<AppState, List<TermState>>(
             distinct: true,
-            converter: (store) => getLastAddedTerm(store.state),
-            builder: (context, lastAddedTerm) {
-              final isTermAdded = lastAddedTerm == _term;
+            converter: (store) => getLastAddedTerms(store.state),
+            builder: (context, terms) {
+              final isTermAdded = terms.map((term) => term.name).contains(_term);
 
               return RawMaterialButton(
                 padding: EdgeInsets.all(16),
@@ -190,20 +266,17 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
   bool _hasTranscription() => _transcription != '';
 
-  bool _areDefinitionChipsVisible() => _definitions.length > 0;
-
-  Future<void> _translate() async {
-    if (_nameController.text.isEmpty || _nameController.text == _term) {
+  Future<void> _translate(String text) async {
+    if (text.isEmpty) {
       return;
     }
 
     try {
-      final data = (await api.translate(TranslateRequestDto(_nameController.text))).data;
+      final data = (await api.translate(TranslateRequestDto(text))).data;
 
       _selectedDefinitions.clear();
 
       setState(() {
-        _term = data.length > 0 ? data.first.text : '';
         _transcription = data.length > 0 ? data.first.transcription : '';
         _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
       });

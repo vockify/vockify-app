@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/actions/terms/add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/remove_user_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_last_added_term_action.dart';
+import 'package:vockify/src/redux/actions/terms/set_last_added_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_quiz_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
@@ -24,7 +24,7 @@ class TermReducer {
       TypedReducer(_updateTermReducer),
       TypedReducer(_removeUserTermReducer),
       TypedReducer(_setTermsLoaderReducer),
-      TypedReducer(_setLastAddedTermReducer),
+      TypedReducer(_setLastAddedTermsReducer),
     ]);
   }
 
@@ -34,6 +34,7 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.addEntries([MapEntry(action.term.id, action.term)]);
       builder.terms.ids.insert(0, action.term.id);
+      builder.history.ids.insert(0, action.term.id);
     });
   }
 
@@ -44,9 +45,13 @@ class TermReducer {
     });
   }
 
-  AppState _setLastAddedTermReducer(AppState state, SetLastAddedTerm action) {
+  AppState _setLastAddedTermsReducer(AppState state, SetLastAddedTermsAction action) {
+    final entries = action.terms.map((term) => MapEntry(term.id, term));
+
     return state.rebuild((builder) {
-      builder.terms.lastAddedTerm = action.name;
+      builder.terms.items.addEntries(entries);
+      builder.history.ids.replace(action.terms.map((term) => term.id));
+      builder.history.loader = LoaderState.isLoaded;
     });
   }
 

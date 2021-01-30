@@ -41,9 +41,7 @@ class SetEffect {
       try {
         final result = await api.addSet(action.set);
 
-        if (store.state.sets.loader == LoaderState.isLoaded) {
-          yield AddUserSetAction(set: SetState.fromDto(result.data));
-        }
+        yield AddUserSetAction(set: SetState.fromDto(result.data));
       } catch (e) {
         print(e);
       } finally {

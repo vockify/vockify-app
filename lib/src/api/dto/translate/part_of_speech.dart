@@ -17,4 +17,6 @@ enum PartOfSpeech {
   Conjunction,
   @JsonValue('interjection')
   Interjection,
+  @JsonValue('participle')
+  Participle,
 }

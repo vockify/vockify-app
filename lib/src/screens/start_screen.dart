@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vockify/src/redux/actions/request_initial_data_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/unset_sets_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_last_added_terms_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -17,12 +19,10 @@ class StartScreenWidget extends StatelessWidget {
     return LayoutWidget(
       route: Routes.start,
       onInit: (store) {
-        store.dispatch(RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state)));
+        store.dispatch(RequestInitialDataAction());
       },
-      onDispose: (store) {
-        store.dispatch(UnsetSetsAction());
-      },
-      isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
+      isLoading: (store) =>
+          getSetLoader(store.state) == LoaderState.isLoading || getHistoryLoader(store.state) == LoaderState.isLoading,
       body: StartUserTermFormWidget(term: term),
     );
   }

@@ -25,12 +25,6 @@ class MainScreenWidget extends StatelessWidget {
           ),
         ),
       ],
-      onInit: (store) {
-        store.dispatch(RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state)));
-      },
-      onDispose: (store) {
-        store.dispatch(UnsetSetsAction());
-      },
       isLoading: (store) => getSetLoader(store.state) == LoaderState.isLoading,
       body: SetListWidget(),
     );

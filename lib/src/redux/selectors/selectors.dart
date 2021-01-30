@@ -2,6 +2,7 @@ import 'package:reselect/reselect.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
+import 'package:vockify/src/redux/state/history_data_state/history_data_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/quiz_data_state/quiz_data_state.dart';
 import 'package:vockify/src/redux/state/set_data_state/set_data_state.dart';
@@ -10,10 +11,18 @@ import 'package:vockify/src/redux/state/term_data_state/term_data_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
 
-Selector<AppState, String> getLastAddedTerm = createSelector1(
-  getTermDataState,
-  (TermDataState state) => state.lastAddedTerm,
+Selector<AppState, List<int>> getLastAddedTermIds = createSelector1(
+  getHistoryDataState,
+  (HistoryDataState state) => state.ids.toList(),
 );
+
+Selector<AppState, LoaderState> getHistoryLoader = createSelector1(
+  getHistoryDataState,
+  (HistoryDataState state) => state.loader,
+);
+
+Selector<AppState, List<int>> getPublicAndCurrentUserIds =
+    createSelector1(getUserState, (UserState state) => [state.id, AppApi.publicUserId]);
 
 Selector<AppState, List<int>> getPublicSetIds = createSelector1(
   getSetDataState,
@@ -59,6 +68,8 @@ Selector<AppState, LoaderState> getTermLoader = createSelector1(
   (TermDataState state) => state.loader,
 );
 
+Selector<AppState, int> getUserId = createSelector1(getUserState, (UserState state) => state.id);
+
 Selector<AppState, List<int>> getUserSetIds = createSelector1(
   getSetDataState,
   (SetDataState state) => state.userSetIds.toList(),
@@ -75,6 +86,15 @@ Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
     return result;
   }),
 );
+
+Selector<AppState, List<TermState>> getLastAddedTerms = createSelector2(
+  getTermItems,
+  getLastAddedTermIds,
+  (Map<int, TermState> items, List<int> ids) =>
+      ids.where(items.containsKey).map((id) => items[id]).toList(),
+);
+
+HistoryDataState getHistoryDataState(AppState state) => state.history;
 
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 
@@ -96,13 +116,10 @@ int getUserSetIdByParentId(AppState state, int parentId) {
   );
 }
 
-Selector<AppState, List<int>> getPublicAndCurrentUserIds =
-    createSelector1(getUserState, (UserState state) => [state.id, AppApi.publicUserId]);
-
 UserState getUserState(AppState state) => state.user;
 
 bool isAuthorized(AppState state) => state.isAuthorized;
 
-bool isLoading(AppState state) => state.isLoading;
-
 bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag];
+
+bool isLoading(AppState state) => state.isLoading;

@@ -5,6 +5,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/redux/actions/request_initial_data_action.dart';
 import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
+import 'package:vockify/src/redux/actions/terms/request_last_added_terms_action.dart';
 import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
@@ -29,15 +30,6 @@ class AppEffect {
     ]);
   }
 
-  Stream<Object> _requestInitialDataAction(
-    Stream<RequestInitialDataAction> actions,
-    EpicStore<AppState> store,
-  ) {
-    return actions.asyncExpand((action) async* {
-      yield RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state));
-    });
-  }
-
   Stream<Object> _navigateToAction(
     Stream<NavigateToAction> actions,
     EpicStore<AppState> store,
@@ -49,6 +41,16 @@ class AppEffect {
       } else if (action.name == Routes.tour && store.state.isAuthorized) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
       }
+    });
+  }
+
+  Stream<Object> _requestInitialDataAction(
+    Stream<RequestInitialDataAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      yield RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state));
+      yield RequestLastAddedTermsAction();
     });
   }
 }

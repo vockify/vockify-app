@@ -10,7 +10,7 @@ class DictionaryEntryDto {
   final String text;
 
   @JsonKey(name: 'pos')
-  final PartOfSpeech partOfSpeech;
+  final String partOfSpeech;
 
   @JsonKey(name: 'ts')
   final String transcription;

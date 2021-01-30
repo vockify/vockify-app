@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
 
 class UserTermTextFieldWidget extends StatefulWidget {
   final TextEditingController controller;
@@ -36,7 +37,7 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
               )
             : null,
         hintText: 'Введите слово',
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(color: VockifyColors.black),
         fillColor: Colors.white,
       ),
     );
