@@ -16,12 +16,12 @@ import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/actions/auth/unauthorize_action.dart';
-import 'package:vockify/src/services/app_storage/app_storage.dart';
-import 'package:vockify/src/services/app_storage/app_storage_key.dart';
+import 'package:vockify/src/redux/selectors/selectors.dart';
+import 'package:vockify/src/redux/state/app_state.dart';
 
 AppApi api;
 
-void setupApi(Store store) {
+void setupApi(Store<AppState> store) {
   api = AppApi(store);
 }
 
@@ -29,7 +29,7 @@ class AppApi {
   static const apiUri = 'api.vockify.website';
   static const publicUserId = 18;
 
-  final Store store;
+  final Store<AppState> store;
 
   AppApi(this.store);
 
@@ -118,13 +118,10 @@ class AppApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
-    final storage = AppStorage.getInstance();
-    final token = await storage.getValue(AppStorageKey.token) ?? '';
-
     return <String, String>{
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${authToken(store.state)}',
     };
   }
 

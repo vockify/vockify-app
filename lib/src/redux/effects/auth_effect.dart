@@ -22,6 +22,7 @@ class AuthEffect {
   Epic<AppState> getEffects() {
     return combineEpics([
       TypedEpic<AppState, UnauthorizeAction>(_unauthorizeAction),
+      TypedEpic<AppState, AuthorizeAction>(_authorizeAction),
       TypedEpic<AppState, RequestAuthorizeAction>(_requestAuthorizeAction),
       TypedEpic<AppState, RequestUserAction>(_requestUserAction),
       TypedEpic<AppState, RequestRegisterAction>(_requestRegisterAction),
@@ -38,9 +39,7 @@ class AuthEffect {
       try {
         final registerData = await api.register();
         yield SetUserAction(user: UserState.fromDto(registerData.data.user));
-        final storage = AppStorage.getInstance();
-        await storage.setValue(AppStorageKey.token, registerData.data.token.plainTextToken);
-        yield AuthorizeAction();
+        yield AuthorizeAction(authToken: registerData.data.token.plainTextToken);
         yield RequestInitialDataAction();
 
         if (action.route != null) {
@@ -65,8 +64,8 @@ class AuthEffect {
 
       try {
         final authorization = Authorization.getInstance();
-        await authorization.authenticate();
-        yield AuthorizeAction();
+        final authToken = await authorization.authenticate();
+        yield AuthorizeAction(authToken: authToken);
 
         final response = await api.getUser();
         yield SetUserAction(user: UserState.fromDto(response.data));
@@ -91,6 +90,16 @@ class AuthEffect {
       } catch (e) {
         print(e);
       }
+    });
+  }
+
+  Stream<Object> _authorizeAction(
+    Stream<AuthorizeAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      final storage = AppStorage.getInstance();
+      await storage.setValue(AppStorageKey.token, action.authToken);
     });
   }
 

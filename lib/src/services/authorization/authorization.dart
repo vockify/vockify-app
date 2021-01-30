@@ -8,7 +8,8 @@ abstract class Authorization {
 
   static const String url = 'http://${AppApi.apiUri}/auth/google';
 
-  Future<void> authenticate();
+  /// Returns authorization token
+  Future<String> authenticate();
 
   static Authorization getInstance() {
     if (_instance == null) {

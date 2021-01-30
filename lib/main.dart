@@ -22,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final storage = AppStorage.getInstance();
-  final isAuthorized = await storage.containsKey(AppStorageKey.token);
+  final authToken = await storage.getValue(AppStorageKey.token) ?? '';
 
   final reducer = AppReducer(SetReducer(), TermReducer());
   final effect = AppEffect(SetEffect(), TermEffect(), AuthEffect());
@@ -33,9 +33,7 @@ void main() async {
       EpicMiddleware(effect.getEffects()),
       NavigationMiddleware(),
     ],
-    initialState: AppState.initial(
-      isAuthorized: isAuthorized,
-    ),
+    initialState: AppState.initial(authToken: authToken),
   );
 
   setupApi(store);
