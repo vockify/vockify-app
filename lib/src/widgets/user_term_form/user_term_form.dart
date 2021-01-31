@@ -131,21 +131,16 @@ class _UserTermFormState extends State<UserTermFormWidget> {
       return;
     }
 
-    try {
-      final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
+    final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
+    final userDefinitions = _getUserDefinitions();
 
-      final userDefinitions = _getUserDefinitions();
+    setState(() {
+      _term = data.length > 0 ? data.first.text : '';
+      _transcription = data.length > 0 ? data.first.transcription : '';
+      _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
 
-      setState(() {
-        _term = data.length > 0 ? data.first.text : '';
-        _transcription = data.length > 0 ? data.first.transcription : '';
-        _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
-
-        _selectedDefinitions = _definitions.where((definition) => userDefinitions.contains(definition)).toList();
-      });
-    } catch (e) {
-      print(e);
-    }
+      _selectedDefinitions = _definitions.where((definition) => userDefinitions.contains(definition)).toList();
+    });
   }
 
   void _updateState() {

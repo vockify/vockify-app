@@ -16,7 +16,6 @@ import 'package:vockify/src/redux/actions/sets/set_sets_action.dart';
 import 'package:vockify/src/redux/actions/sets/update_set_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
 
@@ -42,8 +41,6 @@ class SetEffect {
         final result = await api.addSet(action.set);
 
         yield AddUserSetAction(set: SetState.fromDto(result.data));
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -61,8 +58,6 @@ class SetEffect {
         final response = await api.copySet(action.id);
         yield AddUserSetAction(set: SetState.fromDto(response.data));
         yield NavigateToAction.push(Routes.quiz, arguments: {'setId': action.id});
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -76,11 +71,7 @@ class SetEffect {
     return actions.asyncExpand((action) async* {
       yield RemoveUserSetAction(id: action.id);
 
-      try {
-        await api.deleteSet(action.id);
-      } catch (e) {
-        print(e);
-      }
+      await api.deleteSet(action.id);
     });
   }
 
@@ -94,8 +85,6 @@ class SetEffect {
       try {
         final response = await api.updateSet(action.set.id, action.set);
         yield UpdateSetAction(set: SetState.fromDto(response.data));
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -107,12 +96,8 @@ class SetEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
-        final response = await api.getSets(SetFiltersDto(userIds: action.userIds));
-        yield SetSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));
-      } catch (e) {
-        print(e);
-      }
+      final response = await api.getSets(SetFiltersDto(userIds: action.userIds));
+      yield SetSetsAction(sets: response.data.map((dto) => SetState.fromDto(dto)));
     });
   }
 }

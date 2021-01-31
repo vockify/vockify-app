@@ -47,8 +47,6 @@ class AuthEffect {
             "intent": null,
           });
         }
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -70,8 +68,6 @@ class AuthEffect {
         final response = await api.getUser();
         yield SetUserAction(user: UserState.fromDto(response.data));
         yield RequestInitialDataAction();
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -83,13 +79,9 @@ class AuthEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
-        final user = await api.getUser();
-        yield SetUserAction(user: UserState.fromDto(user.data));
-        yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: action.arguments);
-      } catch (e) {
-        print(e);
-      }
+      final user = await api.getUser();
+      yield SetUserAction(user: UserState.fromDto(user.data));
+      yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: action.arguments);
     });
   }
 

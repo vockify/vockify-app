@@ -20,7 +20,6 @@ import 'package:vockify/src/redux/actions/terms/update_term_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 class TermEffect {
@@ -49,8 +48,6 @@ class TermEffect {
         final result = await api.addTerm(action.term);
 
         yield AddUserTermAction(term: TermState.fromDto(result.data));
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -62,12 +59,8 @@ class TermEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
-        final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
-        yield SetQuizTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
-      } catch (e) {
-        print(e);
-      }
+      final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
+      yield SetQuizTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
     });
   }
 
@@ -81,12 +74,8 @@ class TermEffect {
       final count = store.state.sets.items[action.setId].terms.count;
       yield UpdateSetTermsCountAction(setId: action.setId, count: count - 1);
 
-      try {
-        if (action.id > 0) {
-          await api.deleteTerm(action.id);
-        }
-      } catch (e) {
-        print(e);
+      if (action.id > 0) {
+        await api.deleteTerm(action.id);
       }
     });
   }
@@ -101,8 +90,6 @@ class TermEffect {
       try {
         final result = await api.updateTerm(action.term.id, action.term);
         yield UpdateTermAction(term: TermState.fromDto(result.data));
-      } catch (e) {
-        print(e);
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -114,12 +101,8 @@ class TermEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
-        final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
-        yield SetTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
-      } catch (e) {
-        print(e);
-      }
+      final result = await api.getTerms(TermFiltersDto(setIds: [action.setId]));
+      yield SetTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
     });
   }
 
@@ -128,12 +111,8 @@ class TermEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      try {
-        final result = await api.getTerms(TermFiltersDto(perPage: 10, userIds: [getUserId(store.state)]));
-        yield SetLastAddedTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
-      } catch (e) {
-        print(e);
-      }
+      final result = await api.getTerms(TermFiltersDto(perPage: 10, userIds: [getUserId(store.state)]));
+      yield SetLastAddedTermsAction(terms: result.data.map((dto) => TermState.fromDto(dto)));
     });
   }
 }

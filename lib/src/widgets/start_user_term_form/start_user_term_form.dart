@@ -108,10 +108,10 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                               'Начните вводить слово и добавьте его в словарь',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                color: VockifyColors.black,
-                                fontSize: 18,
-                                height: 1.3,
-                              ),
+                                    color: VockifyColors.black,
+                                    fontSize: 18,
+                                    height: 1.3,
+                                  ),
                             ),
                           ),
                         ],
@@ -271,17 +271,13 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
       return;
     }
 
-    try {
-      final data = (await api.translate(TranslateRequestDto(text))).data;
+    final data = (await api.translate(TranslateRequestDto(text))).data;
 
-      _selectedDefinitions.clear();
+    _selectedDefinitions.clear();
 
-      setState(() {
-        _transcription = data.length > 0 ? data.first.transcription : '';
-        _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
-      });
-    } catch (e) {
-      print(e);
-    }
+    setState(() {
+      _transcription = data.length > 0 ? data.first.transcription : '';
+      _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
+    });
   }
 }
