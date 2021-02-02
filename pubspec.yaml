@@ -31,6 +31,7 @@ dependencies:
   reselect: ^0.4.0
   easy_debounce: ^1.0.1
   assets_audio_player: ^2.0.13
+  sentry_flutter: ^4.0.4
 
 dev_dependencies:
   build_runner: ^1.0.0

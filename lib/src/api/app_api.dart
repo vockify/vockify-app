@@ -104,17 +104,12 @@ class AppApi {
 
   Future<Map<String, dynamic>> _get(String url, [Map<String, dynamic> queryParameters = const {}]) async {
     final headers = await _getHeaders();
+    final response = await http.get(
+      Uri.http(apiUri, url, queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>()),
+      headers: headers,
+    );
 
-    try {
-      final response = await http.get(
-        Uri.http(apiUri, url, queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>()),
-        headers: headers,
-      );
-      return _processResponse(response);
-    } on http.ClientException catch (e) {
-      print(e);
-      rethrow;
-    }
+    return _processResponse(response);
   }
 
   Future<Map<String, String>> _getHeaders() async {
