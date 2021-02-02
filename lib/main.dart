@@ -7,6 +7,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/extensions/sentry_client_extension.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
@@ -18,7 +19,6 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
-import 'package:vockify/src/services/sentry_client_extension.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/vockify_app.dart';
 
