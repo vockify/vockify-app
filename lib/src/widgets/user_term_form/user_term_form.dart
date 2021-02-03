@@ -2,9 +2,11 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/user_term_form/definition_chips.dart';
+import 'package:vockify/src/widgets/user_term_form/spell_check_text.dart';
 import 'package:vockify/src/widgets/user_term_form/transcription_text.dart';
 
 class UserTermFormWidget extends StatefulWidget {
@@ -24,6 +26,7 @@ class _UserTermFormState extends State<UserTermFormWidget> {
   String _term = '';
   String _definition = '';
   String _transcription = '';
+  String _spellCheckedTerm = '';
 
   List<String> _definitions = [];
   List<String> _selectedDefinitions = [];
@@ -63,6 +66,13 @@ class _UserTermFormState extends State<UserTermFormWidget> {
                     });
                   },
                 ),
+              if (_spellCheckedTerm.isNotEmpty && _definitions.isEmpty)
+                SpellCheckTextWidget(
+                  onTap: () => setState(() {
+                    widget.termController.text = _spellCheckedTerm;
+                  }),
+                  text: _spellCheckedTerm,
+                )
             ],
           ),
         ),
@@ -134,6 +144,10 @@ class _UserTermFormState extends State<UserTermFormWidget> {
     final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
     final userDefinitions = _getUserDefinitions();
 
+    if (data.isEmpty) {
+      _spellCheck(widget.termController.text);
+    }
+
     setState(() {
       _term = data.length > 0 ? data.first.text : '';
       _transcription = data.length > 0 ? data.first.transcription : '';
@@ -141,6 +155,20 @@ class _UserTermFormState extends State<UserTermFormWidget> {
 
       _selectedDefinitions = _definitions.where((definition) => userDefinitions.contains(definition)).toList();
     });
+  }
+
+  Future<void> _spellCheck(String text) async {
+    if (text.isEmpty) {
+      return;
+    }
+
+    final data = await api.spellCheck(SpellCheckRequestDto(text));
+
+    if (data.isNotEmpty) {
+      setState(() {
+        _spellCheckedTerm = data.first?.strings?.first;
+      });
+    }
   }
 
   void _updateState() {
