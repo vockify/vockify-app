@@ -29,7 +29,7 @@ void setupApi(Store<AppState> store) {
 
 class AppApi {
   static const apiUri = 'api.vockify.website';
-  static const yandexSpellCheckApi = 'speller.yandex.net';
+  static const yandexSpellCheckUri = 'speller.yandex.net';
   static const publicUserId = 18;
 
   final Store<AppState> store;
@@ -86,7 +86,7 @@ class AppApi {
 
   Future<Iterable<SpellCheckDto>> spellCheck(SpellCheckRequestDto requestDto) async {
     final response = await http.get(Uri.https(
-      yandexSpellCheckApi,
+      yandexSpellCheckUri,
       '/services/spellservice.json/checkText',
       _convertQueryParameters(requestDto.toJson()),
     ));

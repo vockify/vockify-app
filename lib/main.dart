@@ -48,7 +48,7 @@ void main() async {
   setupApi(store);
   setupDispatcher(store);
   setupStoreCompleterService(store);
-  setupAmplitude(store);
+  setupAmplitude();
 
   final intent = await ReceiveSharingIntent.getInitialText();
 

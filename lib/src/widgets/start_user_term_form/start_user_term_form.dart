@@ -146,20 +146,19 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
               ],
               if (_definitions.isEmpty && _spellCheckedTerm.isNotEmpty && !_isTyping())
                 SpellCheckTextWidget(
-                  onTap: () => setState(() {
+                  onTap: () {
                     _nameController.text = _spellCheckedTerm;
                     FocusScope.of(context).unfocus();
-                  }),
+                  },
                   text: _spellCheckedTerm,
                   padding: 16,
                 ),
             ],
-            if (_term.isEmpty) ...[
+            if (_term.isEmpty)
               HistoryTermListWidget(onTap: (value) {
                 _nameController.text = value;
                 FocusScope.of(context).unfocus();
-              })
-            ],
+              }),
           ],
         ),
       ],

@@ -68,9 +68,7 @@ class _UserTermFormState extends State<UserTermFormWidget> {
                 ),
               if (_spellCheckedTerm.isNotEmpty && _definitions.isEmpty)
                 SpellCheckTextWidget(
-                  onTap: () => setState(() {
-                    widget.termController.text = _spellCheckedTerm;
-                  }),
+                  onTap: () => widget.termController.text = _spellCheckedTerm,
                   text: _spellCheckedTerm,
                 )
             ],
