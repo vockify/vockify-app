@@ -1,4 +1,5 @@
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:flutter/foundation.dart';
 
 AmplitudeService amplitude;
 
@@ -23,10 +24,10 @@ class AmplitudeService {
   }
 
   Future<void> logEvent(String eventType, {Map<String, dynamic> eventProperties, bool outOfSession}) async {
-    // if (!kReleaseMode) {
-    //   // Do nothing in development mode.
-    //   return;
-    // }
+    if (!kReleaseMode) {
+      // Do nothing in development mode.
+      return;
+    }
 
     _amplitude.logEvent(eventType, eventProperties: eventProperties, outOfSession: outOfSession);
   }
