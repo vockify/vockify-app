@@ -8,6 +8,8 @@ import 'package:vockify/src/api/dto/sets/set_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_response.dart';
 import 'package:vockify/src/api/dto/sets/sets_response.dart';
+import 'package:vockify/src/api/dto/spell_check/spell_check_dto.dart';
+import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_response.dart';
@@ -27,6 +29,7 @@ void setupApi(Store<AppState> store) {
 
 class AppApi {
   static const apiUri = 'api.vockify.website';
+  static const yandexSpellCheckUri = 'speller.yandex.net';
   static const publicUserId = 18;
 
   final Store<AppState> store;
@@ -81,6 +84,18 @@ class AppApi {
     return TranslateResponse.fromJson(data);
   }
 
+  Future<Iterable<SpellCheckDto>> spellCheck(SpellCheckRequestDto requestDto) async {
+    final response = await http.get(Uri.https(
+      yandexSpellCheckUri,
+      '/services/spellservice.json/checkText',
+      _convertQueryParameters(requestDto.toJson()),
+    ));
+
+    final jsonMap = json.decode(response.body) as List;
+
+    return jsonMap.map((e) => SpellCheckDto.fromJson(e as Map<String, dynamic>));
+  }
+
   Future<SetResponse> updateSet(int id, SetDto requestData) async {
     final data = await _put('/sets/$id', requestData.toJson());
     return SetResponse.fromJson(data);
@@ -105,12 +120,15 @@ class AppApi {
   Future<Map<String, dynamic>> _get(String url, [Map<String, dynamic> queryParameters = const {}]) async {
     final headers = await _getHeaders();
     final response = await http.get(
-      Uri.http(apiUri, url, queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>()),
+      Uri.http(apiUri, url, _convertQueryParameters(queryParameters)),
       headers: headers,
     );
 
     return _processResponse(response);
   }
+
+  Map<String, String> _convertQueryParameters(Map<String, dynamic> queryParameters) =>
+      queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>();
 
   Future<Map<String, String>> _getHeaders() async {
     return <String, String>{

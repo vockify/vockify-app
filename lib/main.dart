@@ -17,6 +17,7 @@ import 'package:vockify/src/redux/reducers/set_reducer.dart';
 import 'package:vockify/src/redux/reducers/term_reducer.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
@@ -47,6 +48,7 @@ void main() async {
   setupApi(store);
   setupDispatcher(store);
   setupStoreCompleterService(store);
+  setupAmplitude();
 
   final intent = await ReceiveSharingIntent.getInitialText();
 
