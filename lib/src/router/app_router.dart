@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/screens/flashcards_screen.dart';
 import 'package:vockify/src/screens/login_screen.dart';
 import 'package:vockify/src/screens/main_screen.dart';
 import 'package:vockify/src/screens/profile_screen.dart';
@@ -30,6 +31,7 @@ class AppRouter {
     Routes.publicTerms: (arguments) => PublicTermsScreenWidget(setId: arguments['id'] as int),
     Routes.userSet: (arguments) => SetScreenWidget(setId: arguments['id'] as int),
     Routes.quiz: (arguments) => QuizScreenWidget(setId: arguments['setId'] as int),
+    Routes.flashcards: (arguments) => FlashcardsScreenWidget(setId: arguments['setId'] as int),
     Routes.userTerms: (arguments) => UserTermsScreenWidget(setId: arguments['id'] as int),
     Routes.userTerm: (arguments) => UserTermScreenWidget(
           setId: arguments['setId'] as int,

@@ -5,6 +5,7 @@ class Routes {
   static const String home = "/home/:intent";
   static const String login = "/login";
   static const String quiz = "/quiz/:setId";
+  static const String flashcards = "/flashcards/:setId";
 
   // home routes
   static const String start = "/start";
