@@ -31,7 +31,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
 
   bool _shiftToRight = false;
 
-  TermState get _currentTerm => _terms.length > 0 ? _terms.first : null;
+  TermState get _currentTerm => _terms.isNotEmpty ? _terms.first : null;
 
   TermState get _nextTerm => _terms.length > 1 ? _terms[1] : null;
 
@@ -157,6 +157,8 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
 
   @override
   void initState() {
+    super.initState();
+
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     _terms = widget.ids.map((id) => getTermById(store.state, id)).toList();
@@ -167,12 +169,10 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
       ..addListener(() {
         setState(() {});
       });
-
-    super.initState();
   }
 
   void _shift({bool toRight: false}) {
-    if (_terms.length == 0) {
+    if (_terms.isEmpty) {
       return;
     }
 

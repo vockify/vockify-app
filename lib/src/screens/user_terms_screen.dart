@@ -63,7 +63,12 @@ class UserTermsScreenWidget extends StatelessWidget {
                         Expanded(
                           child: RawMaterialButton(
                             padding: EdgeInsets.all(16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16),)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                bottomLeft: Radius.circular(16),
+                              ),
+                            ),
                             fillColor: VockifyColors.prussianBlue,
                             onPressed: () {
                               store.dispatch(NavigateToAction.push(Routes.quiz, arguments: {'setId': setId}));
@@ -80,7 +85,12 @@ class UserTermsScreenWidget extends StatelessWidget {
                         Expanded(
                           child: RawMaterialButton(
                             padding: EdgeInsets.all(16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16),)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                            ),
                             fillColor: VockifyColors.persianGreen,
                             onPressed: () {
                               store.dispatch(NavigateToAction.push(Routes.flashcards, arguments: {'setId': setId}));
