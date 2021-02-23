@@ -30,7 +30,11 @@ dependencies:
   carousel_slider: ^2.0.0
   reselect: ^0.4.0
   easy_debounce: ^1.0.1
-  assets_audio_player: ^2.0.13
+  amplitude_flutter: ^2.0.0
+  assets_audio_player:
+    git:
+      url: https://github.com/florent37/Flutter-AssetsAudioPlayer.git
+      ref: b49a4360f6a7f182d4a6e23ebcdbf43ad570913b
   sentry_flutter: ^4.0.4
 
 dev_dependencies:

@@ -14,6 +14,7 @@ import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/user_state/user_state.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/services/authorization/authorization.dart';
@@ -26,6 +27,7 @@ class AuthEffect {
       TypedEpic<AppState, RequestAuthorizeAction>(_requestAuthorizeAction),
       TypedEpic<AppState, RequestUserAction>(_requestUserAction),
       TypedEpic<AppState, RequestRegisterAction>(_requestRegisterAction),
+      TypedEpic<AppState, SetUserAction>(_setUserAction),
     ]);
   }
 
@@ -50,6 +52,15 @@ class AuthEffect {
       } finally {
         yield UnsetIsLoadingAction();
       }
+    });
+  }
+
+  Stream<Object> _setUserAction(
+    Stream<SetUserAction> actions,
+    EpicStore<AppState> store,
+  ) {
+    return actions.asyncExpand((action) async* {
+      yield amplitude.setUserId(action.user.id.toString());
     });
   }
 
