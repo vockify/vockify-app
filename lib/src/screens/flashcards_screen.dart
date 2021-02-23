@@ -6,6 +6,7 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/flashcards/flashcards.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
@@ -18,6 +19,7 @@ class FlashcardsScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.flashcards,
+      backgroundColor: VockifyColors.ghostWhite,
       isContextNavigation: false,
       isLoading: (store) => getQuizLoader(store.state) == LoaderState.isLoading,
       onInit: (store) {

@@ -28,7 +28,7 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
       alignment: FractionalOffset.center,
       transform: Matrix4.rotationY(pi * _flipAnimation.value),
       child: _flipAnimation.value <= 0.5
-          ? _buildFlipFlashCard(widget.term)
+          ? _buildFlipFlashCard(widget.term, true)
           : Transform(
               alignment: FractionalOffset.center,
               transform: Matrix4.rotationY(pi),
@@ -56,7 +56,7 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
       });
   }
 
-  Widget _buildFlipFlashCard(String text) {
+  Widget _buildFlipFlashCard(String text, [bool isAudio]) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -66,7 +66,10 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
           _flipAnimationController.reverse();
         }
       },
-      child: FlashCardWidget(text: text),
+      child: FlashCardWidget(
+        text: text,
+        isAudio: isAudio ?? false,
+      ),
     );
   }
 }
