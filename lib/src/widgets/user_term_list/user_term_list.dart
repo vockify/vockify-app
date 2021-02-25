@@ -32,7 +32,10 @@ class _UserTermListState extends State<UserTermListWidget> {
       converter: (store) => getTermIds(store.state),
       builder: (context, ids) {
         if (ids.isEmpty) {
-          return EmptyWidget(text: 'В словаре пока нет слов');
+          return EmptyWidget(
+            text: 'В словаре пока нет слов',
+            icon: Icons.search,
+          );
         }
 
         return RefreshIndicator(
