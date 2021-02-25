@@ -11,6 +11,7 @@ class LayoutWidget extends StatelessWidget {
   final String route;
   final String title;
   final Widget body;
+  final Color backgroundColor;
   final List<Widget> actions;
   final String redirectBackRoute;
   final bool isContextNavigation;
@@ -23,6 +24,7 @@ class LayoutWidget extends StatelessWidget {
     @required this.route,
     this.title,
     this.body,
+    this.backgroundColor,
     this.actions = const [],
     this.isContextNavigation = true,
     this.redirectBackRoute,
@@ -35,7 +37,7 @@ class LayoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: VockifyColors.white,
+      backgroundColor: backgroundColor ?? VockifyColors.white,
       appBar: AppBar(
         title: _buildTitle(),
         leading: _buildGoBackArrow(context),
