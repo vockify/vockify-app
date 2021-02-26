@@ -57,7 +57,7 @@ class SetEffect {
       try {
         final response = await api.copySet(action.id);
         yield AddUserSetAction(set: SetState.fromDto(response.data));
-        yield NavigateToAction.push(Routes.quiz, arguments: {'setId': action.id});
+        yield NavigateToAction.push(Routes.quiz, arguments: {'setId': response.data.id});
       } finally {
         yield UnsetIsLoadingAction();
       }
