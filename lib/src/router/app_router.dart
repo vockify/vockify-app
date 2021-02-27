@@ -12,6 +12,7 @@ import 'package:vockify/src/screens/tour_screen.dart';
 import 'package:vockify/src/screens/user_set_select_screen.dart';
 import 'package:vockify/src/screens/user_term_screen.dart';
 import 'package:vockify/src/screens/user_terms_screen.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/widgets/home.dart';
 
 typedef Widget PathBuilder(Map<String, dynamic> arguments);
@@ -40,6 +41,11 @@ class AppRouter {
   };
 
   static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
+    amplitude.logEvent('route_changed', eventProperties: {
+      'name': settings.name,
+      'arguments': settings.arguments.toString()
+    });
+
     return MaterialPageRoute<dynamic>(
       settings: settings,
       builder: (context) => builder,

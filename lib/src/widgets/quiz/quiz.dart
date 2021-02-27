@@ -8,6 +8,7 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/quiz/quiz_controller.dart';
 import 'package:vockify/src/widgets/quiz/quiz_result.dart';
@@ -146,6 +147,8 @@ class _QuizState extends State<QuizWidget> {
 
   void _continue() {
     setState(_start);
+
+    amplitude.logEvent('quiz_continued');
   }
 
   Color _getDefinitionColor(String definition) {
@@ -180,6 +183,8 @@ class _QuizState extends State<QuizWidget> {
 
     _update();
 
+    amplitude.logEvent('quiz_definition_clicked');
+
     _selectDefinitionTimer?.cancel();
     _selectDefinitionTimer = Timer(Duration(seconds: 1), () {
       final step = _controller.getNextStep();
@@ -195,6 +200,8 @@ class _QuizState extends State<QuizWidget> {
           _isFinished = true;
           _result = _controller.getResult();
         });
+
+        amplitude.logEvent('quiz_finished');
       }
     });
   }

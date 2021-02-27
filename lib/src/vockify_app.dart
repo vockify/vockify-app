@@ -28,7 +28,6 @@ class VockifyApp extends StatelessWidget {
           primaryColor: VockifyColors.primary,
           primarySwatch: VockifyColors.primary,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-//          pageTransitionsTheme: pageTransitionsTheme,
         ),
       ),
     );

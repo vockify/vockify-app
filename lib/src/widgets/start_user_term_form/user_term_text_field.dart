@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 
 class UserTermTextFieldWidget extends StatefulWidget {
@@ -29,6 +30,10 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
             ? GestureDetector(
                 onTap: () {
                   widget.controller.clear();
+
+                  amplitude.logEvent('start_screen_term_input_text_cleared', eventProperties: {
+                    'term': widget.controller.text,
+                  });
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),

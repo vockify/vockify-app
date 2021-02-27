@@ -7,6 +7,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/flashcards/flashcard.dart';
 import 'package:vockify/src/widgets/flashcards/flip_flashcard.dart';
@@ -181,6 +182,8 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
     _shiftAnimationController.forward().then((value) {
       _terms.removeAt(0);
       _shiftAnimationController.reset();
+
+      amplitude.logEvent('flashcards_swiped');
     });
   }
 }

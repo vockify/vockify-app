@@ -12,6 +12,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/start_user_term_form/history_term_list.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_term_text_field.dart';
@@ -158,6 +159,10 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
               HistoryTermListWidget(onTap: (value) {
                 _nameController.text = value;
                 FocusScope.of(context).unfocus();
+
+                amplitude.logEvent('start_screen_history_term_clicked', eventProperties: {
+                  'term': value,
+                });
               }),
           ],
         ),
@@ -205,6 +210,11 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                       'definition': definition,
                     }),
                   );
+
+                  amplitude.logEvent('start_screen_add_button_clicked', eventProperties: {
+                    'term': _term,
+                    'definitions': _definitions,
+                  });
                 },
                 child: Text(
                   isTermAdded ? 'Уже в словаре' : 'Добавить в словарь',
@@ -238,6 +248,11 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
       _term = text;
       _transcription = data.length > 0 ? data.first.transcription : '';
       _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
+    });
+
+    amplitude.logEvent('start_screen_term_translated', eventProperties: {
+      'term': _term,
+      'definitions': _definitions,
     });
   }
 

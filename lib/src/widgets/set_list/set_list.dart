@@ -8,6 +8,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/public_set_item/public_set_item.dart';
@@ -46,6 +47,10 @@ class _SetListState extends State<SetListWidget> {
                       },
                       onDelete: () {
                         dispatcher.dispatch(RequestRemoveUserSetAction(id: id));
+
+                        amplitude.logEvent('set_deleted', eventProperties: {
+                          'set_id': id,
+                        });
                       },
                       onEdit: () {
                         Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': id});

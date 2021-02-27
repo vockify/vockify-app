@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 
 class AudioTextWidget extends StatefulWidget {
@@ -42,6 +43,8 @@ class _AudioTextState extends State<AudioTextWidget> {
           setState(() {
             _play = !_play;
           });
+
+          amplitude.logEvent('flashcards_transcription_played');
         },
         child: Icon(
           _play ? Icons.pause : Icons.volume_up,

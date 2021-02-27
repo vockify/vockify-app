@@ -4,6 +4,7 @@ import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
@@ -13,7 +14,6 @@ class LayoutWidget extends StatelessWidget {
   final Widget body;
   final Color backgroundColor;
   final List<Widget> actions;
-  final String redirectBackRoute;
   final bool isContextNavigation;
   final Function(Store<AppState>) onInit;
   final Function(Store<AppState>) onDispose;
@@ -27,7 +27,6 @@ class LayoutWidget extends StatelessWidget {
     this.backgroundColor,
     this.actions = const [],
     this.isContextNavigation = true,
-    this.redirectBackRoute,
     this.onInit,
     this.onDispose,
     this.isLoading,
@@ -63,22 +62,22 @@ class LayoutWidget extends StatelessWidget {
   }
 
   Widget _buildGoBackArrow(BuildContext context) {
-    if (!Navigator.of(context).canPop() && redirectBackRoute == null) {
+    if (!Navigator.of(context).canPop()) {
       return null;
     }
 
     return IconButton(
       icon: new Icon(Icons.arrow_back),
       onPressed: () {
-        if (redirectBackRoute != null) {
-          dispatcher.dispatch(NavigateToAction.pushNamedAndRemoveUntil(redirectBackRoute, (route) => false));
+        if (isContextNavigation) {
+          Navigator.of(context).pop();
         } else {
-          if (isContextNavigation) {
-            Navigator.of(context).pop();
-          } else {
-            dispatcher.dispatch(NavigateToAction.pop());
-          }
+          dispatcher.dispatch(NavigateToAction.pop());
         }
+
+        amplitude.logEvent('back_arrow_button_clicked', eventProperties: {
+          'current_route': ModalRoute.of(context).settings.name,
+        });
       },
     );
   }
