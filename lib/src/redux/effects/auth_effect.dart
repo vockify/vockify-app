@@ -79,10 +79,6 @@ class AuthEffect {
         final response = await api.getUser();
         yield SetUserAction(user: UserState.fromDto(response.data));
         yield RequestInitialDataAction();
-
-        Timer.run(() {
-          amplitude.logEvent('login');
-        });
       } finally {
         yield UnsetIsLoadingAction();
       }
@@ -116,8 +112,6 @@ class AuthEffect {
   ) {
     return actions.asyncExpand((event) async* {
       yield RequestRegisterAction();
-
-      amplitude.logEvent('logout');
     });
   }
 }

@@ -72,10 +72,6 @@ class _UserTermListState extends State<UserTermListWidget> {
                 },
                 onDelete: () {
                   dispatcher.dispatch(RequestRemoveUserTermAction(id: id, setId: widget.setId));
-
-                  amplitude.logEvent('term_deleted', eventProperties: {
-                    'term_id': id,
-                  });
                 },
                 slidableController: _slidableController,
               );

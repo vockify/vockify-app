@@ -5,13 +5,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 
 class AudioTextWidget extends StatefulWidget {
   final String text;
+  final Function onTap;
 
-  const AudioTextWidget({Key key, this.text}) : super(key: key);
+  const AudioTextWidget({Key key, this.text, this.onTap}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AudioTextState();
@@ -44,7 +44,7 @@ class _AudioTextState extends State<AudioTextWidget> {
             _play = !_play;
           });
 
-          amplitude.logEvent('flashcards_transcription_played');
+          widget.onTap();
         },
         child: Icon(
           _play ? Icons.pause : Icons.volume_up,

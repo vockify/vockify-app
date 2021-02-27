@@ -7,7 +7,6 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/user_term_form/user_term_form.dart';
@@ -51,13 +50,6 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
                     definition: _definitionController.text,
                   ),
                 ));
-
-                amplitude.logEvent('term_updated', eventProperties: {
-                  'term_id': widget.termId,
-                  'set_id': widget.setId,
-                  'term_name': _termController.text,
-                  'term_definition': _definitionController.text,
-                });
               } else {
                 dispatcher.dispatch(RequestAddUserTermAction(
                   term: TermDto(
@@ -67,12 +59,6 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
                     definition: _definitionController.text,
                   ),
                 ));
-
-                amplitude.logEvent('term_added', eventProperties: {
-                  'set_id': widget.setId,
-                  'term_name': _termController.text,
-                  'term_definition': _definitionController.text,
-                });
               }
 
               Navigator.of(context).pop();

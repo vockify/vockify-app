@@ -7,7 +7,6 @@ import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/layout.dart';
@@ -94,11 +93,6 @@ class _SetScreenState extends State<SetScreenWidget> {
             name: _nameController.text,
           ),
         ));
-
-        amplitude.logEvent('set_updated', eventProperties: {
-          'set_id': widget.setId,
-          'set_name': _nameController.text,
-        });
       } else {
         dispatcher.dispatch(RequestAddUserSetAction(
           set: SetDto(
@@ -106,10 +100,6 @@ class _SetScreenState extends State<SetScreenWidget> {
             name: _nameController.text,
           ),
         ));
-
-        amplitude.logEvent('set_added', eventProperties: {
-          'set_name': _nameController.text,
-        });
       }
 
       Navigator.of(context).pop();
