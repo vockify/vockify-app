@@ -8,6 +8,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/screens/profile_screen.dart';
 import 'package:vockify/src/screens/start_screen.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 import 'package:vockify/src/widgets/home_navigator.dart';
@@ -54,6 +55,10 @@ class _HomeState extends State<HomeWidget> {
 
           setState(() {
             _currentItem = item;
+          });
+
+          amplitude.logEvent('navigation_bar_clicked', eventProperties: {
+            'name': item,
           });
         },
         items: [

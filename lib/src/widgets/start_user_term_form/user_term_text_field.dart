@@ -29,11 +29,11 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
         suffixIcon: _isCloseButtonVisible
             ? GestureDetector(
                 onTap: () {
-                  widget.controller.clear();
-
                   amplitude.logEvent('start_screen_term_input_text_cleared', eventProperties: {
                     'term': widget.controller.text,
                   });
+
+                  widget.controller.clear();
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),

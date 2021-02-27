@@ -36,6 +36,7 @@ class AppEffect {
   ) {
     return actions.asyncExpand((action) async* {
       yield SetCurrentRouteAction(route: action.name);
+
       if (action.name != Routes.login && action.name != Routes.tour && !isAuthorized(store.state)) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
       } else if (action.name == Routes.tour && isAuthorized(store.state)) {

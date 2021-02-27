@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -93,56 +94,78 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
           alignment: Alignment.bottomCenter,
           child: Row(
             children: <Widget>[
-              Expanded(
-                child: RawMaterialButton(
-                  padding: EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      bottomLeft: Radius.circular(16),
+              if (_terms.isNotEmpty) ...[
+                Expanded(
+                  child: RawMaterialButton(
+                    padding: EdgeInsets.all(16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                      ),
                     ),
-                  ),
-                  fillColor: VockifyColors.persianGreen,
-                  onPressed: () {
-                    _shift();
-                  },
-                  child: Text(
-                    'ЗНАЮ',
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          color: VockifyColors.ghostWhite,
-                          fontSize: 16,
-                        ),
+                    fillColor: VockifyColors.persianGreen,
+                    onPressed: () {
+                      _shift();
+                    },
+                    child: Text(
+                      'ЗНАЮ',
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: VockifyColors.ghostWhite,
+                            fontSize: 16,
+                          ),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: RawMaterialButton(
-                  padding: EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(16),
-                      bottomRight: Radius.circular(16),
+                Expanded(
+                  child: RawMaterialButton(
+                    padding: EdgeInsets.all(16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
                     ),
-                  ),
-                  fillColor: VockifyColors.flame,
-                  onPressed: () {
-                    _shift(toRight: true);
+                    fillColor: VockifyColors.flame,
+                    onPressed: () {
+                      _shift(toRight: true);
 
-                    dispatcher.dispatch(RequestUpdateUserTermAction(
-                      term: TermDto.fromState(_currentTerm.rebuild((builder) {
-                        builder.memorizationLevel = MemorizationLevel.bad;
-                      })),
-                    ));
-                  },
-                  child: Text(
-                    'НЕ ЗНАЮ',
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          color: VockifyColors.ghostWhite,
-                          fontSize: 16,
-                        ),
+                      dispatcher.dispatch(RequestUpdateUserTermAction(
+                        term: TermDto.fromState(_currentTerm.rebuild((builder) {
+                          builder.memorizationLevel = MemorizationLevel.bad;
+                        })),
+                      ));
+                    },
+                    child: Text(
+                      'НЕ ЗНАЮ',
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: VockifyColors.ghostWhite,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ),
+                )
+              ],
+              if (_terms.isEmpty)
+                Expanded(
+                  child: RawMaterialButton(
+                    padding: EdgeInsets.all(16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    fillColor: VockifyColors.lightSteelBlue,
+                    onPressed: () {
+                      dispatcher.dispatch(NavigateToAction.pop());
+                    },
+                    child: Text(
+                      'ВЕРНУТЬСЯ В СЛОВАРЬ',
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: VockifyColors.prussianBlue,
+                            fontSize: 16,
+                          ),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
