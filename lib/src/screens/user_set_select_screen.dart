@@ -43,8 +43,7 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userSetSelect,
-      body:
-      FutureBuilder<List<int>>(
+      body: FutureBuilder<List<int>>(
         future: _fetchSelectedSets(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
