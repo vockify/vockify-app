@@ -134,6 +134,8 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                                 });
                               },
                             ),
+
+
                         ],
                       ),
                     ),
@@ -188,26 +190,21 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
             distinct: true,
             converter: (store) => getLastAddedTerms(store.state),
             builder: (context, terms) {
-              final isTermAdded = terms.map((term) => term.name).contains(_term);
-
               return RawMaterialButton(
                 padding: EdgeInsets.all(16),
                 shape: RoundedRectangleBorder(
-                  side: isTermAdded
-                      ? BorderSide(
-                          color: VockifyColors.prussianBlue,
-                        )
-                      : BorderSide.none,
+                  side: BorderSide.none,
                   borderRadius: BorderRadius.all(
                     Radius.circular(16),
                   ),
                 ),
-                fillColor: isTermAdded ? VockifyColors.white : VockifyColors.prussianBlue,
+                fillColor: VockifyColors.prussianBlue,
                 onPressed: () {
                   dispatcher.dispatch(
                     NavigateToAction.push(Routes.userSetSelect, arguments: {
                       'term': _term,
                       'definition': definition,
+                      'selectedSetIds': terms.where((term) => term.name == _term).map((term) => term.setId).toList(),
                     }),
                   );
 
@@ -217,9 +214,9 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                   });
                 },
                 child: Text(
-                  isTermAdded ? 'Уже в словаре' : 'Добавить в словарь',
+                  'Добавить в словарь',
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: isTermAdded ? VockifyColors.prussianBlue : VockifyColors.white,
+                        color: VockifyColors.white,
                         fontSize: 16,
                       ),
                 ),

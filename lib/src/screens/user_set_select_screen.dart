@@ -11,11 +11,13 @@ import 'package:vockify/src/widgets/start_user_term_form/user_set_select_list.da
 class UserSetSelectScreenWidget extends StatefulWidget {
   final String term;
   final String definition;
+  final List<int> selectedSetIds;
 
   const UserSetSelectScreenWidget({
     Key key,
     @required this.term,
     @required this.definition,
+    @required this.selectedSetIds,
   }) : super(key: key);
 
   @override
@@ -23,14 +25,20 @@ class UserSetSelectScreenWidget extends StatefulWidget {
 }
 
 class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
-  int _selectedSetId;
+  List<int> _selectedSetIds;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedSetIds = widget.selectedSetIds;
+  }
 
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userSetSelect,
       body: UserSetSelectListWidget(
-        selectedSetId: _selectedSetId,
+        selectedSetIds: _selectedSetIds,
         onSelect: _onSelect,
       ),
     );
@@ -38,18 +46,17 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
 
   void _onSelect(int id) {
     setState(() {
-      _selectedSetId = id;
+      _selectedSetIds = [..._selectedSetIds, id];
     });
 
     dispatcher.dispatch(NavigateToAction.pop());
-
     dispatcher.dispatch(
       RequestAddUserTermAction(
         term: TermDto(
           id: 0,
           name: widget.term,
           definition: widget.definition,
-          setId: _selectedSetId,
+          setId: id,
         ),
       ),
     );

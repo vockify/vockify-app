@@ -7,13 +7,13 @@ import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_set_select_item.dart';
 
 class UserSetSelectListWidget extends StatelessWidget {
-  final int selectedSetId;
+  final List<int> selectedSetIds;
   final Function(int) onSelect;
 
   const UserSetSelectListWidget({
     Key key,
     @required this.onSelect,
-    this.selectedSetId,
+    this.selectedSetIds,
   }) : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class UserSetSelectListWidget extends StatelessWidget {
 
                     return UserSetSelectItemWidget(
                       id: id,
-                      isSelected: selectedSetId == id,
+                      isSelected: selectedSetIds.contains(id),
                       onTap: () {
                         onSelect(id);
                       },

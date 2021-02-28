@@ -26,6 +26,7 @@ class AppRouter {
     Routes.userSetSelect: (arguments) => UserSetSelectScreenWidget(
           term: arguments['term'] as String,
           definition: arguments['definition'] as String,
+          selectedSetIds: arguments['selectedSetIds'] as List<int>,
         ),
     Routes.main: (arguments) => MainScreenWidget(),
     Routes.home: (arguments) => HomeWidget(intent: arguments['intent'] as String),
@@ -41,10 +42,10 @@ class AppRouter {
   };
 
   static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
-    amplitude.logEvent('route_changed', eventProperties: {
-      'name': settings.name,
-      'arguments': settings.arguments.toString()
-    });
+    amplitude.logEvent(
+      'route_changed',
+      eventProperties: {'name': settings.name, 'arguments': settings.arguments.toString()},
+    );
 
     return MaterialPageRoute<dynamic>(
       settings: settings,
