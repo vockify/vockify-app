@@ -25,7 +25,7 @@ class AmplitudeService {
 
   Future<void> logEvent(String eventType, {Map<String, dynamic> eventProperties, bool outOfSession}) async {
     if (!kReleaseMode) {
-      // Do nothing in development mode.
+      print('$eventType: ${eventProperties.toString()}');
       return;
     }
 

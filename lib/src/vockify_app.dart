@@ -28,7 +28,6 @@ class VockifyApp extends StatelessWidget {
           primaryColor: VockifyColors.primary,
           primarySwatch: VockifyColors.primary,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-//          pageTransitionsTheme: pageTransitionsTheme,
         ),
       ),
     );
@@ -37,7 +36,7 @@ class VockifyApp extends StatelessWidget {
   List<Route> _getInitialRoutes(String route) {
     return [
       AppRouter.buildRoute(
-        RouteSettings(name: Routes.home),
+        RouteSettings(name: Routes.app),
         InitialWidget(
           route: Routes.home,
           arguments: {'intent': intent},

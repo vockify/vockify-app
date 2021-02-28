@@ -7,7 +7,7 @@ packages:
       name: amplitude_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.3"
+    version: "2.3.0"
   analyzer:
     dependency: transitive
     description:
@@ -346,7 +346,7 @@ packages:
       name: io
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.4"
+    version: "0.3.5"
   js:
     dependency: transitive
     description:
@@ -598,14 +598,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.5"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.5"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -661,7 +661,7 @@ packages:
       name: shelf_web_socket
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.4"
+    version: "0.2.4+1"
   sky_engine:
     dependency: transitive
     description: flutter

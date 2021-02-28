@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 
 class UserTermTextFieldWidget extends StatefulWidget {
@@ -28,6 +29,10 @@ class _UserTermTextFieldState extends State<UserTermTextFieldWidget> {
         suffixIcon: _isCloseButtonVisible
             ? GestureDetector(
                 onTap: () {
+                  amplitude.logEvent('start_screen_term_input_text_cleared', eventProperties: {
+                    'term': widget.controller.text,
+                  });
+
                   widget.controller.clear();
                 },
                 child: Padding(

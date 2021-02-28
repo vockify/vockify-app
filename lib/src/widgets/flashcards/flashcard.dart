@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/audio_text/audio_text.dart';
 
@@ -57,6 +58,11 @@ class FlashCardWidget extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: AudioTextWidget(
                 text: text,
+                onTap: () {
+                  amplitude.logEvent('flashcards_transcription_played', eventProperties: {
+                    text: text,
+                  });
+                },
               ),
             )
         ],

@@ -4,6 +4,7 @@ import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_set_select_list.dart';
 
@@ -52,5 +53,10 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
         ),
       ),
     );
+
+    amplitude.logEvent('start_screen_term_added', eventProperties: {
+      'term': widget.term,
+      'definition': widget.definition,
+    });
   }
 }

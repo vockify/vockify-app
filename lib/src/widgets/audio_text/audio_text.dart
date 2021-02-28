@@ -9,8 +9,9 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 
 class AudioTextWidget extends StatefulWidget {
   final String text;
+  final Function onTap;
 
-  const AudioTextWidget({Key key, this.text}) : super(key: key);
+  const AudioTextWidget({Key key, this.text, this.onTap}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AudioTextState();
@@ -42,6 +43,8 @@ class _AudioTextState extends State<AudioTextWidget> {
           setState(() {
             _play = !_play;
           });
+
+          widget.onTap();
         },
         child: Icon(
           _play ? Icons.pause : Icons.volume_up,

@@ -12,6 +12,7 @@ import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
+import 'package:vockify/src/redux/middlewares/tracking_middleware.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';
 import 'package:vockify/src/redux/reducers/term_reducer.dart';
@@ -41,6 +42,7 @@ void main() async {
     middleware: [
       EpicMiddleware(effect.getEffects()),
       NavigationMiddleware(),
+      TrackingMiddleware(),
     ],
     initialState: AppState.initial(authToken: authToken),
   );

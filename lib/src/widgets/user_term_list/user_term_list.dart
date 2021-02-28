@@ -9,6 +9,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/user_term_item/user_term_item.dart';
@@ -23,7 +24,9 @@ class UserTermListWidget extends StatefulWidget {
 }
 
 class _UserTermListState extends State<UserTermListWidget> {
-  final _slidableController = SlidableController();
+  final _slidableController = SlidableController(onSlideIsOpenChanged: (bool) {
+    amplitude.logEvent('term_swiped');
+  });
 
   @override
   Widget build(BuildContext context) {

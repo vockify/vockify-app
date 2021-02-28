@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/widgets/flashcards/flashcard.dart';
 
 class FlipFlashCardWidget extends StatefulWidget {
@@ -65,6 +66,8 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
         } else if (_flipAnimationStatus == AnimationStatus.completed) {
           _flipAnimationController.reverse();
         }
+
+        amplitude.logEvent('flashcards_flipped');
       },
       child: FlashCardWidget(
         text: text,
