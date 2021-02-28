@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -23,33 +25,58 @@ class UserSetSelectScreenWidget extends StatefulWidget {
 }
 
 class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
-  int _selectedSetId;
+  List<int> _selectedSetIds = [];
+
+  Future<List<int>> _fetchSelectedSets() async {
+    final response = await api.getSets(SetFiltersDto(
+      terms: [widget.term],
+    ));
+
+    final result = response.data.map((e) => e.id).toList();
+
+    _selectedSetIds = result;
+
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userSetSelect,
-      body: UserSetSelectListWidget(
-        selectedSetId: _selectedSetId,
-        onSelect: _onSelect,
+      body: FutureBuilder<List<int>>(
+        future: _fetchSelectedSets(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return UserSetSelectListWidget(
+              selectedSetIds: _selectedSetIds,
+              onSelect: _onSelect,
+            );
+          }
+
+          return Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
 
   void _onSelect(int id) {
+    if (_selectedSetIds.contains(id)) {
+      dispatcher.dispatch(NavigateToAction.pop());
+      return;
+    }
+
     setState(() {
-      _selectedSetId = id;
+      _selectedSetIds = [..._selectedSetIds, id];
     });
 
     dispatcher.dispatch(NavigateToAction.pop());
-
     dispatcher.dispatch(
       RequestAddUserTermAction(
         term: TermDto(
           id: 0,
           name: widget.term,
           definition: widget.definition,
-          setId: _selectedSetId,
+          setId: id,
         ),
       ),
     );

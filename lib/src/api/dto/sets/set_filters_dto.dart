@@ -7,11 +7,15 @@ class SetFiltersDto {
   @JsonKey(name: "filter[user_id]", toJson: toCommaSeparatedList)
   final List<int> userIds;
 
+  @JsonKey(name: "filter[term]", toJson: toCommaSeparatedList)
+  final List<String> terms;
+
   SetFiltersDto({
-    this.userIds
+    this.userIds = const [],
+    this.terms = const []
   });
 
-  static String toCommaSeparatedList(List<int> list) => list.join(',');
+  static String toCommaSeparatedList(List list) => list.join(',');
 
   Map<String, dynamic> toJson() => _$SetFiltersDtoToJson(this);
 
