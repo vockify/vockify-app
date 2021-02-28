@@ -127,6 +127,7 @@ class _HomeState extends State<HomeWidget> {
 
     if (widget.intent != null) {
       _intent = widget.intent;
+      _trackShare();
     }
 
     _intentSubscription = ReceiveSharingIntent.getTextStream().listen(
@@ -142,7 +143,13 @@ class _HomeState extends State<HomeWidget> {
       setState(() {
         _intent = value;
         _currentItem = HomeItem.start;
+
+        _trackShare();
       });
     }
+  }
+
+  void _trackShare() {
+    amplitude.logEvent('share', eventProperties: {'intent': _intent});
   }
 }
