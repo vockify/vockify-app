@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -11,13 +13,11 @@ import 'package:vockify/src/widgets/start_user_term_form/user_set_select_list.da
 class UserSetSelectScreenWidget extends StatefulWidget {
   final String term;
   final String definition;
-  final List<int> selectedSetIds;
 
   const UserSetSelectScreenWidget({
     Key key,
     @required this.term,
     @required this.definition,
-    @required this.selectedSetIds,
   }) : super(key: key);
 
   @override
@@ -25,26 +25,47 @@ class UserSetSelectScreenWidget extends StatefulWidget {
 }
 
 class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
-  List<int> _selectedSetIds;
+  List<int> _selectedSetIds = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedSetIds = widget.selectedSetIds;
+  Future<List<int>> _fetchSelectedSets() async {
+    final response = await api.getSets(SetFiltersDto(
+      terms: [widget.term],
+    ));
+
+    final result = response.data.map((e) => e.id).toList();
+
+    _selectedSetIds = result;
+
+    return result;
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userSetSelect,
-      body: UserSetSelectListWidget(
-        selectedSetIds: _selectedSetIds,
-        onSelect: _onSelect,
+      body:
+      FutureBuilder<List<int>>(
+        future: _fetchSelectedSets(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return UserSetSelectListWidget(
+              selectedSetIds: _selectedSetIds,
+              onSelect: _onSelect,
+            );
+          }
+
+          return Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
 
   void _onSelect(int id) {
+    if (_selectedSetIds.contains(id)) {
+      dispatcher.dispatch(NavigateToAction.pop());
+      return;
+    }
+
     setState(() {
       _selectedSetIds = [..._selectedSetIds, id];
     });

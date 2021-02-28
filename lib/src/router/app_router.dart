@@ -26,7 +26,6 @@ class AppRouter {
     Routes.userSetSelect: (arguments) => UserSetSelectScreenWidget(
           term: arguments['term'] as String,
           definition: arguments['definition'] as String,
-          selectedSetIds: arguments['selectedSetIds'] as List<int>,
         ),
     Routes.main: (arguments) => MainScreenWidget(),
     Routes.home: (arguments) => HomeWidget(intent: arguments['intent'] as String),

@@ -2,14 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/amplitude.dart';
@@ -184,42 +180,35 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     return Row(
       children: <Widget>[
         Expanded(
-          child: StoreConnector<AppState, List<TermState>>(
-            distinct: true,
-            converter: (store) => getLastAddedTerms(store.state),
-            builder: (context, terms) {
-              return RawMaterialButton(
-                padding: EdgeInsets.all(16),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide.none,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(16),
-                  ),
-                ),
-                fillColor: VockifyColors.prussianBlue,
-                onPressed: () {
-                  dispatcher.dispatch(
-                    NavigateToAction.push(Routes.userSetSelect, arguments: {
-                      'term': _term,
-                      'definition': definition,
-                      'selectedSetIds': terms.where((term) => term.name == _term).map((term) => term.setId).toList(),
-                    }),
-                  );
-
-                  amplitude.logEvent('start_screen_add_button_clicked', eventProperties: {
-                    'term': _term,
-                    'definitions': _definitions,
-                  });
-                },
-                child: Text(
-                  'Добавить в словарь',
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        color: VockifyColors.white,
-                        fontSize: 16,
-                      ),
-                ),
+          child: RawMaterialButton(
+            padding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              side: BorderSide.none,
+              borderRadius: BorderRadius.all(
+                Radius.circular(16),
+              ),
+            ),
+            fillColor: VockifyColors.prussianBlue,
+            onPressed: () {
+              dispatcher.dispatch(
+                NavigateToAction.push(Routes.userSetSelect, arguments: {
+                  'term': _term,
+                  'definition': definition,
+                }),
               );
+
+              amplitude.logEvent('start_screen_add_button_clicked', eventProperties: {
+                'term': _term,
+                'definitions': _definitions,
+              });
             },
+            child: Text(
+              'Добавить в словарь',
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    color: VockifyColors.white,
+                    fontSize: 16,
+                  ),
+            ),
           ),
         ),
       ],
