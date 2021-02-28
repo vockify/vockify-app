@@ -134,8 +134,6 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                                 });
                               },
                             ),
-
-
                         ],
                       ),
                     ),
