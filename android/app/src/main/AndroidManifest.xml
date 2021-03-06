@@ -10,10 +10,12 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
+        android:allowBackup="true"
         android:networkSecurityConfig="@xml/config"
         android:name="io.flutter.app.FlutterApplication"
         android:label="Vockify"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:hasFragileUserData="true">
 
         <activity
             android:name=".MainActivity"
