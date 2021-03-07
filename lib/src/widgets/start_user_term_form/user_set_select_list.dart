@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
+import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_set_select_item.dart';
@@ -41,8 +43,9 @@ class UserSetSelectListWidget extends StatelessWidget {
                             text: 'Для начала вам необходимо создать новый словарь',
                             buttonText: 'СОЗДАТЬ СЛОВАРЬ',
                             onPressed: () {
-                              // todo: fix navigation
-                              Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
+                              dispatcher.dispatch(
+                                NavigateToAction.push(Routes.userSet, arguments: {'id': null}),
+                              );
                             },
                           )
                         : ListView.builder(
