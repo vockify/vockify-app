@@ -36,38 +36,30 @@ class UserSetSelectListWidget extends StatelessWidget {
                       ),
                     ),
                   Expanded(
-                    child: StoreConnector<AppState, List<int>>(
-                      distinct: true,
-                      converter: (store) => getUserSetIds(store.state),
-                      builder: (context, ids) {
-                        if (ids.isEmpty) {
-                          return EmptyWidget(
+                    child: ids.isEmpty
+                        ? EmptyWidget(
                             text: 'Для начала вам необходимо создать новый словарь',
                             buttonText: 'СОЗДАТЬ СЛОВАРЬ',
                             onPressed: () {
                               // todo: fix navigation
                               Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
                             },
-                          );
-                        }
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: ids.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final id = ids[index];
 
-                        return ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: ids.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final id = ids[index];
-
-                            return UserSetSelectItemWidget(
-                              id: id,
-                              isSelected: selectedSetIds.contains(id),
-                              onTap: () {
-                                onSelect(id);
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
+                              return UserSetSelectItemWidget(
+                                id: id,
+                                isSelected: selectedSetIds.contains(id),
+                                onTap: () {
+                                  onSelect(id);
+                                },
+                              );
+                            },
+                          ),
                   ),
                 ],
               );

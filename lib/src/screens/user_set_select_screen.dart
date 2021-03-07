@@ -47,7 +47,9 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
       actions: [
         AppBarAction(
           onPressed: () {
-            Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
+            dispatcher.dispatch(
+              NavigateToAction.push(Routes.userSet, arguments: {'id': null}),
+            );
           },
           icon: Icon(
             Icons.add_circle,
