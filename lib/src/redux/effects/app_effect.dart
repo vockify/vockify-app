@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/actions/request_initial_data_action.dart';
 import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/actions/auth/authorize_action.dart';
 import 'package:vockify/src/redux/actions/auth/request_authorize_action.dart';
 import 'package:vockify/src/redux/actions/auth/request_register_action.dart';

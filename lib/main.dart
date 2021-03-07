@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -12,6 +11,7 @@ import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
+import 'package:vockify/src/redux/middlewares/navigation_middleware.dart';
 import 'package:vockify/src/redux/middlewares/tracking_middleware.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';

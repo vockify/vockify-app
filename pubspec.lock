@@ -7,7 +7,7 @@ packages:
       name: amplitude_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   analyzer:
     dependency: transitive
     description:
@@ -44,7 +44,7 @@ packages:
       name: assets_audio_player_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.13+8"
+    version: "2.0.14"
   async:
     dependency: transitive
     description:
@@ -250,13 +250,6 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_redux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0"
-  flutter_redux_navigation:
-    dependency: "direct main"
-    description:
-      name: flutter_redux_navigation
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
@@ -598,14 +591,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.5"
+    version: "4.0.6"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.5"
+    version: "4.0.6"
   shared_preferences:
     dependency: "direct main"
     description:

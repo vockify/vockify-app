@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
+import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/amplitude.dart';
@@ -190,10 +190,14 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
             ),
             fillColor: VockifyColors.prussianBlue,
             onPressed: () {
+              FocusScope.of(context).unfocus();
+
               dispatcher.dispatch(
                 NavigateToAction.push(Routes.userSetSelect, arguments: {
                   'term': _term,
                   'definition': definition,
+                }, onPop: () {
+                  _nameController.clear();
                 }),
               );
 
@@ -230,7 +234,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
     setState(() {
       _term = text;
-      _transcription = data.length > 0 ? data.first.transcription : '';
+      _transcription = data.length > 0 && data.first.transcription != null ? data.first.transcription : '';
       _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
     });
 

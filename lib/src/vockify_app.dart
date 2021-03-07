@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:redux/redux.dart';
+import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/app_router.dart';
 import 'package:vockify/src/router/routes.dart';
