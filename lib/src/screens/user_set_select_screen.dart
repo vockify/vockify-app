@@ -7,6 +7,8 @@ import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dar
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/services/amplitude.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/common/app_bar_action.dart';
 import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/start_user_term_form/user_set_select_list.dart';
 
@@ -42,6 +44,19 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
+      actions: [
+        AppBarAction(
+          onPressed: () {
+            dispatcher.dispatch(
+              NavigateToAction.push(Routes.userSet, arguments: {'id': null}),
+            );
+          },
+          icon: Icon(
+            Icons.add_circle,
+            color: VockifyColors.white,
+          ),
+        ),
+      ],
       route: Routes.userSetSelect,
       body: FutureBuilder<List<int>>(
         future: _fetchSelectedSets(),

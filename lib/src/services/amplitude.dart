@@ -23,6 +23,10 @@ class AmplitudeService {
     await _amplitude.setUserId(userId);
   }
 
+  Future<void> setUserProperties(Map<String, dynamic> userProperties) async {
+    await _amplitude.setUserProperties(userProperties);
+  }
+
   Future<void> logEvent(String eventType, {Map<String, dynamic> eventProperties, bool outOfSession}) async {
     if (!kReleaseMode) {
       print('$eventType: ${eventProperties.toString()}');
