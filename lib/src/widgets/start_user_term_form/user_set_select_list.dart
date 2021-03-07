@@ -19,53 +19,58 @@ class UserSetSelectListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(24),
-            child: Text(
-              'Выберите словарь',
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 18,
-                  ),
-            ),
-          ),
-          Expanded(
-            child: StoreConnector<AppState, List<int>>(
-              distinct: true,
-              converter: (store) => getUserSetIds(store.state),
-              builder: (context, ids) {
-                if (ids.isEmpty) {
-                  return EmptyWidget(
-                    text: 'Для начала вам необходимо создать новый словарь',
-                    buttonText: 'СОЗДАТЬ СЛОВАРЬ',
-                    onPressed: () {
-                      // todo: fix navigation
-                      Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
-                    },
-                  );
-                }
+        child: StoreConnector<AppState, List<int>>(
+            distinct: true,
+            converter: (store) => getUserSetIds(store.state),
+            builder: (context, ids) {
+              return Column(
+                children: [
+                  if (ids.isNotEmpty)
+                    Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Text(
+                        'Выберите словарь',
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontSize: 18,
+                            ),
+                      ),
+                    ),
+                  Expanded(
+                    child: StoreConnector<AppState, List<int>>(
+                      distinct: true,
+                      converter: (store) => getUserSetIds(store.state),
+                      builder: (context, ids) {
+                        if (ids.isEmpty) {
+                          return EmptyWidget(
+                            text: 'Для начала вам необходимо создать новый словарь',
+                            buttonText: 'СОЗДАТЬ СЛОВАРЬ',
+                            onPressed: () {
+                              // todo: fix navigation
+                              Navigator.of(context).pushNamed(Routes.userSet, arguments: {'id': null});
+                            },
+                          );
+                        }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: ids.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final id = ids[index];
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: ids.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final id = ids[index];
 
-                    return UserSetSelectItemWidget(
-                      id: id,
-                      isSelected: selectedSetIds.contains(id),
-                      onTap: () {
-                        onSelect(id);
+                            return UserSetSelectItemWidget(
+                              id: id,
+                              isSelected: selectedSetIds.contains(id),
+                              onTap: () {
+                                onSelect(id);
+                              },
+                            );
+                          },
+                        );
                       },
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+                    ),
+                  ),
+                ],
+              );
+            }));
   }
 }
