@@ -34,7 +34,7 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
     return GestureDetector(
       onTap: _switchCard,
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 800),
+        duration: Duration(milliseconds: 500),
         transitionBuilder: _transitionBuilder,
         layoutBuilder: (widget, list) => Stack(children: [widget, ...list]),
         child: _buildFlipFlashCard(),
