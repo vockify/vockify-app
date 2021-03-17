@@ -249,6 +249,8 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
       return;
     }
 
+    setState(() => _spellCheckedTerm = '');
+
     final data = await api.spellCheck(SpellCheckRequestDto(text));
 
     if (data.isNotEmpty) {

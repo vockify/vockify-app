@@ -19,60 +19,69 @@ class FlipFlashCardWidget extends StatefulWidget {
 }
 
 class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerProviderStateMixin {
-  Animation<double> _flipAnimation;
-  AnimationController _flipAnimationController;
-  AnimationStatus _flipAnimationStatus = AnimationStatus.dismissed;
+  bool _showFrontSide = true;
+  AnimationStatus _animationStatus = AnimationStatus.completed;
 
   @override
   Widget build(BuildContext context) {
-    return Transform(
+    return Container(
       alignment: FractionalOffset.center,
-      transform: Matrix4.rotationY(pi * _flipAnimation.value),
-      child: _flipAnimation.value <= 0.5
-          ? _buildFlipFlashCard(widget.term, true)
-          : Transform(
-              alignment: FractionalOffset.center,
-              transform: Matrix4.rotationY(pi),
-              child: _buildFlipFlashCard(widget.definition),
-            ),
+      child: _buildFlipAnimation(),
     );
   }
 
-  @override
-  void dispose() {
-    _flipAnimationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _flipAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _flipAnimation = Tween<double>(end: 1, begin: 0).animate(_flipAnimationController)
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        _flipAnimationStatus = status;
-      });
-  }
-
-  Widget _buildFlipFlashCard(String text, [bool isAudio]) {
+  Widget _buildFlipAnimation() {
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        if (_flipAnimationStatus == AnimationStatus.dismissed) {
-          _flipAnimationController.forward();
-        } else if (_flipAnimationStatus == AnimationStatus.completed) {
-          _flipAnimationController.reverse();
-        }
-
-        amplitude.logEvent('flashcards_flipped');
-      },
-      child: FlashCardWidget(
-        text: text,
-        isAudio: isAudio ?? false,
+      onTap: _switchCard,
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 500),
+        transitionBuilder: _transitionBuilder,
+        layoutBuilder: (widget, list) => Stack(children: [widget, ...list]),
+        child: _buildFlipFlashCard(),
+        switchInCurve: Curves.easeInBack,
+        switchOutCurve: Curves.easeInBack.flipped,
       ),
+    );
+  }
+
+  Widget _transitionBuilder(Widget widget, Animation<double> animation) {
+    final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation)
+      ..addStatusListener((status) {
+        _animationStatus = status;
+      });
+    return AnimatedBuilder(
+      animation: rotateAnim,
+      child: widget,
+      builder: (context, widget) {
+        final isUnder = (ValueKey(_showFrontSide) != widget.key);
+        var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
+        tilt *= isUnder ? -1.0 : 1.0;
+        final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
+        return Transform(
+          transform: Matrix4.rotationY(value)..setEntry(3, 0, tilt),
+          child: widget,
+          alignment: Alignment.center,
+        );
+      },
+    );
+  }
+
+  void _switchCard() {
+    if (_animationStatus != AnimationStatus.completed) {
+      return;
+    }
+
+    amplitude.logEvent('flashcards_flipped');
+    setState(() {
+      _showFrontSide = !_showFrontSide;
+    });
+  }
+
+  Widget _buildFlipFlashCard() {
+    return FlashCardWidget(
+      key: ValueKey(_showFrontSide),
+      text: _showFrontSide ? widget.term : widget.definition,
+      isAudio: _showFrontSide,
     );
   }
 }

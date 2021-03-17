@@ -61,6 +61,9 @@ class AuthEffect {
   ) {
     return actions.asyncExpand((action) async* {
       yield amplitude.setUserId(action.user.id.toString());
+      yield amplitude.setUserProperties({
+        "isRegistered": action.user.isRegistered,
+      });
     });
   }
 
