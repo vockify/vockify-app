@@ -2,7 +2,7 @@
 
 A demo project of simple Quiz application for learning languages.
 
-The apps uses REST API to show list of sets, terms which user can add, update and delete.
+The app uses REST API to show list of sets, terms which user can add, update and delete.
 
 Language: Flutter/Dart
 
