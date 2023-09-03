@@ -34,8 +34,10 @@ class LoginScreenWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
-                FlatButton(
-                  padding: EdgeInsets.all(0),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(0),
+                  ),
                   onPressed: () {
                     dispatcher.dispatch(RequestAuthorizeAction());
                   },

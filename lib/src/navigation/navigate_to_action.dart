@@ -20,7 +20,7 @@ enum NavigationType {
 
 /// The action to be dispatched in the store in order to trigger a navigation.
 class NavigateToAction {
-  final String name;
+  final String? name;
 
   /// Controls the method to be called on the [Navigator] with the specified
   /// [name].
@@ -28,25 +28,25 @@ class NavigateToAction {
 
   /// Optional callback function to be called before the actual navigation.
   /// e.g. activate the loader.
-  final Function preNavigation;
+  final Function? preNavigation;
 
   /// Optional callback function to be called after the actual navigation.
   /// e.g. de-activate the loader.
-  final Function postNavigation;
+  final Function? postNavigation;
 
   /// Optional object to be passed either in [NavigationType.shouldPush] or
   /// [NavigationType.shouldReplace].
   ///
   /// It will be ignored if passed with type [NavigationType.shouldPop]
-  final Object arguments;
+  final Object? arguments;
 
   /// Optional object to be passed either in [NavigationType.shouldPushNamedAndRemoveUntil]
   /// or in [NavigationType.shouldPopUntil]
   ///
   /// It will be ignored if passed with any other type.
-  final RoutePredicate predicate;
+  final RoutePredicate? predicate;
 
-  final VoidCallback onPop;
+  final VoidCallback? onPop;
 
   /// Create a navigation action.
   ///
@@ -73,10 +73,10 @@ class NavigateToAction {
         }());
 
   factory NavigateToAction.push(String name,
-          {Function preNavigation,
-          Function postNavigation,
-          Object arguments,
-          VoidCallback onPop}) =>
+          {Function? preNavigation,
+          Function? postNavigation,
+          Object? arguments,
+          VoidCallback? onPop}) =>
       NavigateToAction(name,
           preNavigation: preNavigation,
           postNavigation: postNavigation,
@@ -84,16 +84,16 @@ class NavigateToAction {
           onPop: onPop);
 
   factory NavigateToAction.pop(
-          {Function preNavigation, Function postNavigation}) =>
+          {Function? preNavigation, Function? postNavigation}) =>
       NavigateToAction(null,
           type: NavigationType.shouldPop,
           preNavigation: preNavigation,
           postNavigation: postNavigation);
 
   factory NavigateToAction.popUntil(
-          {Function preNavigation,
-          Function postNavigation,
-          RoutePredicate predicate}) =>
+          {Function? preNavigation,
+          Function? postNavigation,
+          RoutePredicate? predicate}) =>
       NavigateToAction(null,
           type: NavigationType.shouldPopUntil,
           preNavigation: preNavigation,
@@ -101,10 +101,10 @@ class NavigateToAction {
           predicate: predicate);
 
   factory NavigateToAction.replace(String name,
-          {Function preNavigation,
-          Function postNavigation,
-          Object arguments,
-          VoidCallback onPop}) =>
+          {Function? preNavigation,
+          Function? postNavigation,
+          Object? arguments,
+          VoidCallback? onPop}) =>
       NavigateToAction(name,
           type: NavigationType.shouldReplace,
           preNavigation: preNavigation,
@@ -114,10 +114,10 @@ class NavigateToAction {
 
   factory NavigateToAction.pushNamedAndRemoveUntil(
           String name, RoutePredicate predicate,
-          {Function preNavigation,
-          Function postNavigation,
-          Object arguments,
-          VoidCallback onPop}) =>
+          {Function? preNavigation,
+          Function? postNavigation,
+          Object? arguments,
+          VoidCallback? onPop}) =>
       NavigateToAction(name,
           type: NavigationType.shouldPushNamedAndRemoveUntil,
           preNavigation: preNavigation,

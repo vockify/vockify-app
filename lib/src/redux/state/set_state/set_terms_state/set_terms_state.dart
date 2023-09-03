@@ -8,9 +8,12 @@ abstract class SetTermsState implements Built<SetTermsState, SetTermsStateBuilde
   factory SetTermsState([void updates(SetTermsStateBuilder b)]) = _$SetTermsState;
 
   factory SetTermsState.fromDto(SetTermsDto dto) => SetTermsState((builder) {
-        builder
-          ..count = dto.count
-          ..memorization.replace(SetTermsMemorizationState.fromDto(dto.memorization));
+        builder.count = dto.count;
+
+        final memorization = dto.memorization;
+
+        if (memorization != null)
+          builder.memorization.replace(SetTermsMemorizationState.fromDto(memorization));
       });
 
   SetTermsState._();

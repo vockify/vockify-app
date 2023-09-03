@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/helpers/plural.dart';
@@ -17,16 +16,16 @@ class UserSetItemWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   const UserSetItemWidget({
-    Key key,
-    @required this.id,
-    @required this.onDelete,
-    @required this.onEdit,
-    @required this.onTap,
+    Key? key,
+    required this.id,
+    required this.onDelete,
+    required this.onEdit,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, SetState>(
+    return StoreConnector<AppState, SetState?>(
       distinct: true,
       converter: (store) => getSetById(store.state, id),
       builder: (context, set) {
@@ -34,8 +33,8 @@ class UserSetItemWidget extends StatelessWidget {
           margin: EdgeInsets.only(top: 16),
           color: VockifyColors.ghostWhite,
           child: ListTile(
-            title: Text(set.name),
-            subtitle: Text('${set.terms.count} ${plural(set.terms.count, ['слово', 'слова', 'слов'])}'),
+            title: Text(set?.name ?? ''),
+            subtitle: Text('${set?.terms.count} ${plural(set?.terms.count ?? 0, ['слово', 'слова', 'слов'])}'),
             trailing: PopupMenuButton(
               padding: EdgeInsets.all(0),
               itemBuilder: (context) => [

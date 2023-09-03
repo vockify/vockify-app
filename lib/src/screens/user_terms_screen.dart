@@ -15,7 +15,7 @@ import 'package:vockify/src/widgets/user_term_list/user_term_list.dart';
 class UserTermsScreenWidget extends StatelessWidget {
   final int setId;
 
-  UserTermsScreenWidget({@required this.setId});
+  UserTermsScreenWidget({required this.setId});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class UserTermsScreenWidget extends StatelessWidget {
 
     return LayoutWidget(
       route: Routes.userTerms,
-      title: set.name,
+      title: set?.name,
       actions: <Widget>[
         AppBarAction(
           icon: Icon(
@@ -75,7 +75,7 @@ class UserTermsScreenWidget extends StatelessWidget {
                             },
                             child: Text(
                               'УЧИТЬ',
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: VockifyColors.ghostWhite,
                                     fontSize: 16,
                                   ),
@@ -97,7 +97,7 @@ class UserTermsScreenWidget extends StatelessWidget {
                             },
                             child: Text(
                               'ФЛЕШКАРТЫ',
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: VockifyColors.ghostWhite,
                                     fontSize: 16,
                                   ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -12,15 +11,15 @@ class UserSetSelectItemWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   const UserSetSelectItemWidget({
-    Key key,
-    @required this.id,
-    @required this.onTap,
+    Key? key,
+    required this.id,
+    required this.onTap,
     this.isSelected = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, SetState>(
+    return StoreConnector<AppState, SetState?>(
       distinct: true,
       converter: (store) => getSetById(store.state, id),
       builder: (context, set) {
@@ -28,7 +27,7 @@ class UserSetSelectItemWidget extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 14, top: 2),
           color: VockifyColors.ghostWhite,
           child: ListTile(
-            title: Text(set.name),
+            title: Text(set?.name ?? ''),
             onTap: onTap,
             trailing: Icon(isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked),
           ),

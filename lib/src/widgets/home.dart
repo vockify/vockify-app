@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+// import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
@@ -20,19 +20,19 @@ enum HomeItem {
 }
 
 class HomeWidget extends StatefulWidget {
-  final String intent;
+  final String? intent;
 
-  const HomeWidget({Key key, this.intent}) : super(key: key);
+  const HomeWidget({Key? key, this.intent}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomeState();
 }
 
 class _HomeState extends State<HomeWidget> {
-  StreamSubscription _intentSubscription;
+  StreamSubscription? _intentSubscription;
 
   HomeItem _currentItem = HomeItem.start;
-  String _intent;
+  String? _intent;
 
   final _navigatorSettings = {
     HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
@@ -50,7 +50,7 @@ class _HomeState extends State<HomeWidget> {
 
           if (_navigatorSettings.containsKey(item) && item == _currentItem) {
             final settings = _navigatorSettings[item];
-            settings.key.currentState.popUntil((route) => route.settings.name == settings.initialRoute);
+            settings?.key.currentState?.popUntil((route) => route.settings.name == settings.initialRoute);
           }
 
           setState(() {
@@ -87,7 +87,7 @@ class _HomeState extends State<HomeWidget> {
           ),
           Offstage(
             offstage: _currentItem != HomeItem.main,
-            child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]),
+            child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]!),
           ),
           Offstage(
             offstage: _currentItem != HomeItem.profile,
@@ -130,12 +130,12 @@ class _HomeState extends State<HomeWidget> {
       _trackShare();
     }
 
-    _intentSubscription = ReceiveSharingIntent.getTextStream().listen(
-      _goToShare,
-      onError: (error) {
-        print("getTextStream error: $error");
-      },
-    );
+    // _intentSubscription = ReceiveSharingIntent.getTextStream().listen(
+    //   _goToShare,
+    //   onError: (error) {
+    //     print("getTextStream error: $error");
+    //   },
+    // );
   }
 
   void _goToShare(String value) {

@@ -12,7 +12,7 @@ class VockifyApp extends StatelessWidget {
   final Store<AppState> store;
   final String intent;
 
-  VockifyApp({Key key, this.store, this.intent}) : super(key: key);
+  VockifyApp({Key? key, required this.store, required this.intent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

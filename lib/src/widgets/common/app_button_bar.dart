@@ -4,7 +4,7 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 class AppButtonBarWidget extends StatelessWidget {
   final List<Widget> children;
 
-  const AppButtonBarWidget({Key key, @required this.children}) : super(key: key);
+  const AppButtonBarWidget({Key? key, required this.children}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

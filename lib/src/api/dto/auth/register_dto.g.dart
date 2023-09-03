@@ -6,12 +6,10 @@ part of 'register_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterDto _$RegisterDtoFromJson(Map<String, dynamic> json) {
-  return RegisterDto(
-    UserDto.fromJson(json['user'] as Map<String, dynamic>),
-    TokenDto.fromJson(json['token'] as Map<String, dynamic>),
-  );
-}
+RegisterDto _$RegisterDtoFromJson(Map<String, dynamic> json) => RegisterDto(
+      UserDto.fromJson(json['user'] as Map<String, dynamic>),
+      TokenDto.fromJson(json['token'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$RegisterDtoToJson(RegisterDto instance) =>
     <String, dynamic>{

@@ -11,7 +11,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/services/amplitude.dart';
 
 class TrackingMiddleware extends ActionHandlersMiddleware<AppState> {
-  List<ActionHandler<AppState, Object>> _handlers;
+  List<ActionHandler<AppState, Object>> _handlers = [];
 
   TrackingMiddleware() {
     _handlers = [

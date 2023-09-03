@@ -11,7 +11,7 @@ part 'app_state.g.dart';
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState([void updates(AppStateBuilder b)]) = _$AppState;
 
-  factory AppState.initial({String authToken, int selectedSetId}) => AppState((builder) {
+  factory AppState.initial({String? authToken, int? selectedSetId}) => AppState((builder) {
         builder
           ..authToken = authToken
           ..isLoading = false
@@ -25,8 +25,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   AppState._();
 
-  @nullable
-  String get currentRoute;
+  String? get currentRoute;
 
   FeatureFlagState get featureFlags;
 

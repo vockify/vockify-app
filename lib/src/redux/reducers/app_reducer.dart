@@ -9,7 +9,7 @@ import 'package:vockify/src/redux/reducers/term_reducer.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
 class AppReducer {
-  Reducer<AppState> _reducer;
+  late Reducer<AppState> _reducer;
 
   AppReducer(SetReducer setDataReducer, TermReducer termDataReducer) {
     _reducer = combineReducers([
@@ -23,7 +23,7 @@ class AppReducer {
     ]);
   }
 
-  AppState getState(AppState state, Object action) => _reducer(state, action);
+  AppState getState(AppState state, dynamic action) => _reducer(state, action);
 
   AppState _authorizeReducer(AppState state, AuthorizeAction action) {
     return state.rebuild((builder) {

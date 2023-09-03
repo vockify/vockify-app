@@ -13,7 +13,7 @@ import 'package:vockify/src/widgets/layout.dart';
 class FlashcardsScreenWidget extends StatelessWidget {
   final int setId;
 
-  const FlashcardsScreenWidget({Key key, this.setId}) : super(key: key);
+  const FlashcardsScreenWidget({Key? key, required this.setId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

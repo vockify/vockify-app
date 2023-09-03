@@ -27,11 +27,11 @@ class QuizResultWidget extends StatelessWidget {
   ];
 
   final QuizResult result;
-  final VoidCallback onPressContinue;
+  final VoidCallback? onPressContinue;
 
   const QuizResultWidget({
-    Key key,
-    @required this.result,
+    Key? key,
+    required this.result,
     this.onPressContinue,
   }) : super(key: key);
 
@@ -56,7 +56,7 @@ class QuizResultWidget extends StatelessWidget {
                       child: Text(
                         _getPhrase(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                     Padding(
@@ -84,7 +84,7 @@ class QuizResultWidget extends StatelessWidget {
                               child: Text(
                                 '$_percentage%',
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.headline6.copyWith(color: VockifyColors.white),
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: VockifyColors.white),
                               ),
                             ),
                           ),
@@ -99,20 +99,20 @@ class QuizResultWidget extends StatelessWidget {
 
               return Card(
                 color: VockifyColors.ghostWhite,
-                child: StoreConnector<AppState, TermState>(
+                child: StoreConnector<AppState, TermState?>(
                   distinct: true,
                   converter: (store) => getTermById(store.state, id),
                   builder: (context, term) {
                     return ListTile(
-                      trailing: _getTermIcon(term.memorizationLevel),
+                      trailing: _getTermIcon(term?.memorizationLevel),
                       title: Text(
-                        term.name,
+                        term?.name ?? '',
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontSize: 18,
                             ),
                       ),
-                      subtitle: Text(term.definition),
+                      subtitle: Text(term?.definition ?? ''),
                     );
                   },
                 ),
@@ -122,13 +122,15 @@ class QuizResultWidget extends StatelessWidget {
         ),
         AppButtonBarWidget(
           children: [
-            RaisedButton(
-              shape: Border(),
-              color: VockifyColors.fulvous,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: LinearBorder(),
+                backgroundColor: VockifyColors.fulvous,
+              ),
               onPressed: onPressContinue,
               child: Text(
                 'ПРОДОЛЖИТЬ ИЗУЧЕНИЕ',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: VockifyColors.white,
                       fontSize: 16,
                     ),
@@ -148,8 +150,8 @@ class QuizResultWidget extends StatelessWidget {
     return _cheerPhrases[Random().nextInt(_cheerPhrases.length)];
   }
 
-  Widget _getTermIcon(MemorizationLevel memorizationLevel) {
-    IconData icon;
+  Widget? _getTermIcon(MemorizationLevel? memorizationLevel) {
+    IconData? icon;
 
     if (memorizationLevel == MemorizationLevel.bad) {
       icon = Icons.not_interested;

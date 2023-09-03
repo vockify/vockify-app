@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final Widget suffix;
+  final Widget? suffix;
   final bool autoFocus;
   final bool isRequired;
 
   const PrimaryTextFormFieldWidget({
-    Key key,
-    @required this.controller,
-    @required this.label,
+    Key? key,
+    required this.controller,
+    required this.label,
     this.suffix,
     this.autoFocus = false,
     this.isRequired = true,
@@ -34,7 +33,7 @@ class PrimaryTextFormFieldWidget extends StatelessWidget {
           ),
         ),
         validator: (value) {
-          if (isRequired && value.isEmpty) {
+          if (isRequired && (value?.isEmpty ?? false)) {
             return 'ОБЯЗАТЕЛЬНОЕ ПОЛЕ';
           }
 

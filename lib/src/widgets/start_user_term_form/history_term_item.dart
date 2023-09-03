@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -11,20 +10,20 @@ class HistoryTermItemWidget extends StatelessWidget {
   final Function(String) onTap;
 
   const HistoryTermItemWidget({
-    Key key,
-    @required this.id,
-    @required this.onTap,
+    Key? key,
+    required this.id,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, TermState>(
+    return StoreConnector<AppState, TermState?>(
       distinct: true,
       converter: (store) => getTermById(store.state, id),
       builder: (context, term) {
         return GestureDetector(
           onTap: () {
-            onTap(term.name);
+            onTap(term?.name ?? '');
           },
           child: Card(
             margin: EdgeInsets.all(0),
@@ -38,18 +37,18 @@ class HistoryTermItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      term.name,
+                      term?.name ?? '',
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontSize: 16,
                       ),
                     ),
                   ),
                   Expanded(
                     child: Text(
-                      term.definition,
+                      term?.definition ?? '',
                       textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 16,
                       ),
                     ),

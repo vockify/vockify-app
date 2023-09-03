@@ -6,13 +6,11 @@ part of 'sets_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SetsResponse _$SetsResponseFromJson(Map<String, dynamic> json) {
-  return SetsResponse(
-    (json['data'] as List)
-        .map((e) => SetDto.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+SetsResponse _$SetsResponseFromJson(Map<String, dynamic> json) => SetsResponse(
+      (json['data'] as List<dynamic>)
+          .map((e) => SetDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$SetsResponseToJson(SetsResponse instance) =>
     <String, dynamic>{

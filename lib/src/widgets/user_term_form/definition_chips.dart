@@ -7,10 +7,10 @@ class DefinitionChipsWidget extends StatelessWidget {
   final Function(List<String>) onChange;
 
   const DefinitionChipsWidget({
-    Key key,
-    @required this.definitions,
-    @required this.selectedDefinitions,
-    @required this.onChange,
+    Key? key,
+    required this.definitions,
+    required this.selectedDefinitions,
+    required this.onChange,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class DefinitionChipsWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 8),
           child: Text(
             'Выберите значения:',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 16,
                 ),
           ),
@@ -37,7 +37,7 @@ class DefinitionChipsWidget extends StatelessWidget {
                 selectedColor: VockifyColors.lightSteelBlue,
                 label: Text(
                   definition,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 16,
                       ),
                 ),

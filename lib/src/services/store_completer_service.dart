@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
-StoreCompleterService storeCompleterService;
+late StoreCompleterService storeCompleterService;
 
 void setupStoreCompleterService(Store<AppState> store) {
   storeCompleterService = StoreCompleterService(store);

@@ -6,16 +6,14 @@ part of 'set_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SetDto _$SetDtoFromJson(Map<String, dynamic> json) {
-  return SetDto(
-    id: json['id'] as int,
-    name: json['name'] as String,
-    parentId: json['parent_set_id'] as int,
-    icon: json['icon'] as String,
-    userId: json['user_id'] as int,
-    terms: SetTermsDto.fromJson(json['terms'] as Map<String, dynamic>),
-  );
-}
+SetDto _$SetDtoFromJson(Map<String, dynamic> json) => SetDto(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      parentId: json['parent_set_id'] as int,
+      icon: json['icon'] as String,
+      userId: json['user_id'] as int,
+      terms: SetTermsDto.fromJson(json['terms'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$SetDtoToJson(SetDto instance) => <String, dynamic>{
       'id': instance.id,

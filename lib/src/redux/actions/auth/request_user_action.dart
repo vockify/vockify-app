@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:vockify/src/redux/actions/app_action.dart';
 
 class RequestUserAction extends AppAction {
@@ -6,7 +5,7 @@ class RequestUserAction extends AppAction {
   final Map<String, dynamic> arguments;
 
   RequestUserAction({
-    @required this.route,
-    @required this.arguments,
+    required this.route,
+    required this.arguments,
   });
 }

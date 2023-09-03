@@ -8,36 +8,33 @@ part of 'set_state.dart';
 
 class _$SetState extends SetState {
   @override
-  final String icon;
+  final String? icon;
   @override
   final int id;
   @override
   final String name;
   @override
-  final int parentId;
+  final int? parentId;
   @override
   final int userId;
   @override
   final SetTermsState terms;
 
-  factory _$SetState([void Function(SetStateBuilder) updates]) =>
-      (new SetStateBuilder()..update(updates)).build();
+  factory _$SetState([void Function(SetStateBuilder)? updates]) =>
+      (new SetStateBuilder()..update(updates))._build();
 
   _$SetState._(
-      {this.icon, this.id, this.name, this.parentId, this.userId, this.terms})
+      {this.icon,
+      required this.id,
+      required this.name,
+      this.parentId,
+      required this.userId,
+      required this.terms})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('SetState', 'id');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('SetState', 'name');
-    }
-    if (userId == null) {
-      throw new BuiltValueNullFieldError('SetState', 'userId');
-    }
-    if (terms == null) {
-      throw new BuiltValueNullFieldError('SetState', 'terms');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, r'SetState', 'id');
+    BuiltValueNullFieldError.checkNotNull(name, r'SetState', 'name');
+    BuiltValueNullFieldError.checkNotNull(userId, r'SetState', 'userId');
+    BuiltValueNullFieldError.checkNotNull(terms, r'SetState', 'terms');
   }
 
   @override
@@ -61,17 +58,20 @@ class _$SetState extends SetState {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc($jc($jc($jc(0, icon.hashCode), id.hashCode), name.hashCode),
-                parentId.hashCode),
-            userId.hashCode),
-        terms.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, icon.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, parentId.hashCode);
+    _$hash = $jc(_$hash, userId.hashCode);
+    _$hash = $jc(_$hash, terms.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SetState')
+    return (newBuiltValueToStringHelper(r'SetState')
           ..add('icon', icon)
           ..add('id', id)
           ..add('name', name)
@@ -83,43 +83,44 @@ class _$SetState extends SetState {
 }
 
 class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
-  _$SetState _$v;
+  _$SetState? _$v;
 
-  String _icon;
-  String get icon => _$this._icon;
-  set icon(String icon) => _$this._icon = icon;
+  String? _icon;
+  String? get icon => _$this._icon;
+  set icon(String? icon) => _$this._icon = icon;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  int _parentId;
-  int get parentId => _$this._parentId;
-  set parentId(int parentId) => _$this._parentId = parentId;
+  int? _parentId;
+  int? get parentId => _$this._parentId;
+  set parentId(int? parentId) => _$this._parentId = parentId;
 
-  int _userId;
-  int get userId => _$this._userId;
-  set userId(int userId) => _$this._userId = userId;
+  int? _userId;
+  int? get userId => _$this._userId;
+  set userId(int? userId) => _$this._userId = userId;
 
-  SetTermsStateBuilder _terms;
+  SetTermsStateBuilder? _terms;
   SetTermsStateBuilder get terms =>
       _$this._terms ??= new SetTermsStateBuilder();
-  set terms(SetTermsStateBuilder terms) => _$this._terms = terms;
+  set terms(SetTermsStateBuilder? terms) => _$this._terms = terms;
 
   SetStateBuilder();
 
   SetStateBuilder get _$this {
-    if (_$v != null) {
-      _icon = _$v.icon;
-      _id = _$v.id;
-      _name = _$v.name;
-      _parentId = _$v.parentId;
-      _userId = _$v.userId;
-      _terms = _$v.terms?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _icon = $v.icon;
+      _id = $v.id;
+      _name = $v.name;
+      _parentId = $v.parentId;
+      _userId = $v.userId;
+      _terms = $v.terms.toBuilder();
       _$v = null;
     }
     return this;
@@ -127,37 +128,39 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
 
   @override
   void replace(SetState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SetState;
   }
 
   @override
-  void update(void Function(SetStateBuilder) updates) {
+  void update(void Function(SetStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SetState build() {
+  SetState build() => _build();
+
+  _$SetState _build() {
     _$SetState _$result;
     try {
       _$result = _$v ??
           new _$SetState._(
               icon: icon,
-              id: id,
-              name: name,
+              id: BuiltValueNullFieldError.checkNotNull(id, r'SetState', 'id'),
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, r'SetState', 'name'),
               parentId: parentId,
-              userId: userId,
+              userId: BuiltValueNullFieldError.checkNotNull(
+                  userId, r'SetState', 'userId'),
               terms: terms.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'terms';
         terms.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'SetState', _$failedField, e.toString());
+            r'SetState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -166,4 +169,4 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

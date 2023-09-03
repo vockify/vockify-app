@@ -7,9 +7,9 @@ import 'package:vockify/src/widgets/layout.dart';
 import 'package:vockify/src/widgets/start_user_term_form/start_user_term_form.dart';
 
 class StartScreenWidget extends StatelessWidget {
-  final String term;
+  final String? term;
 
-  const StartScreenWidget({Key key, this.term}) : super(key: key);
+  const StartScreenWidget({Key? key, this.term}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

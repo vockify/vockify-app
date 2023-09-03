@@ -12,7 +12,7 @@ import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 class SetReducer {
-  Reducer<AppState> _reducer;
+  late Reducer<AppState> _reducer;
 
   SetReducer() {
     _reducer = combineReducers([

@@ -16,26 +16,23 @@ class _$TermState extends TermState {
   @override
   final int setId;
   @override
-  final MemorizationLevel memorizationLevel;
+  final MemorizationLevel? memorizationLevel;
 
-  factory _$TermState([void Function(TermStateBuilder) updates]) =>
-      (new TermStateBuilder()..update(updates)).build();
+  factory _$TermState([void Function(TermStateBuilder)? updates]) =>
+      (new TermStateBuilder()..update(updates))._build();
 
   _$TermState._(
-      {this.definition, this.id, this.name, this.setId, this.memorizationLevel})
+      {required this.definition,
+      required this.id,
+      required this.name,
+      required this.setId,
+      this.memorizationLevel})
       : super._() {
-    if (definition == null) {
-      throw new BuiltValueNullFieldError('TermState', 'definition');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('TermState', 'id');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('TermState', 'name');
-    }
-    if (setId == null) {
-      throw new BuiltValueNullFieldError('TermState', 'setId');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        definition, r'TermState', 'definition');
+    BuiltValueNullFieldError.checkNotNull(id, r'TermState', 'id');
+    BuiltValueNullFieldError.checkNotNull(name, r'TermState', 'name');
+    BuiltValueNullFieldError.checkNotNull(setId, r'TermState', 'setId');
   }
 
   @override
@@ -58,15 +55,19 @@ class _$TermState extends TermState {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc($jc(0, definition.hashCode), id.hashCode), name.hashCode),
-            setId.hashCode),
-        memorizationLevel.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, definition.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, setId.hashCode);
+    _$hash = $jc(_$hash, memorizationLevel.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('TermState')
+    return (newBuiltValueToStringHelper(r'TermState')
           ..add('definition', definition)
           ..add('id', id)
           ..add('name', name)
@@ -77,38 +78,39 @@ class _$TermState extends TermState {
 }
 
 class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
-  _$TermState _$v;
+  _$TermState? _$v;
 
-  String _definition;
-  String get definition => _$this._definition;
-  set definition(String definition) => _$this._definition = definition;
+  String? _definition;
+  String? get definition => _$this._definition;
+  set definition(String? definition) => _$this._definition = definition;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  int _setId;
-  int get setId => _$this._setId;
-  set setId(int setId) => _$this._setId = setId;
+  int? _setId;
+  int? get setId => _$this._setId;
+  set setId(int? setId) => _$this._setId = setId;
 
-  MemorizationLevel _memorizationLevel;
-  MemorizationLevel get memorizationLevel => _$this._memorizationLevel;
-  set memorizationLevel(MemorizationLevel memorizationLevel) =>
+  MemorizationLevel? _memorizationLevel;
+  MemorizationLevel? get memorizationLevel => _$this._memorizationLevel;
+  set memorizationLevel(MemorizationLevel? memorizationLevel) =>
       _$this._memorizationLevel = memorizationLevel;
 
   TermStateBuilder();
 
   TermStateBuilder get _$this {
-    if (_$v != null) {
-      _definition = _$v.definition;
-      _id = _$v.id;
-      _name = _$v.name;
-      _setId = _$v.setId;
-      _memorizationLevel = _$v.memorizationLevel;
+    final $v = _$v;
+    if ($v != null) {
+      _definition = $v.definition;
+      _id = $v.id;
+      _name = $v.name;
+      _setId = $v.setId;
+      _memorizationLevel = $v.memorizationLevel;
       _$v = null;
     }
     return this;
@@ -116,29 +118,32 @@ class TermStateBuilder implements Builder<TermState, TermStateBuilder> {
 
   @override
   void replace(TermState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$TermState;
   }
 
   @override
-  void update(void Function(TermStateBuilder) updates) {
+  void update(void Function(TermStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$TermState build() {
+  TermState build() => _build();
+
+  _$TermState _build() {
     final _$result = _$v ??
         new _$TermState._(
-            definition: definition,
-            id: id,
-            name: name,
-            setId: setId,
+            definition: BuiltValueNullFieldError.checkNotNull(
+                definition, r'TermState', 'definition'),
+            id: BuiltValueNullFieldError.checkNotNull(id, r'TermState', 'id'),
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, r'TermState', 'name'),
+            setId: BuiltValueNullFieldError.checkNotNull(
+                setId, r'TermState', 'setId'),
             memorizationLevel: memorizationLevel);
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

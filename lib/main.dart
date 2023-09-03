@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+// import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -32,7 +32,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final storage = AppStorage.getInstance();
-  final authToken = await storage.getValue(AppStorageKey.token) ?? '';
+  final authToken = await storage?.getValue(AppStorageKey.token) ?? '';
 
   final reducer = AppReducer(SetReducer(), TermReducer());
   final effect = AppEffect(SetEffect(), TermEffect(), AuthEffect());
@@ -41,7 +41,7 @@ void main() async {
     reducer.getState,
     middleware: [
       EpicMiddleware(effect.getEffects()),
-      NavigationMiddleware(),
+      // NavigationMiddleware(),
       TrackingMiddleware(),
     ],
     initialState: AppState.initial(authToken: authToken),
@@ -52,7 +52,8 @@ void main() async {
   setupStoreCompleterService(store);
   setupAmplitude();
 
-  final intent = await ReceiveSharingIntent.getInitialText();
+  // final intent = await ReceiveSharingIntent.getInitialText() ?? '';
+  final intent = '';
 
   FlutterError.onError = _sentry.exceptionHandler;
 

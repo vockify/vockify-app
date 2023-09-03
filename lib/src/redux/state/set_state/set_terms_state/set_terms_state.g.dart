@@ -12,16 +12,14 @@ class _$SetTermsState extends SetTermsState {
   @override
   final SetTermsMemorizationState memorization;
 
-  factory _$SetTermsState([void Function(SetTermsStateBuilder) updates]) =>
-      (new SetTermsStateBuilder()..update(updates)).build();
+  factory _$SetTermsState([void Function(SetTermsStateBuilder)? updates]) =>
+      (new SetTermsStateBuilder()..update(updates))._build();
 
-  _$SetTermsState._({this.count, this.memorization}) : super._() {
-    if (count == null) {
-      throw new BuiltValueNullFieldError('SetTermsState', 'count');
-    }
-    if (memorization == null) {
-      throw new BuiltValueNullFieldError('SetTermsState', 'memorization');
-    }
+  _$SetTermsState._({required this.count, required this.memorization})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(count, r'SetTermsState', 'count');
+    BuiltValueNullFieldError.checkNotNull(
+        memorization, r'SetTermsState', 'memorization');
   }
 
   @override
@@ -41,12 +39,16 @@ class _$SetTermsState extends SetTermsState {
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, count.hashCode), memorization.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, count.hashCode);
+    _$hash = $jc(_$hash, memorization.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SetTermsState')
+    return (newBuiltValueToStringHelper(r'SetTermsState')
           ..add('count', count)
           ..add('memorization', memorization))
         .toString();
@@ -55,24 +57,25 @@ class _$SetTermsState extends SetTermsState {
 
 class SetTermsStateBuilder
     implements Builder<SetTermsState, SetTermsStateBuilder> {
-  _$SetTermsState _$v;
+  _$SetTermsState? _$v;
 
-  int _count;
-  int get count => _$this._count;
-  set count(int count) => _$this._count = count;
+  int? _count;
+  int? get count => _$this._count;
+  set count(int? count) => _$this._count = count;
 
-  SetTermsMemorizationStateBuilder _memorization;
+  SetTermsMemorizationStateBuilder? _memorization;
   SetTermsMemorizationStateBuilder get memorization =>
       _$this._memorization ??= new SetTermsMemorizationStateBuilder();
-  set memorization(SetTermsMemorizationStateBuilder memorization) =>
+  set memorization(SetTermsMemorizationStateBuilder? memorization) =>
       _$this._memorization = memorization;
 
   SetTermsStateBuilder();
 
   SetTermsStateBuilder get _$this {
-    if (_$v != null) {
-      _count = _$v.count;
-      _memorization = _$v.memorization?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _count = $v.count;
+      _memorization = $v.memorization.toBuilder();
       _$v = null;
     }
     return this;
@@ -80,32 +83,34 @@ class SetTermsStateBuilder
 
   @override
   void replace(SetTermsState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SetTermsState;
   }
 
   @override
-  void update(void Function(SetTermsStateBuilder) updates) {
+  void update(void Function(SetTermsStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SetTermsState build() {
+  SetTermsState build() => _build();
+
+  _$SetTermsState _build() {
     _$SetTermsState _$result;
     try {
       _$result = _$v ??
           new _$SetTermsState._(
-              count: count, memorization: memorization.build());
+              count: BuiltValueNullFieldError.checkNotNull(
+                  count, r'SetTermsState', 'count'),
+              memorization: memorization.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'memorization';
         memorization.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'SetTermsState', _$failedField, e.toString());
+            r'SetTermsState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -114,4 +119,4 @@ class SetTermsStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

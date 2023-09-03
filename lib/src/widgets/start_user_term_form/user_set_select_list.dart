@@ -13,9 +13,9 @@ class UserSetSelectListWidget extends StatelessWidget {
   final Function(int) onSelect;
 
   const UserSetSelectListWidget({
-    Key key,
-    @required this.onSelect,
-    this.selectedSetIds,
+    Key? key,
+    required this.onSelect,
+    required this.selectedSetIds,
   }) : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class UserSetSelectListWidget extends StatelessWidget {
                       padding: EdgeInsets.all(24),
                       child: Text(
                         'Выберите словарь',
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontSize: 18,
                             ),
                       ),

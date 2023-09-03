@@ -7,11 +7,11 @@ class QuizStep {
   final int correctCount;
 
   QuizStep({
-    this.termId,
-    this.name,
-    this.definitions,
-    this.termsCount,
-    this.termIndex,
-    this.correctCount,
+    required this.termId,
+    required this.name,
+    required this.definitions,
+    required this.termsCount,
+    required this.termIndex,
+    required this.correctCount,
   });
 }

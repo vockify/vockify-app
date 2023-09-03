@@ -5,5 +5,5 @@ import 'package:vockify/src/navigation/navigation_state.dart';
 /// It also keeps a global reference of the [NavigationState].
 class NavigatorHolder {
   static final navigatorKey = GlobalKey<NavigatorState>();
-  static NavigationState state;
+  static NavigationState? state;
 }

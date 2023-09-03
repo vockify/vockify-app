@@ -10,7 +10,7 @@ class MobileAuthorization extends Authorization {
   @override
   Future<String> authenticate() async {
     final storage = AppStorage.getInstance();
-    final currentToken = await storage.getValue(AppStorageKey.token) ?? '';
+    final currentToken = await storage?.getValue(AppStorageKey.token) ?? '';
 
     final result = await FlutterWebAuth.authenticate(
       url: "${Authorization.url}?type=app&token=${currentToken}",

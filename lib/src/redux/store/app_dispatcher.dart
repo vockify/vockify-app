@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 
-AppDispatcher dispatcher;
+late AppDispatcher dispatcher;
 
 void setupDispatcher(Store store) {
   dispatcher = AppDispatcher(store.dispatch);

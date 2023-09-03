@@ -13,8 +13,13 @@ abstract class TermState implements Built<TermState, TermStateBuilder> {
         ..definition = dto.definition
         ..name = dto.name
         ..id = dto.id
-        ..setId = dto.setId
-        ..memorizationLevel = MemorizationLevel(dto.memorizationLevel);
+        ..setId = dto.setId;
+
+      builder.memorizationLevel = MemorizationLevel(dto.memorizationLevel ?? '');
+      
+      // if (dto.memorizationLevel != null) {
+        
+      // }
     });
   }
 
@@ -28,6 +33,5 @@ abstract class TermState implements Built<TermState, TermStateBuilder> {
 
   int get setId;
 
-  @nullable
-  MemorizationLevel get memorizationLevel;
+  MemorizationLevel? get memorizationLevel;
 }

@@ -3,7 +3,7 @@ import 'package:vockify/src/api/dto/auth/register_dto.dart';
 
 part 'register_response.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class RegisterResponse {
   final RegisterDto data;
 

@@ -10,36 +10,31 @@ class _$UserState extends UserState {
   @override
   final int id;
   @override
-  final String avatar;
+  final String? avatar;
   @override
   final String email;
   @override
-  final String firstName;
+  final String? firstName;
   @override
-  final String lastName;
+  final String? lastName;
   @override
   final bool isRegistered;
 
-  factory _$UserState([void Function(UserStateBuilder) updates]) =>
-      (new UserStateBuilder()..update(updates)).build();
+  factory _$UserState([void Function(UserStateBuilder)? updates]) =>
+      (new UserStateBuilder()..update(updates))._build();
 
   _$UserState._(
-      {this.id,
+      {required this.id,
       this.avatar,
-      this.email,
+      required this.email,
       this.firstName,
       this.lastName,
-      this.isRegistered})
+      required this.isRegistered})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('UserState', 'id');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('UserState', 'email');
-    }
-    if (isRegistered == null) {
-      throw new BuiltValueNullFieldError('UserState', 'isRegistered');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, r'UserState', 'id');
+    BuiltValueNullFieldError.checkNotNull(email, r'UserState', 'email');
+    BuiltValueNullFieldError.checkNotNull(
+        isRegistered, r'UserState', 'isRegistered');
   }
 
   @override
@@ -63,17 +58,20 @@ class _$UserState extends UserState {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc($jc($jc($jc(0, id.hashCode), avatar.hashCode), email.hashCode),
-                firstName.hashCode),
-            lastName.hashCode),
-        isRegistered.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, avatar.hashCode);
+    _$hash = $jc(_$hash, email.hashCode);
+    _$hash = $jc(_$hash, firstName.hashCode);
+    _$hash = $jc(_$hash, lastName.hashCode);
+    _$hash = $jc(_$hash, isRegistered.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('UserState')
+    return (newBuiltValueToStringHelper(r'UserState')
           ..add('id', id)
           ..add('avatar', avatar)
           ..add('email', email)
@@ -85,42 +83,43 @@ class _$UserState extends UserState {
 }
 
 class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
-  _$UserState _$v;
+  _$UserState? _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _firstName;
-  String get firstName => _$this._firstName;
-  set firstName(String firstName) => _$this._firstName = firstName;
+  String? _firstName;
+  String? get firstName => _$this._firstName;
+  set firstName(String? firstName) => _$this._firstName = firstName;
 
-  String _lastName;
-  String get lastName => _$this._lastName;
-  set lastName(String lastName) => _$this._lastName = lastName;
+  String? _lastName;
+  String? get lastName => _$this._lastName;
+  set lastName(String? lastName) => _$this._lastName = lastName;
 
-  bool _isRegistered;
-  bool get isRegistered => _$this._isRegistered;
-  set isRegistered(bool isRegistered) => _$this._isRegistered = isRegistered;
+  bool? _isRegistered;
+  bool? get isRegistered => _$this._isRegistered;
+  set isRegistered(bool? isRegistered) => _$this._isRegistered = isRegistered;
 
   UserStateBuilder();
 
   UserStateBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _avatar = _$v.avatar;
-      _email = _$v.email;
-      _firstName = _$v.firstName;
-      _lastName = _$v.lastName;
-      _isRegistered = _$v.isRegistered;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _avatar = $v.avatar;
+      _email = $v.email;
+      _firstName = $v.firstName;
+      _lastName = $v.lastName;
+      _isRegistered = $v.isRegistered;
       _$v = null;
     }
     return this;
@@ -128,30 +127,32 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
 
   @override
   void replace(UserState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$UserState;
   }
 
   @override
-  void update(void Function(UserStateBuilder) updates) {
+  void update(void Function(UserStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$UserState build() {
+  UserState build() => _build();
+
+  _$UserState _build() {
     final _$result = _$v ??
         new _$UserState._(
-            id: id,
+            id: BuiltValueNullFieldError.checkNotNull(id, r'UserState', 'id'),
             avatar: avatar,
-            email: email,
+            email: BuiltValueNullFieldError.checkNotNull(
+                email, r'UserState', 'email'),
             firstName: firstName,
             lastName: lastName,
-            isRegistered: isRegistered);
+            isRegistered: BuiltValueNullFieldError.checkNotNull(
+                isRegistered, r'UserState', 'isRegistered'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

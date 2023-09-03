@@ -21,7 +21,7 @@ import 'package:vockify/src/redux/actions/auth/unauthorize_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
-AppApi api;
+late AppApi api;
 
 void setupApi(Store<AppState> store) {
   api = AppApi(store);
@@ -38,7 +38,7 @@ class AppApi {
 
   Future<RegisterResponse> register() async {
     final data = await _post('/auth/register');
-    return data == null ? null : RegisterResponse.fromJson(data);
+    return RegisterResponse.fromJson(data);
   }
 
   Future<SetResponse> addSet(SetDto requestData) async {
@@ -53,7 +53,7 @@ class AppApi {
 
   Future<UserResponse> getUser() async {
     final data = await _get('/auth/user');
-    return data == null ? null : UserResponse.fromJson(data);
+    return UserResponse.fromJson(data);
   }
 
   Future<SetResponse> copySet(int id) async {

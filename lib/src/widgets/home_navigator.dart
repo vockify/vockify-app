@@ -11,7 +11,7 @@ class HomeNavigatorSettings {
 class HomeNavigatorWidget extends StatelessWidget {
   final HomeNavigatorSettings settings;
 
-  const HomeNavigatorWidget({Key key, @required this.settings}) : super(key: key);
+  const HomeNavigatorWidget({Key? key, required this.settings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

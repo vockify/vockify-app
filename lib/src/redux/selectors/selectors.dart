@@ -27,7 +27,7 @@ Selector<AppState, List<int>> getPublicAndCurrentUserIds =
 Selector<AppState, List<int>> getPublicSetIds = createSelector1(
   getSetDataState,
   (SetDataState state) {
-    final List<int> parentSetIds = state.items.values.map((set) => set.parentId).toList();
+    final List<int?> parentSetIds = state.items.values.map((set) => set.parentId).toList();
 
     return state.publicSetIds.where((set) => !parentSetIds.contains(set)).toList();
   },
@@ -79,18 +79,19 @@ Selector<AppState, List<int>> getUserSetParentIds = createSelector2(
   getSetItems,
   getUserSetIds,
   (Map<int, SetState> items, List<int> ids) => ids.fold<List<int>>([], (result, id) {
-    if (items[id].parentId != null) {
-      result.add(items[id].parentId);
+    final parentId = items[id]?.parentId;
+    if (parentId != null) {
+      result.add(parentId);
     }
 
     return result;
   }),
 );
 
-Selector<AppState, List<TermState>> getLastAddedTerms = createSelector2(
+Selector<AppState, List<TermState?>> getLastAddedTerms = createSelector2(
   getTermItems,
   getLastAddedTermIds,
-  (Map<int, TermState> items, List<int> ids) =>
+  (Map<int, TermState?> items, List<int> ids) =>
       ids.where(items.containsKey).map((id) => items[id]).toList(),
 );
 
@@ -98,11 +99,11 @@ HistoryDataState getHistoryDataState(AppState state) => state.history;
 
 QuizDataState getQuizDataState(AppState state) => state.quiz;
 
-SetState getSetById(AppState state, int id) => getSetItems(state)[id];
+SetState? getSetById(AppState state, int id) => getSetItems(state)[id];
 
 SetDataState getSetDataState(AppState state) => state.sets;
 
-TermState getTermById(AppState state, int id) => getTermItems(state)[id];
+TermState? getTermById(AppState state, int id) => getTermItems(state)[id];
 
 TermDataState getTermDataState(AppState state) => state.terms;
 
@@ -111,16 +112,15 @@ int getUserSetIdByParentId(AppState state, int parentId) {
   final ids = getUserSetIds(state);
 
   return ids.firstWhere(
-    (id) => items[id].parentId == parentId,
-    orElse: () => null,
+    (id) => items[id]?.parentId == parentId,
   );
 }
 
 UserState getUserState(AppState state) => state.user;
 
-bool isAuthorized(AppState state) => state.authToken.isNotEmpty && state.authToken != null;
+bool isAuthorized(AppState state) => state.authToken.isNotEmpty && state.authToken != '';
 
-bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag];
+bool isFeatureFlagEnabled(AppState state, FeatureFlag featureFlag) => state.featureFlags.items[featureFlag] ?? false;
 
 bool isLoading(AppState state) => state.isLoading;
 

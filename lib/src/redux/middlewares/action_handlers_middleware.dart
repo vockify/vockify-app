@@ -9,15 +9,15 @@ class ActionHandler<TActionScopeState, Action> {
     _handler(state as TActionScopeState, action as Action);
   }
 
-  bool handlesAction(Object action) => action is Action;
+  bool handlesAction(dynamic action) => action is Action;
 }
 
 abstract class ActionHandlersMiddleware<TState> extends MiddlewareClass<TState> {
   Iterable<ActionHandler<TState, Object>> get handlers;
 
   @override
-  void call(Store<TState> store, Object action, NextDispatcher next) {
-    final handler = handlers.firstWhere((handler) => handler.handlesAction(action), orElse: () => null);
+  dynamic call(Store<TState> store, dynamic action, NextDispatcher next) {
+    final handler = handlers.firstWhere((handler) => handler.handlesAction(action));
     handler?.handler(store.state, action);
 
     next(action);

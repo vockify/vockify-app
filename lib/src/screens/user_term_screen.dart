@@ -16,8 +16,8 @@ class UserTermScreenWidget extends StatefulWidget {
   final int termId;
 
   UserTermScreenWidget({
-    @required this.setId,
-    @required this.termId,
+    required this.setId,
+    required this.termId,
   });
 
   @override
@@ -40,7 +40,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
             minHeight: 42,
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState?.validate() ?? false) {
               if (widget.termId != null) {
                 dispatcher.dispatch(RequestUpdateUserTermAction(
                   term: TermDto(
@@ -66,7 +66,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
           },
           child: Text(
             'Сохранить',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: VockifyColors.white,
                   fontSize: 18,
                 ),
@@ -96,8 +96,10 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
       final store = StoreProvider.of<AppState>(context, listen: false);
       final term = getTermById(store.state, widget.termId);
 
-      _termController.text = term.name;
-      _definitionController.text = term.definition;
+      if (term != null) {
+        _termController.text = term.name;
+        _definitionController.text = term.definition;
+      }
     }
 
     super.initState();

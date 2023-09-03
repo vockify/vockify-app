@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
@@ -17,9 +16,9 @@ import 'package:vockify/src/widgets/user_term_form/spell_check_text.dart';
 import 'package:vockify/src/widgets/user_term_form/transcription_text.dart';
 
 class StartUserTermFormWidget extends StatefulWidget {
-  final String term;
+  final String? term;
 
-  const StartUserTermFormWidget({Key key, this.term}) : super(key: key);
+  const StartUserTermFormWidget({Key? key, this.term}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _StartUserTermFormState();
@@ -29,7 +28,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  Timer _onStoppedTyping;
+  Timer? _onStoppedTyping;
 
   String _term = '';
   String _transcription = '';
@@ -43,7 +42,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.term != null) {
-      _nameController.text = widget.term;
+      _nameController.text = widget.term!;
     }
   }
 
@@ -58,14 +57,14 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     super.initState();
 
     if (widget.term != null) {
-      _nameController.text = widget.term;
+      _nameController.text = widget.term!;
     }
 
     _nameController.addListener(() {
       const duration = Duration(milliseconds: 400);
 
       if (_onStoppedTyping != null) {
-        setState(() => _onStoppedTyping.cancel());
+        setState(() => _onStoppedTyping?.cancel());
       }
 
       if (_term != _nameController.text) {
@@ -112,7 +111,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
                             padding: EdgeInsets.only(bottom: 30),
                             child: Text(
                               _getPrimaryDefinition(),
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 24),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 24),
                             ),
                           ),
                           if (_hasTranscription())
@@ -166,7 +165,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
     );
   }
 
-  bool _isTyping() => _onStoppedTyping != null && _onStoppedTyping.isActive;
+  bool _isTyping() => _onStoppedTyping != null && (_onStoppedTyping?.isActive ?? false);
 
   bool _areDefinitionChipsVisible() => _definitions.length > 0;
 
@@ -208,7 +207,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
             },
             child: Text(
               'Добавить в словарь',
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: VockifyColors.white,
                     fontSize: 16,
                   ),
@@ -255,7 +254,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
     if (data.isNotEmpty) {
       setState(() {
-        _spellCheckedTerm = data.first?.strings?.first;
+        _spellCheckedTerm = data.firstOrNull?.strings.firstOrNull ?? '';
       });
     }
   }

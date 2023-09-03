@@ -13,7 +13,7 @@ import 'package:vockify/src/widgets/public_term_item/public_term_item.dart';
 class PublicTermListWidget extends StatelessWidget {
   final int setId;
 
-  const PublicTermListWidget({Key key, @required this.setId}) : super(key: key);
+  const PublicTermListWidget({Key? key, required this.setId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

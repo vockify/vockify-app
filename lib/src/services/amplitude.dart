@@ -1,7 +1,7 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/foundation.dart';
 
-AmplitudeService amplitude;
+late AmplitudeService amplitude;
 
 void setupAmplitude() {
   amplitude = AmplitudeService();
@@ -27,7 +27,7 @@ class AmplitudeService {
     await _amplitude.setUserProperties(userProperties);
   }
 
-  Future<void> logEvent(String eventType, {Map<String, dynamic> eventProperties, bool outOfSession}) async {
+  Future<void> logEvent(String eventType, {Map<String, dynamic>? eventProperties, bool? outOfSession}) async {
     if (!kReleaseMode) {
       print('$eventType: ${eventProperties.toString()}');
       return;

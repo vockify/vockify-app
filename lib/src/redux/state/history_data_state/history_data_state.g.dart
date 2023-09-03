@@ -13,16 +13,13 @@ class _$HistoryDataState extends HistoryDataState {
   final LoaderState loader;
 
   factory _$HistoryDataState(
-          [void Function(HistoryDataStateBuilder) updates]) =>
-      (new HistoryDataStateBuilder()..update(updates)).build();
+          [void Function(HistoryDataStateBuilder)? updates]) =>
+      (new HistoryDataStateBuilder()..update(updates))._build();
 
-  _$HistoryDataState._({this.ids, this.loader}) : super._() {
-    if (ids == null) {
-      throw new BuiltValueNullFieldError('HistoryDataState', 'ids');
-    }
-    if (loader == null) {
-      throw new BuiltValueNullFieldError('HistoryDataState', 'loader');
-    }
+  _$HistoryDataState._({required this.ids, required this.loader}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(ids, r'HistoryDataState', 'ids');
+    BuiltValueNullFieldError.checkNotNull(
+        loader, r'HistoryDataState', 'loader');
   }
 
   @override
@@ -43,12 +40,16 @@ class _$HistoryDataState extends HistoryDataState {
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, ids.hashCode);
+    _$hash = $jc(_$hash, loader.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('HistoryDataState')
+    return (newBuiltValueToStringHelper(r'HistoryDataState')
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
@@ -57,22 +58,23 @@ class _$HistoryDataState extends HistoryDataState {
 
 class HistoryDataStateBuilder
     implements Builder<HistoryDataState, HistoryDataStateBuilder> {
-  _$HistoryDataState _$v;
+  _$HistoryDataState? _$v;
 
-  ListBuilder<int> _ids;
+  ListBuilder<int>? _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
-  set ids(ListBuilder<int> ids) => _$this._ids = ids;
+  set ids(ListBuilder<int>? ids) => _$this._ids = ids;
 
-  LoaderState _loader;
-  LoaderState get loader => _$this._loader;
-  set loader(LoaderState loader) => _$this._loader = loader;
+  LoaderState? _loader;
+  LoaderState? get loader => _$this._loader;
+  set loader(LoaderState? loader) => _$this._loader = loader;
 
   HistoryDataStateBuilder();
 
   HistoryDataStateBuilder get _$this {
-    if (_$v != null) {
-      _ids = _$v.ids?.toBuilder();
-      _loader = _$v.loader;
+    final $v = _$v;
+    if ($v != null) {
+      _ids = $v.ids.toBuilder();
+      _loader = $v.loader;
       _$v = null;
     }
     return this;
@@ -80,31 +82,34 @@ class HistoryDataStateBuilder
 
   @override
   void replace(HistoryDataState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$HistoryDataState;
   }
 
   @override
-  void update(void Function(HistoryDataStateBuilder) updates) {
+  void update(void Function(HistoryDataStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$HistoryDataState build() {
+  HistoryDataState build() => _build();
+
+  _$HistoryDataState _build() {
     _$HistoryDataState _$result;
     try {
-      _$result =
-          _$v ?? new _$HistoryDataState._(ids: ids.build(), loader: loader);
+      _$result = _$v ??
+          new _$HistoryDataState._(
+              ids: ids.build(),
+              loader: BuiltValueNullFieldError.checkNotNull(
+                  loader, r'HistoryDataState', 'loader'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'ids';
         ids.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'HistoryDataState', _$failedField, e.toString());
+            r'HistoryDataState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -113,4 +118,4 @@ class HistoryDataStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

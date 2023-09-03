@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -7,8 +6,8 @@ class UserTermTextFieldWidget extends StatefulWidget {
   final TextEditingController controller;
 
   const UserTermTextFieldWidget({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override

@@ -5,14 +5,14 @@ part 'set_terms_memorization_dto.g.dart';
 
 @JsonSerializable(nullable: false)
 class SetTermsMemorizationDto {
-  @JsonKey(nullable: true, defaultValue: 0)
-  final int bad;
+  @JsonKey(defaultValue: 0)
+  final int? bad;
 
-  @JsonKey(nullable: true, defaultValue: 0)
-  final int good;
+  @JsonKey(defaultValue: 0)
+  final int? good;
 
-  @JsonKey(nullable: true, defaultValue: 0)
-  final int great;
+  @JsonKey(defaultValue: 0)
+  final int? great;
 
   SetTermsMemorizationDto({this.bad, this.good, this.great});
 

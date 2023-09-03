@@ -13,21 +13,23 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
           ..name = dto.name
           ..id = dto.id
           ..parentId = dto.parentId
-          ..userId = dto.userId
-          ..terms.replace(SetTermsState.fromDto(dto.terms));
+          ..userId = dto.userId;
+
+        final terms = dto.terms;
+        if (terms != null) {
+          builder.terms.replace(SetTermsState.fromDto(terms));
+        }
       });
 
   SetState._();
 
-  @nullable
-  String get icon;
+  String? get icon;
 
   int get id;
 
   String get name;
 
-  @nullable
-  int get parentId;
+  int? get parentId;
 
   int get userId;
 

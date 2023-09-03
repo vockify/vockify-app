@@ -6,12 +6,12 @@ part of 'spell_check_request_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SpellCheckRequestDto _$SpellCheckRequestDtoFromJson(Map<String, dynamic> json) {
-  return SpellCheckRequestDto(
-    json['text'] as String,
-    json['lang'] as String,
-  );
-}
+SpellCheckRequestDto _$SpellCheckRequestDtoFromJson(
+        Map<String, dynamic> json) =>
+    SpellCheckRequestDto(
+      json['text'] as String,
+      json['lang'] as String? ?? 'en',
+    );
 
 Map<String, dynamic> _$SpellCheckRequestDtoToJson(
         SpellCheckRequestDto instance) =>

@@ -20,7 +20,7 @@ class MemorizationLevel {
   static const MemorizationLevel good = const MemorizationLevel._('good');
   static const MemorizationLevel great = const MemorizationLevel._('great');
 
-  final String name;
+  final String? name;
 
   factory MemorizationLevel(String name) => values.firstWhere((value) => value.name == name, orElse: () => unknown);
 
@@ -34,10 +34,10 @@ class MemorizationLevel {
       identical(this, other) || other is MemorizationLevel && runtimeType == other.runtimeType && name == other.name;
 
   @override
-  String toString() => name;
+  String toString() => name ?? '';
 
-  static MemorizationLevel down(MemorizationLevel level) {
-    if (level == unknown) {
+  static MemorizationLevel down(MemorizationLevel? level) {
+    if (level == null || level == unknown) {
       return bad;
     }
 
@@ -50,8 +50,8 @@ class MemorizationLevel {
     }
   }
 
-  static MemorizationLevel up(MemorizationLevel memorizationLevel) {
-    if (memorizationLevel == unknown) {
+  static MemorizationLevel up(MemorizationLevel? memorizationLevel) {
+    if (memorizationLevel == null || memorizationLevel == unknown) {
       return good;
     }
 
@@ -64,7 +64,7 @@ class MemorizationLevel {
     }
   }
 
-  static int compare(MemorizationLevel a, MemorizationLevel b) {
+  static int compare(MemorizationLevel? a, MemorizationLevel? b) {
     if (sorted.indexOf(a) > sorted.indexOf(b)) {
       return 1;
     } else if (sorted.indexOf(a) < sorted.indexOf(b)) {

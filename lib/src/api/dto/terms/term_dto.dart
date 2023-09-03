@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
 
 part 'term_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class TermDto {
   final int id;
 
@@ -16,13 +15,13 @@ class TermDto {
   final int setId;
 
   @JsonKey(name: 'memorization_level')
-  final String memorizationLevel;
+  final String? memorizationLevel;
 
   TermDto({
-    @required this.id,
-    @required this.name,
-    @required this.setId,
-    @required this.definition,
+    required this.id,
+    required this.name,
+    required this.setId,
+    required this.definition,
     this.memorizationLevel,
   });
 

@@ -16,7 +16,7 @@ import 'package:vockify/src/widgets/public_term_list/public_term_list.dart';
 class PublicTermsScreenWidget extends StatelessWidget {
   final int setId;
 
-  PublicTermsScreenWidget({this.setId});
+  PublicTermsScreenWidget({required this.setId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class PublicTermsScreenWidget extends StatelessWidget {
 
     return LayoutWidget(
       route: Routes.publicTerms,
-      title: set.name,
+      title: set?.name ?? '',
       onInit: (store) {
         store.dispatch(RequestTermsAction(setId: setId));
       },
@@ -52,6 +52,7 @@ class PublicTermsScreenWidget extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
                           fillColor: VockifyColors.prussianBlue,
                           onPressed: () {
+                            // todo check this
                             if (id != null) {
                               dispatcher.dispatch(
                                 NavigateToAction.push(Routes.quiz, arguments: {'setId': id}),
@@ -62,7 +63,7 @@ class PublicTermsScreenWidget extends StatelessWidget {
                           },
                           child: Text(
                             'УЧИТЬ',
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: VockifyColors.ghostWhite,
                                   fontSize: 16,
                                 ),

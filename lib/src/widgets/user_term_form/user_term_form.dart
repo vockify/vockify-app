@@ -1,5 +1,4 @@
 import 'package:easy_debounce/easy_debounce.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
@@ -14,7 +13,12 @@ class UserTermFormWidget extends StatefulWidget {
   final TextEditingController termController;
   final TextEditingController definitionController;
 
-  const UserTermFormWidget({Key key, this.termController, this.definitionController, this.formKey}) : super(key: key);
+  const UserTermFormWidget({
+    Key? key,
+    required this.termController,
+    required this.definitionController,
+    required this.formKey,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _UserTermFormState();
@@ -164,7 +168,7 @@ class _UserTermFormState extends State<UserTermFormWidget> {
 
     if (data.isNotEmpty) {
       setState(() {
-        _spellCheckedTerm = data.first?.strings?.first;
+        _spellCheckedTerm = data.firstOrNull?.strings.firstOrNull ?? '';
       });
     }
   }

@@ -12,7 +12,7 @@
     <application
         android:allowBackup="true"
         android:networkSecurityConfig="@xml/config"
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="Vockify"
         android:icon="@mipmap/ic_launcher"
         android:hasFragileUserData="true">

@@ -12,7 +12,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 
 class TermReducer {
-  Reducer<AppState> _reducer;
+  late Reducer<AppState> _reducer;
 
   TermReducer() {
     _reducer = combineReducers([

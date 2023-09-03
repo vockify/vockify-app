@@ -46,12 +46,14 @@ class _TourWidgetState extends State<TourWidget> {
   Widget _buildAppButtonBar(BuildContext context) {
     return AppButtonBarWidget(
       children: <Widget>[
-        RaisedButton(
-          shape: Border(),
-          color: VockifyColors.grey,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: LinearBorder(),
+            backgroundColor: VockifyColors.grey,
+          ),
           child: Text(
             "ПРОПУСТИТЬ",
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: VockifyColors.prussianBlue,
                   fontSize: 16,
                 ),
@@ -60,12 +62,14 @@ class _TourWidgetState extends State<TourWidget> {
             _finishTour();
           },
         ),
-        RaisedButton(
-          shape: Border(),
-          color: VockifyColors.fulvous,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: LinearBorder(),
+            backgroundColor: VockifyColors.fulvous,
+          ),
           child: Text(
             _current != _slides.length - 1 ? "ПРОДОЛЖИТЬ" : "НАЧАТЬ",
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: VockifyColors.white,
                   fontSize: 16,
                 ),
@@ -107,7 +111,7 @@ class _TourWidgetState extends State<TourWidget> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline5.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: VockifyColors.prussianBlue,
               ),
         ),
@@ -150,7 +154,7 @@ class _TourWidgetState extends State<TourWidget> {
 
   Future<void> _finishTour() async {
     final storage = AppStorage.getInstance();
-    await storage.setValue(AppStorageKey.isTourFinished, true.toString());
+    await storage?.setValue(AppStorageKey.isTourFinished, true.toString());
 
     dispatcher.dispatch(NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false));
   }

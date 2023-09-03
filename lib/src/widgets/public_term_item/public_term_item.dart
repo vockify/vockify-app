@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -9,13 +8,13 @@ class PublicTermItemWidget extends StatelessWidget {
   final int id;
 
   const PublicTermItemWidget({
-    Key key,
-    @required this.id,
+    Key? key,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, TermState>(
+    return StoreConnector<AppState, TermState?>(
       distinct: true,
       converter: (store) => getTermById(store.state, id),
       builder: (context, term) {
@@ -26,13 +25,13 @@ class PublicTermItemWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  term.name,
+                  term?.name ?? '',
                   textAlign: TextAlign.left,
                 ),
               ),
               Expanded(
                 child: Text(
-                  term.definition,
+                  term?.definition ?? '',
                   textAlign: TextAlign.right,
                 ),
               ),

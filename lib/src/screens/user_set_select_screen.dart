@@ -19,9 +19,9 @@ class UserSetSelectScreenWidget extends StatefulWidget {
   final String definition;
 
   const UserSetSelectScreenWidget({
-    Key key,
-    @required this.term,
-    @required this.definition,
+    Key? key,
+    required this.term,
+    required this.definition,
   }) : super(key: key);
 
   @override

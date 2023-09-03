@@ -16,7 +16,10 @@ import 'package:vockify/src/widgets/flashcards/flip_flashcard.dart';
 class FlashcardsWidget extends StatefulWidget {
   final Iterable<int> ids;
 
-  const FlashcardsWidget({Key key, this.ids}) : super(key: key);
+  const FlashcardsWidget({
+    Key? key,
+    required this.ids,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _FlashcardsState();
@@ -26,19 +29,19 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
   static const int _shiftLeftAnimationFactor = -2;
   static const int _shiftRightAnimationFactor = 2;
 
-  List<TermState> _terms = [];
+  List<TermState?> _terms = [];
 
-  Animation<double> _shiftAnimation;
-  AnimationController _shiftAnimationController;
+  Animation<double>? _shiftAnimation;
+  AnimationController? _shiftAnimationController;
 
   bool _shiftToRight = false;
 
-  TermState get _currentTerm => _terms.isNotEmpty ? _terms.first : null;
+  TermState? get _currentTerm => _terms.isNotEmpty ? _terms.first : null;
 
-  TermState get _nextTerm => _terms.length > 1 ? _terms[1] : null;
+  TermState? get _nextTerm => _terms.length > 1 ? _terms[1] : null;
 
   double get _shiftOffset =>
-      (_shiftAnimation.value * MediaQuery.of(context).size.width) *
+      ((_shiftAnimation?.value ?? 0) * MediaQuery.of(context).size.width) *
       (_shiftToRight ? _shiftRightAnimationFactor : _shiftLeftAnimationFactor);
 
   @override
@@ -51,7 +54,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
             padding: EdgeInsets.all(24),
             child: Stack(
               children: [
-                if (_shiftAnimation.value > 0 && _nextTerm == null || _currentTerm == null)
+                if ((_shiftAnimation?.value ?? 0) > 0 && _nextTerm == null || _currentTerm == null)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -66,7 +69,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
                         child: Text(
                           'Вы просмотрели все карточки',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: VockifyColors.black,
                                 fontSize: 18,
                                 height: 1.3,
@@ -75,14 +78,14 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
                       ),
                     ],
                   ),
-                if (_shiftAnimation.value > 0 && _nextTerm != null) FlashCardWidget(text: _nextTerm.name),
+                if ((_shiftAnimation?.value ?? 0) > 0 && _nextTerm != null) FlashCardWidget(text: _nextTerm!.name),
                 if (_currentTerm != null)
                   Transform.translate(
                     offset: Offset(_shiftOffset, 0),
                     child: FlipFlashCardWidget(
-                      key: Key(_currentTerm.id.toString()),
-                      term: _currentTerm.name,
-                      definition: _currentTerm.definition,
+                      key: Key(_currentTerm!.id.toString()),
+                      term: _currentTerm!.name,
+                      definition: _currentTerm!.definition,
                     ),
                   ),
               ],
@@ -110,7 +113,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
                     },
                     child: Text(
                       'ЗНАЮ',
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: VockifyColors.ghostWhite,
                             fontSize: 16,
                           ),
@@ -128,17 +131,21 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
                     ),
                     fillColor: VockifyColors.flame,
                     onPressed: () {
+                      if (_currentTerm == null) {
+                        return;
+                      }
+                      
                       _shift(toRight: true);
 
                       dispatcher.dispatch(RequestUpdateUserTermAction(
-                        term: TermDto.fromState(_currentTerm.rebuild((builder) {
+                        term: TermDto.fromState(_currentTerm!.rebuild((builder) {
                           builder.memorizationLevel = MemorizationLevel.bad;
                         })),
                       ));
                     },
                     child: Text(
                       'НЕ ЗНАЮ',
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: VockifyColors.ghostWhite,
                             fontSize: 16,
                           ),
@@ -159,7 +166,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
                     },
                     child: Text(
                       'ВЕРНУТЬСЯ В СЛОВАРЬ',
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: VockifyColors.prussianBlue,
                             fontSize: 16,
                           ),
@@ -175,7 +182,7 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
 
   @override
   void dispose() {
-    _shiftAnimationController.dispose();
+    _shiftAnimationController?.dispose();
     super.dispose();
   }
 
@@ -189,22 +196,22 @@ class _FlashcardsState extends State<FlashcardsWidget> with SingleTickerProvider
     _terms.shuffle();
 
     _shiftAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _shiftAnimation = Tween<double>(end: 1, begin: 0).animate(_shiftAnimationController)
+    _shiftAnimation = Tween<double>(end: 1, begin: 0).animate(_shiftAnimationController!)
       ..addListener(() {
         setState(() {});
       });
   }
 
-  void _shift({bool toRight: false}) {
+  void _shift({bool toRight = false}) {
     if (_terms.isEmpty) {
       return;
     }
 
     _shiftToRight = toRight;
 
-    _shiftAnimationController.forward().then((value) {
+    _shiftAnimationController?.forward().then((value) {
       _terms.removeAt(0);
-      _shiftAnimationController.reset();
+      _shiftAnimationController?.reset();
 
       amplitude.logEvent('flashcards_swiped');
     });

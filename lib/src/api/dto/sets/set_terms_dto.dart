@@ -4,12 +4,12 @@ import 'package:vockify/src/redux/state/set_state/set_terms_state/set_terms_stat
 
 part 'set_terms_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class SetTermsDto {
-  @JsonKey(nullable: true, defaultValue: 0)
-  final int count;
+  @JsonKey(defaultValue: 0)
+  final int? count;
 
-  final SetTermsMemorizationDto memorization;
+  final SetTermsMemorizationDto? memorization;
 
   SetTermsDto({
     this.count,

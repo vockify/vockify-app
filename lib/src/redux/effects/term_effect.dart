@@ -41,7 +41,7 @@ class TermEffect {
     return actions.asyncExpand((action) async* {
       yield SetIsLoadingAction();
 
-      final count = store.state.sets.items[action.term.setId].terms.count;
+      final count = store.state.sets.items[action.term.setId]?.terms.count ?? 0;
       yield UpdateSetTermsCountAction(setId: action.term.setId, count: count + 1);
 
       try {
@@ -71,7 +71,7 @@ class TermEffect {
     return actions.asyncExpand((action) async* {
       yield RemoveUserTermAction(id: action.id);
 
-      final count = store.state.sets.items[action.setId].terms.count;
+      final count = store.state.sets.items[action.setId]?.terms.count ?? 0;
       yield UpdateSetTermsCountAction(setId: action.setId, count: count - 1);
 
       if (action.id > 0) {

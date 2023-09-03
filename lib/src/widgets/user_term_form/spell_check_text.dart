@@ -7,9 +7,9 @@ class SpellCheckTextWidget extends StatelessWidget {
   final double padding;
 
   const SpellCheckTextWidget({
-    Key key,
-    @required this.onTap,
-    @required this.text,
+    Key? key,
+    required this.onTap,
+    required this.text,
     this.padding = 0,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class SpellCheckTextWidget extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       child: RichText(
         text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontSize: 16,
                 color: Colors.grey,
               ),

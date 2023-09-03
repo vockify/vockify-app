@@ -15,7 +15,7 @@ class SetScreenWidget extends StatefulWidget {
   final int setId;
 
   SetScreenWidget({
-    @required this.setId,
+    required this.setId,
   });
 
   @override
@@ -39,7 +39,7 @@ class _SetScreenState extends State<SetScreenWidget> {
           onPressed: _onSave,
           child: Text(
             'Сохранить',
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: VockifyColors.white,
                   fontSize: 18,
                 ),
@@ -78,14 +78,14 @@ class _SetScreenState extends State<SetScreenWidget> {
 
     if (widget.setId != null) {
       final set = getSetById(store.state, widget.setId);
-      _nameController.text = set.name;
+      _nameController.text = set?.name ?? '';
     }
 
     super.initState();
   }
 
   void _onSave() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       if (widget.setId != null) {
         dispatcher.dispatch(RequestUpdateUserSetAction(
           set: SetDto(

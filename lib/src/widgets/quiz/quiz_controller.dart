@@ -12,7 +12,7 @@ class QuizController {
   int _correctCount = 0;
   List<int> _wrongIds = [];
 
-  QuizStep getNextStep() {
+  QuizStep? getNextStep() {
     next();
     return getStep();
   }
@@ -35,7 +35,7 @@ class QuizController {
     return QuizResult(termIds: termIds, wrongIds: _wrongIds);
   }
 
-  QuizStep getStep() {
+  QuizStep? getStep() {
     if (_index > _terms.length - 1) {
       return null;
     }
@@ -54,7 +54,7 @@ class QuizController {
     return step;
   }
 
-  QuizStepResult getStepResult(String definition) {
+  QuizStepResult getStepResult(String? definition) {
     final term = _terms[_index];
 
     if (definition == term.definition) {

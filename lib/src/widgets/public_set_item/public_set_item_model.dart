@@ -5,7 +5,7 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
 class PublicSetItemModel {
-  final SetState set;
+  final SetState? set;
   final bool isAdded;
 
   PublicSetItemModel.fromStore(Store<AppState> store, int id)

@@ -12,16 +12,12 @@ class _$QuizDataState extends QuizDataState {
   @override
   final LoaderState loader;
 
-  factory _$QuizDataState([void Function(QuizDataStateBuilder) updates]) =>
-      (new QuizDataStateBuilder()..update(updates)).build();
+  factory _$QuizDataState([void Function(QuizDataStateBuilder)? updates]) =>
+      (new QuizDataStateBuilder()..update(updates))._build();
 
-  _$QuizDataState._({this.ids, this.loader}) : super._() {
-    if (ids == null) {
-      throw new BuiltValueNullFieldError('QuizDataState', 'ids');
-    }
-    if (loader == null) {
-      throw new BuiltValueNullFieldError('QuizDataState', 'loader');
-    }
+  _$QuizDataState._({required this.ids, required this.loader}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(ids, r'QuizDataState', 'ids');
+    BuiltValueNullFieldError.checkNotNull(loader, r'QuizDataState', 'loader');
   }
 
   @override
@@ -39,12 +35,16 @@ class _$QuizDataState extends QuizDataState {
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, ids.hashCode), loader.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, ids.hashCode);
+    _$hash = $jc(_$hash, loader.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('QuizDataState')
+    return (newBuiltValueToStringHelper(r'QuizDataState')
           ..add('ids', ids)
           ..add('loader', loader))
         .toString();
@@ -53,22 +53,23 @@ class _$QuizDataState extends QuizDataState {
 
 class QuizDataStateBuilder
     implements Builder<QuizDataState, QuizDataStateBuilder> {
-  _$QuizDataState _$v;
+  _$QuizDataState? _$v;
 
-  ListBuilder<int> _ids;
+  ListBuilder<int>? _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
-  set ids(ListBuilder<int> ids) => _$this._ids = ids;
+  set ids(ListBuilder<int>? ids) => _$this._ids = ids;
 
-  LoaderState _loader;
-  LoaderState get loader => _$this._loader;
-  set loader(LoaderState loader) => _$this._loader = loader;
+  LoaderState? _loader;
+  LoaderState? get loader => _$this._loader;
+  set loader(LoaderState? loader) => _$this._loader = loader;
 
   QuizDataStateBuilder();
 
   QuizDataStateBuilder get _$this {
-    if (_$v != null) {
-      _ids = _$v.ids?.toBuilder();
-      _loader = _$v.loader;
+    final $v = _$v;
+    if ($v != null) {
+      _ids = $v.ids.toBuilder();
+      _loader = $v.loader;
       _$v = null;
     }
     return this;
@@ -76,30 +77,34 @@ class QuizDataStateBuilder
 
   @override
   void replace(QuizDataState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$QuizDataState;
   }
 
   @override
-  void update(void Function(QuizDataStateBuilder) updates) {
+  void update(void Function(QuizDataStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$QuizDataState build() {
+  QuizDataState build() => _build();
+
+  _$QuizDataState _build() {
     _$QuizDataState _$result;
     try {
-      _$result = _$v ?? new _$QuizDataState._(ids: ids.build(), loader: loader);
+      _$result = _$v ??
+          new _$QuizDataState._(
+              ids: ids.build(),
+              loader: BuiltValueNullFieldError.checkNotNull(
+                  loader, r'QuizDataState', 'loader'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'ids';
         ids.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'QuizDataState', _$failedField, e.toString());
+            r'QuizDataState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -108,4 +113,4 @@ class QuizDataStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

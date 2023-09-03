@@ -12,7 +12,7 @@ import 'package:vockify/src/widgets/quiz/quiz.dart';
 class QuizScreenWidget extends StatelessWidget {
   final int setId;
 
-  const QuizScreenWidget({Key key, this.setId}) : super(key: key);
+  const QuizScreenWidget({Key? key, required this.setId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

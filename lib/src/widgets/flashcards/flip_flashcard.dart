@@ -9,9 +9,9 @@ class FlipFlashCardWidget extends StatefulWidget {
   final String definition;
 
   const FlipFlashCardWidget({
-    Key key,
-    @required this.term,
-    @required this.definition,
+    Key? key,
+    required this.term,
+    required this.definition,
   }) : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 500),
         transitionBuilder: _transitionBuilder,
-        layoutBuilder: (widget, list) => Stack(children: [widget, ...list]),
+        layoutBuilder: (widget, list) => Stack(children: [if (widget != null) widget, ...list]),
         child: _buildFlipFlashCard(),
         switchInCurve: Curves.easeInBack,
         switchOutCurve: Curves.easeInBack.flipped,
@@ -53,7 +53,7 @@ class _FlipFlashCardState extends State<FlipFlashCardWidget> with SingleTickerPr
       animation: rotateAnim,
       child: widget,
       builder: (context, widget) {
-        final isUnder = (ValueKey(_showFrontSide) != widget.key);
+        final isUnder = (ValueKey(_showFrontSide) != widget?.key);
         var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
         tilt *= isUnder ? -1.0 : 1.0;
         final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;

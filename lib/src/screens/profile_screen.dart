@@ -56,7 +56,7 @@ class ProfileScreenWidget extends StatelessWidget {
                     height: 200,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(fit: BoxFit.fill, image: NetworkImage(user.avatar)),
+                      image: user.avatar != null ? DecorationImage(fit: BoxFit.fill, image: NetworkImage(user.avatar!)) : null,
                     ),
                   ),
                 Container(
@@ -91,8 +91,10 @@ class ProfileScreenWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        FlatButton(
-          padding: EdgeInsets.all(0),
+        TextButton(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(0),
+          ),
           onPressed: () {
             dispatcher.dispatch(RequestAuthorizeAction());
           },

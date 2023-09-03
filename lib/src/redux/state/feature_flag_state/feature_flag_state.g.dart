@@ -11,13 +11,11 @@ class _$FeatureFlagState extends FeatureFlagState {
   final BuiltMap<FeatureFlag, bool> items;
 
   factory _$FeatureFlagState(
-          [void Function(FeatureFlagStateBuilder) updates]) =>
-      (new FeatureFlagStateBuilder()..update(updates)).build();
+          [void Function(FeatureFlagStateBuilder)? updates]) =>
+      (new FeatureFlagStateBuilder()..update(updates))._build();
 
-  _$FeatureFlagState._({this.items}) : super._() {
-    if (items == null) {
-      throw new BuiltValueNullFieldError('FeatureFlagState', 'items');
-    }
+  _$FeatureFlagState._({required this.items}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(items, r'FeatureFlagState', 'items');
   }
 
   @override
@@ -36,12 +34,15 @@ class _$FeatureFlagState extends FeatureFlagState {
 
   @override
   int get hashCode {
-    return $jf($jc(0, items.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, items.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('FeatureFlagState')
+    return (newBuiltValueToStringHelper(r'FeatureFlagState')
           ..add('items', items))
         .toString();
   }
@@ -49,18 +50,19 @@ class _$FeatureFlagState extends FeatureFlagState {
 
 class FeatureFlagStateBuilder
     implements Builder<FeatureFlagState, FeatureFlagStateBuilder> {
-  _$FeatureFlagState _$v;
+  _$FeatureFlagState? _$v;
 
-  MapBuilder<FeatureFlag, bool> _items;
+  MapBuilder<FeatureFlag, bool>? _items;
   MapBuilder<FeatureFlag, bool> get items =>
       _$this._items ??= new MapBuilder<FeatureFlag, bool>();
-  set items(MapBuilder<FeatureFlag, bool> items) => _$this._items = items;
+  set items(MapBuilder<FeatureFlag, bool>? items) => _$this._items = items;
 
   FeatureFlagStateBuilder();
 
   FeatureFlagStateBuilder get _$this {
-    if (_$v != null) {
-      _items = _$v.items?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _items = $v.items.toBuilder();
       _$v = null;
     }
     return this;
@@ -68,30 +70,30 @@ class FeatureFlagStateBuilder
 
   @override
   void replace(FeatureFlagState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FeatureFlagState;
   }
 
   @override
-  void update(void Function(FeatureFlagStateBuilder) updates) {
+  void update(void Function(FeatureFlagStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$FeatureFlagState build() {
+  FeatureFlagState build() => _build();
+
+  _$FeatureFlagState _build() {
     _$FeatureFlagState _$result;
     try {
       _$result = _$v ?? new _$FeatureFlagState._(items: items.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'items';
         items.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'FeatureFlagState', _$failedField, e.toString());
+            r'FeatureFlagState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -100,4 +102,4 @@ class FeatureFlagStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

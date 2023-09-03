@@ -4,7 +4,7 @@ import 'package:vockify/src/api/dto/user_dto.dart';
 
 part 'register_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class RegisterDto {
   final UserDto user;
 

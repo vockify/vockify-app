@@ -39,7 +39,6 @@ class SetEffect {
 
       try {
         final result = await api.addSet(action.set);
-
         yield AddUserSetAction(set: SetState.fromDto(result.data));
       } finally {
         yield UnsetIsLoadingAction();

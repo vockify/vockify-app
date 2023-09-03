@@ -44,8 +44,10 @@ class AuthEffect {
         yield AuthorizeAction(authToken: registerData.data.token.plainTextToken);
         yield RequestInitialDataAction();
 
-        if (action.route != null) {
-          yield NavigateToAction.pushNamedAndRemoveUntil(action.route, (route) => false, arguments: {
+        final route = action.route;
+
+        if (route != null) {
+          yield NavigateToAction.pushNamedAndRemoveUntil(route, (route) => false, arguments: {
             "intent": null,
           });
         }
@@ -76,10 +78,11 @@ class AuthEffect {
 
       try {
         final authorization = Authorization.getInstance();
-        final authToken = await authorization.authenticate();
+        final authToken = await authorization?.authenticate();
         yield AuthorizeAction(authToken: authToken);
 
         final response = await api.getUser();
+
         yield SetUserAction(user: UserState.fromDto(response.data));
         yield RequestInitialDataAction();
       } finally {
@@ -99,13 +102,13 @@ class AuthEffect {
     });
   }
 
-  Stream<Object> _authorizeAction(
+  Stream<Object?> _authorizeAction(
     Stream<AuthorizeAction> actions,
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
       final storage = AppStorage.getInstance();
-      await storage.setValue(AppStorageKey.token, action.authToken);
+      await storage?.setValue(AppStorageKey.token, action.authToken ?? '');
     });
   }
 

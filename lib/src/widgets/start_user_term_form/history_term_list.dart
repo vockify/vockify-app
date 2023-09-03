@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
@@ -10,7 +9,7 @@ class HistoryTermListWidget extends StatelessWidget {
   final Function(String) onTap;
 
   const HistoryTermListWidget({
-    @required this.onTap,
+    required this.onTap,
   });
 
   @override
@@ -37,7 +36,7 @@ class HistoryTermListWidget extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Последние добавленные слова',
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 16,
                           color: Colors.grey,
                         ),

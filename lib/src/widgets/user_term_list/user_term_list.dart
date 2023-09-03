@@ -24,9 +24,9 @@ class UserTermListWidget extends StatefulWidget {
 }
 
 class _UserTermListState extends State<UserTermListWidget> {
-  final _slidableController = SlidableController(onSlideIsOpenChanged: (bool) {
-    amplitude.logEvent('term_swiped');
-  });
+  // final _slidableController = SlidableController(onSlideIsOpenChanged: (bool) {
+  //   amplitude.logEvent('term_swiped');
+  // });
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +64,15 @@ class _UserTermListState extends State<UserTermListWidget> {
                     "termId": id,
                   });
                 },
-                onEdit: () {
+                onEdit: (BuildContext context) {
                   Navigator.of(context).pushNamed(Routes.userTerm, arguments: {
                     "setId": widget.setId,
                     "termId": id,
                   });
                 },
-                onDelete: () {
+                onDelete: (BuildContext context) {
                   dispatcher.dispatch(RequestRemoveUserTermAction(id: id, setId: widget.setId));
                 },
-                slidableController: _slidableController,
               );
             },
           ),

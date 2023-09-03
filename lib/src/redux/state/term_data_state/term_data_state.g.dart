@@ -14,19 +14,15 @@ class _$TermDataState extends TermDataState {
   @override
   final LoaderState loader;
 
-  factory _$TermDataState([void Function(TermDataStateBuilder) updates]) =>
-      (new TermDataStateBuilder()..update(updates)).build();
+  factory _$TermDataState([void Function(TermDataStateBuilder)? updates]) =>
+      (new TermDataStateBuilder()..update(updates))._build();
 
-  _$TermDataState._({this.ids, this.items, this.loader}) : super._() {
-    if (ids == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'ids');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'items');
-    }
-    if (loader == null) {
-      throw new BuiltValueNullFieldError('TermDataState', 'loader');
-    }
+  _$TermDataState._(
+      {required this.ids, required this.items, required this.loader})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(ids, r'TermDataState', 'ids');
+    BuiltValueNullFieldError.checkNotNull(items, r'TermDataState', 'items');
+    BuiltValueNullFieldError.checkNotNull(loader, r'TermDataState', 'loader');
   }
 
   @override
@@ -47,12 +43,17 @@ class _$TermDataState extends TermDataState {
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, ids.hashCode), items.hashCode), loader.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, ids.hashCode);
+    _$hash = $jc(_$hash, items.hashCode);
+    _$hash = $jc(_$hash, loader.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('TermDataState')
+    return (newBuiltValueToStringHelper(r'TermDataState')
           ..add('ids', ids)
           ..add('items', items)
           ..add('loader', loader))
@@ -62,28 +63,29 @@ class _$TermDataState extends TermDataState {
 
 class TermDataStateBuilder
     implements Builder<TermDataState, TermDataStateBuilder> {
-  _$TermDataState _$v;
+  _$TermDataState? _$v;
 
-  ListBuilder<int> _ids;
+  ListBuilder<int>? _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
-  set ids(ListBuilder<int> ids) => _$this._ids = ids;
+  set ids(ListBuilder<int>? ids) => _$this._ids = ids;
 
-  MapBuilder<int, TermState> _items;
+  MapBuilder<int, TermState>? _items;
   MapBuilder<int, TermState> get items =>
       _$this._items ??= new MapBuilder<int, TermState>();
-  set items(MapBuilder<int, TermState> items) => _$this._items = items;
+  set items(MapBuilder<int, TermState>? items) => _$this._items = items;
 
-  LoaderState _loader;
-  LoaderState get loader => _$this._loader;
-  set loader(LoaderState loader) => _$this._loader = loader;
+  LoaderState? _loader;
+  LoaderState? get loader => _$this._loader;
+  set loader(LoaderState? loader) => _$this._loader = loader;
 
   TermDataStateBuilder();
 
   TermDataStateBuilder get _$this {
-    if (_$v != null) {
-      _ids = _$v.ids?.toBuilder();
-      _items = _$v.items?.toBuilder();
-      _loader = _$v.loader;
+    final $v = _$v;
+    if ($v != null) {
+      _ids = $v.ids.toBuilder();
+      _items = $v.items.toBuilder();
+      _loader = $v.loader;
       _$v = null;
     }
     return this;
@@ -91,26 +93,29 @@ class TermDataStateBuilder
 
   @override
   void replace(TermDataState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$TermDataState;
   }
 
   @override
-  void update(void Function(TermDataStateBuilder) updates) {
+  void update(void Function(TermDataStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$TermDataState build() {
+  TermDataState build() => _build();
+
+  _$TermDataState _build() {
     _$TermDataState _$result;
     try {
       _$result = _$v ??
           new _$TermDataState._(
-              ids: ids.build(), items: items.build(), loader: loader);
+              ids: ids.build(),
+              items: items.build(),
+              loader: BuiltValueNullFieldError.checkNotNull(
+                  loader, r'TermDataState', 'loader'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'ids';
         ids.build();
@@ -118,7 +123,7 @@ class TermDataStateBuilder
         items.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'TermDataState', _$failedField, e.toString());
+            r'TermDataState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -127,4 +132,4 @@ class TermDataStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

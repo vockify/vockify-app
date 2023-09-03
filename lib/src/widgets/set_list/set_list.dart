@@ -72,7 +72,7 @@ class _SetListState extends State<SetListWidget> {
                       ),
                       child: Text(
                         'Популярные словари',
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: VockifyColors.black,
                               fontSize: 20,
                             ),

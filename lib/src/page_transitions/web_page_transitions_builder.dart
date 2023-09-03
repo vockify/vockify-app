@@ -15,9 +15,9 @@ class WebPageTransitionsBuilder extends PageTransitionsBuilder {
 
 class _FadeUpwardsPageTransition extends StatelessWidget {
   _FadeUpwardsPageTransition({
-    Key key,
-    @required Animation<double> routeAnimation, // The route's linear 0.0 - 1.0 animation.
-    @required this.child,
+    Key? key,
+    required Animation<double> routeAnimation, // The route's linear 0.0 - 1.0 animation.
+    required this.child,
   }) : _positionAnimation = routeAnimation.drive(_bottomUpTween.chain(_fastOutSlowInTween)),
         _opacityAnimation = routeAnimation.drive(_easeInTween),
         super(key: key);

@@ -59,6 +59,12 @@ class AppRouter {
       throw ArgumentError("arguments cast error");
     }
 
-    return buildRoute(settings, _paths[settings.name](arguments as Map<String, dynamic>));
+    final pathBuilder = _paths[settings.name];
+
+    if (pathBuilder != null) {
+      return buildRoute(settings, pathBuilder(arguments as Map<String, dynamic>));
+    }
+
+    throw Exception('Couldn\'t find path name');
   }
 }

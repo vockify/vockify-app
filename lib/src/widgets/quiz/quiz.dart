@@ -7,6 +7,7 @@ import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/memorization_level.dart';
+import 'package:vockify/src/redux/state/term_state/term_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -18,7 +19,7 @@ import 'package:vockify/src/widgets/quiz_result/quiz_result.dart';
 class QuizWidget extends StatefulWidget {
   final Iterable<int> ids;
 
-  const QuizWidget({Key key, this.ids}) : super(key: key);
+  const QuizWidget({Key? key, required this.ids}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QuizState();
@@ -27,21 +28,21 @@ class QuizWidget extends StatefulWidget {
 class _QuizState extends State<QuizWidget> {
   final QuizController _controller = QuizController();
 
-  QuizStep _step;
-  QuizResult _result;
+  QuizStep? _step;
+  QuizResult? _result;
 
-  String _selectedDefinition;
-  String _correctDefinition;
+  String? _selectedDefinition;
+  String? _correctDefinition;
 
-  bool _isFinished;
+  bool? _isFinished;
 
-  Timer _selectDefinitionTimer;
+  Timer? _selectDefinitionTimer;
 
   @override
   Widget build(BuildContext context) {
-    if (_isFinished) {
+    if ((_isFinished ?? false) && _result != null) {
       return QuizResultWidget(
-        result: _result,
+        result: _result!,
         onPressContinue: _continue,
       );
     }
@@ -53,8 +54,8 @@ class _QuizState extends State<QuizWidget> {
           padding: EdgeInsets.only(top: 16),
           child: Center(
             child: Text(
-              '${_step.termIndex} / ${_step.termsCount}',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              '${_step?.termIndex} / ${_step?.termsCount}',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontSize: 16,
                     color: VockifyColors.prussianBlue,
                   ),
@@ -73,7 +74,7 @@ class _QuizState extends State<QuizWidget> {
                   height: 4,
                   child: LayoutBuilder(builder: (context, constraints) {
                     return FractionallySizedBox(
-                      widthFactor: _step.termIndex / _step.termsCount,
+                      widthFactor: _step != null ? _step!.termIndex / _step!.termsCount : null,
                       child: Container(
                         color: VockifyColors.prussianBlue,
                       ),
@@ -90,8 +91,8 @@ class _QuizState extends State<QuizWidget> {
               child: ListTile(
                 title: Center(
                   child: Text(
-                    _step.name,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    _step?.name ?? '',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontSize: 24,
                         ),
                   ),
@@ -105,9 +106,9 @@ class _QuizState extends State<QuizWidget> {
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             physics: new NeverScrollableScrollPhysics(),
-            itemCount: _step.definitions.length,
+            itemCount: _step?.definitions.length,
             itemBuilder: (BuildContext context, int index) {
-              final definition = _step.definitions[index];
+              final definition = _step?.definitions[index];
 
               return Card(
                 margin: EdgeInsets.only(bottom: 16),
@@ -123,8 +124,8 @@ class _QuizState extends State<QuizWidget> {
                   },
                   title: Center(
                     child: Text(
-                      definition,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      definition ?? '',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: _getDefinitionTextColor(definition),
                             fontSize: 18,
                           ),
@@ -151,7 +152,7 @@ class _QuizState extends State<QuizWidget> {
     amplitude.logEvent('quiz_continued');
   }
 
-  Color _getDefinitionColor(String definition) {
+  Color _getDefinitionColor(String? definition) {
     if (definition == _correctDefinition) {
       return VockifyColors.success;
     } else if (definition == _selectedDefinition) {
@@ -161,7 +162,7 @@ class _QuizState extends State<QuizWidget> {
     return VockifyColors.beauBlue;
   }
 
-  Color _getDefinitionTextColor(String definition) {
+  Color _getDefinitionTextColor(String? definition) {
     if (definition == _correctDefinition || definition == _selectedDefinition) {
       return VockifyColors.white;
     }
@@ -169,7 +170,7 @@ class _QuizState extends State<QuizWidget> {
     return VockifyColors.prussianBlue;
   }
 
-  void _selectDefinition(String definition) {
+  void _selectDefinition(String? definition) {
     if (_selectDefinitionTimer?.isActive ?? false) {
       return;
     }
@@ -208,7 +209,10 @@ class _QuizState extends State<QuizWidget> {
 
   void _start() {
     final store = StoreProvider.of<AppState>(context, listen: false);
-    final terms = widget.ids.map((id) => getTermById(store.state, id)).toList();
+    final terms = widget.ids
+      .map((id) => getTermById(store.state, id))
+      .where((element) => element != null).toList()
+      .cast<TermState>();
 
     _controller.start(terms);
     _step = _controller.getStep();
@@ -220,19 +224,25 @@ class _QuizState extends State<QuizWidget> {
   }
 
   void _update() {
-    final store = StoreProvider.of<AppState>(context, listen: false);
-    final term = getTermById(store.state, _step.termId);
-
-    final memorizationLevel = _selectedDefinition == _correctDefinition
-        ? MemorizationLevel.up(term.memorizationLevel)
-        : MemorizationLevel.down(term.memorizationLevel);
-
-    if (memorizationLevel != term.memorizationLevel) {
-      dispatcher.dispatch(RequestUpdateUserTermAction(
-        term: TermDto.fromState(term.rebuild((builder) {
-          builder.memorizationLevel = memorizationLevel;
-        })),
-      ));
+    final termId = _step?.termId;
+    
+    if(termId != null) {
+      final store = StoreProvider.of<AppState>(context, listen: false);
+      final term = getTermById(store.state, termId);
+  
+      if(term != null) {
+        final memorizationLevel = _selectedDefinition == _correctDefinition
+            ? MemorizationLevel.up(term.memorizationLevel)
+            : MemorizationLevel.down(term.memorizationLevel);
+    
+        if (memorizationLevel != term.memorizationLevel) {
+          dispatcher.dispatch(RequestUpdateUserTermAction(
+            term: TermDto.fromState(term.rebuild((builder) {
+              builder.memorizationLevel = memorizationLevel;
+            })),
+          ));
+        }
+      }
     }
   }
 }

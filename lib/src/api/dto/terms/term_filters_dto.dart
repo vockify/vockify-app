@@ -2,16 +2,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'term_filters_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class TermFiltersDto {
   @JsonKey(name: "filter[set_id]", toJson: toCommaSeparatedList, includeIfNull: false)
-  final List<int> setIds;
+  final List<int>? setIds;
 
   @JsonKey(name: "filter[user_id]", toJson: toCommaSeparatedList, includeIfNull: false)
-  final List<int> userIds;
+  final List<int>? userIds;
 
-  @JsonKey(name: "per_page", nullable: true, includeIfNull: false)
-  final int perPage;
+  @JsonKey(name: "per_page", includeIfNull: false)
+  final int? perPage;
 
   TermFiltersDto({
     this.userIds,
@@ -23,5 +23,5 @@ class TermFiltersDto {
 
   Map<String, dynamic> toJson() => _$TermFiltersDtoToJson(this);
 
-  static String toCommaSeparatedList(List<int> list) => list != null ? list.join(',') : null;
+  static String? toCommaSeparatedList(List<int>? list) => list != null ? list.join(',') : null;
 }

@@ -18,7 +18,7 @@ class InitialWidget extends StatefulWidget {
   final String route;
   final Map<String, dynamic> arguments;
 
-  const InitialWidget({Key key, this.route, this.arguments}) : super(key: key);
+  const InitialWidget({Key? key, required this.route, required this.arguments}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _InitialState();
@@ -40,7 +40,7 @@ class _InitialState extends State<InitialWidget> {
 
   Future<void> _navigate() async {
     final store = StoreProvider.of<AppState>(context, listen: false);
-    final bool isTourFinished = await AppStorage.getInstance().containsKey(AppStorageKey.isTourFinished);
+    final bool isTourFinished = await AppStorage.getInstance()?.containsKey(AppStorageKey.isTourFinished) ?? false;
 
     if (!isTourFinished && isFeatureFlagEnabled(store.state, FeatureFlag.tour)) {
       scheduleMicrotask(() {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -9,8 +8,8 @@ class FlashCardWidget extends StatelessWidget {
   final bool isAudio;
 
   const FlashCardWidget({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.isAudio = false,
   }) : super(key: key);
 
@@ -37,7 +36,7 @@ class FlashCardWidget extends StatelessWidget {
               child: Text(
                 text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontSize: 28,
                 ),
               ),
@@ -52,19 +51,20 @@ class FlashCardWidget extends StatelessWidget {
               color: VockifyColors.black.withOpacity(0.4),
             ),
           ),
-          if (isAudio)
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(16),
-              child: AudioTextWidget(
-                text: text,
-                onTap: () {
-                  amplitude.logEvent('flashcards_transcription_played', eventProperties: {
-                    text: text,
-                  });
-                },
-              ),
-            )
+          // todo find audio widget
+          // if (isAudio)
+          //   Container(
+          //     alignment: Alignment.topLeft,
+          //     padding: EdgeInsets.all(16),
+          //     child: AudioTextWidget(
+          //       text: text,
+          //       onTap: () {
+          //         amplitude.logEvent('flashcards_transcription_played', eventProperties: {
+          //           text: text,
+          //         });
+          //       },
+          //     ),
+          //   )
         ],
       ),
     );

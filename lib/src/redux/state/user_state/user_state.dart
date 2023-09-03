@@ -29,16 +29,13 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
 
   int get id;
 
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   String get email;
 
-  @nullable
-  String get firstName;
+  String? get firstName;
 
-  @nullable
-  String get lastName;
+  String? get lastName;
 
   bool get isRegistered;
 }

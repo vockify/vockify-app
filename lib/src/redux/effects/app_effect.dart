@@ -35,7 +35,12 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield SetCurrentRouteAction(route: action.name);
+      final String? name = action.name;
+      if (name == null) {
+        return;
+      }
+
+      yield SetCurrentRouteAction(route: name);
 
       if (action.name != Routes.login && action.name != Routes.tour && !isAuthorized(store.state)) {
         yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);

@@ -10,20 +10,20 @@ import 'package:vockify/src/widgets/common/loader.dart';
 
 class LayoutWidget extends StatelessWidget {
   final String route;
-  final String title;
+  final String? title;
   final Widget body;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final List<Widget> actions;
   final bool isContextNavigation;
-  final Function(Store<AppState>) onInit;
-  final Function(Store<AppState>) onDispose;
-  final bool Function(Store<AppState>) isLoading;
+  final Function(Store<AppState>)? onInit;
+  final Function(Store<AppState>)? onDispose;
+  final bool Function(Store<AppState>)? isLoading;
 
   LayoutWidget({
-    Key key,
-    @required this.route,
+    Key? key,
+    required this.route,
     this.title,
-    this.body,
+    required this.body,
     this.backgroundColor,
     this.actions = const [],
     this.isContextNavigation = true,
@@ -45,8 +45,8 @@ class LayoutWidget extends StatelessWidget {
       ),
       body: StoreConnector<AppState, bool>(
         distinct: true,
-        converter: isLoading != null ? isLoading : (store) => false,
-        onDispose: onDispose != null ? onDispose : null,
+        converter: isLoading ?? (store) => false,
+        onDispose: onDispose ?? null,
         onInit: onInit != null ? onInit : null,
         builder: (context, isLoading) {
           if (isLoading) {
@@ -61,7 +61,7 @@ class LayoutWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildGoBackArrow(BuildContext context) {
+  Widget? _buildGoBackArrow(BuildContext context) {
     if (!Navigator.of(context).canPop()) {
       return null;
     }
@@ -76,16 +76,16 @@ class LayoutWidget extends StatelessWidget {
         }
 
         amplitude.logEvent('back_arrow_button_clicked', eventProperties: {
-          'current_route': ModalRoute.of(context).settings.name,
+          'current_route': ModalRoute.of(context)?.settings.name,
         });
       },
     );
   }
 
-  Widget _buildTitle() {
+  Widget? _buildTitle() {
     if (title != null) {
       return Text(
-        title,
+        title!,
         style: TextStyle(color: VockifyColors.white),
       );
     }
