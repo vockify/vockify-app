@@ -1,53 +1,25 @@
 import 'dart:async';
 
 import 'package:redux_epics/redux_epics.dart';
-import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/actions/request_initial_data_action.dart';
-import 'package:vockify/src/redux/actions/set_current_route_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_last_added_terms_action.dart';
-import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/routes.dart';
 
 class AppEffect {
   final SetEffect setEffect;
   final TermEffect termEffect;
-  final AuthEffect authEffect;
 
-  AppEffect(this.setEffect, this.termEffect, this.authEffect);
+  AppEffect(this.setEffect, this.termEffect);
 
   Epic<AppState> getEffects() {
     return combineEpics([
       setEffect.getEffects(),
       termEffect.getEffects(),
-      authEffect.getEffects(),
-      TypedEpic<AppState, NavigateToAction>(_navigateToAction),
       TypedEpic<AppState, RequestInitialDataAction>(_requestInitialDataAction),
     ]);
-  }
-
-  Stream<Object> _navigateToAction(
-    Stream<NavigateToAction> actions,
-    EpicStore<AppState> store,
-  ) {
-    return actions.asyncExpand((action) async* {
-      final String? name = action.name;
-      if (name == null) {
-        return;
-      }
-
-      yield SetCurrentRouteAction(route: name);
-
-      if (action.name != Routes.login && action.name != Routes.tour && !isAuthorized(store.state)) {
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.login, (route) => false);
-      } else if (action.name == Routes.tour && isAuthorized(store.state)) {
-        yield NavigateToAction.pushNamedAndRemoveUntil(Routes.home, (route) => false);
-      }
-    });
   }
 
   Stream<Object> _requestInitialDataAction(
@@ -55,7 +27,7 @@ class AppEffect {
     EpicStore<AppState> store,
   ) {
     return actions.asyncExpand((action) async* {
-      yield RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state));
+      yield RequestSetsAction();
       yield RequestLastAddedTermsAction();
     });
   }

@@ -1,45 +1,51 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:drift/drift.dart';
 import 'package:vockify/src/api/dto/sets/set_terms_dto.dart';
+import 'package:vockify/src/database/database.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 
-part 'set_dto.g.dart';
-
-@JsonSerializable()
 class SetDto {
   final int id;
 
   final String name;
 
-  @JsonKey()
   final String? icon;
 
-  @JsonKey(name: 'parent_set_id')
   final int? parentId;
 
-  @JsonKey(name: 'user_id')
-  final int? userId;
-
   final SetTermsDto? terms;
+
+  final bool isDefault;
 
   SetDto({
     required this.id,
     required this.name,
+    required this.isDefault,
     this.parentId,
     this.icon,
-    this.userId,
     this.terms,
   });
-
-  factory SetDto.fromJson(Map<String, dynamic> json) => _$SetDtoFromJson(json);
 
   factory SetDto.fromState(SetState state) {
     return SetDto(
       id: state.id,
+      isDefault: state.isDefault,
       name: state.name,
       parentId: state.parentId,
-      userId: state.userId,
     );
   }
 
-  Map<String, dynamic> toJson() => _$SetDtoToJson(this);
+  Category toEntry() => Category(
+        id: id,
+        name: name,
+        icon: icon,
+        parentId: parentId,
+        isDefault: isDefault,
+      );
+
+  CategoriesCompanion toCompanion() => CategoriesCompanion(
+    name: Value(name),
+    icon: Value(icon),
+    parentId: Value(parentId),
+    isDefault: Value(isDefault),
+  );
 }

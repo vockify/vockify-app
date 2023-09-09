@@ -1,5 +1,4 @@
 import 'package:redux/redux.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
 import 'package:vockify/src/redux/actions/sets/remove_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/set_sets_action.dart';
@@ -51,13 +50,13 @@ class SetReducer {
   AppState _setSetsReducer(AppState state, SetSetsAction action) {
     final List<MapEntry<int, SetState>> entries = [];
     final List<int> userSetIds = [];
-    final List<int> publicSetIds = [];
+    final List<int> defaultSetIds = [];
 
     action.sets.forEach((set) {
       entries.add(MapEntry(set.id, set));
 
-      if (set.userId == AppApi.publicUserId) {
-        publicSetIds.add(set.id);
+      if (set.isDefault) {
+        defaultSetIds.add(set.id);
       } else {
         userSetIds.add(set.id);
       }
@@ -66,7 +65,7 @@ class SetReducer {
     return state.rebuild((builder) {
       builder.sets.items.addEntries(entries);
       builder.sets.userSetIds.replace(userSetIds);
-      builder.sets.publicSetIds.replace(publicSetIds);
+      builder.sets.defaultSetIds.replace(defaultSetIds);
       builder.sets.loader = LoaderState.isLoaded;
     });
   }
@@ -74,7 +73,7 @@ class SetReducer {
   AppState _unsetSetsReducer(AppState state, UnsetSetsAction action) {
     return state.rebuild((builder) {
       builder.sets.userSetIds.clear();
-      builder.sets.publicSetIds.clear();
+      builder.sets.defaultSetIds.clear();
       builder.sets.loader = LoaderState.isLoading;
     });
   }

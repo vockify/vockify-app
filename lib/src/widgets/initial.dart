@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
-import 'package:vockify/src/redux/actions/auth/request_register_action.dart';
-import 'package:vockify/src/redux/actions/auth/request_user_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
@@ -16,9 +14,8 @@ import 'package:vockify/src/widgets/common/loader.dart';
 
 class InitialWidget extends StatefulWidget {
   final String route;
-  final Map<String, dynamic> arguments;
 
-  const InitialWidget({Key? key, required this.route, required this.arguments}) : super(key: key);
+  const InitialWidget({Key? key, required this.route}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _InitialState();
@@ -47,13 +44,7 @@ class _InitialState extends State<InitialWidget> {
         dispatcher.dispatch(NavigateToAction.replace(Routes.tour));
       });
     } else {
-      if (!isAuthorized(store.state)) {
-        scheduleMicrotask(() {
-          dispatcher.dispatch(RequestRegisterAction(route: widget.route));
-        });
-      } else {
-        dispatcher.dispatch(RequestUserAction(route: widget.route, arguments: widget.arguments));
-      }
+      dispatcher.dispatch(NavigateToAction.replace(Routes.home));
     }
   }
 }

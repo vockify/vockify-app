@@ -147,7 +147,7 @@ class _TourWidgetState extends State<TourWidget> {
       distinct: true,
       converter: (store) => isAuthorized(store.state),
       builder: (context, isAuthorized) {
-        return isAuthorized ? Container() : widget;
+        return widget;
       },
     );
   }

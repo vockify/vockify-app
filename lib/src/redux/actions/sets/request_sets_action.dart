@@ -1,7 +1,3 @@
 import 'package:vockify/src/redux/actions/app_action.dart';
 
-class RequestSetsAction extends AppAction {
-  final List<int> userIds;
-
-  RequestSetsAction({required this.userIds});
-}
+class RequestSetsAction extends AppAction {}

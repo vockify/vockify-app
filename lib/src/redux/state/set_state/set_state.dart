@@ -13,7 +13,7 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
           ..name = dto.name
           ..id = dto.id
           ..parentId = dto.parentId
-          ..userId = dto.userId;
+          ..isDefault = dto.isDefault;
 
         final terms = dto.terms;
         if (terms != null) {
@@ -31,7 +31,7 @@ abstract class SetState implements Built<SetState, SetStateBuilder> {
 
   int? get parentId;
 
-  int get userId;
-
   SetTermsState get terms;
+
+  bool get isDefault;
 }

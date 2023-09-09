@@ -25,16 +25,16 @@ dependencies:
   flutter_slidable: ^3.0.0
   path_to_regexp: ^0.4.0
   quiver: ^3.2.1
-  # receive_sharing_intent: ^1.4.5
   carousel_slider: ^4.2.1
   reselect: ^0.5.0
   easy_debounce: ^2.0.3
   amplitude_flutter: ^3.16.0
-  # assets_audio_player:
-  #   git:
-  #     url: https://github.com/florent37/Flutter-AssetsAudioPlayer.git
-  #     ref: b49a4360f6a7f182d4a6e23ebcdbf43ad570913b
   sentry_flutter: ^7.9.0
+  drift: ^2.11.1
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.3
+  drift_db_viewer: ^2.0.0
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -42,6 +42,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   flutter_test:
     sdk: flutter
+  drift_dev: ^2.11.1
 
 flutter:
   uses-material-design: true

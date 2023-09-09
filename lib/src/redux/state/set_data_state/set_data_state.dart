@@ -11,7 +11,7 @@ abstract class SetDataState implements Built<SetDataState, SetDataStateBuilder> 
   factory SetDataState.initial() => SetDataState((builder) {
         builder
           ..items.replace({})
-          ..publicSetIds.replace([])
+          ..defaultSetIds.replace([])
           ..userSetIds.replace([])
           ..loader = LoaderState.isLoading;
       });
@@ -22,7 +22,7 @@ abstract class SetDataState implements Built<SetDataState, SetDataStateBuilder> 
 
   LoaderState get loader;
 
-  BuiltList<int> get publicSetIds;
+  BuiltList<int> get defaultSetIds;
 
   BuiltList<int> get userSetIds;
 }

@@ -103,10 +103,8 @@ class _SetListState extends State<SetListWidget> {
         ),
       ),
       onRefresh: () {
-        final store = StoreProvider.of<AppState>(context);
-
         dispatcher.dispatch(SetSetsLoaderAction(state: LoaderState.refresh));
-        dispatcher.dispatch(RequestSetsAction(userIds: getPublicAndCurrentUserIds(store.state)));
+        dispatcher.dispatch(RequestSetsAction());
 
         return storeCompleterService.registerCompleter(
           (state) => state.sets.loader == LoaderState.isLoaded,

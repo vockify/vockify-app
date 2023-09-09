@@ -2,6 +2,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
+import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/user_term_form/definition_chips.dart';
@@ -143,7 +144,15 @@ class _UserTermFormState extends State<UserTermFormWidget> {
       return;
     }
 
-    final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
+    // final data = (await api.translate(TranslateRequestDto(widget.termController.text))).data;
+    final data = [
+      DictionaryEntryDto(
+        '',
+        '',
+        '',
+        [],
+      ),
+    ];
     final userDefinitions = _getUserDefinitions();
 
     if (data.isEmpty) {

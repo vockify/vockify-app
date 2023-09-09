@@ -1,5 +1,3 @@
-import 'package:vockify/src/redux/actions/auth/request_authorize_action.dart';
-import 'package:vockify/src/redux/actions/auth/unauthorize_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_add_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
 import 'package:vockify/src/redux/actions/sets/request_update_user_set_action.dart';
@@ -15,8 +13,6 @@ class TrackingMiddleware extends ActionHandlersMiddleware<AppState> {
 
   TrackingMiddleware() {
     _handlers = [
-      ActionHandler<AppState, RequestAuthorizeAction>(_trackLogin),
-      ActionHandler<AppState, UnauthorizeAction>(_trackLogout),
       ActionHandler<AppState, RequestAddUserSetAction>(_trackSetAdded),
       ActionHandler<AppState, RequestRemoveUserSetAction>(_trackSetDeleted),
       ActionHandler<AppState, RequestUpdateUserSetAction>(_trackSetUpdated),
@@ -28,20 +24,6 @@ class TrackingMiddleware extends ActionHandlersMiddleware<AppState> {
 
   @override
   Iterable<ActionHandler<AppState, Object>> get handlers => _handlers;
-
-  void _trackLogin(
-    AppState state,
-    RequestAuthorizeAction action,
-  ) {
-    amplitude.logEvent('login');
-  }
-
-  void _trackLogout(
-    AppState state,
-    UnauthorizeAction action,
-  ) {
-    amplitude.logEvent('logout');
-  }
 
   void _trackSetAdded(
     AppState state,

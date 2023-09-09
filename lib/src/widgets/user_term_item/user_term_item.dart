@@ -54,14 +54,14 @@ class UserTermItemWidget extends StatelessWidget {
             extentRatio: 0.25,
             children: [
               SlidableAction(
-                label: 'ИЗМЕНИТЬ',
+                // label: 'ИЗМЕНИТЬ',
                 backgroundColor: VockifyColors.fulvous,
                 foregroundColor: VockifyColors.white,
                 icon: Icons.edit,
                 onPressed: onEdit,
               ),
               SlidableAction(
-                label: 'УДАЛИТЬ',
+                // label: 'УДАЛИТЬ',
                 backgroundColor: VockifyColors.flame,
                 foregroundColor: VockifyColors.white,
                 icon: Icons.delete,

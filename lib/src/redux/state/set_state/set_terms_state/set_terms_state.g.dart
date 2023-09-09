@@ -8,19 +8,14 @@ part of 'set_terms_state.dart';
 
 class _$SetTermsState extends SetTermsState {
   @override
-  final int count;
+  final int? count;
   @override
-  final SetTermsMemorizationState memorization;
+  final SetTermsMemorizationState? memorization;
 
   factory _$SetTermsState([void Function(SetTermsStateBuilder)? updates]) =>
       (new SetTermsStateBuilder()..update(updates))._build();
 
-  _$SetTermsState._({required this.count, required this.memorization})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(count, r'SetTermsState', 'count');
-    BuiltValueNullFieldError.checkNotNull(
-        memorization, r'SetTermsState', 'memorization');
-  }
+  _$SetTermsState._({this.count, this.memorization}) : super._();
 
   @override
   SetTermsState rebuild(void Function(SetTermsStateBuilder) updates) =>
@@ -75,7 +70,7 @@ class SetTermsStateBuilder
     final $v = _$v;
     if ($v != null) {
       _count = $v.count;
-      _memorization = $v.memorization.toBuilder();
+      _memorization = $v.memorization?.toBuilder();
       _$v = null;
     }
     return this;
@@ -100,14 +95,12 @@ class SetTermsStateBuilder
     try {
       _$result = _$v ??
           new _$SetTermsState._(
-              count: BuiltValueNullFieldError.checkNotNull(
-                  count, r'SetTermsState', 'count'),
-              memorization: memorization.build());
+              count: count, memorization: _memorization?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'memorization';
-        memorization.build();
+        _memorization?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'SetTermsState', _$failedField, e.toString());

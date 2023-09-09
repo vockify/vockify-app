@@ -6,15 +6,17 @@ import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/navigation/navigation_state.dart';
 
 class NavigationMiddleware<T> implements MiddlewareClass<T> {
-  final NavigatorState currentState;
+  final NavigatorState? currentState;
 
-  NavigationMiddleware({required this.currentState});
+  NavigationMiddleware({this.currentState});
 
   @override
   void call(Store<T> store, dynamic action, NextDispatcher next) {
     if (action is NavigateToAction) {
       final navigationAction = action;
-      final currentState = this.currentState;
+
+      final currentState =
+          this.currentState ?? NavigatorHolder.navigatorKey.currentState;
 
       action.preNavigation?.call();
 
@@ -22,27 +24,27 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
 
       final name = navigationAction.name;
 
-      if (name == null) return;
-
       switch (navigationAction.type) {
         case NavigationType.shouldReplace:
-          poppedFuture = currentState.pushReplacementNamed(
-            name,
-            arguments: navigationAction.arguments,
-          );
-          this._setState(NavigationPath(navigationAction.name, navigationAction.arguments));
+          if (name != null) {
+            poppedFuture = currentState!.pushReplacementNamed(
+              name,
+              arguments: navigationAction.arguments,
+            );
+            this._setState(NavigationPath(navigationAction.name, navigationAction.arguments));
+          }
           break;
         case NavigationType.shouldPop:
-          currentState.pop();
+          currentState!.pop();
           this._setState(NavigatorHolder.state?.previousDestination);
           break;
         case NavigationType.shouldPopUntil:
-          if (navigationAction.predicate != null) currentState.popUntil(navigationAction.predicate!);
+          if (navigationAction.predicate != null) currentState!.popUntil(navigationAction.predicate!);
           this._setState(null);
           break;
         case NavigationType.shouldPushNamedAndRemoveUntil:
           if (navigationAction.predicate != null && navigationAction.name != null)
-            poppedFuture = currentState.pushNamedAndRemoveUntil(
+            poppedFuture = currentState!.pushNamedAndRemoveUntil(
               navigationAction.name!,
               navigationAction.predicate!,
               arguments: navigationAction.arguments,
@@ -50,8 +52,8 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
           this._setState(null);
           break;
         default:
-          if (navigationAction.predicate != null)
-            poppedFuture = currentState.pushNamed(
+          if (navigationAction.name != null)
+            poppedFuture = currentState!.pushNamed(
               navigationAction.name!,
               arguments: navigationAction.arguments,
             );

@@ -42,6 +42,7 @@ class TermReducer {
     return state.rebuild((builder) {
       builder.terms.items.remove(action.id);
       builder.terms.ids.remove(action.id);
+      builder.history.ids.remove(action.id);
     });
   }
 

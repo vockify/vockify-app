@@ -1,8 +1,5 @@
-// import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/api/app_api.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 
@@ -22,7 +19,7 @@ class _TranscriptionTextWidgetState extends State<TranscriptionTextWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, String>(
         distinct: true,
-        converter: (store) => authToken(store.state),
+        converter: (store) => 'authToken',
         builder: (context, apiToken) {
           return Padding(
               padding: EdgeInsets.only(bottom: 20),

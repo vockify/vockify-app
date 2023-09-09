@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
+import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -223,7 +224,15 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
       return;
     }
 
-    final data = (await api.translate(TranslateRequestDto(text))).data;
+    // final data = (await api.translate(TranslateRequestDto(text))).data;
+    final data = [
+      DictionaryEntryDto(
+        '',
+        '',
+        '',
+        [],
+      ),
+    ];
 
     if (data.isEmpty) {
       _spellCheck(text);

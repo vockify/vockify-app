@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
+import 'package:vockify/src/database/data_service.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -32,11 +33,12 @@ class _UserSetSelectScreenState extends State<UserSetSelectScreenWidget> {
   List<int> _selectedSetIds = [];
 
   Future<List<int>> _fetchSelectedSets() async {
-    final response = await api.getSets(SetFiltersDto(
+    final response = await dataService.getSets(SetFiltersDto(
+      isCreatedByUser: true,
       terms: [widget.term],
     ));
 
-    final result = response.data.map((e) => e.id).toList();
+    final result = response.map((e) => e.id).toList();
 
     _selectedSetIds = result;
 

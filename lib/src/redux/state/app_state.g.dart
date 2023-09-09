@@ -8,11 +8,7 @@ part of 'app_state.dart';
 
 class _$AppState extends AppState {
   @override
-  final String? currentRoute;
-  @override
   final FeatureFlagState featureFlags;
-  @override
-  final String authToken;
   @override
   final bool isLoading;
   @override
@@ -23,32 +19,25 @@ class _$AppState extends AppState {
   final SetDataState sets;
   @override
   final TermDataState terms;
-  @override
-  final UserState user;
 
   factory _$AppState([void Function(AppStateBuilder)? updates]) =>
       (new AppStateBuilder()..update(updates))._build();
 
   _$AppState._(
-      {this.currentRoute,
-      required this.featureFlags,
-      required this.authToken,
+      {required this.featureFlags,
       required this.isLoading,
       required this.history,
       required this.quiz,
       required this.sets,
-      required this.terms,
-      required this.user})
+      required this.terms})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         featureFlags, r'AppState', 'featureFlags');
-    BuiltValueNullFieldError.checkNotNull(authToken, r'AppState', 'authToken');
     BuiltValueNullFieldError.checkNotNull(isLoading, r'AppState', 'isLoading');
     BuiltValueNullFieldError.checkNotNull(history, r'AppState', 'history');
     BuiltValueNullFieldError.checkNotNull(quiz, r'AppState', 'quiz');
     BuiltValueNullFieldError.checkNotNull(sets, r'AppState', 'sets');
     BuiltValueNullFieldError.checkNotNull(terms, r'AppState', 'terms');
-    BuiltValueNullFieldError.checkNotNull(user, r'AppState', 'user');
   }
 
   @override
@@ -62,29 +51,23 @@ class _$AppState extends AppState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AppState &&
-        currentRoute == other.currentRoute &&
         featureFlags == other.featureFlags &&
-        authToken == other.authToken &&
         isLoading == other.isLoading &&
         history == other.history &&
         quiz == other.quiz &&
         sets == other.sets &&
-        terms == other.terms &&
-        user == other.user;
+        terms == other.terms;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, currentRoute.hashCode);
     _$hash = $jc(_$hash, featureFlags.hashCode);
-    _$hash = $jc(_$hash, authToken.hashCode);
     _$hash = $jc(_$hash, isLoading.hashCode);
     _$hash = $jc(_$hash, history.hashCode);
     _$hash = $jc(_$hash, quiz.hashCode);
     _$hash = $jc(_$hash, sets.hashCode);
     _$hash = $jc(_$hash, terms.hashCode);
-    _$hash = $jc(_$hash, user.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -92,15 +75,12 @@ class _$AppState extends AppState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'AppState')
-          ..add('currentRoute', currentRoute)
           ..add('featureFlags', featureFlags)
-          ..add('authToken', authToken)
           ..add('isLoading', isLoading)
           ..add('history', history)
           ..add('quiz', quiz)
           ..add('sets', sets)
-          ..add('terms', terms)
-          ..add('user', user))
+          ..add('terms', terms))
         .toString();
   }
 }
@@ -108,19 +88,11 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState? _$v;
 
-  String? _currentRoute;
-  String? get currentRoute => _$this._currentRoute;
-  set currentRoute(String? currentRoute) => _$this._currentRoute = currentRoute;
-
   FeatureFlagStateBuilder? _featureFlags;
   FeatureFlagStateBuilder get featureFlags =>
       _$this._featureFlags ??= new FeatureFlagStateBuilder();
   set featureFlags(FeatureFlagStateBuilder? featureFlags) =>
       _$this._featureFlags = featureFlags;
-
-  String? _authToken;
-  String? get authToken => _$this._authToken;
-  set authToken(String? authToken) => _$this._authToken = authToken;
 
   bool? _isLoading;
   bool? get isLoading => _$this._isLoading;
@@ -144,24 +116,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._terms ??= new TermDataStateBuilder();
   set terms(TermDataStateBuilder? terms) => _$this._terms = terms;
 
-  UserStateBuilder? _user;
-  UserStateBuilder get user => _$this._user ??= new UserStateBuilder();
-  set user(UserStateBuilder? user) => _$this._user = user;
-
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _currentRoute = $v.currentRoute;
       _featureFlags = $v.featureFlags.toBuilder();
-      _authToken = $v.authToken;
       _isLoading = $v.isLoading;
       _history = $v.history.toBuilder();
       _quiz = $v.quiz.toBuilder();
       _sets = $v.sets.toBuilder();
       _terms = $v.terms.toBuilder();
-      _user = $v.user.toBuilder();
       _$v = null;
     }
     return this;
@@ -186,17 +151,13 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
-              currentRoute: currentRoute,
               featureFlags: featureFlags.build(),
-              authToken: BuiltValueNullFieldError.checkNotNull(
-                  authToken, r'AppState', 'authToken'),
               isLoading: BuiltValueNullFieldError.checkNotNull(
                   isLoading, r'AppState', 'isLoading'),
               history: history.build(),
               quiz: quiz.build(),
               sets: sets.build(),
-              terms: terms.build(),
-              user: user.build());
+              terms: terms.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -211,8 +172,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         sets.build();
         _$failedField = 'terms';
         terms.build();
-        _$failedField = 'user';
-        user.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'AppState', _$failedField, e.toString());

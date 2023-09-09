@@ -37,7 +37,7 @@ class PublicTermsScreenWidget extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             PublicTermListWidget(setId: setId),
-            StoreConnector<AppState, int>(
+            StoreConnector<AppState, int?>(
               distinct: true,
               converter: (store) => getUserSetIdByParentId(store.state, setId),
               builder: (context, id) {
@@ -52,7 +52,6 @@ class PublicTermsScreenWidget extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
                           fillColor: VockifyColors.prussianBlue,
                           onPressed: () {
-                            // todo check this
                             if (id != null) {
                               dispatcher.dispatch(
                                 NavigateToAction.push(Routes.quiz, arguments: {'setId': id}),

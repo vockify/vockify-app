@@ -6,12 +6,14 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vockify/src/api/app_api.dart';
+import 'package:vockify/src/database/data_service.dart';
 import 'package:vockify/src/extensions/sentry_client_extension.dart';
+import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
-import 'package:vockify/src/redux/effects/auth_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
 import 'package:vockify/src/redux/middlewares/navigation_middleware.dart';
+// import 'package:vockify/src/redux/middlewares/navigation_middleware.dart';
 import 'package:vockify/src/redux/middlewares/tracking_middleware.dart';
 import 'package:vockify/src/redux/reducers/app_reducer.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';
@@ -35,32 +37,29 @@ void main() async {
   final authToken = await storage?.getValue(AppStorageKey.token) ?? '';
 
   final reducer = AppReducer(SetReducer(), TermReducer());
-  final effect = AppEffect(SetEffect(), TermEffect(), AuthEffect());
+  final effect = AppEffect(SetEffect(), TermEffect());
 
   final store = Store<AppState>(
     reducer.getState,
     middleware: [
       EpicMiddleware(effect.getEffects()),
-      // NavigationMiddleware(),
+      NavigationMiddleware(),
       TrackingMiddleware(),
     ],
     initialState: AppState.initial(authToken: authToken),
   );
 
+  await setupDataService();
   setupApi(store);
   setupDispatcher(store);
   setupStoreCompleterService(store);
   setupAmplitude();
-
-  // final intent = await ReceiveSharingIntent.getInitialText() ?? '';
-  final intent = '';
 
   FlutterError.onError = _sentry.exceptionHandler;
 
   runZonedGuarded<Future<void>>(() async {
     runApp(VockifyApp(
       store: store,
-      intent: intent,
     ));
   }, (Object error, StackTrace stackTrace) {
     _sentry.reportError(error, stackTrace);

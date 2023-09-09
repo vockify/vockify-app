@@ -16,9 +16,9 @@ class _$SetState extends SetState {
   @override
   final int? parentId;
   @override
-  final int userId;
-  @override
   final SetTermsState terms;
+  @override
+  final bool isDefault;
 
   factory _$SetState([void Function(SetStateBuilder)? updates]) =>
       (new SetStateBuilder()..update(updates))._build();
@@ -28,13 +28,13 @@ class _$SetState extends SetState {
       required this.id,
       required this.name,
       this.parentId,
-      required this.userId,
-      required this.terms})
+      required this.terms,
+      required this.isDefault})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'SetState', 'id');
     BuiltValueNullFieldError.checkNotNull(name, r'SetState', 'name');
-    BuiltValueNullFieldError.checkNotNull(userId, r'SetState', 'userId');
     BuiltValueNullFieldError.checkNotNull(terms, r'SetState', 'terms');
+    BuiltValueNullFieldError.checkNotNull(isDefault, r'SetState', 'isDefault');
   }
 
   @override
@@ -52,8 +52,8 @@ class _$SetState extends SetState {
         id == other.id &&
         name == other.name &&
         parentId == other.parentId &&
-        userId == other.userId &&
-        terms == other.terms;
+        terms == other.terms &&
+        isDefault == other.isDefault;
   }
 
   @override
@@ -63,8 +63,8 @@ class _$SetState extends SetState {
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, parentId.hashCode);
-    _$hash = $jc(_$hash, userId.hashCode);
     _$hash = $jc(_$hash, terms.hashCode);
+    _$hash = $jc(_$hash, isDefault.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -76,8 +76,8 @@ class _$SetState extends SetState {
           ..add('id', id)
           ..add('name', name)
           ..add('parentId', parentId)
-          ..add('userId', userId)
-          ..add('terms', terms))
+          ..add('terms', terms)
+          ..add('isDefault', isDefault))
         .toString();
   }
 }
@@ -101,14 +101,14 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
   int? get parentId => _$this._parentId;
   set parentId(int? parentId) => _$this._parentId = parentId;
 
-  int? _userId;
-  int? get userId => _$this._userId;
-  set userId(int? userId) => _$this._userId = userId;
-
   SetTermsStateBuilder? _terms;
   SetTermsStateBuilder get terms =>
       _$this._terms ??= new SetTermsStateBuilder();
   set terms(SetTermsStateBuilder? terms) => _$this._terms = terms;
+
+  bool? _isDefault;
+  bool? get isDefault => _$this._isDefault;
+  set isDefault(bool? isDefault) => _$this._isDefault = isDefault;
 
   SetStateBuilder();
 
@@ -119,8 +119,8 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
       _id = $v.id;
       _name = $v.name;
       _parentId = $v.parentId;
-      _userId = $v.userId;
       _terms = $v.terms.toBuilder();
+      _isDefault = $v.isDefault;
       _$v = null;
     }
     return this;
@@ -150,9 +150,9 @@ class SetStateBuilder implements Builder<SetState, SetStateBuilder> {
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'SetState', 'name'),
               parentId: parentId,
-              userId: BuiltValueNullFieldError.checkNotNull(
-                  userId, r'SetState', 'userId'),
-              terms: terms.build());
+              terms: terms.build(),
+              isDefault: BuiltValueNullFieldError.checkNotNull(
+                  isDefault, r'SetState', 'isDefault'));
     } catch (_) {
       late String _$failedField;
       try {

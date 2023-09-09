@@ -18,7 +18,7 @@ abstract class SetTermsState implements Built<SetTermsState, SetTermsStateBuilde
 
   SetTermsState._();
 
-  int get count;
+  int? get count;
 
-  SetTermsMemorizationState get memorization;
+  SetTermsMemorizationState? get memorization;
 }

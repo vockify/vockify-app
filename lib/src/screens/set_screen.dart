@@ -12,10 +12,10 @@ import 'package:vockify/src/widgets/common/primary_text_form_field.dart';
 import 'package:vockify/src/widgets/layout.dart';
 
 class SetScreenWidget extends StatefulWidget {
-  final int setId;
+  final int? setId;
 
   SetScreenWidget({
-    required this.setId,
+    this.setId,
   });
 
   @override
@@ -77,7 +77,7 @@ class _SetScreenState extends State<SetScreenWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
 
     if (widget.setId != null) {
-      final set = getSetById(store.state, widget.setId);
+      final set = getSetById(store.state, widget.setId!);
       _nameController.text = set?.name ?? '';
     }
 
@@ -89,8 +89,9 @@ class _SetScreenState extends State<SetScreenWidget> {
       if (widget.setId != null) {
         dispatcher.dispatch(RequestUpdateUserSetAction(
           set: SetDto(
-            id: widget.setId,
+            id: widget.setId!,
             name: _nameController.text,
+            isDefault: false,
           ),
         ));
       } else {
@@ -98,6 +99,7 @@ class _SetScreenState extends State<SetScreenWidget> {
           set: SetDto(
             id: 0,
             name: _nameController.text,
+            isDefault: false,
           ),
         ));
       }

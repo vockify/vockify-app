@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-// import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/screens/profile_screen.dart';
 import 'package:vockify/src/screens/start_screen.dart';
 import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
@@ -20,19 +18,12 @@ enum HomeItem {
 }
 
 class HomeWidget extends StatefulWidget {
-  final String? intent;
-
-  const HomeWidget({Key? key, this.intent}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _HomeState();
 }
 
 class _HomeState extends State<HomeWidget> {
-  StreamSubscription? _intentSubscription;
-
   HomeItem _currentItem = HomeItem.start;
-  String? _intent;
 
   final _navigatorSettings = {
     HomeItem.main: HomeNavigatorSettings(GlobalKey<NavigatorState>(), Routes.main),
@@ -72,26 +63,17 @@ class _HomeState extends State<HomeWidget> {
             label: 'Словари',
             backgroundColor: VockifyColors.fulvous,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Профиль',
-            backgroundColor: VockifyColors.fulvous,
-          ),
         ],
       ),
       body: Stack(
         children: <Widget>[
           Offstage(
             offstage: _currentItem != HomeItem.start,
-            child: StartScreenWidget(term: _intent),
+            child: StartScreenWidget(),
           ),
           Offstage(
             offstage: _currentItem != HomeItem.main,
             child: HomeNavigatorWidget(settings: _navigatorSettings[HomeItem.main]!),
-          ),
-          Offstage(
-            offstage: _currentItem != HomeItem.profile,
-            child: ProfileScreenWidget(),
           ),
           StoreConnector<AppState, bool>(
             distinct: true,
@@ -112,44 +94,5 @@ class _HomeState extends State<HomeWidget> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _intentSubscription?.cancel();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.intent != null) {
-      _intent = widget.intent;
-      _trackShare();
-    }
-
-    // _intentSubscription = ReceiveSharingIntent.getTextStream().listen(
-    //   _goToShare,
-    //   onError: (error) {
-    //     print("getTextStream error: $error");
-    //   },
-    // );
-  }
-
-  void _goToShare(String value) {
-    if (value != null) {
-      setState(() {
-        _intent = value;
-        _currentItem = HomeItem.start;
-
-        _trackShare();
-      });
-    }
-  }
-
-  void _trackShare() {
-    amplitude.logEvent('share', eventProperties: {'intent': _intent});
   }
 }

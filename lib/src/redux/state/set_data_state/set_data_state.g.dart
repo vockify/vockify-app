@@ -12,7 +12,7 @@ class _$SetDataState extends SetDataState {
   @override
   final LoaderState loader;
   @override
-  final BuiltList<int> publicSetIds;
+  final BuiltList<int> defaultSetIds;
   @override
   final BuiltList<int> userSetIds;
 
@@ -22,13 +22,13 @@ class _$SetDataState extends SetDataState {
   _$SetDataState._(
       {required this.items,
       required this.loader,
-      required this.publicSetIds,
+      required this.defaultSetIds,
       required this.userSetIds})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(items, r'SetDataState', 'items');
     BuiltValueNullFieldError.checkNotNull(loader, r'SetDataState', 'loader');
     BuiltValueNullFieldError.checkNotNull(
-        publicSetIds, r'SetDataState', 'publicSetIds');
+        defaultSetIds, r'SetDataState', 'defaultSetIds');
     BuiltValueNullFieldError.checkNotNull(
         userSetIds, r'SetDataState', 'userSetIds');
   }
@@ -46,7 +46,7 @@ class _$SetDataState extends SetDataState {
     return other is SetDataState &&
         items == other.items &&
         loader == other.loader &&
-        publicSetIds == other.publicSetIds &&
+        defaultSetIds == other.defaultSetIds &&
         userSetIds == other.userSetIds;
   }
 
@@ -55,7 +55,7 @@ class _$SetDataState extends SetDataState {
     var _$hash = 0;
     _$hash = $jc(_$hash, items.hashCode);
     _$hash = $jc(_$hash, loader.hashCode);
-    _$hash = $jc(_$hash, publicSetIds.hashCode);
+    _$hash = $jc(_$hash, defaultSetIds.hashCode);
     _$hash = $jc(_$hash, userSetIds.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -66,7 +66,7 @@ class _$SetDataState extends SetDataState {
     return (newBuiltValueToStringHelper(r'SetDataState')
           ..add('items', items)
           ..add('loader', loader)
-          ..add('publicSetIds', publicSetIds)
+          ..add('defaultSetIds', defaultSetIds)
           ..add('userSetIds', userSetIds))
         .toString();
   }
@@ -85,11 +85,11 @@ class SetDataStateBuilder
   LoaderState? get loader => _$this._loader;
   set loader(LoaderState? loader) => _$this._loader = loader;
 
-  ListBuilder<int>? _publicSetIds;
-  ListBuilder<int> get publicSetIds =>
-      _$this._publicSetIds ??= new ListBuilder<int>();
-  set publicSetIds(ListBuilder<int>? publicSetIds) =>
-      _$this._publicSetIds = publicSetIds;
+  ListBuilder<int>? _defaultSetIds;
+  ListBuilder<int> get defaultSetIds =>
+      _$this._defaultSetIds ??= new ListBuilder<int>();
+  set defaultSetIds(ListBuilder<int>? defaultSetIds) =>
+      _$this._defaultSetIds = defaultSetIds;
 
   ListBuilder<int>? _userSetIds;
   ListBuilder<int> get userSetIds =>
@@ -104,7 +104,7 @@ class SetDataStateBuilder
     if ($v != null) {
       _items = $v.items.toBuilder();
       _loader = $v.loader;
-      _publicSetIds = $v.publicSetIds.toBuilder();
+      _defaultSetIds = $v.defaultSetIds.toBuilder();
       _userSetIds = $v.userSetIds.toBuilder();
       _$v = null;
     }
@@ -133,7 +133,7 @@ class SetDataStateBuilder
               items: items.build(),
               loader: BuiltValueNullFieldError.checkNotNull(
                   loader, r'SetDataState', 'loader'),
-              publicSetIds: publicSetIds.build(),
+              defaultSetIds: defaultSetIds.build(),
               userSetIds: userSetIds.build());
     } catch (_) {
       late String _$failedField;
@@ -141,8 +141,8 @@ class SetDataStateBuilder
         _$failedField = 'items';
         items.build();
 
-        _$failedField = 'publicSetIds';
-        publicSetIds.build();
+        _$failedField = 'defaultSetIds';
+        defaultSetIds.build();
         _$failedField = 'userSetIds';
         userSetIds.build();
       } catch (e) {

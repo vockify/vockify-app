@@ -13,7 +13,7 @@ abstract class FeatureFlagState implements Built<FeatureFlagState, FeatureFlagSt
   factory FeatureFlagState.initial() => FeatureFlagState((builder) {
     builder
       ..items.replace({
-        FeatureFlag.tour: false,
+        FeatureFlag.tour: true,
       });
   });
 

@@ -13,11 +13,11 @@ import 'package:vockify/src/widgets/user_term_form/user_term_form.dart';
 
 class UserTermScreenWidget extends StatefulWidget {
   final int setId;
-  final int termId;
+  final int? termId;
 
   UserTermScreenWidget({
     required this.setId,
-    required this.termId,
+    this.termId,
   });
 
   @override
@@ -44,7 +44,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
               if (widget.termId != null) {
                 dispatcher.dispatch(RequestUpdateUserTermAction(
                   term: TermDto(
-                    id: widget.termId,
+                    id: widget.termId!,
                     name: _termController.text,
                     setId: widget.setId,
                     definition: _definitionController.text,
@@ -94,7 +94,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
   void initState() {
     if (widget.termId != null) {
       final store = StoreProvider.of<AppState>(context, listen: false);
-      final term = getTermById(store.state, widget.termId);
+      final term = getTermById(store.state, widget.termId!);
 
       if (term != null) {
         _termController.text = term.name;
