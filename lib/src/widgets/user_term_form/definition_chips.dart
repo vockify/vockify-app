@@ -4,7 +4,7 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 class DefinitionChipsWidget extends StatelessWidget {
   final List<String> definitions;
   final List<String> selectedDefinitions;
-  final Function(List<String>) onChange;
+  final void Function(List<String>) onChange;
 
   const DefinitionChipsWidget({
     Key? key,

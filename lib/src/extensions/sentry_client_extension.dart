@@ -19,7 +19,7 @@ extension SentryClientExtension on SentryClient {
     );
   }
 
-  exceptionHandler(FlutterErrorDetails details) async {
+  Future<void> exceptionHandler(FlutterErrorDetails details) async {
     if (!kReleaseMode) {
       // In development mode simply print to console.
       FlutterError.dumpErrorToConsole(details);

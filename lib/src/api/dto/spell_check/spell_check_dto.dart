@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'spell_check_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(createToJson: false)
 class SpellCheckDto {
   final String word;
 
@@ -12,6 +12,4 @@ class SpellCheckDto {
   SpellCheckDto(this.word, this.strings);
 
   factory SpellCheckDto.fromJson(Map<String, dynamic> json) => _$SpellCheckDtoFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SpellCheckDtoToJson(this);
 }

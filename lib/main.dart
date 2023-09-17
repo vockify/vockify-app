@@ -8,7 +8,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/database/data_service.dart';
 import 'package:vockify/src/extensions/sentry_client_extension.dart';
-import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/redux/effects/app_effect.dart';
 import 'package:vockify/src/redux/effects/set_effect.dart';
 import 'package:vockify/src/redux/effects/term_effect.dart';
@@ -43,7 +42,7 @@ void main() async {
     reducer.getState,
     middleware: [
       EpicMiddleware(effect.getEffects()),
-      NavigationMiddleware(),
+      NavigationMiddleware<AppState>(),
       TrackingMiddleware(),
     ],
     initialState: AppState.initial(authToken: authToken),

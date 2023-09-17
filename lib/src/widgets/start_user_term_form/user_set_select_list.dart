@@ -10,7 +10,7 @@ import 'package:vockify/src/widgets/start_user_term_form/user_set_select_item.da
 
 class UserSetSelectListWidget extends StatelessWidget {
   final List<int> selectedSetIds;
-  final Function(int) onSelect;
+  final void Function(int) onSelect;
 
   const UserSetSelectListWidget({
     Key? key,

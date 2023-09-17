@@ -15,8 +15,8 @@ class LayoutWidget extends StatelessWidget {
   final Color? backgroundColor;
   final List<Widget> actions;
   final bool isContextNavigation;
-  final Function(Store<AppState>)? onInit;
-  final Function(Store<AppState>)? onDispose;
+  final void Function(Store<AppState>)? onInit;
+  final void Function(Store<AppState>)? onDispose;
   final bool Function(Store<AppState>)? isLoading;
 
   LayoutWidget({

@@ -10,7 +10,7 @@ void setupStoreCompleterService(Store<AppState> store) {
 }
 
 class StoreCompleter {
-  final Completer completer;
+  final Completer<dynamic> completer;
   final bool Function(AppState) complete;
 
   StoreCompleter(this.completer, this.complete);
@@ -32,8 +32,8 @@ class StoreCompleterService {
     });
   }
 
-  Future registerCompleter(bool Function(AppState) complete) {
-    final completer = Completer();
+  Future<void> registerCompleter(bool Function(AppState) complete) {
+    final completer = Completer<StoreCompleter>();
     _completers.add(StoreCompleter(completer, complete));
     return completer.future;
   }

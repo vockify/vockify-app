@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
 import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
@@ -9,7 +8,6 @@ import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/user_term_item/user_term_item.dart';

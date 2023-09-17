@@ -14,7 +14,7 @@ class TranscriptionTextWidget extends StatefulWidget {
 }
 
 class _TranscriptionTextWidgetState extends State<TranscriptionTextWidget> {
-  bool _play = false;
+  // bool _play = false;
 
   Widget build(BuildContext context) {
     return StoreConnector<AppState, String>(

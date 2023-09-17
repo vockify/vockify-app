@@ -39,7 +39,7 @@ class _InitialState extends State<InitialWidget> {
     final store = StoreProvider.of<AppState>(context, listen: false);
     final bool isTourFinished = await AppStorage.getInstance()?.containsKey(AppStorageKey.isTourFinished) ?? false;
 
-    if (!isTourFinished && isFeatureFlagEnabled(store.state, FeatureFlag.tour)) {
+    if (isTourFinished && isFeatureFlagEnabled(store.state, FeatureFlag.tour)) {
       scheduleMicrotask(() {
         dispatcher.dispatch(NavigateToAction.replace(Routes.tour));
       });

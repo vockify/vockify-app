@@ -7,7 +7,7 @@ import 'package:vockify/src/theme/vockify_colors.dart';
 
 class HistoryTermItemWidget extends StatelessWidget {
   final int id;
-  final Function(String) onTap;
+  final void Function(String) onTap;
 
   const HistoryTermItemWidget({
     Key? key,

@@ -72,7 +72,7 @@ class QuizController {
     );
   }
 
-  int getStepsCount() => _terms?.length ?? 0;
+  int getStepsCount() => _terms.length;
 
   void next() {
     _index++;

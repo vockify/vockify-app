@@ -36,7 +36,7 @@ class AppRouter {
         ),
   };
 
-  static MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
+  static MaterialPageRoute<dynamic> buildRoute(RouteSettings settings, Widget builder) {
     amplitude.logEvent(
       'route_changed',
       eventProperties: {'name': settings.name, 'arguments': settings.arguments.toString()},
@@ -48,7 +48,7 @@ class AppRouter {
     );
   }
 
-  static Route getRoute(RouteSettings settings) {
+  static Route<dynamic> getRoute(RouteSettings settings) {
     final arguments = settings.arguments;
 
     if (arguments != null && arguments is! Map<String, dynamic>) {

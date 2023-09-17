@@ -6,7 +6,7 @@ import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/start_user_term_form/history_term_item.dart';
 
 class HistoryTermListWidget extends StatelessWidget {
-  final Function(String) onTap;
+  final void Function(String) onTap;
 
   const HistoryTermListWidget({
     required this.onTap,

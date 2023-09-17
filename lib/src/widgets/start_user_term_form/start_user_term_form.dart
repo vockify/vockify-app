@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
-import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
@@ -102,6 +101,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
               if (_definitions.isNotEmpty) ...[
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(16, 16, 16, 80),
                       child: Column(
@@ -224,15 +224,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
       return;
     }
 
-    // final data = (await api.translate(TranslateRequestDto(text))).data;
-    final data = [
-      DictionaryEntryDto(
-        '',
-        '',
-        '',
-        [],
-      ),
-    ];
+    final data = (await api.translate(TranslateRequestDto(text))).def;
 
     if (data.isEmpty) {
       _spellCheck(text);
@@ -242,7 +234,7 @@ class _StartUserTermFormState extends State<StartUserTermFormWidget> {
 
     setState(() {
       _term = text;
-      _transcription = data.length > 0 && data.first.transcription != null ? data.first.transcription : '';
+      _transcription = data.length > 0 && data.firstOrNull?.transcription != null ? data.first.transcription! : '';
       _definitions = data.expand((entry) => entry.translations.map((tr) => tr.text)).toList();
     });
 

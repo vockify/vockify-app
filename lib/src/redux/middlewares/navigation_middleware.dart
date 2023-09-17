@@ -20,7 +20,7 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
 
       action.preNavigation?.call();
 
-      Future? poppedFuture;
+      Future<Object?>? poppedFuture;
 
       final name = navigationAction.name;
 

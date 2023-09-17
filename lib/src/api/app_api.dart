@@ -4,10 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_dto.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
-import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_response.dart';
-import 'package:vockify/src/api/dto/translate/translation_dto.dart';
 import 'package:vockify/src/api/http_codes.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 
@@ -18,9 +16,8 @@ void setupApi(Store<AppState> store) {
 }
 
 class AppApi {
-  static const apiUri = '<api-url>';
+  static const apiUri = '0545-139-138-219-5.ngrok-free.app';
   static const yandexSpellCheckUri = 'speller.yandex.net';
-  static const publicUserId = 18;
 
   final Store<AppState> store;
 
@@ -57,7 +54,7 @@ class AppApi {
   Future<Map<String, dynamic>> _post(String url, [dynamic body]) async {
     final headers = await _getHeaders();
     final response = await http.post(
-      Uri.http(apiUri, url),
+      Uri.https(apiUri, url),
       body: body != null ? jsonEncode(body) : null,
       headers: headers,
     );

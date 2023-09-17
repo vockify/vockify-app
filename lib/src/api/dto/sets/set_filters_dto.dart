@@ -7,6 +7,4 @@ class SetFiltersDto {
     this.isCreatedByUser = true,
     this.terms = const []
   });
-
-  static String toCommaSeparatedList(List list) => list.join(',');
 }

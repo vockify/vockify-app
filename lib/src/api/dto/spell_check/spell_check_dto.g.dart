@@ -11,9 +11,3 @@ SpellCheckDto _$SpellCheckDtoFromJson(Map<String, dynamic> json) =>
       json['word'] as String,
       (json['s'] as List<dynamic>).map((e) => e as String).toList(),
     );
-
-Map<String, dynamic> _$SpellCheckDtoToJson(SpellCheckDto instance) =>
-    <String, dynamic>{
-      'word': instance.word,
-      's': instance.strings,
-    };

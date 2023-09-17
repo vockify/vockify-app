@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SpellCheckTextWidget extends StatelessWidget {
-  final Function() onTap;
+  final void Function() onTap;
   final String text;
   final double padding;
 

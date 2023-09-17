@@ -10,9 +10,3 @@ TranslateRequestDto _$TranslateRequestDtoFromJson(Map<String, dynamic> json) =>
     TranslateRequestDto(
       json['text'] as String,
     );
-
-Map<String, dynamic> _$TranslateRequestDtoToJson(
-        TranslateRequestDto instance) =>
-    <String, dynamic>{
-      'text': instance.text,
-    };

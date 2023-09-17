@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vockify/src/api/app_api.dart';
 import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/database/data_service.dart';

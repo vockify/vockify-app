@@ -27,7 +27,7 @@ class DataService {
 
     if (filters.terms.isNotEmpty) {
       final matchedTerms = terms.where((term) => filters.terms.contains(term.name)).toList();
-      final filteredCategoryIds = matchedTerms.fold([], (previousValue, element) {
+      final filteredCategoryIds = matchedTerms.fold(<int>[], (previousValue, element) {
         if (!previousValue.contains(element.setId)) {
           previousValue.add(element.setId);
         }

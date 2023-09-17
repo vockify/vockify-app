@@ -2,7 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:collection/collection.dart';
 
 class ActionHandler<TActionScopeState, Action> {
-  final Function(TActionScopeState, Action) _handler;
+  final void Function(TActionScopeState, Action) _handler;
 
   ActionHandler(this._handler);
 

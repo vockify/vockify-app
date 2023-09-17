@@ -1,8 +1,6 @@
-import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:vockify/src/database/data_service.dart';
 import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/router/app_router.dart';
@@ -25,6 +23,7 @@ class VockifyApp extends StatelessWidget {
         onGenerateInitialRoutes: _getInitialRoutes,
         title: 'Vockify',
         theme: ThemeData(
+          fontFamily: 'Raleway',
           colorScheme: ColorScheme.fromSwatch(primarySwatch: VockifyColors.primary),
           primaryColor: VockifyColors.primary,
           primarySwatch: VockifyColors.primary,
@@ -34,7 +33,7 @@ class VockifyApp extends StatelessWidget {
     );
   }
 
-  List<Route> _getInitialRoutes(String route) {
+  List<Route<dynamic>> _getInitialRoutes(String route) {
     // return [
     //   MaterialPageRoute(builder: (context) => DriftDbViewer(dataService.database)),
     // ];
