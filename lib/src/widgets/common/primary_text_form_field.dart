@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
 
 class PrimaryTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -21,15 +22,27 @@ class PrimaryTextFormFieldWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 16),
       child: TextFormField(
+        style: TextStyle(
+          color: VockifyColors.prussianBlue,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
         autofocus: autoFocus,
         controller: controller,
         decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: suffix,
-          labelText: label,
+          label: Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              color: VockifyColors.prussianBlue,
+              fontSize: 18,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           fillColor: Colors.white,
-          border: OutlineInputBorder(
+          border: UnderlineInputBorder(
             borderSide: BorderSide(),
-            borderRadius: BorderRadius.all(Radius.circular(2.0)),
           ),
         ),
         validator: (value) {

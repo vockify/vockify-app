@@ -19,6 +19,8 @@ class _$AppState extends AppState {
   final SetDataState sets;
   @override
   final TermDataState terms;
+  @override
+  final HomeItem bottomNavigationItemIndex;
 
   factory _$AppState([void Function(AppStateBuilder)? updates]) =>
       (new AppStateBuilder()..update(updates))._build();
@@ -29,7 +31,8 @@ class _$AppState extends AppState {
       required this.history,
       required this.quiz,
       required this.sets,
-      required this.terms})
+      required this.terms,
+      required this.bottomNavigationItemIndex})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         featureFlags, r'AppState', 'featureFlags');
@@ -38,6 +41,8 @@ class _$AppState extends AppState {
     BuiltValueNullFieldError.checkNotNull(quiz, r'AppState', 'quiz');
     BuiltValueNullFieldError.checkNotNull(sets, r'AppState', 'sets');
     BuiltValueNullFieldError.checkNotNull(terms, r'AppState', 'terms');
+    BuiltValueNullFieldError.checkNotNull(
+        bottomNavigationItemIndex, r'AppState', 'bottomNavigationItemIndex');
   }
 
   @override
@@ -56,7 +61,8 @@ class _$AppState extends AppState {
         history == other.history &&
         quiz == other.quiz &&
         sets == other.sets &&
-        terms == other.terms;
+        terms == other.terms &&
+        bottomNavigationItemIndex == other.bottomNavigationItemIndex;
   }
 
   @override
@@ -68,6 +74,7 @@ class _$AppState extends AppState {
     _$hash = $jc(_$hash, quiz.hashCode);
     _$hash = $jc(_$hash, sets.hashCode);
     _$hash = $jc(_$hash, terms.hashCode);
+    _$hash = $jc(_$hash, bottomNavigationItemIndex.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -80,7 +87,8 @@ class _$AppState extends AppState {
           ..add('history', history)
           ..add('quiz', quiz)
           ..add('sets', sets)
-          ..add('terms', terms))
+          ..add('terms', terms)
+          ..add('bottomNavigationItemIndex', bottomNavigationItemIndex))
         .toString();
   }
 }
@@ -116,6 +124,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._terms ??= new TermDataStateBuilder();
   set terms(TermDataStateBuilder? terms) => _$this._terms = terms;
 
+  HomeItem? _bottomNavigationItemIndex;
+  HomeItem? get bottomNavigationItemIndex => _$this._bottomNavigationItemIndex;
+  set bottomNavigationItemIndex(HomeItem? bottomNavigationItemIndex) =>
+      _$this._bottomNavigationItemIndex = bottomNavigationItemIndex;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -127,6 +140,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _quiz = $v.quiz.toBuilder();
       _sets = $v.sets.toBuilder();
       _terms = $v.terms.toBuilder();
+      _bottomNavigationItemIndex = $v.bottomNavigationItemIndex;
       _$v = null;
     }
     return this;
@@ -157,7 +171,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               history: history.build(),
               quiz: quiz.build(),
               sets: sets.build(),
-              terms: terms.build());
+              terms: terms.build(),
+              bottomNavigationItemIndex: BuiltValueNullFieldError.checkNotNull(
+                  bottomNavigationItemIndex,
+                  r'AppState',
+                  'bottomNavigationItemIndex'));
     } catch (_) {
       late String _$failedField;
       try {

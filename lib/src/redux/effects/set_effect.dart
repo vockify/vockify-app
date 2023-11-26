@@ -4,6 +4,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:vockify/src/api/dto/sets/set_dto.dart';
 import 'package:vockify/src/api/dto/sets/set_filters_dto.dart';
 import 'package:vockify/src/database/data_service.dart';
+import 'package:vockify/src/models/home_item.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/sets/add_user_set.dart';
@@ -19,6 +20,7 @@ import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/set_state/set_state.dart';
 import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/widgets/home.dart';
 
 class SetEffect {
   Epic<AppState> getEffects() {
@@ -49,6 +51,8 @@ class SetEffect {
           terms: action.set.terms,
           isDefault: action.set.isDefault,
         )));
+
+        yield NavigateToAction.push(Routes.userTerms, arguments: {'id': id}, currentState: NavigatorSettings[HomeItem.main]?.key.currentState);
       } finally {
         yield UnsetIsLoadingAction();
       }

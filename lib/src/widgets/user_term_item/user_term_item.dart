@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vockify/src/navigation/navigation_holder.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
 import 'package:vockify/src/redux/state/term_state/term_state.dart';
-import 'package:vockify/src/theme/vockify_colors.dart';
+import 'package:vockify/src/widgets/user_term_item/user_term_bottom_sheet.dart';
 
 class UserTermItemWidget extends StatelessWidget {
   final int id;
-  final SlidableActionCallback onDelete;
-  final SlidableActionCallback onEdit;
+  final int setId;
   final VoidCallback onTap;
 
   const UserTermItemWidget({
     Key? key,
     required this.id,
-    required this.onDelete,
-    required this.onEdit,
     required this.onTap,
+    required this.setId,
   }) : super(key: key);
 
   @override
@@ -26,48 +25,47 @@ class UserTermItemWidget extends StatelessWidget {
       distinct: true,
       converter: (store) => getTermById(store.state, id),
       builder: (context, term) {
-        return Slidable(
-          key: term != null ? Key(term.id.toString()) : null,
+        return Card(
+          margin: EdgeInsets.only(bottom: 24),
+          elevation: 2,
           child: ListTile(
             onTap: onTap,
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    term?.name ?? '',
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    term?.definition ?? '',
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ],
+            minVerticalPadding: 14,
+            trailing: IconButton(
+              onPressed: () {
+                if (NavigatorHolder.navigatorKey.currentContext != null) {
+                  showModalBottomSheet<UserTermBottomSheet>(
+                    context: NavigatorHolder.navigatorKey.currentContext!,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (BuildContext context) {
+                      return UserTermBottomSheet(setId: setId, id: id);
+                    },
+                  );
+                }
+              },
+              icon: FaIcon(FontAwesomeIcons.ellipsis),
             ),
-          ),
-          endActionPane: ActionPane(
-            motion: const DrawerMotion(),
-            extentRatio: 0.25,
-            children: [
-              SlidableAction(
-                // label: 'ИЗМЕНИТЬ',
-                backgroundColor: VockifyColors.fulvous,
-                foregroundColor: VockifyColors.white,
-                icon: Icons.edit,
-                onPressed: onEdit,
+            title: Text(
+              term?.name ?? '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              SlidableAction(
-                // label: 'УДАЛИТЬ',
-                backgroundColor: VockifyColors.flame,
-                foregroundColor: VockifyColors.white,
-                icon: Icons.delete,
-                onPressed: onDelete,
+              textAlign: TextAlign.left,
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 4),
+              child: Text(
+                term?.definition ?? '',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
               ),
-            ],
+            ),
           ),
         );
       },

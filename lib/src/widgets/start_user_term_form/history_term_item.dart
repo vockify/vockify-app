@@ -27,7 +27,8 @@ class HistoryTermItemWidget extends StatelessWidget {
           },
           child: Card(
             margin: EdgeInsets.all(0),
-            color: VockifyColors.ghostWhite,
+            color: VockifyColors.white,
+            elevation: 1,
             child: Container(
               padding: EdgeInsets.all(16),
               margin: EdgeInsets.all(0),

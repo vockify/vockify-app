@@ -1,4 +1,5 @@
 import 'package:redux/redux.dart';
+import 'package:vockify/src/redux/actions/set_bottom_navidation_item_index.dart';
 import 'package:vockify/src/redux/actions/set_is_loading_action.dart';
 import 'package:vockify/src/redux/actions/unset_is_loading_action.dart';
 import 'package:vockify/src/redux/reducers/set_reducer.dart';
@@ -14,6 +15,7 @@ class AppReducer {
       TypedReducer(termDataReducer.getState),
       TypedReducer(_setIsLoadingReducer),
       TypedReducer(_unsetIsLoadingReducer),
+      TypedReducer(_setBottomNavigationItemIdex),
     ]);
   }
 
@@ -25,5 +27,9 @@ class AppReducer {
 
   AppState _unsetIsLoadingReducer(AppState state, UnsetIsLoadingAction action) {
     return state.rebuild((builder) => builder.isLoading = false);
+  }
+
+  AppState _setBottomNavigationItemIdex(AppState state, SetBottomNavigationItemIndex action) {
+    return state.rebuild((builder) => builder.bottomNavigationItemIndex = action.index);
   }
 }

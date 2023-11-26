@@ -30,46 +30,34 @@ class UserSetItemWidget extends StatelessWidget {
       converter: (store) => getSetById(store.state, id),
       builder: (context, set) {
         return Card(
-          margin: EdgeInsets.only(top: 16),
-          color: VockifyColors.ghostWhite,
+          margin: EdgeInsets.only(top: 24),
+          color: VockifyColors.white,
+          elevation: 2,
+          shadowColor: VockifyColors.lightSteelBlue,
           child: ListTile(
-            title: Text(set?.name ?? ''),
-            subtitle: Text('${set?.terms.count ?? 0} ${plural(set?.terms.count ?? 0, ['слово', 'слова', 'слов'])}'),
-            trailing: PopupMenuButton(
-              padding: EdgeInsets.all(0),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: _menuItemEdit,
-                  child: Text(
-                    'ИЗМЕНИТЬ',
-                  ),
-                ),
-                PopupMenuItem(
-                  value: _menuItemDelete,
-                  child: Text(
-                    'УДАЛИТЬ',
-                    style: TextStyle(color: VockifyColors.flame),
-                  ),
-                )
-              ],
-              onSelected: _onSelected,
-              icon: Icon(
-                Icons.more_horiz,
-                color: VockifyColors.prussianBlue,
+            contentPadding: EdgeInsets.symmetric(horizontal: 20),
+            minVerticalPadding: 20,
+            title: Text(
+              set?.name ?? '',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
+            ),
+            subtitle: Text(
+              '${set?.terms.count ?? 0} ${plural(set?.terms.count ?? 0, ['термин', 'термина', 'терминов'])}',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: VockifyColors.black,
+              ),
+              textAlign: TextAlign.end,
             ),
             onTap: onTap,
           ),
         );
       },
     );
-  }
-
-  void _onSelected(String item) {
-    if (item == _menuItemDelete) {
-      onDelete();
-    } else if (item == _menuItemEdit) {
-      onEdit();
-    }
   }
 }

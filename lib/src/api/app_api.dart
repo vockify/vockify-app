@@ -16,7 +16,7 @@ void setupApi(Store<AppState> store) {
 }
 
 class AppApi {
-  static const apiUri = '0545-139-138-219-5.ngrok-free.app';
+  static const apiUri = 'vockify.mikedanagam.space';
   static const yandexSpellCheckUri = 'speller.yandex.net';
 
   final Store<AppState> store;
@@ -47,14 +47,13 @@ class AppApi {
     return <String, String>{
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ${'authToken'}',
     };
   }
 
   Future<Map<String, dynamic>> _post(String url, [dynamic body]) async {
     final headers = await _getHeaders();
     final response = await http.post(
-      Uri.https(apiUri, url),
+      Uri.http(apiUri, url),
       body: body != null ? jsonEncode(body) : null,
       headers: headers,
     );

@@ -15,8 +15,9 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
     if (action is NavigateToAction) {
       final navigationAction = action;
 
-      final currentState =
-          this.currentState ?? NavigatorHolder.navigatorKey.currentState;
+      final currentState = action.currentState ??
+          this.currentState ??
+          NavigatorHolder.navigatorKey.currentState;
 
       action.preNavigation?.call();
 
@@ -31,7 +32,8 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
               name,
               arguments: navigationAction.arguments,
             );
-            this._setState(NavigationPath(navigationAction.name, navigationAction.arguments));
+            this._setState(NavigationPath(
+                navigationAction.name, navigationAction.arguments));
           }
           break;
         case NavigationType.shouldPop:
@@ -39,11 +41,13 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
           this._setState(NavigatorHolder.state?.previousDestination);
           break;
         case NavigationType.shouldPopUntil:
-          if (navigationAction.predicate != null) currentState!.popUntil(navigationAction.predicate!);
+          if (navigationAction.predicate != null)
+            currentState!.popUntil(navigationAction.predicate!);
           this._setState(null);
           break;
         case NavigationType.shouldPushNamedAndRemoveUntil:
-          if (navigationAction.predicate != null && navigationAction.name != null)
+          if (navigationAction.predicate != null &&
+              navigationAction.name != null)
             poppedFuture = currentState!.pushNamedAndRemoveUntil(
               navigationAction.name!,
               navigationAction.predicate!,
@@ -57,7 +61,8 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
               navigationAction.name!,
               arguments: navigationAction.arguments,
             );
-          this._setState(NavigationPath(navigationAction.name, navigationAction.arguments));
+          this._setState(NavigationPath(
+              navigationAction.name, navigationAction.arguments));
       }
 
       if (action.postNavigation != null) {
@@ -76,6 +81,7 @@ class NavigationMiddleware<T> implements MiddlewareClass<T> {
 
   void _setState(NavigationPath? currentDestination) {
     if (currentDestination == null) return;
-    NavigatorHolder.state = NavigationState.transition(NavigatorHolder.state?.currentDestination, currentDestination);
+    NavigatorHolder.state = NavigationState.transition(
+        NavigatorHolder.state?.currentDestination, currentDestination);
   }
 }

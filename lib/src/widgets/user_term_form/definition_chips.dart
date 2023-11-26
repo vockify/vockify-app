@@ -19,16 +19,7 @@ class DefinitionChipsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Text(
-            'Выберите значения:',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 16,
-                ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 16),
+          padding: EdgeInsets.all(0),
           child: Wrap(
             spacing: 8,
             children: definitions.map((definition) {
@@ -39,15 +30,11 @@ class DefinitionChipsWidget extends StatelessWidget {
                   definition,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 16,
+                        color: VockifyColors.prussianBlue,
                       ),
                 ),
-                labelStyle: TextStyle(color: VockifyColors.black),
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 1,
-                    color: VockifyColors.lightSteelBlue,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
                 selected: selectedDefinitions.contains(definition),
                 onSelected: (bool selected) {

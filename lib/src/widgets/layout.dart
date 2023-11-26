@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
@@ -36,8 +37,11 @@ class LayoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundColor ?? VockifyColors.white,
+      backgroundColor: backgroundColor ?? VockifyColors.ghostWhite,
       appBar: AppBar(
+        backgroundColor: VockifyColors.ghostWhite,
+        elevation: 0,
+        centerTitle: true,
         title: _buildTitle(),
         leading: _buildGoBackArrow(context),
         automaticallyImplyLeading: false,
@@ -67,7 +71,8 @@ class LayoutWidget extends StatelessWidget {
     }
 
     return IconButton(
-      icon: new Icon(Icons.arrow_back),
+      icon: new FaIcon(FontAwesomeIcons.angleLeft),
+      color: VockifyColors.prussianBlue,
       onPressed: () {
         if (isContextNavigation) {
           Navigator.of(context).pop();
@@ -86,7 +91,10 @@ class LayoutWidget extends StatelessWidget {
     if (title != null) {
       return Text(
         title!,
-        style: TextStyle(color: VockifyColors.white),
+        style: TextStyle(
+          color: VockifyColors.prussianBlue,
+          fontWeight: FontWeight.bold,
+        ),
       );
     }
 

@@ -48,6 +48,8 @@ class NavigateToAction {
 
   final VoidCallback? onPop;
 
+  final NavigatorState? currentState;
+
   /// Create a navigation action.
   ///
   /// The [name] parameter must not be null.
@@ -58,7 +60,8 @@ class NavigateToAction {
       this.postNavigation,
       this.arguments,
       this.predicate,
-      this.onPop})
+      this.onPop,
+      this.currentState})
       : assert(() {
           if (type == NavigationType.shouldPushNamedAndRemoveUntil) {
             return predicate != null;
@@ -76,24 +79,23 @@ class NavigateToAction {
           {Function? preNavigation,
           Function? postNavigation,
           Object? arguments,
-          VoidCallback? onPop}) =>
+          VoidCallback? onPop,
+          NavigatorState? currentState}) =>
       NavigateToAction(name,
           preNavigation: preNavigation,
           postNavigation: postNavigation,
           arguments: arguments,
-          onPop: onPop);
+          onPop: onPop,
+          currentState: currentState);
 
-  factory NavigateToAction.pop(
-          {Function? preNavigation, Function? postNavigation}) =>
+  factory NavigateToAction.pop({Function? preNavigation, Function? postNavigation, NavigatorState? currentState}) =>
       NavigateToAction(null,
           type: NavigationType.shouldPop,
           preNavigation: preNavigation,
-          postNavigation: postNavigation);
+          postNavigation: postNavigation,
+          currentState: currentState);
 
-  factory NavigateToAction.popUntil(
-          {Function? preNavigation,
-          Function? postNavigation,
-          RoutePredicate? predicate}) =>
+  factory NavigateToAction.popUntil({Function? preNavigation, Function? postNavigation, RoutePredicate? predicate}) =>
       NavigateToAction(null,
           type: NavigationType.shouldPopUntil,
           preNavigation: preNavigation,
@@ -104,25 +106,28 @@ class NavigateToAction {
           {Function? preNavigation,
           Function? postNavigation,
           Object? arguments,
-          VoidCallback? onPop}) =>
+          VoidCallback? onPop,
+          NavigatorState? currentState}) =>
       NavigateToAction(name,
           type: NavigationType.shouldReplace,
           preNavigation: preNavigation,
           postNavigation: postNavigation,
           arguments: arguments,
-          onPop: onPop);
+          onPop: onPop,
+          currentState: currentState);
 
-  factory NavigateToAction.pushNamedAndRemoveUntil(
-          String name, RoutePredicate predicate,
+  factory NavigateToAction.pushNamedAndRemoveUntil(String name, RoutePredicate predicate,
           {Function? preNavigation,
           Function? postNavigation,
           Object? arguments,
-          VoidCallback? onPop}) =>
+          VoidCallback? onPop,
+          NavigatorState? currentState}) =>
       NavigateToAction(name,
           type: NavigationType.shouldPushNamedAndRemoveUntil,
           preNavigation: preNavigation,
           postNavigation: postNavigation,
           predicate: predicate,
           arguments: arguments,
-          onPop: onPop);
+          onPop: onPop,
+          currentState: currentState);
 }

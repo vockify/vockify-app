@@ -1,0 +1,4 @@
+enum HomeItem {
+  start,
+  main,
+}

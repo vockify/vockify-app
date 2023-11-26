@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/redux/actions/terms/request_remove_user_term_action.dart';
-import 'package:vockify/src/redux/actions/terms/request_terms_action.dart';
-import 'package:vockify/src/redux/actions/terms/set_terms_loader_action.dart';
+import 'package:vockify/src/navigation/navigate_to_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/services/store_completer_service.dart';
+import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/empty.dart';
 import 'package:vockify/src/widgets/user_term_item/user_term_item.dart';
 
@@ -22,10 +19,6 @@ class UserTermListWidget extends StatefulWidget {
 }
 
 class _UserTermListState extends State<UserTermListWidget> {
-  // final _slidableController = SlidableController(onSlideIsOpenChanged: (bool) {
-  //   amplitude.logEvent('term_swiped');
-  // });
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<int>>(
@@ -39,47 +32,99 @@ class _UserTermListState extends State<UserTermListWidget> {
           );
         }
 
-        return RefreshIndicator(
-          child: ListView.builder(
-            padding: EdgeInsets.only(bottom: 80),
-            itemCount: ids.length * 2,
-            itemBuilder: (BuildContext context, int index) {
-              if (index.isOdd) {
-                return Divider(
-                  height: 0,
-                  thickness: 1,
-                );
-              }
+        return SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: RawMaterialButton(
+                        padding: EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        fillColor: VockifyColors.prussianBlue,
+                        onPressed: () {
+                          dispatcher.dispatch(NavigateToAction.push(Routes.quiz, arguments: {'setId': widget.setId}));
+                        },
+                        child: Text(
+                          'УЧИТЬ',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: VockifyColors.ghostWhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      child: RawMaterialButton(
+                        padding: EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        fillColor: VockifyColors.persianGreen,
+                        onPressed: () {
+                          dispatcher
+                              .dispatch(NavigateToAction.push(Routes.flashcards, arguments: {'setId': widget.setId}));
+                        },
+                        child: Text(
+                          'ФЛЕШКАРТЫ',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: VockifyColors.ghostWhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 20,
+                  bottom: 10,
+                ),
+                child: Text(
+                  'Термины',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                  // textAlign: TextAlign.left,
+                ),
+              ),
+              ListView.builder(
+                padding: EdgeInsets.only(bottom: 0, left: 16, right: 16, top: 24),
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: ids.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final id = ids[index];
 
-              final id = ids[(index / 2).round()];
-
-              return UserTermItemWidget(
-                key: ValueKey(id),
-                id: id,
-                onTap: () {
-                  Navigator.of(context).pushNamed(Routes.userTerm, arguments: {
-                    "setId": widget.setId,
-                    "termId": id,
-                  });
+                  return UserTermItemWidget(
+                    key: ValueKey(id),
+                    id: id,
+                    setId: widget.setId,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.userTerm, arguments: {
+                        "setId": widget.setId,
+                        "termId": id,
+                      });
+                    },
+                  );
                 },
-                onEdit: (BuildContext context) {
-                  Navigator.of(context).pushNamed(Routes.userTerm, arguments: {
-                    "setId": widget.setId,
-                    "termId": id,
-                  });
-                },
-                onDelete: (BuildContext context) {
-                  dispatcher.dispatch(RequestRemoveUserTermAction(id: id, setId: widget.setId));
-                },
-              );
-            },
+              ),
+            ],
           ),
-          onRefresh: () {
-            dispatcher.dispatch(SetTermsLoaderAction(state: LoaderState.refresh));
-            dispatcher.dispatch(RequestTermsAction(setId: widget.setId));
-
-            return storeCompleterService.registerCompleter((state) => state.terms.loader == LoaderState.isLoaded);
-          },
         );
       },
     );

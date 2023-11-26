@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vockify/src/api/dto/terms/term_dto.dart';
 import 'package:vockify/src/redux/actions/terms/request_add_user_term_action.dart';
 import 'package:vockify/src/redux/actions/terms/request_update_user_term_action.dart';
@@ -33,44 +34,14 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
   Widget build(BuildContext context) {
     return LayoutWidget(
       route: Routes.userTerm,
+      title: 'Редактировать',
       actions: <Widget>[
-        RawMaterialButton(
-          constraints: BoxConstraints(
-            minWidth: 42,
-            minHeight: 42,
+        IconButton(
+          icon: FaIcon(
+            FontAwesomeIcons.check,
+            color: VockifyColors.fulvous,
           ),
-          onPressed: () {
-            if (_formKey.currentState?.validate() ?? false) {
-              if (widget.termId != null) {
-                dispatcher.dispatch(RequestUpdateUserTermAction(
-                  term: TermDto(
-                    id: widget.termId!,
-                    name: _termController.text,
-                    setId: widget.setId,
-                    definition: _definitionController.text,
-                  ),
-                ));
-              } else {
-                dispatcher.dispatch(RequestAddUserTermAction(
-                  term: TermDto(
-                    id: 0,
-                    name: _termController.text,
-                    setId: widget.setId,
-                    definition: _definitionController.text,
-                  ),
-                ));
-              }
-
-              Navigator.of(context).pop();
-            }
-          },
-          child: Text(
-            'Сохранить',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: VockifyColors.white,
-                  fontSize: 18,
-                ),
-          ),
+          onPressed: _save,
           padding: EdgeInsets.all(16),
         ),
       ],
@@ -78,6 +49,7 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
         formKey: _formKey,
         termController: _termController,
         definitionController: _definitionController,
+        onSave: _save,
       ),
     );
   }
@@ -103,5 +75,31 @@ class _UserTermScreenState extends State<UserTermScreenWidget> {
     }
 
     super.initState();
+  }
+
+  void _save() {
+    if (_formKey.currentState?.validate() ?? false) {
+      if (widget.termId != null) {
+        dispatcher.dispatch(RequestUpdateUserTermAction(
+          term: TermDto(
+            id: widget.termId!,
+            name: _termController.text,
+            setId: widget.setId,
+            definition: _definitionController.text,
+          ),
+        ));
+      } else {
+        dispatcher.dispatch(RequestAddUserTermAction(
+          term: TermDto(
+            id: 0,
+            name: _termController.text,
+            setId: widget.setId,
+            definition: _definitionController.text,
+          ),
+        ));
+      }
+
+      Navigator.of(context).pop();
+    }
   }
 }

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vockify/src/redux/actions/sets/request_remove_user_set_action.dart';
-import 'package:vockify/src/redux/actions/sets/request_sets_action.dart';
-import 'package:vockify/src/redux/actions/sets/set_sets_loader_action.dart';
 import 'package:vockify/src/redux/selectors/selectors.dart';
 import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/loader_state/loader_state.dart';
 import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/router/routes.dart';
-import 'package:vockify/src/services/store_completer_service.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/public_set_item/public_set_item.dart';
 import 'package:vockify/src/widgets/user_set_item/user_set_item.dart';
@@ -21,10 +17,11 @@ class SetListWidget extends StatefulWidget {
 class _SetListState extends State<SetListWidget> {
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return Container(
+      color: VockifyColors.ghostWhite,
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 16),
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             StoreConnector<AppState, List<int>>(
@@ -32,7 +29,7 @@ class _SetListState extends State<SetListWidget> {
               converter: (store) => getUserSetIds(store.state),
               builder: (context, ids) {
                 return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   itemCount: ids.length,
@@ -73,8 +70,9 @@ class _SetListState extends State<SetListWidget> {
                       child: Text(
                         'Популярные словари',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: VockifyColors.black,
-                              fontSize: 20,
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                         textAlign: TextAlign.center,
                       ),
@@ -102,14 +100,6 @@ class _SetListState extends State<SetListWidget> {
           ],
         ),
       ),
-      onRefresh: () {
-        dispatcher.dispatch(SetSetsLoaderAction(state: LoaderState.refresh));
-        dispatcher.dispatch(RequestSetsAction());
-
-        return storeCompleterService.registerCompleter(
-          (state) => state.sets.loader == LoaderState.isLoaded,
-        );
-      },
     );
   }
 }
