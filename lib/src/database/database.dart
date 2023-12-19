@@ -16,6 +16,11 @@ class Categories extends Table {
   BoolColumn get isDefault => boolean().withDefault(Constant(false))();
 }
 
+@DriftAccessor(tables: [Categories])
+class CategoriesDao extends DatabaseAccessor<AppDatabase> with _$CategoriesDaoMixin {
+  CategoriesDao(AppDatabase db) : super(db);
+}
+
 class Terms extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 64)();
@@ -24,7 +29,12 @@ class Terms extends Table {
   TextColumn get memorizationLevel => text().nullable()();
 }
 
-@DriftDatabase(tables: [Categories, Terms])
+@DriftAccessor(tables: [Terms])
+class TermsDao extends DatabaseAccessor<AppDatabase> with _$TermsDaoMixin {
+  TermsDao(AppDatabase db) : super(db);
+}
+
+@DriftDatabase(tables: [Categories, Terms], daos: [CategoriesDao, TermsDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

@@ -1,22 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vockify/src/navigation/navigate_to_action.dart';
-import 'package:vockify/src/redux/selectors/selectors.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/state/feature_flag_state/feature_flag_state.dart';
-import 'package:vockify/src/redux/store/app_dispatcher.dart';
-import 'package:vockify/src/router/routes.dart';
+import 'package:vockify/src/navigation/navigation_holder.dart';
+import 'package:vockify/src/pages/tour/tour_page.dart';
 import 'package:vockify/src/services/app_storage/app_storage.dart';
 import 'package:vockify/src/services/app_storage/app_storage_key.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
+import 'package:vockify/src/widgets/home.dart';
 
 class InitialWidget extends StatefulWidget {
-  final String route;
-
-  const InitialWidget({Key? key, required this.route}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _InitialState();
 }
@@ -36,15 +28,30 @@ class _InitialState extends State<InitialWidget> {
   }
 
   Future<void> _navigate() async {
-    final store = StoreProvider.of<AppState>(context, listen: false);
-    final bool isTourFinished = await AppStorage.getInstance()?.containsKey(AppStorageKey.isTourFinished) ?? false;
+    final bool isTourFinished = await AppStorage.getInstance()
+            ?.containsKey(AppStorageKey.isTourFinished) ??
+        false;
 
-    if (isTourFinished && isFeatureFlagEnabled(store.state, FeatureFlag.tour)) {
+    if (!isTourFinished) {
       scheduleMicrotask(() {
-        dispatcher.dispatch(NavigateToAction.replace(Routes.tour));
+        Navigator.of(NavigatorHolder.navigatorKey.currentContext!)
+            .pushReplacement(
+          MaterialPageRoute<TourPageWidget>(
+            builder: (context) {
+              return TourPageWidget();
+            },
+          ),
+        );
       });
     } else {
-      dispatcher.dispatch(NavigateToAction.replace(Routes.home));
+      Navigator.of(NavigatorHolder.navigatorKey.currentContext!)
+          .pushReplacement(
+        MaterialPageRoute<HomeWidget>(
+          builder: (context) {
+            return HomeWidget();
+          },
+        ),
+      );
     }
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:vockify/src/models/bar_model.dart';
 import 'package:vockify/src/models/home_item.dart';
-import 'package:vockify/src/redux/actions/set_bottom_navidation_item_index.dart';
-import 'package:vockify/src/redux/store/app_dispatcher.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/home_bottom_sheet.dart';
 import 'package:vockify/src/widgets/home.dart';
@@ -14,6 +14,8 @@ class VockifyBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final barModel = context.read<BarModel>();
+
     return BottomAppBar(
       color: VockifyColors.white,
       height: 76,
@@ -26,7 +28,7 @@ class VockifyBottomNavigationBar extends StatelessWidget {
               alignment: Alignment.center,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => _goToItem(HomeItem.start),
+                onTap: () => _goToItem(barModel, HomeItem.start),
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Wrap(
@@ -67,7 +69,7 @@ class VockifyBottomNavigationBar extends StatelessWidget {
                     ),
                     builder: (BuildContext context) {
                       return HomeBottomSheet(onSetCreate: () {
-                        _goToItem(HomeItem.main);
+                        _goToItem(barModel, HomeItem.main);
                       });
                     },
                   );
@@ -85,7 +87,7 @@ class VockifyBottomNavigationBar extends StatelessWidget {
               alignment: Alignment.center,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => _goToItem(HomeItem.main),
+                onTap: () => _goToItem(barModel, HomeItem.main),
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Wrap(
@@ -117,12 +119,14 @@ class VockifyBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  void _goToItem(HomeItem item) {
+  void _goToItem(BarModel barModel, HomeItem item) {
     if (NavigatorSettings.containsKey(item)) {
       final settings = NavigatorSettings[item];
-      settings?.key.currentState?.popUntil((route) => route.settings.name == settings.initialRoute);
+      settings?.key.currentState?.popUntil((route) {
+        return route.settings.name == '/';
+      });
     }
 
-    dispatcher.dispatch(SetBottomNavigationItemIndex(index: item));
+    barModel.setCurrentItem(item);
   }
 }

@@ -13,7 +13,7 @@ class Routes {
   // user set routes
   static const String userSet = "/user_set";
   static const String userSetSelect = '/user_set_select';
-  
+
   // user term routes
   static const String userTerms = "/user_terms";
   static const String userTerm = "/user_term";

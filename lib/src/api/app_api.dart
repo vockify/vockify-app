@@ -1,34 +1,29 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:redux/redux.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_dto.dart';
 import 'package:vockify/src/api/dto/spell_check/spell_check_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_request_dto.dart';
 import 'package:vockify/src/api/dto/translate/translate_response.dart';
 import 'package:vockify/src/api/http_codes.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
 
 late AppApi api;
 
-void setupApi(Store<AppState> store) {
-  api = AppApi(store);
+void setupApi() {
+  api = AppApi();
 }
 
 class AppApi {
   static const apiUri = 'vockify.mikedanagam.space';
   static const yandexSpellCheckUri = 'speller.yandex.net';
 
-  final Store<AppState> store;
-
-  AppApi(this.store);
-
   Future<TranslateResponse> translate(TranslateRequestDto requestDto) async {
     final data = await _post('/translate/', requestDto);
     return TranslateResponse.fromJson(data);
   }
 
-  Future<Iterable<SpellCheckDto>> spellCheck(SpellCheckRequestDto requestDto) async {
+  Future<Iterable<SpellCheckDto>> spellCheck(
+      SpellCheckRequestDto requestDto) async {
     final response = await http.get(Uri.https(
       yandexSpellCheckUri,
       '/services/spellservice.json/checkText',
@@ -37,11 +32,15 @@ class AppApi {
 
     final jsonMap = json.decode(response.body) as List;
 
-    return jsonMap.map((e) => SpellCheckDto.fromJson(e as Map<String, dynamic>));
+    return jsonMap
+        .map((e) => SpellCheckDto.fromJson(e as Map<String, dynamic>));
   }
 
-  Map<String, String> _convertQueryParameters(Map<String, dynamic> queryParameters) =>
-      queryParameters.map((key, value) => MapEntry(key, value.toString())).cast<String, String>();
+  Map<String, String> _convertQueryParameters(
+          Map<String, dynamic> queryParameters) =>
+      queryParameters
+          .map((key, value) => MapEntry(key, value.toString()))
+          .cast<String, String>();
 
   Future<Map<String, String>> _getHeaders() async {
     return <String, String>{

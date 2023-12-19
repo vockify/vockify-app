@@ -1,50 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+import 'package:provider/provider.dart';
+import 'package:vockify/src/models/app_model.dart';
+import 'package:vockify/src/models/bar_model.dart';
 import 'package:vockify/src/navigation/navigation_holder.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/router/app_router.dart';
-import 'package:vockify/src/router/routes.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/initial.dart';
 
 class VockifyApp extends StatelessWidget {
-  final Store<AppState> store;
-
-  VockifyApp({Key? key, required this.store}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return StoreProvider(
-      store: store,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) {
+            final model = AppModel();
+            model.init();
+            return model;
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BarModel(),
+        ),
+      ],
       child: MaterialApp(
         navigatorKey: NavigatorHolder.navigatorKey,
-        onGenerateRoute: AppRouter.getRoute,
-        onGenerateInitialRoutes: _getInitialRoutes,
+        home: InitialWidget(),
         title: 'Vockify',
         theme: ThemeData(
           fontFamily: 'Raleway',
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: VockifyColors.primary),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: VockifyColors.primary,
+          ),
           primaryColor: VockifyColors.primary,
           primarySwatch: VockifyColors.primary,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
       ),
     );
-  }
-
-  List<Route<dynamic>> _getInitialRoutes(String route) {
-    // return [
-    //   MaterialPageRoute(builder: (context) => DriftDbViewer(dataService.database)),
-    // ];
-
-    return [
-      AppRouter.buildRoute(
-        RouteSettings(name: Routes.app),
-        InitialWidget(
-          route: Routes.home,
-        ),
-      ),
-    ];
   }
 }

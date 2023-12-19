@@ -1,36 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:redux/redux.dart';
-import 'package:vockify/src/navigation/navigate_to_action.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/store/app_dispatcher.dart';
-import 'package:vockify/src/services/amplitude.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
 class LayoutWidget extends StatelessWidget {
-  final String route;
   final String? title;
   final Widget body;
   final Color? backgroundColor;
   final List<Widget> actions;
-  final bool isContextNavigation;
-  final void Function(Store<AppState>)? onInit;
-  final void Function(Store<AppState>)? onDispose;
-  final bool Function(Store<AppState>)? isLoading;
+  final bool isLoading;
 
   LayoutWidget({
     Key? key,
-    required this.route,
     this.title,
     required this.body,
     this.backgroundColor,
     this.actions = const [],
-    this.isContextNavigation = true,
-    this.onInit,
-    this.onDispose,
-    this.isLoading,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -47,22 +33,18 @@ class LayoutWidget extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: actions,
       ),
-      body: StoreConnector<AppState, bool>(
-        distinct: true,
-        converter: isLoading ?? (store) => false,
-        onDispose: onDispose ?? null,
-        onInit: onInit != null ? onInit : null,
-        builder: (context, isLoading) {
-          if (isLoading) {
-            return Center(
-              child: LoaderWidget(),
-            );
-          }
-
-          return body;
-        },
-      ),
+      body: _buildBody(body, isLoading),
     );
+  }
+
+  Widget _buildBody(Widget body, [bool isLoading = false]) {
+    if (isLoading) {
+      return Center(
+        child: LoaderWidget(),
+      );
+    }
+
+    return body;
   }
 
   Widget? _buildGoBackArrow(BuildContext context) {
@@ -74,15 +56,7 @@ class LayoutWidget extends StatelessWidget {
       icon: new FaIcon(FontAwesomeIcons.angleLeft),
       color: VockifyColors.prussianBlue,
       onPressed: () {
-        if (isContextNavigation) {
-          Navigator.of(context).pop();
-        } else {
-          dispatcher.dispatch(NavigateToAction.pop());
-        }
-
-        amplitude.logEvent('back_arrow_button_clicked', eventProperties: {
-          'current_route': ModalRoute.of(context)?.settings.name,
-        });
+        Navigator.of(context).pop();
       },
     );
   }

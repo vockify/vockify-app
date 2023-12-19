@@ -3,6 +3,13 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
+mixin _$CategoriesDaoMixin on DatabaseAccessor<AppDatabase> {
+  $CategoriesTable get categories => attachedDatabase.categories;
+}
+mixin _$TermsDaoMixin on DatabaseAccessor<AppDatabase> {
+  $TermsTable get terms => attachedDatabase.terms;
+}
+
 class $CategoriesTable extends Categories
     with TableInfo<$CategoriesTable, Category> {
   @override
@@ -596,6 +603,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $TermsTable terms = $TermsTable(this);
+  late final CategoriesDao categoriesDao = CategoriesDao(this as AppDatabase);
+  late final TermsDao termsDao = TermsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
