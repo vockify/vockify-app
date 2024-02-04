@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppBarAction extends StatelessWidget {
   final VoidCallback onPressed;
-  final Widget icon;
+  final Widget? icon;
 
-  const AppBarAction({Key key, this.onPressed, this.icon}) : super(key: key);
+  const AppBarAction({Key? key, required this.onPressed, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

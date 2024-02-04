@@ -4,13 +4,13 @@ import 'package:vockify/src/widgets/common/primary_button.dart';
 
 class EmptyWidget extends StatelessWidget {
   final String text;
-  final String buttonText;
-  final VoidCallback onPressed;
-  final IconData icon;
+  final String? buttonText;
+  final VoidCallback? onPressed;
+  final IconData? icon;
 
   const EmptyWidget({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.buttonText,
     this.onPressed,
     this.icon,
@@ -34,7 +34,7 @@ class EmptyWidget extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: VockifyColors.black,
                     fontSize: 20,
                     height: 1.3,
@@ -43,8 +43,8 @@ class EmptyWidget extends StatelessWidget {
           ),
           if (buttonText != null && onPressed != null)
             PrimaryButtonWidget(
-              text: buttonText,
-              onPressed: onPressed,
+              text: buttonText!,
+              onPressed: onPressed!,
             ),
         ],
       ),

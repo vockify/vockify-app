@@ -11,7 +11,7 @@ class MobileStorage extends AppStorage {
   }
 
   @override
-  Future<String> getValue(String key) async {
+  Future<String?> getValue(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }

@@ -1,92 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:vockify/src/navigation/navigate_to_action.dart';
-import 'package:vockify/src/redux/state/app_state.dart';
-import 'package:vockify/src/redux/store/app_dispatcher.dart';
-import 'package:vockify/src/services/amplitude.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vockify/src/theme/vockify_colors.dart';
 import 'package:vockify/src/widgets/common/loader.dart';
 
 class LayoutWidget extends StatelessWidget {
-  final String route;
-  final String title;
+  final String? title;
   final Widget body;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final List<Widget> actions;
-  final bool isContextNavigation;
-  final Function(Store<AppState>) onInit;
-  final Function(Store<AppState>) onDispose;
-  final bool Function(Store<AppState>) isLoading;
+  final bool isLoading;
 
   LayoutWidget({
-    Key key,
-    @required this.route,
+    Key? key,
     this.title,
-    this.body,
+    required this.body,
     this.backgroundColor,
     this.actions = const [],
-    this.isContextNavigation = true,
-    this.onInit,
-    this.onDispose,
-    this.isLoading,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundColor ?? VockifyColors.white,
+      backgroundColor: backgroundColor ?? VockifyColors.ghostWhite,
       appBar: AppBar(
+        backgroundColor: VockifyColors.ghostWhite,
+        elevation: 0,
+        centerTitle: true,
         title: _buildTitle(),
         leading: _buildGoBackArrow(context),
         automaticallyImplyLeading: false,
         actions: actions,
       ),
-      body: StoreConnector<AppState, bool>(
-        distinct: true,
-        converter: isLoading != null ? isLoading : (store) => false,
-        onDispose: onDispose != null ? onDispose : null,
-        onInit: onInit != null ? onInit : null,
-        builder: (context, isLoading) {
-          if (isLoading) {
-            return Center(
-              child: LoaderWidget(),
-            );
-          }
-
-          return body;
-        },
-      ),
+      body: _buildBody(body, isLoading),
     );
   }
 
-  Widget _buildGoBackArrow(BuildContext context) {
+  Widget _buildBody(Widget body, [bool isLoading = false]) {
+    if (isLoading) {
+      return Center(
+        child: LoaderWidget(),
+      );
+    }
+
+    return body;
+  }
+
+  Widget? _buildGoBackArrow(BuildContext context) {
     if (!Navigator.of(context).canPop()) {
       return null;
     }
 
     return IconButton(
-      icon: new Icon(Icons.arrow_back),
+      icon: new FaIcon(FontAwesomeIcons.angleLeft),
+      color: VockifyColors.prussianBlue,
       onPressed: () {
-        if (isContextNavigation) {
-          Navigator.of(context).pop();
-        } else {
-          dispatcher.dispatch(NavigateToAction.pop());
-        }
-
-        amplitude.logEvent('back_arrow_button_clicked', eventProperties: {
-          'current_route': ModalRoute.of(context).settings.name,
-        });
+        Navigator.of(context).pop();
       },
     );
   }
 
-  Widget _buildTitle() {
+  Widget? _buildTitle() {
     if (title != null) {
       return Text(
-        title,
-        style: TextStyle(color: VockifyColors.white),
+        title!,
+        style: TextStyle(
+          color: VockifyColors.prussianBlue,
+          fontWeight: FontWeight.bold,
+        ),
       );
     }
 

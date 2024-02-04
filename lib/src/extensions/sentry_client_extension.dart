@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -20,14 +19,17 @@ extension SentryClientExtension on SentryClient {
     );
   }
 
-  exceptionHandler(FlutterErrorDetails details) async {
+  Future<void> exceptionHandler(FlutterErrorDetails details) async {
     if (!kReleaseMode) {
       // In development mode simply print to console.
       FlutterError.dumpErrorToConsole(details);
     } else {
       // In production mode report to the application zone to report to
       // Sentry.
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      final stack = details.stack;
+      if (stack != null) {
+        Zone.current.handleUncaughtError(details.exception, stack);
+      }
     }
   }
 }

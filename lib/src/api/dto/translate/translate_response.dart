@@ -3,14 +3,12 @@ import 'package:vockify/src/api/dto/translate/dictionary_entry_dto.dart';
 
 part 'translate_response.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(createToJson: false)
 class TranslateResponse {
-  final List<DictionaryEntryDto> data;
+  final List<DictionaryEntryDto> def;
 
-  TranslateResponse(this.data);
+  TranslateResponse(this.def);
 
   factory TranslateResponse.fromJson(Map<String, dynamic> json) =>
       _$TranslateResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TranslateResponseToJson(this);
 }

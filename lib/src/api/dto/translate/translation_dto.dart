@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'translation_dto.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class TranslationDto {
   final String text;
 
